@@ -1,0 +1,60 @@
+---
+layout: post
+title: 使用VPD对数据进行隔离
+categories:
+- Oracle
+tags: []
+published: true
+comments: true
+---
+<p>项目需求：系统数据表删除操作是直接物理删除，不利于维护历史记录，需要变更为逻辑删除模式。</p>
+
+<p>解决方案：</p>
+
+<p>对表增加删除标记字段DEL_FLAG varchar2(1) default ‘0’;</p>
+
+<p>用户执行“删除”操作时，并不执行物理删除操作，而是将DEL_FLAG值设置为‘1’；</p>
+
+<p>针对数据展示时，删除标记为’1’的数据使用VPD技术屏蔽访问；</p>
+
+<p><strong>1．需要修改的基表[T]新增删除字段：</strong></p>
+
+<p><strong>alter table</strong> T <strong>add</strong> (DEL_FLAG varchar2(1) <strong>default</strong> '0');--缺省为0，逻辑删除改为1</p>
+
+<p><strong>2．创建VPD需要的函数：</strong><strong>f_limited_query_t</strong><strong></strong></p>
+
+<p><strong>CREATE OR REPLACE FUNCTION</strong> f_limited_query_t (s_schema <strong>IN</strong> VARCHAR2,</p>
+
+<p>s_object <strong>IN</strong> VARCHAR2)</p>
+
+<p><strong>RETURN</strong> VARCHAR2</p>
+
+<p><strong>AS</strong></p>
+
+<p><strong>BEGIN</strong></p>
+
+<p><strong>RETURN</strong> 'DEL_FLAG!='''||'1'||'''';</p>
+
+<p><strong>END;</strong></p>
+
+<p><strong>3．创建策略：</strong><strong>POLICY_LIMITED_QUERY_T</strong><strong></strong></p>
+
+<p><strong>BEGIN</strong>
+DBMS_RLS.add_policy (object_schema   =&gt; 'APPS',<br />
+object_name     =&gt; 'T',<br />
+policy_name     =&gt; 'POLICY_LIMITED_QUERY_T',<br />
+function_schema =&gt; 'APPS',<br />
+policy_function =&gt; 'F_LIMITED_QUERY_T');
+<strong>END</strong>;</p>
+
+<p><strong>取消策略：</strong><strong>(</strong>不用过滤时使用此命令<strong>)</strong></p>
+
+<p><strong>BEGIN</strong>
+DBMS_RLS.drop_policy (object_schema   =&gt; 'APPS',<br />
+object_name     =&gt; 'T',<br />
+policy_name     =&gt; 'POLICY_LIMITED_QUERY_T');
+<strong>END</strong>;<strong></strong></p>
+
+<p>&nbsp;</p>
+
+<p><strong>4．修改FORM中对相关数据表的删除逻辑为更新DEL_FLAG=1的操作；</strong></p>

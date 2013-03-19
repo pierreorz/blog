@@ -1,0 +1,17 @@
+---
+layout: post
+title: ! '[SOLVED]Long mode not supported, rebooting Press any key to reboot'
+categories:
+- linux
+tags: []
+published: true
+comments: true
+---
+<p>虚拟机安装solaris 11的时候弹出
+<blockquote>Long mode not supported, rebooting Press any key to reboot........</blockquote>
+原因是solaris11只支持64位，需要把BIOS的CPU选项里Inter Virtualization Technology和Inter VT均设置为ENABLE，</p>
+
+<p>然后将虚拟机的设置如下：
+<blockquote>Virtual Machine Setting-&gt;Processors-&gt;Virtualizatoin engine-&gt;Preferred mode=Intel VT-x/EPT or AMD-v/RVI</blockquote></p>
+
+<p><a rel="attachment wp-att-248" href="http://www.dengdezhao.cn/wp-content/uploads/2013/01/pg-300x260.jpg"><img title="pg" src="http://www.dengdezhao.cn/wp-content/uploads/2013/01/pg-300x260.jpg" alt="" width="300" height="260" /></a></p>

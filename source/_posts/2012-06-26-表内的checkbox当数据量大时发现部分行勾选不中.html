@@ -1,0 +1,18 @@
+---
+layout: post
+title: 表内的checkbox当数据量大时发现部分行勾选不中
+categories:
+- ADF
+tags: []
+published: true
+comments: true
+---
+<p>测试发现，当数据只有25行的时候，都可以正常勾选，超过25行的数据，总是勾选不中。</p>
+
+<p>问题产生原因：<br />
+由于自定制的checkbox是设置了immediate=true 即时给数据行的checkbox字段赋值。<br />
+VO的rangeSize 默认是25，<br />
+因此导致25条数据内是可选。25条之外的数据初始时没有取出来，因此对这些没取的数据行设置checkbox自然就不生效了（展现出来就是checkbox勾选不中）</p>
+
+<p>解决方案：<br />
+修正VO的rangeSize为-1，查询全部，即可解决此问题。</p>

@@ -1,0 +1,12 @@
+---
+layout: post
+title: 通过Java代码刷新绑定控件
+categories:
+- ADF
+tags: []
+published: true
+comments: true
+---
+<p>partialTrigger属性可以刷新控件，通过以下代码也可以刷新绑定的控件</p>
+
+<p><span style="color: #000000;">AdfFacesContext.getCurrentInstance().addPartialTarget("绑定控件的instace名或者是UIComponent对象")</span></p>

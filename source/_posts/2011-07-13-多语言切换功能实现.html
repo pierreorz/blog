@@ -1,0 +1,107 @@
+---
+layout: post
+title: 多语言切换功能实现
+categories:
+- ADF
+tags: []
+published: true
+comments: true
+---
+<p><strong>Step.1 </strong>新建测试工程<strong> Fusion Web Application(ADF)</strong>。</p>
+
+<p><strong>Step.2 </strong>创建resource Bundle 文件，如下所示，我创建了三个语言版本的文件。
+<blockquote><span style="color: #ff0000;">ScreenConfig</span>_<span style="color: #0000ff;">en</span>_<span style="color: #ff00ff;">US</span>.properties</blockquote></p>
+
+<p><span style="color: #ff0000;">ScreenConfig</span>_<span style="color: #0000ff;">zh</span>_<span style="color: #ff00ff;">CN</span>.properties</p>
+
+<p><span style="color: #ff0000;">ScreenConfig</span>_<span style="color: #0000ff;">ja</span>_<span style="color: #ff00ff;">JP</span>.properties
+<strong>Step.3</strong> 在faces-config.xml中注册以上三个文件。
+<blockquote>&lt;?xml version="1.0" encoding="UTF-8"?&gt;<br />
+&lt;faces-config version="1.2" xmlns="http://java.sun.com/xml/ns/javaee"&gt;<br />
+&lt;application&gt;<br />
+&lt;default-render-kit-id&gt;oracle.adf.rich&lt;/default-render-kit-id&gt;
+<span style="color: #ff00ff;">&lt;resource-bundle&gt;</span>
+<span style="color: #ff00ff;"> &lt;base-name&gt;ScreenConfig&lt;/base-name&gt;</span>
+<span style="color: #ff00ff;"> &lt;var&gt;screen&lt;/var&gt;</span>
+<span style="color: #ff00ff;"> &lt;/resource-bundle&gt;</span>
+<span style="color: #ff00ff;"> &lt;locale-config&gt;</span>
+<span style="color: #ff00ff;"> &lt;default-locale&gt;zh_CN&lt;/default-locale&gt;</span>
+<span style="color: #ff00ff;"> &lt;supported-locale&gt;en_US&lt;/supported-locale&gt;</span>
+<span style="color: #ff00ff;"> &lt;supported-locale&gt;ja_JP&lt;/supported-locale&gt;</span>
+<span style="color: #ff00ff;"> &lt;/locale-config&gt;</span>
+&lt;/application&gt;<br />
+&lt;/faces-config&gt;</blockquote>
+<strong>Step.4</strong> 新建一个测试页面
+<blockquote>&lt;?xml version='1.0' encoding='UTF-8'?&gt;<br />
+&lt;jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1"<br />
+xmlns:f="http://java.sun.com/jsf/core"<br />
+xmlns:h="http://java.sun.com/jsf/html"<br />
+xmlns:af="http://xmlns.oracle.com/adf/faces/rich"&gt;<br />
+&lt;jsp:directive.page contentType="text/html;charset=UTF-8"/&gt;<br />
+&lt;f:view &gt;<br />
+&lt;af:document id="d1"&gt;
+<span style="color: #ff00ff;">&lt;f:loadBundle basename="ScreenConfig" var="screen"   /&gt;</span>
+&lt;af:form id="f1"&gt;<br />
+&lt;af:inputText label="<span style="color: #ff00ff;">#{screen.test}</span>" id="it1"/&gt;<br />
+&lt;af:commandButton text="<span style="color: #ff00ff;">#{screen.command}</span>" id="en"  partialTriggers="en"<br />
+action="<span style="color: #ff00ff;">#{BackingBean.changeLang}"</span>/&gt;<br />
+&lt;/af:form&gt;<br />
+&lt;/af:document&gt;<br />
+&lt;/f:view&gt;<br />
+&lt;!--oracle-jdev-comment:preferred-managed-bean-name:BackingBean--&gt;<br />
+&lt;/jsp:root&gt;</blockquote>
+<strong>Step.5</strong> 生成的BackingBean中内容如下：
+<blockquote>package view;</blockquote></p>
+
+<p>import java.util.Locale;<br />
+import java.util.ResourceBundle;</p>
+
+<p>import javax.faces.context.FacesContext;</p>
+
+<p>import javax.servlet.http.HttpServletRequest;<br />
+import javax.servlet.http.HttpSession;</p>
+
+<p>public class BackingBean {<br />
+public BackingBean() {<br />
+}
+private Locale locale;</p>
+
+<p>public String changeLang() {</p>
+
+<p>FacesContext facesContext = FacesContext.getCurrentInstance();<br />
+HttpServletRequest request =<br />
+(HttpServletRequest)facesContext.getExternalContext().getRequest();<br />
+String flag =<br />
+request.getSession().getAttribute("flag") == null ? "ZH" :<br />
+request.getSession().getAttribute("flag").toString();</p>
+
+<p>if ("ZH".equals(flag)) {<br />
+flag = "EN";<br />
+this.setLocale(new Locale("zh", "CN"));<br />
+} else if ("EN".equals(flag)) {<br />
+flag = "JA";<br />
+this.setLocale(new Locale("en", "US"));<br />
+} else if ("JA".equals(flag)) {<br />
+flag = "ZH";<br />
+this.setLocale(new Locale("ja", "JP"));<br />
+}
+request.getSession().setAttribute("flag", flag);<br />
+facesContext.getViewRoot().setLocale(locale);<br />
+return null;<br />
+}</p>
+
+<p>public void setLocale(Locale locale) {<br />
+this.locale = locale;<br />
+}</p>
+
+<p>public Locale getLocale() {<br />
+return locale;<br />
+}
+}
+<strong>Step.6 </strong>测试效果如下
+<blockquote><a href="http://www.dengdezhao.cn/wp-content/uploads/2011/07/1.jpg"><img class="alignnone size-full wp-image-28" title="1" src="http://www.dengdezhao.cn/wp-content/uploads/2011/07/1.jpg" alt="" width="234" height="50" /></a></blockquote>
+点击按键之后
+<blockquote><a href="http://www.dengdezhao.cn/wp-content/uploads/2011/07/2.jpg"><img class="alignnone size-full wp-image-29" title="2" src="http://www.dengdezhao.cn/wp-content/uploads/2011/07/2.jpg" alt="" width="254" height="50" /></a></blockquote>
+再点击按键之后
+<blockquote><a href="http://www.dengdezhao.cn/wp-content/uploads/2011/07/3.jpg"><img class="alignnone size-full wp-image-30" title="3" src="http://www.dengdezhao.cn/wp-content/uploads/2011/07/3.jpg" alt="" width="241" height="54" /></a></blockquote>
+&nbsp;</p>

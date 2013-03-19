@@ -1,0 +1,64 @@
+---
+layout: post
+title: WebService之-入门DEMO生成
+categories:
+- SOA
+tags: []
+published: true
+comments: true
+---
+<p>WebService的创建方法有多种，这里使用JAVA class生成webservice。</p>
+
+<p>1.创建一个JAVA类Test.java
+<pre class="brush:java">public class Test {
+    public Test() {
+        super();
+    }
+    public String sayHello(String a){
+        return "result"+a;
+    }
+}</pre>
+2.利用Test.java生成webservice</p>
+
+<p><a rel="attachment wp-att-177" href="http://www.dengdezhao.cn/wp-content/uploads/2012/09/aa-300x212.png"><img class="alignnone size-medium wp-image-177" title="aa" src="http://www.dengdezhao.cn/wp-content/uploads/2012/09/aa-300x212.png" alt="" width="300" height="212" /></a></p>
+
+<p><a rel="attachment wp-att-178" href="http://www.dengdezhao.cn/wp-content/uploads/2012/09/bb-300x222.png"><img class="alignnone size-medium wp-image-178" title="bb" src="http://www.dengdezhao.cn/wp-content/uploads/2012/09/bb-300x222.png" alt="" width="300" height="222" /></a></p>
+
+<p><a rel="attachment wp-att-179" href="http://www.dengdezhao.cn/wp-content/uploads/2012/09/cc-300x222.png"><img class="alignnone size-medium wp-image-179" title="cc" src="http://www.dengdezhao.cn/wp-content/uploads/2012/09/cc-300x222.png" alt="" width="300" height="222" /></a></p>
+
+<p>完成即生成Webservice.</p>
+
+<p>3. 发布webservice到weblogic</p>
+
+<p><a rel="attachment wp-att-180" href="http://www.dengdezhao.cn/wp-content/uploads/2012/09/dd-300x216.png"><img class="alignnone size-medium wp-image-180" title="dd" src="http://www.dengdezhao.cn/wp-content/uploads/2012/09/dd-300x216.png" alt="" width="300" height="216" /></a></p>
+
+<p>得到WSDL路径地址：<a href="http://192.168.1.103:7001/Application1-Project1-context-root/TestPort?WSDL">http://dengdezhao.cn:7001/Application1-Project1-context-root/TestPort?WSDL</a></p>
+
+<p>4.创建CallWSDL.java 客户端调用WSDL。Main方法如下：
+<pre class="brush:java">    public static void main(String[] args) throws Exception {</pre></p>
+
+<p>        String wsdlUrl="http://dengdezhao.cn:7001/Application1-Project1-context-root/TestPort?WSDL";<br />
+        String nameSpaceUri="http://tempuri.org/";<br />
+        String serviceName="TestService";<br />
+        String portName="TestPort";<br />
+        //设置工厂属性为axis<br />
+        System.setProperty(ServiceFactory.SERVICEFACTORY_PROPERTY, "org.apache.axis.client.ServiceFactory");//weblogic.webservice.core.rpc.ServiceFactoryImpl<br />
+        //org.apache.axis.client.ServiceFactory<br />
+        ServiceFactory serviceFactory = (ServiceFactory)ServiceFactory.newInstance();<br />
+        QName qname=new QName(nameSpaceUri,serviceName);<br />
+        Service afService =<br />
+            (Service)serviceFactory.createService(new java.net.URL(wsdlUrl), qname);<br />
+        Call call = (Call)afService.createCall();</p>
+
+<p>        call.setTargetEndpointAddress(wsdlUrl);<br />
+        //设定调用方法<br />
+        call.setOperationName(new QName(nameSpaceUri,"sayHello"));<br />
+        //设定输入参数类型<br />
+        call.addParameter("arg0", XMLType.XSD_STRING, ParameterMode.IN);<br />
+        //设定返回参数类型<br />
+        call.setReturnType(XMLType.XSD_STRING);<br />
+        //调用Webservice，传入参数为test.<br />
+        String result = (String)call.invoke(new Object[]{"test"});<br />
+        System.out.println("*******"+result);<br />
+    }
+输入结果为预期：*******resulttest

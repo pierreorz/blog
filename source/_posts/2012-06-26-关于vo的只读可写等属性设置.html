@@ -1,0 +1,21 @@
+---
+layout: post
+title: 关于VO的只读可写等属性设置
+categories:
+- ADF
+tags: []
+published: true
+comments: true
+---
+<p>如果生成ViewObject 的时候选择的是只读的VO的话，会发现VO的source里有ReadOnly="true"。<br />
+需求1：在MB中我通过代码拿到这个VO的实例，我想通过以下代码添加Row
+<div>
+<blockquote>Row newRow=Vo.createRow();<br />
+newRow.setAttribute("attribute1","value1");<br />
+newRow.setAttribute("attribute2","value2");<br />
+newRow.setAttribute("attribute3","value3");<br />
+Vo.insertRow(newRow);</blockquote>
+</div>
+最终发现，只读VO无法插入数据。怎么办？将ReadOnly改成"false"之后测试，发现满足需求~！<br />
+需求2：满足需求1之后发现，Vo里的确插入数据了。如果页面上有保存按钮，也会将这个数据更改到数据库，而这个数据只是需要在MB中起过渡作用，不必将newRow的数据postChange到DB，怎么办？<br />
+VO里 这个属性DeleteParticipant 立功了。 DeleteParticipant就是控制数据是否保存到DB的。设置 DeleteParticipant="false"发现满足了需求！</p>

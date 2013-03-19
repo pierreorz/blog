@@ -1,0 +1,33 @@
+---
+layout: post
+title: 利用javaMail发送邮件功能实现
+categories:
+- java
+tags: []
+published: true
+comments: true
+---
+<p>由于SMTP服务器需要采用SSL方式访问，所以蛋疼了，默认的连接25端口方式无法连接<br />
+改成465方式访问，又报连接错误，原来是证书文件的问题。<br />
+于是利用 InstallCert.java重新生成证书
+<div>
+<blockquote>java InstallCert smtp.dengdezhao.cn:465</blockquote>
+</div>
+将得到的证书cacert文件放置在任意路径下：比如C盘 c:/cacert</p>
+
+<p>程序中props属性里添加如下参数
+<div>
+<blockquote>props = System.getProperties();<br />
+props.put("mail.smtp.host", smtp.dengdezhao.cn); // 设置SMTP主机<br />
+props.put("mail.smtp.auth", "true");<br />
+props.put("mail.smtp.socketFactory.class",<br />
+"javax.net.ssl.SSLSocketFactory");<br />
+props.put("mail.smtp.socketFactory.fallback", "false");<br />
+props.put("mail.smtp.socketFactory.port", "465");<br />
+props.put("mail.debug", "true");<br />
+props.put("javax.net.ssl.keyStore", "c:\\cacert");<br />
+props.put("javax.net.ssl.trustStore", "c:\\cacert");</blockquote>
+</div>
+即可。</p>
+
+<p>&nbsp;</p>

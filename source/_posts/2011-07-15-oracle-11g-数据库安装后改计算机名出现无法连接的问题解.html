@@ -1,0 +1,25 @@
+---
+layout: post
+title: oracle 11g 数据库安装后改计算机名出现无法连接的问题解决
+categories:
+- Oracle
+tags:
+- lsnrctl
+- oracle 11g
+- orcl
+- tnsname.ora
+published: true
+comments: true
+---
+<p>在局域网内一台机器上安装完oracle11g之后，本地测试OK 可以访问orcl。用局域网内另一台机器连接的时候不行。<br />
+两台机器可以PING通。<br />
+修改tnsname.ora  把默认的localhost 都改成了本机IP 试试还是不行。<br />
+然后改了下计算机名，各种测试，打开EM还是只看到实例正常，监听程序为状态为不可用，实例的代理连接状态为不可用。<br />
+很是蛋疼，手贱不应该改计算机名啊。。。<br />
+想想多有可能要改的都改好了。。。怎么还是连不上？<br />
+是不是刚改好的还没有生效？<br />
+lsnrctl stop<br />
+lsnrctl start<br />
+各种重启服务之后，终于见到了全绿~~~</p>
+
+<p><a rel="attachment wp-att-36" href="http://www.dengdezhao.cn/wp-content/uploads/2011/07/q-300x139.jpg"><img class="alignnone size-medium wp-image-36" title="q" src="http://www.dengdezhao.cn/wp-content/uploads/2011/07/q-300x139.jpg" alt="" width="300" height="139" /></a></p>

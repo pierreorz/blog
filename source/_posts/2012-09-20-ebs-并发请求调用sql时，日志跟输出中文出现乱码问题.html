@@ -1,0 +1,24 @@
+---
+layout: post
+title: EBS 并发请求调用SQL时，日志跟输出中文出现乱码问题
+categories:
+- Oracle
+tags: []
+published: true
+comments: true
+---
+<p>已知数据库，数据库所在服务器字符集都是UTF8，在并发请求调用的SQL里，fnd_file.put_line(fnd_file.log,'中文')语句输出时，在EBS界面查看就是乱码。</p>
+
+<p>出现乱码的问题思路：</p>
+
+<p>1.查看客户端系统字符集是否支持中文。确认本机支持，并且NLS_LANG跟数据库都保持一致，可以排除此因素。</p>
+
+<p>2.查看数据库端字符集编码是否支持中文，得知是UTF8编码。</p>
+
+<p>3.查看服务器端是否支持中文编码</p>
+
+<p>发现以上三个因素都可以排除，EBS请求会在服务器端生成log文件，因此telnet到服务器直接查看生成的log文件看是否出现乱码</p>
+
+<p>cd $APPLPTMP</p>
+
+<p>发现生成的文件也是乱码，基本可以确定在数据库端生成文件即出现乱码，需要对中文字符进行转码输出。 exec find_file.put_file(fnd_file.log,convert('中文','UTF8','ZHS16GBK'))；</p>

@@ -1,0 +1,56 @@
+---
+layout: post
+title: Table内增加全选checkbox
+categories:
+- ADF
+tags: []
+published: true
+comments: true
+---
+<p>如图效果：    
+
+<a rel="attachment wp-att-107" href="http://www.dengdezhao.cn/wp-content/uploads/2012/06/T1.jpg"><img class="alignnone size-full wp-image-107" title="T1" src="http://www.dengdezhao.cn/wp-content/uploads/2012/06/T1.jpg" alt="" width="213" height="286" /></a>
+
+解决方案：</p>
+
+<p>VO里新建Transient属性Checked(Boolean),</p>
+
+<p><a rel="attachment wp-att-108" href="http://www.dengdezhao.cn/wp-content/uploads/2012/06/T2-300x11.jpg"><img class="alignnone size-medium wp-image-108" title="T2" src="http://www.dengdezhao.cn/wp-content/uploads/2012/06/T2-300x11.jpg" alt="" width="300" height="11" /></a></p>
+
+<p>表内添加一个column如下：
+<div>
+<blockquote>&lt;af:column id="c10" headerText="选择" width="30" align="center" noWrap="true"&gt;<br />
+&lt;f:facet name="header"&gt;<br />
+&lt;af:selectBooleanCheckbox valueChangeListener="#{backingBean.selectAll}"<br />
+autoSubmit="true" id="selectAll"<br />
+label="" value=""/&gt;<br />
+&lt;/f:facet&gt;<br />
+&lt;af:selectBooleanCheckbox label="选中/非选中" id="sbc1"  autoSubmit="true" immediate="true"<br />
+value="#{row.bindings.Checked.inputValue}"/&gt;</blockquote></div></p>
+
+<p>&lt;/af:column&gt;
+
+ 
+<div>
+<blockquote>public void selectAll(ValueChangeEvent valueChangeEvent) {<br />
+DCIteratorBinding it = ADFUtils.findIterator(REIM_HEADER_ITER);<br />
+ViewObject vo = it.getViewObject();</blockquote></div></p>
+
+<p>if (valueChangeEvent.getNewValue() != null) {<br />
+Boolean selectAll =<br />
+Boolean.parseBoolean(valueChangeEvent.getNewValue().toString());<br />
+if (!selectAll) {<br />
+for (Row temp : vo.getAllRowsInRange()) {<br />
+temp.setAttribute("Checked", false);<br />
+}
+} else {<br />
+for (Row temp : vo.getAllRowsInRange()) {<br />
+temp.setAttribute("Checked", true);<br />
+}
+}<br />
+RichTable table = (RichTable)JSFUtils.findComponentInRoot("t1");<br />
+AdfFacesContext.getCurrentInstance().addPartialTarget(table);<br />
+}
+}
+
+以上即可实现此需求。</p>

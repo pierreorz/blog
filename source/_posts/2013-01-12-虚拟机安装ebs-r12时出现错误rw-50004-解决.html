@@ -1,0 +1,12 @@
+---
+layout: post
+title: 虚拟机安装EBS R12时出现错误RW-50004 解决
+categories:
+- EBS
+tags: []
+published: true
+comments: true
+---
+<p>一般出现这个错误多半应该是库文件导致的，查看日志得知是 需要的 unzip 版本过高，RHEL上安装的是6.0的，而R12.1.1.1只支持unzip 5.X 的，很坑爹，yum erase unzip 然后重新安装unzip 5.X rpm即可解决~~</p>
+
+<p>&nbsp;</p>

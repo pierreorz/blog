@@ -1,0 +1,21 @@
+---
+layout: post
+title: ADF table的全选功能实现
+categories:
+- ADF
+tags: []
+published: true
+comments: true
+---
+<p>ADF表想要加个checkbox的全选功能，需要定制。
+<strong>Step1</strong>先在ADF表基于的VO上加一个Transient属性<strong>Checked</strong></p>
+
+<p><strong><a rel="attachment wp-att-101" href="http://www.dengdezhao.cn/wp-content/uploads/2012/06/22362218zcamfkt8c4qua8-300x186.jpg"><img class="alignnone size-medium wp-image-101" title="22362218zcamfkt8c4qua8" src="http://www.dengdezhao.cn/wp-content/uploads/2012/06/22362218zcamfkt8c4qua8-300x186.jpg" alt="" width="300" height="186" /></a></strong>
+
+<strong>Step2</strong> 页面中，在ADF表中手工添加一个column如下图所示
+<a rel="attachment wp-att-102" href="http://www.dengdezhao.cn/wp-content/uploads/2012/06/223624reclell7lhrk3hgg-300x83.jpg"><img class="alignnone size-medium wp-image-102" title="223624reclell7lhrk3hgg" src="http://www.dengdezhao.cn/wp-content/uploads/2012/06/223624reclell7lhrk3hgg-300x83.jpg" alt="" width="300" height="83" /></a></p>
+
+<p><strong>Step3</strong> MB中加上如下valueChangeEvent监听方法，取得VO，<br />
+遍历所有ROW，将Checked属性赋值，最后刷新表显示</p>
+
+<p><a rel="attachment wp-att-103" href="http://www.dengdezhao.cn/wp-content/uploads/2012/06/22362612igg9lrm21lubb6-300x209.jpg"><img class="alignnone size-medium wp-image-103" title="22362612igg9lrm21lubb6" src="http://www.dengdezhao.cn/wp-content/uploads/2012/06/22362612igg9lrm21lubb6-300x209.jpg" alt="" width="300" height="209" /></a></p>

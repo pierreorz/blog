@@ -1,0 +1,22 @@
+---
+layout: post
+title: 硬盘安装fedora
+categories:
+- linux
+tags: []
+published: true
+comments: true
+---
+<p>下载好fedora16 ISO镜像文件放在C盘，解压出来images文件，及vmlinuz,initrd.img文件。使用grub引导硬盘安装，分区时报错：<br />
+you have not created a bootloader stage1 target device</p>
+
+<p>This can happen if there is not enough space on your hard drive(s) for the installation.</p>
+
+<p>解决方案：引导参数加上linux askmethod，选择正确的镜像路径sda1即可。</p>
+
+<p>grub&gt;root (hd0,0)<br />
+grub&gt;kernel (hd0,0)/vmlinuz <span style="color: red;">linux askmethod</span> (之前没有加此参数）<br />
+grub&gt;initrd (hd0,0)/initrd.img<br />
+grub&gt;boot</p>
+
+<p>即可开始正常安装。</p>

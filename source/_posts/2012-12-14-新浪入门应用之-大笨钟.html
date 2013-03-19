@@ -1,0 +1,58 @@
+---
+layout: post
+title: 新浪入门应用之---大笨钟
+categories:
+- SinaAppEngine
+tags: []
+published: true
+comments: true
+---
+<p>昨日突然对SAE平台产生了兴趣，于是花了一晚上时间，写了个定点发微博的小应用，也算是了解了下SAE平台的开发流程，以下烂笔头纯粹为方便菜鸟学习，老鸟勿笑。</p>
+
+<p>之前玩过豆瓣，里面有个有名的“大笨钟”，每到整点便会发个状态“咚”几声以报时，虽然用处不大，但因其一直准点报时也吸引了不少粉丝关注，所以想自己做个类似的功能定时发微博报时。</p>
+
+<p>于是，看了看SAE的介绍，注册了个开发者账号，新建应用“thebigbenclock"；</p>
+
+<p>在E盘创建个同名文件夹E:\thebigbenclock</p>
+
+<p>右建checkout出应用代码https://svn.sinaapp.com/thebigbenclock,确保SVN可以正常连接；</p>
+
+<p>进入SAE平台，找到代码仓库中的框架“新浪微博OAuth框架"，将此框架下载到应用中，并创建版本</p>
+
+<p>然后再checkout应用，便可以将“新浪微博OAuth框架"的代码取到本地文件夹下了；</p>
+
+<p><a rel="attachment wp-att-195" href="http://www.dengdezhao.cn/wp-content/uploads/2012/12/tt-300x87.jpg"><img class="alignnone size-medium wp-image-195" title="tt" src="http://www.dengdezhao.cn/wp-content/uploads/2012/12/tt-300x87.jpg" alt="" width="554" height="160" /></a></p>
+
+<p>注意，默认版本为1，会新建一个名为“1”的子文件夹。修改config.php，填上APP key , App Sercet 及 WB_CALLBACK_URL。</p>
+
+<p>修改weibolist.php，添加以下代码：
+<pre class="brush:php">    $c = new SaeTClientV2( '3987019479' , '1eaa0834c410537aaef2759ffffffd9' , '<span style="color: #ff0000;">2.00VLxGwBntHp2E04c5f9ad08eyNJFC</span>');
+    $ms  = $c-&gt;home_timeline(); // done
+    $uid_get = $c-&gt;get_uid();
+    $uid = $uid_get['uid'];
+    $user_message = $c-&gt;show_user_by_id( $uid);//根据ID获取用户等基本信息
+    $dateString=date("Y-m-d H:i:s");   //获取当前时间；
+    $hours=substr($dateString,11,2);</pre></p>
+
+<p>    $outString='咚!';<br />
+    for ($a=1;$a&lt;$hours;$a++){<br />
+        $outString=$outString.'咚!';<br />
+      }</p>
+
+<p>    $ret = $c-&gt;update($dateString.$outString );	//发送微博
+上图中access_token，需要根据测试账号预先生成。</p>
+
+<p>配置config.yaml文件如下：
+<pre class="brush:php">name: thebigbenclock
+version: 1
+accesskey: 3987019479
+cron:
+- description: cron test
+  url: /weibolist.php
+  schedule: every 1 hour,offset 0
+  timezone: Beijing</pre>
+打开应用即可在整点时发送微博
+<pre class="brush:css">2012-12-14 09:00:00咚!咚!咚!咚!咚!咚!咚!咚!咚!</pre>
+&nbsp;</p>
+
+<p>&nbsp;</p>
