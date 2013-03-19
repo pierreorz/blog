@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[邓德昭的技术博客]]></title>
-  <link href="http://pierreorz.github.com/dengdezhao/atom.xml" rel="self"/>
-  <link href="http://pierreorz.github.com/dengdezhao/"/>
-  <updated>2013-03-19T23:29:18+08:00</updated>
-  <id>http://pierreorz.github.com/dengdezhao/</id>
+  <link href="http://www.dengdezhao.cn/atom.xml" rel="self"/>
+  <link href="http://www.dengdezhao.cn/"/>
+  <updated>2013-03-20T00:05:10+08:00</updated>
+  <id>http://www.dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[迁移WordPress博客至Octopress]]></title>
-    <link href="http://pierreorz.github.com/dengdezhao/blog/2013/03/19/qian-yi-wordpressbo-ke-zhi-octopress/"/>
+    <link href="http://www.dengdezhao.cn/blog/2013/03/19/qian-yi-wordpressbo-ke-zhi-octopress/"/>
     <updated>2013-03-19T22:32:00+08:00</updated>
-    <id>http://pierreorz.github.com/dengdezhao/blog/2013/03/19/qian-yi-wordpressbo-ke-zhi-octopress</id>
+    <id>http://www.dengdezhao.cn/blog/2013/03/19/qian-yi-wordpressbo-ke-zhi-octopress</id>
     <content type="html"><![CDATA[<h4>安装GIT</h4>
 
 <figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -162,9 +162,9 @@ vi source/_includes/custom/navigation.html
   
   <entry>
     <title type="html"><![CDATA[Use Javascript In Oaf]]></title>
-    <link href="http://pierreorz.github.com/dengdezhao/blog/2013/03/19/use-javascript-in-oaf/"/>
+    <link href="http://www.dengdezhao.cn/blog/2013/03/19/use-javascript-in-oaf/"/>
     <updated>2013-03-19T22:27:00+08:00</updated>
-    <id>http://pierreorz.github.com/dengdezhao/blog/2013/03/19/use-javascript-in-oaf</id>
+    <id>http://www.dengdezhao.cn/blog/2013/03/19/use-javascript-in-oaf</id>
     <content type="html"><![CDATA[<h2>Use Javascript in OAF</h2>
 
 <h4>使用Js脚本库</h4>
@@ -211,9 +211,9 @@ vi source/_includes/custom/navigation.html
   
   <entry>
     <title type="html"><![CDATA[[SOLVED]Long mode not supported, rebooting Press any key to reboot]]></title>
-    <link href="http://pierreorz.github.com/dengdezhao/blog/2013/01/31/solvedlong-mode-not-supported-rebooting-press-any-key-to-reboot/"/>
+    <link href="http://www.dengdezhao.cn/blog/2013/01/31/solvedlong-mode-not-supported-rebooting-press-any-key-to-reboot/"/>
     <updated>2013-01-31T00:00:00+08:00</updated>
-    <id>http://pierreorz.github.com/dengdezhao/blog/2013/01/31/solvedlong-mode-not-supported-rebooting-press-any-key-to-reboot</id>
+    <id>http://www.dengdezhao.cn/blog/2013/01/31/solvedlong-mode-not-supported-rebooting-press-any-key-to-reboot</id>
     <content type="html"><![CDATA[<p>虚拟机安装solaris 11的时候弹出
 <blockquote>Long mode not supported, rebooting Press any key to reboot&#8230;&#8230;..</blockquote>
 原因是solaris11只支持64位，需要把BIOS的CPU选项里Inter Virtualization Technology和Inter VT均设置为ENABLE，</p>
@@ -227,9 +227,9 @@ vi source/_includes/custom/navigation.html
   
   <entry>
     <title type="html"><![CDATA[firefox升级18之后,autoproxy失效,goagent无法使用问题解决]]></title>
-    <link href="http://pierreorz.github.com/dengdezhao/blog/2013/01/30/firefox%E5%8D%87%E7%BA%A718%E4%B9%8B%E5%90%8Eautoproxy%E5%A4%B1%E6%95%88goagent%E6%97%A0%E6%B3%95%E4%BD%BF%E7%94%A8%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
+    <link href="http://www.dengdezhao.cn/blog/2013/01/30/firefox%E5%8D%87%E7%BA%A718%E4%B9%8B%E5%90%8Eautoproxy%E5%A4%B1%E6%95%88goagent%E6%97%A0%E6%B3%95%E4%BD%BF%E7%94%A8%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
     <updated>2013-01-30T00:00:00+08:00</updated>
-    <id>http://pierreorz.github.com/dengdezhao/blog/2013/01/30/firefox升级18之后autoproxy失效goagent无法使用问题解决</id>
+    <id>http://www.dengdezhao.cn/blog/2013/01/30/firefox升级18之后autoproxy失效goagent无法使用问题解决</id>
     <content type="html"><![CDATA[<p>之前使用的是17版本的firefox，配置好了autoproxy使用goagent能够正常代理，之后升级firefox18之后，却代理不了了。重装过firefox,重装过goagent，重装过autoproxy都无效。</p>
 
 <p>试过使用IE，设置代理127.0.0.1:8087+goagent可以正常代理，因此排除goagent问题。</p>
@@ -253,9 +253,9 @@ signon.autologin.proxy           <strong>true</strong>
   
   <entry>
     <title type="html"><![CDATA[虚拟机环境RHEL6.3安装EBS R12]]></title>
-    <link href="http://pierreorz.github.com/dengdezhao/blog/2013/01/15/%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85ebs-r12/"/>
+    <link href="http://www.dengdezhao.cn/blog/2013/01/15/%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85ebs-r12/"/>
     <updated>2013-01-15T00:00:00+08:00</updated>
-    <id>http://pierreorz.github.com/dengdezhao/blog/2013/01/15/虚拟机安装ebs-r12</id>
+    <id>http://www.dengdezhao.cn/blog/2013/01/15/虚拟机安装ebs-r12</id>
     <content type="html"><![CDATA[<p>一直想自己搭建个R12的环境学习学习，于是买了块500G的移动硬盘，想把R12安装在移动硬盘中。</p>
 
 <p>准备工作：</p>
@@ -529,9 +529,9 @@ $cp .bash_profile .app</p>
   
   <entry>
     <title type="html"><![CDATA[虚拟机安装EBS R12时出现错误RW-50004 解决]]></title>
-    <link href="http://pierreorz.github.com/dengdezhao/blog/2013/01/12/%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85ebs-r12%E6%97%B6%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AFrw-50004-%E8%A7%A3%E5%86%B3/"/>
+    <link href="http://www.dengdezhao.cn/blog/2013/01/12/%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85ebs-r12%E6%97%B6%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AFrw-50004-%E8%A7%A3%E5%86%B3/"/>
     <updated>2013-01-12T00:00:00+08:00</updated>
-    <id>http://pierreorz.github.com/dengdezhao/blog/2013/01/12/虚拟机安装ebs-r12时出现错误rw-50004-解决</id>
+    <id>http://www.dengdezhao.cn/blog/2013/01/12/虚拟机安装ebs-r12时出现错误rw-50004-解决</id>
     <content type="html"><![CDATA[<p>一般出现这个错误多半应该是库文件导致的，查看日志得知是 需要的 unzip 版本过高，RHEL上安装的是6.0的，而R12.1.1.1只支持unzip 5.X 的，很坑爹，yum erase unzip 然后重新安装unzip 5.X rpm即可解决~~</p>
 
 <p>&nbsp;</p>
@@ -540,9 +540,9 @@ $cp .bash_profile .app</p>
   
   <entry>
     <title type="html"><![CDATA[OAF开发通过EXCEL导入数据时，用户需要将可能存在重复的主键信息提示出来]]></title>
-    <link href="http://pierreorz.github.com/dengdezhao/blog/2013/01/10/oaf%E5%BC%80%E5%8F%91%E9%80%9A%E8%BF%87excel%E5%AF%BC%E5%85%A5%E6%95%B0%E6%8D%AE%E6%97%B6%EF%BC%8C%E7%94%A8%E6%88%B7%E9%9C%80%E8%A6%81%E5%B0%86%E5%8F%AF%E8%83%BD%E5%AD%98%E5%9C%A8%E9%87%8D%E5%A4%8D/"/>
+    <link href="http://www.dengdezhao.cn/blog/2013/01/10/oaf%E5%BC%80%E5%8F%91%E9%80%9A%E8%BF%87excel%E5%AF%BC%E5%85%A5%E6%95%B0%E6%8D%AE%E6%97%B6%EF%BC%8C%E7%94%A8%E6%88%B7%E9%9C%80%E8%A6%81%E5%B0%86%E5%8F%AF%E8%83%BD%E5%AD%98%E5%9C%A8%E9%87%8D%E5%A4%8D/"/>
     <updated>2013-01-10T00:00:00+08:00</updated>
-    <id>http://pierreorz.github.com/dengdezhao/blog/2013/01/10/oaf开发通过excel导入数据时，用户需要将可能存在重复</id>
+    <id>http://www.dengdezhao.cn/blog/2013/01/10/oaf开发通过excel导入数据时，用户需要将可能存在重复</id>
     <content type="html"><![CDATA[<p>OAF开发通过EXCEL导入数据时，用户需要将可能存在重复的主键信息提示出来.</p>
 
 <p>有以下两种主键冲突情况：</p>
@@ -572,9 +572,9 @@ $cp .bash_profile .app</p>
   
   <entry>
     <title type="html"><![CDATA[OAF 使用OAException输出中文时出现乱码 解决]]></title>
-    <link href="http://pierreorz.github.com/dengdezhao/blog/2013/01/09/oaf-%E4%BD%BF%E7%94%A8oaexception%E8%BE%93%E5%87%BA%E4%B8%AD%E6%96%87%E6%97%B6%E5%87%BA%E7%8E%B0%E4%B9%B1%E7%A0%81-%E8%A7%A3%E5%86%B3/"/>
+    <link href="http://www.dengdezhao.cn/blog/2013/01/09/oaf-%E4%BD%BF%E7%94%A8oaexception%E8%BE%93%E5%87%BA%E4%B8%AD%E6%96%87%E6%97%B6%E5%87%BA%E7%8E%B0%E4%B9%B1%E7%A0%81-%E8%A7%A3%E5%86%B3/"/>
     <updated>2013-01-09T00:00:00+08:00</updated>
-    <id>http://pierreorz.github.com/dengdezhao/blog/2013/01/09/oaf-使用oaexception输出中文时出现乱码-解决</id>
+    <id>http://www.dengdezhao.cn/blog/2013/01/09/oaf-使用oaexception输出中文时出现乱码-解决</id>
     <content type="html"><![CDATA[<p>使用throw new OAException(“你们好”,OAException.WARNING);时出现乱码，尝试new String(&#8220;你们好”.getBytes(&#8220;GBK&#8221;),&#8221;UTF-8&#8221;)依然没用。</p>
 
 <p>检查JDEV的Preferences中ENCODING已经更改为“UTF-8”，纠结了好一阵子，才发现工程的Project Settings的Compiler里也有一个ENCODING没有改，囧改好之后再测试乱码问题即解决</p>
@@ -583,9 +583,9 @@ $cp .bash_profile .app</p>
   
   <entry>
     <title type="html"><![CDATA[新浪入门应用之---大笨钟]]></title>
-    <link href="http://pierreorz.github.com/dengdezhao/blog/2012/12/14/%E6%96%B0%E6%B5%AA%E5%85%A5%E9%97%A8%E5%BA%94%E7%94%A8%E4%B9%8B-%E5%A4%A7%E7%AC%A8%E9%92%9F/"/>
+    <link href="http://www.dengdezhao.cn/blog/2012/12/14/%E6%96%B0%E6%B5%AA%E5%85%A5%E9%97%A8%E5%BA%94%E7%94%A8%E4%B9%8B-%E5%A4%A7%E7%AC%A8%E9%92%9F/"/>
     <updated>2012-12-14T00:00:00+08:00</updated>
-    <id>http://pierreorz.github.com/dengdezhao/blog/2012/12/14/新浪入门应用之-大笨钟</id>
+    <id>http://www.dengdezhao.cn/blog/2012/12/14/新浪入门应用之-大笨钟</id>
     <content type="html"><![CDATA[<p>昨日突然对SAE平台产生了兴趣，于是花了一晚上时间，写了个定点发微博的小应用，也算是了解了下SAE平台的开发流程，以下烂笔头纯粹为方便菜鸟学习，老鸟勿笑。</p>
 
 <p>之前玩过豆瓣，里面有个有名的“大笨钟”，每到整点便会发个状态“咚”几声以报时，虽然用处不大，但因其一直准点报时也吸引了不少粉丝关注，所以想自己做个类似的功能定时发微博报时。</p>
@@ -640,9 +640,9 @@ cron:
   
   <entry>
     <title type="html"><![CDATA[ORA-1222：TNS:no such protocol adapter  问题解决]]></title>
-    <link href="http://pierreorz.github.com/dengdezhao/blog/2012/12/03/ora-1222%EF%BC%9Atnsno-such-protocol-adapter-%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
+    <link href="http://www.dengdezhao.cn/blog/2012/12/03/ora-1222%EF%BC%9Atnsno-such-protocol-adapter-%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
     <updated>2012-12-03T00:00:00+08:00</updated>
-    <id>http://pierreorz.github.com/dengdezhao/blog/2012/12/03/ora-1222：tnsno-such-protocol-adapter-问题解决</id>
+    <id>http://www.dengdezhao.cn/blog/2012/12/03/ora-1222：tnsno-such-protocol-adapter-问题解决</id>
     <content type="html"><![CDATA[<p>机器上安装的是instantOracleclient-basic-win32-11.2.0.1.0客户端，本来使用PLSQL developer是可以正常连接数据库的；</p>
 
 <p>后来开发需求装上了Form6<em>i，</em>发现连接数据库时弹出来ORA-1222：TNS:no such protocol adapter这个错误；</p>
@@ -669,9 +669,9 @@ cron:
   
   <entry>
     <title type="html"><![CDATA[WebService之-入门DEMO生成]]></title>
-    <link href="http://pierreorz.github.com/dengdezhao/blog/2012/09/30/webservice%E4%B9%8B-%E5%85%A5%E9%97%A8demo%E7%94%9F%E6%88%90/"/>
+    <link href="http://www.dengdezhao.cn/blog/2012/09/30/webservice%E4%B9%8B-%E5%85%A5%E9%97%A8demo%E7%94%9F%E6%88%90/"/>
     <updated>2012-09-30T00:00:00+08:00</updated>
-    <id>http://pierreorz.github.com/dengdezhao/blog/2012/09/30/webservice之-入门demo生成</id>
+    <id>http://www.dengdezhao.cn/blog/2012/09/30/webservice之-入门demo生成</id>
     <content type="html"><![CDATA[<p>WebService的创建方法有多种，这里使用JAVA class生成webservice。</p>
 
 <p>1.创建一个JAVA类Test.java
@@ -732,9 +732,9 @@ cron:
   
   <entry>
     <title type="html"><![CDATA[SOA suite 环境搭建]]></title>
-    <link href="http://pierreorz.github.com/dengdezhao/blog/2012/09/29/soa-suite-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/"/>
+    <link href="http://www.dengdezhao.cn/blog/2012/09/29/soa-suite-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/"/>
     <updated>2012-09-29T00:00:00+08:00</updated>
-    <id>http://pierreorz.github.com/dengdezhao/blog/2012/09/29/soa-suite-环境搭建</id>
+    <id>http://www.dengdezhao.cn/blog/2012/09/29/soa-suite-环境搭建</id>
     <content type="html"><![CDATA[<p>好久没碰SOA，最近在win2003上准备搭建个环境玩玩。下载相关安装介质</p>
 
 <p>http://www.oracle.com/technetwork/middleware/soasuite/downloads/index.html</p>
@@ -758,9 +758,9 @@ cron:
   
   <entry>
     <title type="html"><![CDATA[EBS 并发请求调用SQL时，日志跟输出中文出现乱码问题]]></title>
-    <link href="http://pierreorz.github.com/dengdezhao/blog/2012/09/20/ebs-%E5%B9%B6%E5%8F%91%E8%AF%B7%E6%B1%82%E8%B0%83%E7%94%A8sql%E6%97%B6%EF%BC%8C%E6%97%A5%E5%BF%97%E8%B7%9F%E8%BE%93%E5%87%BA%E4%B8%AD%E6%96%87%E5%87%BA%E7%8E%B0%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98/"/>
+    <link href="http://www.dengdezhao.cn/blog/2012/09/20/ebs-%E5%B9%B6%E5%8F%91%E8%AF%B7%E6%B1%82%E8%B0%83%E7%94%A8sql%E6%97%B6%EF%BC%8C%E6%97%A5%E5%BF%97%E8%B7%9F%E8%BE%93%E5%87%BA%E4%B8%AD%E6%96%87%E5%87%BA%E7%8E%B0%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98/"/>
     <updated>2012-09-20T00:00:00+08:00</updated>
-    <id>http://pierreorz.github.com/dengdezhao/blog/2012/09/20/ebs-并发请求调用sql时，日志跟输出中文出现乱码问题</id>
+    <id>http://www.dengdezhao.cn/blog/2012/09/20/ebs-并发请求调用sql时，日志跟输出中文出现乱码问题</id>
     <content type="html"><![CDATA[<p>已知数据库，数据库所在服务器字符集都是UTF8，在并发请求调用的SQL里，fnd_file.put_line(fnd_file.log,&#8217;中文&#8217;)语句输出时，在EBS界面查看就是乱码。</p>
 
 <p>出现乱码的问题思路：</p>
@@ -781,9 +781,9 @@ cron:
   
   <entry>
     <title type="html"><![CDATA[EBS请求执行时抛出错误Ora-20100和Ora-06512 问题解决]]></title>
-    <link href="http://pierreorz.github.com/dengdezhao/blog/2012/09/12/ebs%E8%AF%B7%E6%B1%82%E6%89%A7%E8%A1%8C%E6%97%B6%E6%8A%9B%E5%87%BA%E9%94%99%E8%AF%AFora-20100%E5%92%8Cora-06512-%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
+    <link href="http://www.dengdezhao.cn/blog/2012/09/12/ebs%E8%AF%B7%E6%B1%82%E6%89%A7%E8%A1%8C%E6%97%B6%E6%8A%9B%E5%87%BA%E9%94%99%E8%AF%AFora-20100%E5%92%8Cora-06512-%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
     <updated>2012-09-12T00:00:00+08:00</updated>
-    <id>http://pierreorz.github.com/dengdezhao/blog/2012/09/12/ebs请求执行时抛出错误ora-20100和ora-06512-问题解决</id>
+    <id>http://www.dengdezhao.cn/blog/2012/09/12/ebs请求执行时抛出错误ora-20100和ora-06512-问题解决</id>
     <content type="html"><![CDATA[<p>执行请求时抛出错误Ora-20100：xxxxx. Ora-06512:xxxxx错误，清空临时文件目录$APPLPTMP即可</p>
 
 <p>&nbsp;</p>
@@ -792,9 +792,9 @@ cron:
   
   <entry>
     <title type="html"><![CDATA[EBS并发请求调用Oracle reports时，如何写入日志文件]]></title>
-    <link href="http://pierreorz.github.com/dengdezhao/blog/2012/09/11/ebs%E5%B9%B6%E5%8F%91%E8%AF%B7%E6%B1%82%E8%B0%83%E7%94%A8oracle-reports%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E5%86%99%E5%85%A5%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6/"/>
+    <link href="http://www.dengdezhao.cn/blog/2012/09/11/ebs%E5%B9%B6%E5%8F%91%E8%AF%B7%E6%B1%82%E8%B0%83%E7%94%A8oracle-reports%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E5%86%99%E5%85%A5%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6/"/>
     <updated>2012-09-11T00:00:00+08:00</updated>
-    <id>http://pierreorz.github.com/dengdezhao/blog/2012/09/11/ebs并发请求调用oracle-reports时，如何写入日志文件</id>
+    <id>http://www.dengdezhao.cn/blog/2012/09/11/ebs并发请求调用oracle-reports时，如何写入日志文件</id>
     <content type="html"><![CDATA[<p>EBS并发请求调用procedure时，直接在被调用的procedure中使用fnd_file.put_line即可达到要求；</p>
 
 <p>如果并发请求调用的是oracle reports时，写入日志文件需要使用reports的方法。</p>
@@ -809,9 +809,9 @@ cron:
   
   <entry>
     <title type="html"><![CDATA[通过代码设置ITEM属性变黄]]></title>
-    <link href="http://pierreorz.github.com/dengdezhao/blog/2012/07/06/%E9%80%9A%E8%BF%87%E4%BB%A3%E7%A0%81%E8%AE%BE%E7%BD%AEitem%E5%B1%9E%E6%80%A7%E5%8F%98%E9%BB%84/"/>
+    <link href="http://www.dengdezhao.cn/blog/2012/07/06/%E9%80%9A%E8%BF%87%E4%BB%A3%E7%A0%81%E8%AE%BE%E7%BD%AEitem%E5%B1%9E%E6%80%A7%E5%8F%98%E9%BB%84/"/>
     <updated>2012-07-06T00:00:00+08:00</updated>
-    <id>http://pierreorz.github.com/dengdezhao/blog/2012/07/06/通过代码设置item属性变黄</id>
+    <id>http://www.dengdezhao.cn/blog/2012/07/06/通过代码设置item属性变黄</id>
     <content type="html"><![CDATA[<p>需求：需要设置ITEM背景变黄，类似required时的效果；</p>
 
 <p>创建visual Attributes 属性：<strong>COLOR_YELLOW</strong></p>
@@ -828,9 +828,9 @@ cron:
   
   <entry>
     <title type="html"><![CDATA[使用VPD对数据进行隔离]]></title>
-    <link href="http://pierreorz.github.com/dengdezhao/blog/2012/06/28/%E4%BD%BF%E7%94%A8vpd%E5%AF%B9%E6%95%B0%E6%8D%AE%E8%BF%9B%E8%A1%8C%E9%9A%94%E7%A6%BB/"/>
+    <link href="http://www.dengdezhao.cn/blog/2012/06/28/%E4%BD%BF%E7%94%A8vpd%E5%AF%B9%E6%95%B0%E6%8D%AE%E8%BF%9B%E8%A1%8C%E9%9A%94%E7%A6%BB/"/>
     <updated>2012-06-28T00:00:00+08:00</updated>
-    <id>http://pierreorz.github.com/dengdezhao/blog/2012/06/28/使用vpd对数据进行隔离</id>
+    <id>http://www.dengdezhao.cn/blog/2012/06/28/使用vpd对数据进行隔离</id>
     <content type="html"><![CDATA[<p>项目需求：系统数据表删除操作是直接物理删除，不利于维护历史记录，需要变更为逻辑删除模式。</p>
 
 <p>解决方案：</p>
@@ -887,9 +887,9 @@ policy_name     =&gt; &#8216;POLICY_LIMITED_QUERY_T&#8217;);
   
   <entry>
     <title type="html"><![CDATA[通过Java代码刷新绑定控件]]></title>
-    <link href="http://pierreorz.github.com/dengdezhao/blog/2012/06/26/%E9%80%9A%E8%BF%87java%E4%BB%A3%E7%A0%81%E5%88%B7%E6%96%B0%E7%BB%91%E5%AE%9A%E6%8E%A7%E4%BB%B6/"/>
+    <link href="http://www.dengdezhao.cn/blog/2012/06/26/%E9%80%9A%E8%BF%87java%E4%BB%A3%E7%A0%81%E5%88%B7%E6%96%B0%E7%BB%91%E5%AE%9A%E6%8E%A7%E4%BB%B6/"/>
     <updated>2012-06-26T00:00:00+08:00</updated>
-    <id>http://pierreorz.github.com/dengdezhao/blog/2012/06/26/通过java代码刷新绑定控件</id>
+    <id>http://www.dengdezhao.cn/blog/2012/06/26/通过java代码刷新绑定控件</id>
     <content type="html"><![CDATA[<p>partialTrigger属性可以刷新控件，通过以下代码也可以刷新绑定的控件</p>
 
 <p><span style="color: #000000;">AdfFacesContext.getCurrentInstance().addPartialTarget(&#8220;绑定控件的instace名或者是UIComponent对象&#8221;)</span></p>
@@ -898,9 +898,9 @@ policy_name     =&gt; &#8216;POLICY_LIMITED_QUERY_T&#8217;);
   
   <entry>
     <title type="html"><![CDATA[表内的checkbox当数据量大时发现部分行勾选不中]]></title>
-    <link href="http://pierreorz.github.com/dengdezhao/blog/2012/06/26/%E8%A1%A8%E5%86%85%E7%9A%84checkbox%E5%BD%93%E6%95%B0%E6%8D%AE%E9%87%8F%E5%A4%A7%E6%97%B6%E5%8F%91%E7%8E%B0%E9%83%A8%E5%88%86%E8%A1%8C%E5%8B%BE%E9%80%89%E4%B8%8D%E4%B8%AD/"/>
+    <link href="http://www.dengdezhao.cn/blog/2012/06/26/%E8%A1%A8%E5%86%85%E7%9A%84checkbox%E5%BD%93%E6%95%B0%E6%8D%AE%E9%87%8F%E5%A4%A7%E6%97%B6%E5%8F%91%E7%8E%B0%E9%83%A8%E5%88%86%E8%A1%8C%E5%8B%BE%E9%80%89%E4%B8%8D%E4%B8%AD/"/>
     <updated>2012-06-26T00:00:00+08:00</updated>
-    <id>http://pierreorz.github.com/dengdezhao/blog/2012/06/26/表内的checkbox当数据量大时发现部分行勾选不中</id>
+    <id>http://www.dengdezhao.cn/blog/2012/06/26/表内的checkbox当数据量大时发现部分行勾选不中</id>
     <content type="html"><![CDATA[<p>测试发现，当数据只有25行的时候，都可以正常勾选，超过25行的数据，总是勾选不中。</p>
 
 <p>问题产生原因：<br />
@@ -915,9 +915,9 @@ VO的rangeSize 默认是25，<br />
   
   <entry>
     <title type="html"><![CDATA[硬盘安装fedora]]></title>
-    <link href="http://pierreorz.github.com/dengdezhao/blog/2012/06/26/%E7%A1%AC%E7%9B%98%E5%AE%89%E8%A3%85fedora/"/>
+    <link href="http://www.dengdezhao.cn/blog/2012/06/26/%E7%A1%AC%E7%9B%98%E5%AE%89%E8%A3%85fedora/"/>
     <updated>2012-06-26T00:00:00+08:00</updated>
-    <id>http://pierreorz.github.com/dengdezhao/blog/2012/06/26/硬盘安装fedora</id>
+    <id>http://www.dengdezhao.cn/blog/2012/06/26/硬盘安装fedora</id>
     <content type="html"><![CDATA[<p>下载好fedora16 ISO镜像文件放在C盘，解压出来images文件，及vmlinuz,initrd.img文件。使用grub引导硬盘安装，分区时报错：<br />
 you have not created a bootloader stage1 target device</p>
 

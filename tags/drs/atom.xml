@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: drs | 邓德昭的技术博客]]></title>
-  <link href="http://pierreorz.github.com/dengdezhao/tags/drs/atom.xml" rel="self"/>
-  <link href="http://pierreorz.github.com/dengdezhao/"/>
-  <updated>2013-03-19T23:29:18+08:00</updated>
-  <id>http://pierreorz.github.com/dengdezhao/</id>
+  <link href="http://www.dengdezhao.cn/tags/drs/atom.xml" rel="self"/>
+  <link href="http://www.dengdezhao.cn/"/>
+  <updated>2013-03-20T00:05:10+08:00</updated>
+  <id>http://www.dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[ADF应用“Remote deployment failed”错误解决]]></title>
-    <link href="http://pierreorz.github.com/dengdezhao/blog/2011/06/28/adf%E5%BA%94%E7%94%A8%E2%80%9Cremote-deployment-failed%E2%80%9D%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/"/>
+    <link href="http://www.dengdezhao.cn/blog/2011/06/28/adf%E5%BA%94%E7%94%A8%E2%80%9Cremote-deployment-failed%E2%80%9D%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/"/>
     <updated>2011-06-28T00:00:00+08:00</updated>
-    <id>http://pierreorz.github.com/dengdezhao/blog/2011/06/28/adf应用“remote-deployment-failed”错误解决</id>
+    <id>http://www.dengdezhao.cn/blog/2011/06/28/adf应用“remote-deployment-failed”错误解决</id>
     <content type="html"><![CDATA[<p>ADF应用debug模式下最常出现的问题就是远程发布失败了。控制台打印的错误信息如下：
 <pre class="brush:plain">[07:21:55 PM] ####  Deployment incomplete.  ####
 [07:21:55 PM] Remote deployment failed (oracle.jdevimpl.deploy.common.Jsr88RemoteDeployer)

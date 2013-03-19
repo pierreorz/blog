@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: SOA | 邓德昭的技术博客]]></title>
-  <link href="http://pierreorz.github.com/dengdezhao/blog/categories/soa/atom.xml" rel="self"/>
-  <link href="http://pierreorz.github.com/dengdezhao/"/>
-  <updated>2013-03-19T23:29:18+08:00</updated>
-  <id>http://pierreorz.github.com/dengdezhao/</id>
+  <link href="http://www.dengdezhao.cn/blog/categories/soa/atom.xml" rel="self"/>
+  <link href="http://www.dengdezhao.cn/"/>
+  <updated>2013-03-20T00:05:10+08:00</updated>
+  <id>http://www.dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[WebService之-入门DEMO生成]]></title>
-    <link href="http://pierreorz.github.com/dengdezhao/blog/2012/09/30/webservice%E4%B9%8B-%E5%85%A5%E9%97%A8demo%E7%94%9F%E6%88%90/"/>
+    <link href="http://www.dengdezhao.cn/blog/2012/09/30/webservice%E4%B9%8B-%E5%85%A5%E9%97%A8demo%E7%94%9F%E6%88%90/"/>
     <updated>2012-09-30T00:00:00+08:00</updated>
-    <id>http://pierreorz.github.com/dengdezhao/blog/2012/09/30/webservice之-入门demo生成</id>
+    <id>http://www.dengdezhao.cn/blog/2012/09/30/webservice之-入门demo生成</id>
     <content type="html"><![CDATA[<p>WebService的创建方法有多种，这里使用JAVA class生成webservice。</p>
 
 
@@ -112,9 +112,9 @@
   
   <entry>
     <title type="html"><![CDATA[SOA suite 环境搭建]]></title>
-    <link href="http://pierreorz.github.com/dengdezhao/blog/2012/09/29/soa-suite-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/"/>
+    <link href="http://www.dengdezhao.cn/blog/2012/09/29/soa-suite-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/"/>
     <updated>2012-09-29T00:00:00+08:00</updated>
-    <id>http://pierreorz.github.com/dengdezhao/blog/2012/09/29/soa-suite-环境搭建</id>
+    <id>http://www.dengdezhao.cn/blog/2012/09/29/soa-suite-环境搭建</id>
     <content type="html"><![CDATA[<p>好久没碰SOA，最近在win2003上准备搭建个环境玩玩。下载相关安装介质</p>
 
 

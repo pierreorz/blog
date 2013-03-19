@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: ADF | 邓德昭的技术博客]]></title>
-  <link href="http://pierreorz.github.com/dengdezhao/tags/adf/atom.xml" rel="self"/>
-  <link href="http://pierreorz.github.com/dengdezhao/"/>
-  <updated>2013-03-19T23:29:18+08:00</updated>
-  <id>http://pierreorz.github.com/dengdezhao/</id>
+  <link href="http://www.dengdezhao.cn/tags/adf/atom.xml" rel="self"/>
+  <link href="http://www.dengdezhao.cn/"/>
+  <updated>2013-03-20T00:05:10+08:00</updated>
+  <id>http://www.dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[ADF应用中如何在BackingBean中调用javascript控制UI]]></title>
-    <link href="http://pierreorz.github.com/dengdezhao/blog/2011/06/29/adf%E5%BA%94%E7%94%A8%E4%B8%AD%E5%A6%82%E4%BD%95%E5%9C%A8backingbean%E4%B8%AD%E8%B0%83%E7%94%A8javascript%E6%8E%A7%E5%88%B6ui/"/>
+    <link href="http://www.dengdezhao.cn/blog/2011/06/29/adf%E5%BA%94%E7%94%A8%E4%B8%AD%E5%A6%82%E4%BD%95%E5%9C%A8backingbean%E4%B8%AD%E8%B0%83%E7%94%A8javascript%E6%8E%A7%E5%88%B6ui/"/>
     <updated>2011-06-29T00:00:00+08:00</updated>
-    <id>http://pierreorz.github.com/dengdezhao/blog/2011/06/29/adf应用中如何在backingbean中调用javascript控制ui</id>
+    <id>http://www.dengdezhao.cn/blog/2011/06/29/adf应用中如何在backingbean中调用javascript控制ui</id>
     <content type="html"><![CDATA[<p>当你需要在ManagedBean中控制页面控制的属性的时候，可以使用以下代码调用javascript实现。</p>
 
 
@@ -52,9 +52,9 @@ String script="你的javascript代码";</pre></p>
   
   <entry>
     <title type="html"><![CDATA[ADF应用“Remote deployment failed”错误解决]]></title>
-    <link href="http://pierreorz.github.com/dengdezhao/blog/2011/06/28/adf%E5%BA%94%E7%94%A8%E2%80%9Cremote-deployment-failed%E2%80%9D%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/"/>
+    <link href="http://www.dengdezhao.cn/blog/2011/06/28/adf%E5%BA%94%E7%94%A8%E2%80%9Cremote-deployment-failed%E2%80%9D%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/"/>
     <updated>2011-06-28T00:00:00+08:00</updated>
-    <id>http://pierreorz.github.com/dengdezhao/blog/2011/06/28/adf应用“remote-deployment-failed”错误解决</id>
+    <id>http://www.dengdezhao.cn/blog/2011/06/28/adf应用“remote-deployment-failed”错误解决</id>
     <content type="html"><![CDATA[<p>ADF应用debug模式下最常出现的问题就是远程发布失败了。控制台打印的错误信息如下：
 <pre class="brush:plain">[07:21:55 PM] ####  Deployment incomplete.  ####
 [07:21:55 PM] Remote deployment failed (oracle.jdevimpl.deploy.common.Jsr88RemoteDeployer)
@@ -81,9 +81,9 @@ String script="你的javascript代码";</pre></p>
   
   <entry>
     <title type="html"><![CDATA[定制ADF应用的CSS]]></title>
-    <link href="http://pierreorz.github.com/dengdezhao/blog/2011/06/27/%E5%AE%9A%E5%88%B6adf%E5%BA%94%E7%94%A8%E7%9A%84css/"/>
+    <link href="http://www.dengdezhao.cn/blog/2011/06/27/%E5%AE%9A%E5%88%B6adf%E5%BA%94%E7%94%A8%E7%9A%84css/"/>
     <updated>2011-06-27T00:00:00+08:00</updated>
-    <id>http://pierreorz.github.com/dengdezhao/blog/2011/06/27/定制adf应用的css</id>
+    <id>http://www.dengdezhao.cn/blog/2011/06/27/定制adf应用的css</id>
     <content type="html"><![CDATA[<p>客户的要求总是各种变态，如果需要定制默认的控件样式的话，那么以下的文章可能会对你有帮助。</p>
 
 

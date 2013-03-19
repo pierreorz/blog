@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: EBS | 邓德昭的技术博客]]></title>
-  <link href="http://pierreorz.github.com/dengdezhao/blog/categories/ebs/atom.xml" rel="self"/>
-  <link href="http://pierreorz.github.com/dengdezhao/"/>
-  <updated>2013-03-19T23:29:18+08:00</updated>
-  <id>http://pierreorz.github.com/dengdezhao/</id>
+  <link href="http://www.dengdezhao.cn/blog/categories/ebs/atom.xml" rel="self"/>
+  <link href="http://www.dengdezhao.cn/"/>
+  <updated>2013-03-20T00:05:10+08:00</updated>
+  <id>http://www.dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[虚拟机环境RHEL6.3安装EBS R12]]></title>
-    <link href="http://pierreorz.github.com/dengdezhao/blog/2013/01/15/%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85ebs-r12/"/>
+    <link href="http://www.dengdezhao.cn/blog/2013/01/15/%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85ebs-r12/"/>
     <updated>2013-01-15T00:00:00+08:00</updated>
-    <id>http://pierreorz.github.com/dengdezhao/blog/2013/01/15/虚拟机安装ebs-r12</id>
+    <id>http://www.dengdezhao.cn/blog/2013/01/15/虚拟机安装ebs-r12</id>
     <content type="html"><![CDATA[<p>一直想自己搭建个R12的环境学习学习，于是买了块500G的移动硬盘，想把R12安装在移动硬盘中。</p>
 
 
@@ -499,9 +499,9 @@ $cp .bash_profile .app</p>
   
   <entry>
     <title type="html"><![CDATA[虚拟机安装EBS R12时出现错误RW-50004 解决]]></title>
-    <link href="http://pierreorz.github.com/dengdezhao/blog/2013/01/12/%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85ebs-r12%E6%97%B6%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AFrw-50004-%E8%A7%A3%E5%86%B3/"/>
+    <link href="http://www.dengdezhao.cn/blog/2013/01/12/%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85ebs-r12%E6%97%B6%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AFrw-50004-%E8%A7%A3%E5%86%B3/"/>
     <updated>2013-01-12T00:00:00+08:00</updated>
-    <id>http://pierreorz.github.com/dengdezhao/blog/2013/01/12/虚拟机安装ebs-r12时出现错误rw-50004-解决</id>
+    <id>http://www.dengdezhao.cn/blog/2013/01/12/虚拟机安装ebs-r12时出现错误rw-50004-解决</id>
     <content type="html"><![CDATA[<p>一般出现这个错误多半应该是库文件导致的，查看日志得知是 需要的 unzip 版本过高，RHEL上安装的是6.0的，而R12.1.1.1只支持unzip 5.X 的，很坑爹，yum erase unzip 然后重新安装unzip 5.X rpm即可解决~~</p>
 
 

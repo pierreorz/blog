@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: ADF | 邓德昭的技术博客]]></title>
-  <link href="http://pierreorz.github.com/dengdezhao/blog/categories/adf/atom.xml" rel="self"/>
-  <link href="http://pierreorz.github.com/dengdezhao/"/>
-  <updated>2013-03-19T23:29:18+08:00</updated>
-  <id>http://pierreorz.github.com/dengdezhao/</id>
+  <link href="http://www.dengdezhao.cn/blog/categories/adf/atom.xml" rel="self"/>
+  <link href="http://www.dengdezhao.cn/"/>
+  <updated>2013-03-20T00:05:10+08:00</updated>
+  <id>http://www.dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[通过Java代码刷新绑定控件]]></title>
-    <link href="http://pierreorz.github.com/dengdezhao/blog/2012/06/26/%E9%80%9A%E8%BF%87java%E4%BB%A3%E7%A0%81%E5%88%B7%E6%96%B0%E7%BB%91%E5%AE%9A%E6%8E%A7%E4%BB%B6/"/>
+    <link href="http://www.dengdezhao.cn/blog/2012/06/26/%E9%80%9A%E8%BF%87java%E4%BB%A3%E7%A0%81%E5%88%B7%E6%96%B0%E7%BB%91%E5%AE%9A%E6%8E%A7%E4%BB%B6/"/>
     <updated>2012-06-26T00:00:00+08:00</updated>
-    <id>http://pierreorz.github.com/dengdezhao/blog/2012/06/26/通过java代码刷新绑定控件</id>
+    <id>http://www.dengdezhao.cn/blog/2012/06/26/通过java代码刷新绑定控件</id>
     <content type="html"><![CDATA[<p>partialTrigger属性可以刷新控件，通过以下代码也可以刷新绑定的控件</p>
 
 
@@ -30,9 +30,9 @@
   
   <entry>
     <title type="html"><![CDATA[表内的checkbox当数据量大时发现部分行勾选不中]]></title>
-    <link href="http://pierreorz.github.com/dengdezhao/blog/2012/06/26/%E8%A1%A8%E5%86%85%E7%9A%84checkbox%E5%BD%93%E6%95%B0%E6%8D%AE%E9%87%8F%E5%A4%A7%E6%97%B6%E5%8F%91%E7%8E%B0%E9%83%A8%E5%88%86%E8%A1%8C%E5%8B%BE%E9%80%89%E4%B8%8D%E4%B8%AD/"/>
+    <link href="http://www.dengdezhao.cn/blog/2012/06/26/%E8%A1%A8%E5%86%85%E7%9A%84checkbox%E5%BD%93%E6%95%B0%E6%8D%AE%E9%87%8F%E5%A4%A7%E6%97%B6%E5%8F%91%E7%8E%B0%E9%83%A8%E5%88%86%E8%A1%8C%E5%8B%BE%E9%80%89%E4%B8%8D%E4%B8%AD/"/>
     <updated>2012-06-26T00:00:00+08:00</updated>
-    <id>http://pierreorz.github.com/dengdezhao/blog/2012/06/26/表内的checkbox当数据量大时发现部分行勾选不中</id>
+    <id>http://www.dengdezhao.cn/blog/2012/06/26/表内的checkbox当数据量大时发现部分行勾选不中</id>
     <content type="html"><![CDATA[<p>测试发现，当数据只有25行的时候，都可以正常勾选，超过25行的数据，总是勾选不中。</p>
 
 
@@ -54,9 +54,9 @@ VO的rangeSize 默认是25，<br />
   
   <entry>
     <title type="html"><![CDATA[如何在MB中对selectionListener collectionModel.makeCurrent调用]]></title>
-    <link href="http://pierreorz.github.com/dengdezhao/blog/2012/06/26/%E5%A6%82%E4%BD%95%E5%9C%A8mb%E4%B8%AD%E5%AF%B9selectionlistener-collectionmodel-makecurrent%E8%B0%83%E7%94%A8/"/>
+    <link href="http://www.dengdezhao.cn/blog/2012/06/26/%E5%A6%82%E4%BD%95%E5%9C%A8mb%E4%B8%AD%E5%AF%B9selectionlistener-collectionmodel-makecurrent%E8%B0%83%E7%94%A8/"/>
     <updated>2012-06-26T00:00:00+08:00</updated>
-    <id>http://pierreorz.github.com/dengdezhao/blog/2012/06/26/如何在mb中对selectionlistener-collectionmodel-makecurrent调用</id>
+    <id>http://www.dengdezhao.cn/blog/2012/06/26/如何在mb中对selectionlistener-collectionmodel-makecurrent调用</id>
     <content type="html"><![CDATA[<p>如何在MB中对Table的默认"#{bindings.PromotionVO1.collectionModel.makeCurrent}"进行调用？</p>
 
 
@@ -81,9 +81,9 @@ new Object[] { selectionEvent });</blockquote>
   
   <entry>
     <title type="html"><![CDATA[关于定制validator]]></title>
-    <link href="http://pierreorz.github.com/dengdezhao/blog/2012/06/26/%E5%85%B3%E4%BA%8E%E5%AE%9A%E5%88%B6validator/"/>
+    <link href="http://www.dengdezhao.cn/blog/2012/06/26/%E5%85%B3%E4%BA%8E%E5%AE%9A%E5%88%B6validator/"/>
     <updated>2012-06-26T00:00:00+08:00</updated>
-    <id>http://pierreorz.github.com/dengdezhao/blog/2012/06/26/关于定制validator</id>
+    <id>http://www.dengdezhao.cn/blog/2012/06/26/关于定制validator</id>
     <content type="html"><![CDATA[<p>一个时刻字段，要求输入00:00-12:60这样的时刻范围<br />
 使用如下的正则表达式，过滤掉了不合规则的数字之后，还差一个逻辑，结束时刻不能小于开始时刻，比如：10：00-9：00这样的输入也是不合法的。正则太折磨眼力了，应该也是可以做到这点的吧，为了偷懒，就定制个validator来处理这个点。
 <div>
@@ -214,9 +214,9 @@ id="id2"&gt;<br />
   
   <entry>
     <title type="html"><![CDATA[关于VO的只读可写等属性设置]]></title>
-    <link href="http://pierreorz.github.com/dengdezhao/blog/2012/06/26/%E5%85%B3%E4%BA%8Evo%E7%9A%84%E5%8F%AA%E8%AF%BB%E5%8F%AF%E5%86%99%E7%AD%89%E5%B1%9E%E6%80%A7%E8%AE%BE%E7%BD%AE/"/>
+    <link href="http://www.dengdezhao.cn/blog/2012/06/26/%E5%85%B3%E4%BA%8Evo%E7%9A%84%E5%8F%AA%E8%AF%BB%E5%8F%AF%E5%86%99%E7%AD%89%E5%B1%9E%E6%80%A7%E8%AE%BE%E7%BD%AE/"/>
     <updated>2012-06-26T00:00:00+08:00</updated>
-    <id>http://pierreorz.github.com/dengdezhao/blog/2012/06/26/关于vo的只读可写等属性设置</id>
+    <id>http://www.dengdezhao.cn/blog/2012/06/26/关于vo的只读可写等属性设置</id>
     <content type="html"><![CDATA[<p>如果生成ViewObject 的时候选择的是只读的VO的话，会发现VO的source里有ReadOnly="true"。<br />
 需求1：在MB中我通过代码拿到这个VO的实例，我想通过以下代码添加Row
 <div>

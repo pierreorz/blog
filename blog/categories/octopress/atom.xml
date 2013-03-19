@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: octopress | 邓德昭的技术博客]]></title>
-  <link href="http://pierreorz.github.com/dengdezhao/blog/categories/octopress/atom.xml" rel="self"/>
-  <link href="http://pierreorz.github.com/dengdezhao/"/>
-  <updated>2013-03-19T23:29:18+08:00</updated>
-  <id>http://pierreorz.github.com/dengdezhao/</id>
+  <link href="http://www.dengdezhao.cn/blog/categories/octopress/atom.xml" rel="self"/>
+  <link href="http://www.dengdezhao.cn/"/>
+  <updated>2013-03-20T00:05:10+08:00</updated>
+  <id>http://www.dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[迁移WordPress博客至Octopress]]></title>
-    <link href="http://pierreorz.github.com/dengdezhao/blog/2013/03/19/qian-yi-wordpressbo-ke-zhi-octopress/"/>
+    <link href="http://www.dengdezhao.cn/blog/2013/03/19/qian-yi-wordpressbo-ke-zhi-octopress/"/>
     <updated>2013-03-19T22:32:00+08:00</updated>
-    <id>http://pierreorz.github.com/dengdezhao/blog/2013/03/19/qian-yi-wordpressbo-ke-zhi-octopress</id>
+    <id>http://www.dengdezhao.cn/blog/2013/03/19/qian-yi-wordpressbo-ke-zhi-octopress</id>
     <content type="html"><![CDATA[<h4>安装GIT</h4>
 
 <p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
