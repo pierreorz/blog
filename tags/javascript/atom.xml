@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: javascript | 邓德昭的技术博客]]></title>
+  <link href="http://pierreorz.github.com/dengdezhao/tags/javascript/atom.xml" rel="self"/>
+  <link href="http://pierreorz.github.com/dengdezhao/"/>
+  <updated>2013-03-19T23:29:18+08:00</updated>
+  <id>http://pierreorz.github.com/dengdezhao/</id>
+  <author>
+    <name><![CDATA[pierreorz]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[ADF应用中如何在BackingBean中调用javascript控制UI]]></title>
+    <link href="http://pierreorz.github.com/dengdezhao/blog/2011/06/29/adf%E5%BA%94%E7%94%A8%E4%B8%AD%E5%A6%82%E4%BD%95%E5%9C%A8backingbean%E4%B8%AD%E8%B0%83%E7%94%A8javascript%E6%8E%A7%E5%88%B6ui/"/>
+    <updated>2011-06-29T00:00:00+08:00</updated>
+    <id>http://pierreorz.github.com/dengdezhao/blog/2011/06/29/adf应用中如何在backingbean中调用javascript控制ui</id>
+    <content type="html"><![CDATA[<p>当你需要在ManagedBean中控制页面控制的属性的时候，可以使用以下代码调用javascript实现。</p>
+
+
+
+
+<p>&nbsp;
+<pre class="brush:java">//import org.apache.myfaces.trinidad.util.Service;
+String script="你的javascript代码";</pre></p>
+
+
+
+
+<p>FacesContext context = <br />
+        FacesContext.getCurrentInstance();</p>
+
+
+
+
+<p>ExtendedRenderKitService erks = <br />
+        (ExtendedRenderKitService)Service.<br />
+        getService(context.getRenderKit(), <br />
+        ExtendedRenderKitService.class);</p>
+
+
+
+
+<p>erks.addScript(context, script);
+&nbsp;</p>
+
+]]></content>
+  </entry>
+  
+</feed>

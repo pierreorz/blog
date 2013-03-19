@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: oracle 11g | 邓德昭的技术博客]]></title>
+  <link href="http://pierreorz.github.com/dengdezhao/tags/oracle-11g/atom.xml" rel="self"/>
+  <link href="http://pierreorz.github.com/dengdezhao/"/>
+  <updated>2013-03-19T23:29:18+08:00</updated>
+  <id>http://pierreorz.github.com/dengdezhao/</id>
+  <author>
+    <name><![CDATA[pierreorz]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[oracle 11g 数据库安装后改计算机名出现无法连接的问题解决]]></title>
+    <link href="http://pierreorz.github.com/dengdezhao/blog/2011/07/15/oracle-11g-%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%89%E8%A3%85%E5%90%8E%E6%94%B9%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%90%8D%E5%87%BA%E7%8E%B0%E6%97%A0%E6%B3%95%E8%BF%9E%E6%8E%A5%E7%9A%84%E9%97%AE%E9%A2%98%E8%A7%A3/"/>
+    <updated>2011-07-15T00:00:00+08:00</updated>
+    <id>http://pierreorz.github.com/dengdezhao/blog/2011/07/15/oracle-11g-数据库安装后改计算机名出现无法连接的问题解</id>
+    <content type="html"><![CDATA[<p>在局域网内一台机器上安装完oracle11g之后，本地测试OK 可以访问orcl。用局域网内另一台机器连接的时候不行。<br />
+两台机器可以PING通。<br />
+修改tnsname.ora  把默认的localhost 都改成了本机IP 试试还是不行。<br />
+然后改了下计算机名，各种测试，打开EM还是只看到实例正常，监听程序为状态为不可用，实例的代理连接状态为不可用。<br />
+很是蛋疼，手贱不应该改计算机名啊。。。<br />
+想想多有可能要改的都改好了。。。怎么还是连不上？<br />
+是不是刚改好的还没有生效？<br />
+lsnrctl stop<br />
+lsnrctl start<br />
+各种重启服务之后，终于见到了全绿~~~</p>
+
+
+
+
+<p><a rel="attachment wp-att-36" href="http://www.dengdezhao.cn/wp-content/uploads/2011/07/q-300x139.jpg"><img class="alignnone size-medium wp-image-36" title="q" src="http://www.dengdezhao.cn/wp-content/uploads/2011/07/q-300x139.jpg" alt="" width="300" height="139" /></a></p>
+
+]]></content>
+  </entry>
+  
+</feed>

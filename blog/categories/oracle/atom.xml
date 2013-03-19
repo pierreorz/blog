@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Oracle | 邓德昭的技术博客]]></title>
+  <link href="http://pierreorz.github.com/dengdezhao/blog/categories/oracle/atom.xml" rel="self"/>
+  <link href="http://pierreorz.github.com/dengdezhao/"/>
+  <updated>2013-03-19T23:29:18+08:00</updated>
+  <id>http://pierreorz.github.com/dengdezhao/</id>
+  <author>
+    <name><![CDATA[pierreorz]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[ORA-1222：TNS:no such protocol adapter  问题解决]]></title>
+    <link href="http://pierreorz.github.com/dengdezhao/blog/2012/12/03/ora-1222%EF%BC%9Atnsno-such-protocol-adapter-%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
+    <updated>2012-12-03T00:00:00+08:00</updated>
+    <id>http://pierreorz.github.com/dengdezhao/blog/2012/12/03/ora-1222：tnsno-such-protocol-adapter-问题解决</id>
+    <content type="html"><![CDATA[<p>机器上安装的是instantOracleclient-basic-win32-11.2.0.1.0客户端，本来使用PLSQL developer是可以正常连接数据库的；</p>
+
+
+
+
+<p>后来开发需求装上了Form6<em>i，</em>发现连接数据库时弹出来ORA-1222：TNS:no such protocol adapter这个错误；</p>
+
+
+
+
+<p>解决方案：</p>
+
+
+
+
+<p><strong>1.配置PL/SQL Developer -&gt; Preferences ，OracleHome设置为Form6i的路径；</strong></p>
+
+
+
+
+<p>﻿<a rel="attachment wp-att-188" href="http://www.dengdezhao.cn/wp-content/uploads/2012/12/p1-300x249.jpg"><img class="alignnone size-medium wp-image-188" title="p1" src="http://www.dengdezhao.cn/wp-content/uploads/2012/12/p1-300x249.jpg" alt="" width="300" height="249" /></a></p>
+
+
+
+
+<p><strong>2.我的电脑 -&gt; 用户变量 设置ORACLE_HOME 为Form6i路径</strong></p>
+
+
+
+
+<p><strong><a rel="attachment wp-att-189" href="http://www.dengdezhao.cn/wp-content/uploads/2012/12/p2-276x300.jpg"><img class="alignnone size-medium wp-image-189" title="p2" src="http://www.dengdezhao.cn/wp-content/uploads/2012/12/p2-276x300.jpg" alt="" width="276" height="300" /></a></strong></p>
+
+
+
+
+<p><strong>或者可以直接编辑注册表，修改oracle_home的值为[Form安装的HOME文件夹]/[oracle客户端文件夹]；</strong></p>
+
+
+
+
+<p><strong>如果需要切换按以上步骤修改oracle_home再重启PLSQL Developer即可以正常连接数据库；
+</strong></p>
+
+
+
+
+<p><em>
+</em></p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[EBS 并发请求调用SQL时，日志跟输出中文出现乱码问题]]></title>
+    <link href="http://pierreorz.github.com/dengdezhao/blog/2012/09/20/ebs-%E5%B9%B6%E5%8F%91%E8%AF%B7%E6%B1%82%E8%B0%83%E7%94%A8sql%E6%97%B6%EF%BC%8C%E6%97%A5%E5%BF%97%E8%B7%9F%E8%BE%93%E5%87%BA%E4%B8%AD%E6%96%87%E5%87%BA%E7%8E%B0%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98/"/>
+    <updated>2012-09-20T00:00:00+08:00</updated>
+    <id>http://pierreorz.github.com/dengdezhao/blog/2012/09/20/ebs-并发请求调用sql时，日志跟输出中文出现乱码问题</id>
+    <content type="html"><![CDATA[<p>已知数据库，数据库所在服务器字符集都是UTF8，在并发请求调用的SQL里，fnd_file.put_line(fnd_file.log,'中文')语句输出时，在EBS界面查看就是乱码。</p>
+
+
+
+
+<p>出现乱码的问题思路：</p>
+
+
+
+
+<p>1.查看客户端系统字符集是否支持中文。确认本机支持，并且NLS_LANG跟数据库都保持一致，可以排除此因素。</p>
+
+
+
+
+<p>2.查看数据库端字符集编码是否支持中文，得知是UTF8编码。</p>
+
+
+
+
+<p>3.查看服务器端是否支持中文编码</p>
+
+
+
+
+<p>发现以上三个因素都可以排除，EBS请求会在服务器端生成log文件，因此telnet到服务器直接查看生成的log文件看是否出现乱码</p>
+
+
+
+
+<p>cd $APPLPTMP</p>
+
+
+
+
+<p>发现生成的文件也是乱码，基本可以确定在数据库端生成文件即出现乱码，需要对中文字符进行转码输出。 exec find_file.put_file(fnd_file.log,convert('中文','UTF8','ZHS16GBK'))；</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[EBS请求执行时抛出错误Ora-20100和Ora-06512 问题解决]]></title>
+    <link href="http://pierreorz.github.com/dengdezhao/blog/2012/09/12/ebs%E8%AF%B7%E6%B1%82%E6%89%A7%E8%A1%8C%E6%97%B6%E6%8A%9B%E5%87%BA%E9%94%99%E8%AF%AFora-20100%E5%92%8Cora-06512-%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
+    <updated>2012-09-12T00:00:00+08:00</updated>
+    <id>http://pierreorz.github.com/dengdezhao/blog/2012/09/12/ebs请求执行时抛出错误ora-20100和ora-06512-问题解决</id>
+    <content type="html"><![CDATA[<p>执行请求时抛出错误Ora-20100：xxxxx. Ora-06512:xxxxx错误，清空临时文件目录$APPLPTMP即可</p>
+
+
+
+
+<p>&nbsp;</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[EBS并发请求调用Oracle reports时，如何写入日志文件]]></title>
+    <link href="http://pierreorz.github.com/dengdezhao/blog/2012/09/11/ebs%E5%B9%B6%E5%8F%91%E8%AF%B7%E6%B1%82%E8%B0%83%E7%94%A8oracle-reports%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E5%86%99%E5%85%A5%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6/"/>
+    <updated>2012-09-11T00:00:00+08:00</updated>
+    <id>http://pierreorz.github.com/dengdezhao/blog/2012/09/11/ebs并发请求调用oracle-reports时，如何写入日志文件</id>
+    <content type="html"><![CDATA[<p>EBS并发请求调用procedure时，直接在被调用的procedure中使用fnd_file.put_line即可达到要求；</p>
+
+
+
+
+<p>如果并发请求调用的是oracle reports时，写入日志文件需要使用reports的方法。</p>
+
+
+
+
+<p>在Before/After report Trigger中使用SRW.message(0,'Message');</p>
+
+
+
+
+<p>中断报表执行使用SRW.break;</p>
+
+
+
+
+<p>&nbsp;</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[使用VPD对数据进行隔离]]></title>
+    <link href="http://pierreorz.github.com/dengdezhao/blog/2012/06/28/%E4%BD%BF%E7%94%A8vpd%E5%AF%B9%E6%95%B0%E6%8D%AE%E8%BF%9B%E8%A1%8C%E9%9A%94%E7%A6%BB/"/>
+    <updated>2012-06-28T00:00:00+08:00</updated>
+    <id>http://pierreorz.github.com/dengdezhao/blog/2012/06/28/使用vpd对数据进行隔离</id>
+    <content type="html"><![CDATA[<p>项目需求：系统数据表删除操作是直接物理删除，不利于维护历史记录，需要变更为逻辑删除模式。</p>
+
+
+
+
+<p>解决方案：</p>
+
+
+
+
+<p>对表增加删除标记字段DEL_FLAG varchar2(1) default ‘0’;</p>
+
+
+
+
+<p>用户执行“删除”操作时，并不执行物理删除操作，而是将DEL_FLAG值设置为‘1’；</p>
+
+
+
+
+<p>针对数据展示时，删除标记为’1’的数据使用VPD技术屏蔽访问；</p>
+
+
+
+
+<p><strong>1．需要修改的基表[T]新增删除字段：</strong></p>
+
+
+
+
+<p><strong>alter table</strong> T <strong>add</strong> (DEL_FLAG varchar2(1) <strong>default</strong> '0');--缺省为0，逻辑删除改为1</p>
+
+
+
+
+<p><strong>2．创建VPD需要的函数：</strong><strong>f_limited_query_t</strong><strong></strong></p>
+
+
+
+
+<p><strong>CREATE OR REPLACE FUNCTION</strong> f_limited_query_t (s_schema <strong>IN</strong> VARCHAR2,</p>
+
+
+
+
+<p>s_object <strong>IN</strong> VARCHAR2)</p>
+
+
+
+
+<p><strong>RETURN</strong> VARCHAR2</p>
+
+
+
+
+<p><strong>AS</strong></p>
+
+
+
+
+<p><strong>BEGIN</strong></p>
+
+
+
+
+<p><strong>RETURN</strong> 'DEL_FLAG!='''||'1'||'''';</p>
+
+
+
+
+<p><strong>END;</strong></p>
+
+
+
+
+<p><strong>3．创建策略：</strong><strong>POLICY_LIMITED_QUERY_T</strong><strong></strong></p>
+
+
+
+
+<p><strong>BEGIN</strong>
+DBMS_RLS.add_policy (object_schema   =&gt; 'APPS',<br />
+object_name     =&gt; 'T',<br />
+policy_name     =&gt; 'POLICY_LIMITED_QUERY_T',<br />
+function_schema =&gt; 'APPS',<br />
+policy_function =&gt; 'F_LIMITED_QUERY_T');
+<strong>END</strong>;</p>
+
+
+
+
+<p><strong>取消策略：</strong><strong>(</strong>不用过滤时使用此命令<strong>)</strong></p>
+
+
+
+
+<p><strong>BEGIN</strong>
+DBMS_RLS.drop_policy (object_schema   =&gt; 'APPS',<br />
+object_name     =&gt; 'T',<br />
+policy_name     =&gt; 'POLICY_LIMITED_QUERY_T');
+<strong>END</strong>;<strong></strong></p>
+
+
+
+
+<p>&nbsp;</p>
+
+
+
+
+<p><strong>4．修改FORM中对相关数据表的删除逻辑为更新DEL_FLAG=1的操作；</strong></p>
+
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: ADF | 邓德昭的技术博客]]></title>
+  <link href="http://pierreorz.github.com/dengdezhao/blog/categories/adf/atom.xml" rel="self"/>
+  <link href="http://pierreorz.github.com/dengdezhao/"/>
+  <updated>2013-03-19T23:29:18+08:00</updated>
+  <id>http://pierreorz.github.com/dengdezhao/</id>
+  <author>
+    <name><![CDATA[pierreorz]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[通过Java代码刷新绑定控件]]></title>
+    <link href="http://pierreorz.github.com/dengdezhao/blog/2012/06/26/%E9%80%9A%E8%BF%87java%E4%BB%A3%E7%A0%81%E5%88%B7%E6%96%B0%E7%BB%91%E5%AE%9A%E6%8E%A7%E4%BB%B6/"/>
+    <updated>2012-06-26T00:00:00+08:00</updated>
+    <id>http://pierreorz.github.com/dengdezhao/blog/2012/06/26/通过java代码刷新绑定控件</id>
+    <content type="html"><![CDATA[<p>partialTrigger属性可以刷新控件，通过以下代码也可以刷新绑定的控件</p>
+
+
+
+
+<p><span style="color: #000000;">AdfFacesContext.getCurrentInstance().addPartialTarget("绑定控件的instace名或者是UIComponent对象")</span></p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[表内的checkbox当数据量大时发现部分行勾选不中]]></title>
+    <link href="http://pierreorz.github.com/dengdezhao/blog/2012/06/26/%E8%A1%A8%E5%86%85%E7%9A%84checkbox%E5%BD%93%E6%95%B0%E6%8D%AE%E9%87%8F%E5%A4%A7%E6%97%B6%E5%8F%91%E7%8E%B0%E9%83%A8%E5%88%86%E8%A1%8C%E5%8B%BE%E9%80%89%E4%B8%8D%E4%B8%AD/"/>
+    <updated>2012-06-26T00:00:00+08:00</updated>
+    <id>http://pierreorz.github.com/dengdezhao/blog/2012/06/26/表内的checkbox当数据量大时发现部分行勾选不中</id>
+    <content type="html"><![CDATA[<p>测试发现，当数据只有25行的时候，都可以正常勾选，超过25行的数据，总是勾选不中。</p>
+
+
+
+
+<p>问题产生原因：<br />
+由于自定制的checkbox是设置了immediate=true 即时给数据行的checkbox字段赋值。<br />
+VO的rangeSize 默认是25，<br />
+因此导致25条数据内是可选。25条之外的数据初始时没有取出来，因此对这些没取的数据行设置checkbox自然就不生效了（展现出来就是checkbox勾选不中）</p>
+
+
+
+
+<p>解决方案：<br />
+修正VO的rangeSize为-1，查询全部，即可解决此问题。</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[如何在MB中对selectionListener collectionModel.makeCurrent调用]]></title>
+    <link href="http://pierreorz.github.com/dengdezhao/blog/2012/06/26/%E5%A6%82%E4%BD%95%E5%9C%A8mb%E4%B8%AD%E5%AF%B9selectionlistener-collectionmodel-makecurrent%E8%B0%83%E7%94%A8/"/>
+    <updated>2012-06-26T00:00:00+08:00</updated>
+    <id>http://pierreorz.github.com/dengdezhao/blog/2012/06/26/如何在mb中对selectionlistener-collectionmodel-makecurrent调用</id>
+    <content type="html"><![CDATA[<p>如何在MB中对Table的默认"#{bindings.PromotionVO1.collectionModel.makeCurrent}"进行调用？</p>
+
+
+
+
+<p>当需要重写adf:table的缺省的selectListener时，可以在自己绑定的MB的方法里，调用默认的makeCurrent方法。取得当前行的数据，进行自己的定制操作。方法如下：
+<div>
+<blockquote>//调用缺省makeCurrent<br />
+JSFUtils.resolveMethodExpression("#{bindings.yourVO.collectionModel.makeCurrent}",<br />
+new Class[] { SelectionEvent.class },<br />
+new Object[] { selectionEvent });</blockquote>
+</div>
+取得选中行的数据
+<div>
+<blockquote>Row selectedRow =<br />
+(Row)JSFUtils.resolveExpression("#{bindings.yourVOIterator.currentRow}");</blockquote>
+</div>
+然后就可以针对取得的数据进行定制开发了。</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[关于定制validator]]></title>
+    <link href="http://pierreorz.github.com/dengdezhao/blog/2012/06/26/%E5%85%B3%E4%BA%8E%E5%AE%9A%E5%88%B6validator/"/>
+    <updated>2012-06-26T00:00:00+08:00</updated>
+    <id>http://pierreorz.github.com/dengdezhao/blog/2012/06/26/关于定制validator</id>
+    <content type="html"><![CDATA[<p>一个时刻字段，要求输入00:00-12:60这样的时刻范围<br />
+使用如下的正则表达式，过滤掉了不合规则的数字之后，还差一个逻辑，结束时刻不能小于开始时刻，比如：10：00-9：00这样的输入也是不合法的。正则太折磨眼力了，应该也是可以做到这点的吧，为了偷懒，就定制个validator来处理这个点。
+<div>
+<blockquote>&lt;af:validateRegExp pattern="([0-1][0-9]|2[0-4])\:([0-5][0-9]|60)\-([0-1][0-9]|2[0-4])\:([0-5][0-9]|60)" messageDetailNoMatch="请输入时刻，例如 00：00-24：60 " hint="请输入时刻，例如 00：00-24：60"/&gt;</blockquote>
+</div>
+<strong>Step1</strong>。创建一个<strong>ValidatorTime</strong>类实现Validator接口
+<div>
+<blockquote>package com.adfkf.validators;</blockquote></div></p>
+
+
+
+
+<p>import javax.faces.application.FacesMessage;<br />
+import javax.faces.component.UIComponent;<br />
+import javax.faces.component.UIInput;<br />
+import javax.faces.context.FacesContext;<br />
+import javax.faces.validator.Validator;<br />
+import javax.faces.validator.ValidatorException;</p>
+
+
+
+
+<p>import org.apache.myfaces.trinidad.component.UIXInput;</p>
+
+
+
+
+<p>public class ValidatorTime implements Validator {<br />
+public ValidatorTime() {<br />
+super();<br />
+}</p>
+
+
+
+
+<p>public void validate(FacesContext facesContext, UIComponent uiComponent,<br />
+Object object) {</p>
+
+
+
+
+<p>String value = null;<br />
+String a, b, c, d = null;<br />
+Boolean bool = false;<br />
+if ((facesContext == null) || (uiComponent == null)) {<br />
+throw new NullPointerException();<br />
+}
+if (!(uiComponent instanceof UIXInput)) {<br />
+return;<br />
+}
+if (null == object) {<br />
+return;<br />
+}
+//12:00-23:00<br />
+value = object.toString();<br />
+if (value != null &amp;&amp; value.length() == 11) {<br />
+a = value.substring(0, 2);<br />
+b = value.substring(3, 5);<br />
+c = value.substring(6, 8);<br />
+d = value.substring(9, 11);<br />
+try {<br />
+Integer intA = Integer.valueOf(a);<br />
+Integer intB = Integer.valueOf(b);<br />
+Integer intC = Integer.valueOf(c);<br />
+Integer intD = Integer.valueOf(d);<br />
+if (intC &gt; intA || (intA == intC &amp;&amp; intD &gt; intB)) {<br />
+bool = true;<br />
+} else {<br />
+bool = false;<br />
+}</p>
+
+
+
+
+<p>} catch (Exception e) {<br />
+bool = false;<br />
+}</p>
+
+
+
+
+<p>}<br />
+if (!bool) {<br />
+FacesMessage message = new FacesMessage();<br />
+message.setDetail("开始时刻大于结束时间");<br />
+message.setSummary("时刻输入有误");<br />
+message.setSeverity(FacesMessage.SEVERITY_ERROR);<br />
+throw new ValidatorException(message);</p>
+
+
+
+
+<p>}</p>
+
+
+
+
+<p>}<br />
+}
+
+<strong>Step2 </strong>在faces-config.xml中注册这个validator
+<div>
+<blockquote>&lt;validator&gt;<br />
+&lt;validator-id&gt;validateTime&lt;/validator-id&gt;<br />
+&lt;validator-class&gt;com.adfkf.validators.ValidatorTime&lt;/validator-class&gt;<br />
+&lt;/validator&gt;</blockquote>
+</div>
+<strong>Step3 </strong>页面中使用定制的validator
+<div>
+<blockquote>&lt;af:inputText value="#{row.bindings.ReimTime.inputValue}" disabled="#{sessionScope.flag}"<br />
+label="#{bindings.CostDetailVO.hints.ReimTime.label}"<br />
+required="#{bindings.CostDetailVO.hints.ReimTime.mandatory}"<br />
+shortDesc="#{bindings.CostDetailVO.hints.ReimTime.tooltip}"<br />
+id="id2"&gt;<br />
+&lt;af:validateRegExp pattern="([0-1][0-9]|2[0-4])\:([0-5][0-9]|60)\-([0-1][0-9]|2[0-4])\:([0-5][0-9]|60)" messageDetailNoMatch="请输入时刻，例如 00：00-24：60 " hint="请输入时刻，例如 00：00-24：60"/&gt;<br />
+&lt;f:validator validatorId="validateTime"/&gt;<br />
+&lt;/af:inputText&gt;</blockquote>
+</div>
+看下效果吧</p>
+
+
+
+
+<p><a rel="attachment wp-att-111" href="http://www.dengdezhao.cn/wp-content/uploads/2012/06/T11-300x92.jpg"><img class="alignnone size-medium wp-image-111" title="T1" src="http://www.dengdezhao.cn/wp-content/uploads/2012/06/T11-300x92.jpg" alt="" width="300" height="92" /></a></p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[关于VO的只读可写等属性设置]]></title>
+    <link href="http://pierreorz.github.com/dengdezhao/blog/2012/06/26/%E5%85%B3%E4%BA%8Evo%E7%9A%84%E5%8F%AA%E8%AF%BB%E5%8F%AF%E5%86%99%E7%AD%89%E5%B1%9E%E6%80%A7%E8%AE%BE%E7%BD%AE/"/>
+    <updated>2012-06-26T00:00:00+08:00</updated>
+    <id>http://pierreorz.github.com/dengdezhao/blog/2012/06/26/关于vo的只读可写等属性设置</id>
+    <content type="html"><![CDATA[<p>如果生成ViewObject 的时候选择的是只读的VO的话，会发现VO的source里有ReadOnly="true"。<br />
+需求1：在MB中我通过代码拿到这个VO的实例，我想通过以下代码添加Row
+<div>
+<blockquote>Row newRow=Vo.createRow();<br />
+newRow.setAttribute("attribute1","value1");<br />
+newRow.setAttribute("attribute2","value2");<br />
+newRow.setAttribute("attribute3","value3");<br />
+Vo.insertRow(newRow);</blockquote>
+</div>
+最终发现，只读VO无法插入数据。怎么办？将ReadOnly改成"false"之后测试，发现满足需求~！<br />
+需求2：满足需求1之后发现，Vo里的确插入数据了。如果页面上有保存按钮，也会将这个数据更改到数据库，而这个数据只是需要在MB中起过渡作用，不必将newRow的数据postChange到DB，怎么办？<br />
+VO里 这个属性DeleteParticipant 立功了。 DeleteParticipant就是控制数据是否保存到DB的。设置 DeleteParticipant="false"发现满足了需求！</p>
+
+]]></content>
+  </entry>
+  
+</feed>

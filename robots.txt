@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: 
+
+Sitemap: http://pierreorz.github.com/dengdezhao/sitemap.xml 

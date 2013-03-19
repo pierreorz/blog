@@ -1,0 +1,341 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>adf:tree做的树菜单如何过滤子节点的数据？ - 邓德昭的技术博客</title>
+  <meta name="author" content="pierreorz">
+
+  
+  <meta name="description" content="需求：项目中的树菜单需要权限用户的权限过滤显示子菜单，通过用户所在的用户组可以查看的页面ID（List)过滤子节点
+解决方案：
+因为树是通过viewLink关联自身的VO生成的，想在AM里添加方法，对VO进行过滤处理把结果返回。
+但实现起来比较麻烦，调用方法之后要刷新页面， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://pierreorz.github.com/dengdezhao/blog/2012/06/26/adftree%E5%81%9A%E7%9A%84%E6%A0%91%E8%8F%9C%E5%8D%95%E5%A6%82%E4%BD%95%E8%BF%87%E6%BB%A4%E5%AD%90%E8%8A%82%E7%82%B9%E7%9A%84%E6%95%B0%E6%8D%AE%EF%BC%9F">
+  <link href="/dengdezhao/favicon.png" rel="icon">
+  <link href="/dengdezhao/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/dengdezhao/atom.xml" rel="alternate" title="邓德昭的技术博客" type="application/atom+xml">
+  <script src="/dengdezhao/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/dengdezhao/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/dengdezhao/">邓德昭的技术博客</a></h1>
+  
+    <h2>最大的懦弱，不是畏葸不前，而是安于现状</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/dengdezhao/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:pierreorz.github.com/dengdezhao" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/dengdezhao/">博客主页</a></li>
+  <li><a href="/dengdezhao/blog/archives">文章列表</a></li>
+  <li><a href="/dengdezhao/tag">标签云</a></li>
+  <li><a href="/dengdezhao/about">关于</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Adf:tree做的树菜单如何过滤子节点的数据？</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>需求：项目中的树菜单需要权限用户的权限过滤显示子菜单，通过用户所在的用户组可以查看的页面ID（List)过滤子节点<br />
+解决方案：<br />
+因为树是通过viewLink关联自身的VO生成的，想在AM里添加方法，对VO进行过滤处理把结果返回。<br />
+但实现起来比较麻烦，调用方法之后要刷新页面，初始化的树数据过滤处理困难。<br />
+于是想重写VO的方法看能不能在VO层就过滤掉子节点。重写createViewLinkAccessorRS，此方法返回ViewLink的结果，也就是菜单的子节点数据
+<div>
+<blockquote>
+@Override<br />
+protected ViewRowSetImpl createViewLinkAccessorRS(AssociationDefImpl associationDefImpl,<br />
+ViewObjectImpl viewObjectImpl,<br />
+Row row,<br />
+Object[] object) {<br />
+ViewRowSetImpl viewRowSetImpl =<br />
+super.createViewLinkAccessorRS(associationDefImpl, viewObjectImpl,<br />
+row, object);<br />
+int count = 0;<br />
+// getList()拿到可以查看的pageId的列表，对比Row中的pageId属性，如果在List中存在，就取该Row，如果不存      //在，表示此子节点不予以显示，remove掉<br />
+if (this.getList() != null &amp;&amp; this.getList().size() != 0 &amp;&amp;<br />
+viewRowSetImpl != null) {<br />
+for (int m = 0; m &lt; viewRowSetImpl.getRowCount(); m++) {<br />
+if (viewRowSetImpl.getRow(m).getAttribute(&#8220;pageId&#8221;) ==<br />
+null) {<br />
+continue;<br />
+}
+for (int i = 0; i &lt; this.getList().size(); i++) {<br />
+if (this.getList().get(i).equals(viewRowSetImpl.getRow(m).getAttribute(&#8220;pageId&#8221;))) {<br />
+count++;<br />
+}
+}<br />
+if (count == 0) {<br />
+viewRowSetImpl.removeRowAt(m);<br />
+//因为remove掉一行之后，viewRowSetImpl的RowCount就少了1，需要给m也减一，不然可漏掉一行数据未处理。<br />
+m&#8211;;<br />
+}
+count = 0;<br />
+}
+}</blockquote></div></p>
+
+<p>return viewRowSetImpl;</p>
+
+<p>}
+
+如此重写了这个方法之后，在调用的时候需要给List赋值，以方便过滤。因此需要给List的 SetList()方法生成Client接口。<br />
+在VO中为setList()添加clientInterface.
+<div>
+<blockquote>&lt;ClientInterface&gt;<br />
+&lt;Method<br />
+Name=&#8221;setList&#8221;&gt;<br />
+&lt;Return<br />
+Type=&#8221;void&#8221;/&gt;<br />
+&lt;Parameter<br />
+Name=&#8221;list&#8221;<br />
+Type=&#8221;java.util.ArrayList&#8221;<br />
+IsGeneric=&#8221;true&#8221;&gt;<br />
+&lt;Element<br />
+Type=&#8221;java.lang.String&#8221;/&gt;<br />
+&lt;/Parameter&gt;<br />
+&lt;/Method&gt;<br />
+&lt;/ClientInterface&gt;</blockquote>
+</div>
+这样，只需要在页面初始化的时候，给这个VO的list赋值，就可以过滤子节点了
+<div>
+<blockquote>DCIteratorBinding it2 = ADFUtils.findIterator(&#8220;MenuVO1Iterator&#8221;);<br />
+MenuVOImpl vo2 = (MenuVOImpl)it2.getViewObject();<br />
+vo2.setList(list);    //给VO的List赋值。<br />
+vo2.executeQuery();</blockquote>
+</div></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">pierreorz</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/dengdezhao/blog/categories/adf/'>ADF</a>
+  
+</span>
+
+
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://pierreorz.github.com/dengdezhao/blog/2012/06/26/adftree%E5%81%9A%E7%9A%84%E6%A0%91%E8%8F%9C%E5%8D%95%E5%A6%82%E4%BD%95%E8%BF%87%E6%BB%A4%E5%AD%90%E8%8A%82%E7%82%B9%E7%9A%84%E6%95%B0%E6%8D%AE%EF%BC%9F/" data-via="" data-counturl="http://pierreorz.github.com/dengdezhao/blog/2012/06/26/adftree%E5%81%9A%E7%9A%84%E6%A0%91%E8%8F%9C%E5%8D%95%E5%A6%82%E4%BD%95%E8%BF%87%E6%BB%A4%E5%AD%90%E8%8A%82%E7%82%B9%E7%9A%84%E6%95%B0%E6%8D%AE%EF%BC%9F/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/dengdezhao/blog/2012/06/26/adf-table%E7%9A%84%E5%85%A8%E9%80%89%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0/" title="Previous Post: ADF table的全选功能实现">&laquo; ADF table的全选功能实现</a>
+      
+      
+        <a class="basic-alignment right" href="/dengdezhao/blog/2012/06/26/immediatetrue-%E7%9A%84%E5%BC%82%E5%B8%B8/" title="Next Post: immediate="true" 的异常">immediate="true" 的异常 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>分类目录</h1>
+  <ul id="categories">
+    <li class='category'><a href='/dengdezhao/blog/categories/adf/'>ADF (18)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/ebs/'>EBS (2)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/oaf/'>OAF (3)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/oracle/'>Oracle (7)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/soa/'>SOA (2)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/sinaappengine/'>SinaAppEngine (1)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/forms/'>forms (1)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/java/'>java (1)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/linux/'>linux (2)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/octopress/'>octopress (1)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/others/'>others (1)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/weblogic/'>weblogic (1)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/wordpress/'>wordpress (1)</a></li>
+
+  </ul>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/dengdezhao/blog/2013/03/19/qian-yi-wordpressbo-ke-zhi-octopress/">迁移WordPress博客至Octopress</a>
+      </li>
+    
+      <li class="post">
+        <a href="/dengdezhao/blog/2013/03/19/use-javascript-in-oaf/">Use Javascript In Oaf</a>
+      </li>
+    
+      <li class="post">
+        <a href="/dengdezhao/blog/2013/01/31/solvedlong-mode-not-supported-rebooting-press-any-key-to-reboot/">[SOLVED]Long mode not supported, rebooting Press any key to reboot</a>
+      </li>
+    
+      <li class="post">
+        <a href="/dengdezhao/blog/2013/01/30/firefox%E5%8D%87%E7%BA%A718%E4%B9%8B%E5%90%8Eautoproxy%E5%A4%B1%E6%95%88goagent%E6%97%A0%E6%B3%95%E4%BD%BF%E7%94%A8%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/">firefox升级18之后,autoproxy失效,goagent无法使用问题解决</a>
+      </li>
+    
+      <li class="post">
+        <a href="/dengdezhao/blog/2013/01/15/%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85ebs-r12/">虚拟机环境RHEL6.3安装EBS R12</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+<section>
+  <h2>友情链接</h2>
+  <a href="http://www.liqifa.cn">[小分号]</a><br/>
+  <a href="http://www.fmw007.com">[梦想左岸]</a<br/>
+</setion>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - pierreorz -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'adfkf';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://pierreorz.github.com/dengdezhao/blog/2012/06/26/adftree%E5%81%9A%E7%9A%84%E6%A0%91%E8%8F%9C%E5%8D%95%E5%A6%82%E4%BD%95%E8%BF%87%E6%BB%A4%E5%AD%90%E8%8A%82%E7%82%B9%E7%9A%84%E6%95%B0%E6%8D%AE%EF%BC%9F/';
+        var disqus_url = 'http://pierreorz.github.com/dengdezhao/blog/2012/06/26/adftree%E5%81%9A%E7%9A%84%E6%A0%91%E8%8F%9C%E5%8D%95%E5%A6%82%E4%BD%95%E8%BF%87%E6%BB%A4%E5%AD%90%E8%8A%82%E7%82%B9%E7%9A%84%E6%95%B0%E6%8D%AE%EF%BC%9F/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

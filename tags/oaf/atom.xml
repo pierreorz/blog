@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: OAF | 邓德昭的技术博客]]></title>
+  <link href="http://pierreorz.github.com/dengdezhao/tags/oaf/atom.xml" rel="self"/>
+  <link href="http://pierreorz.github.com/dengdezhao/"/>
+  <updated>2013-03-19T23:29:18+08:00</updated>
+  <id>http://pierreorz.github.com/dengdezhao/</id>
+  <author>
+    <name><![CDATA[pierreorz]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[OAF 使用OAException输出中文时出现乱码 解决]]></title>
+    <link href="http://pierreorz.github.com/dengdezhao/blog/2013/01/09/oaf-%E4%BD%BF%E7%94%A8oaexception%E8%BE%93%E5%87%BA%E4%B8%AD%E6%96%87%E6%97%B6%E5%87%BA%E7%8E%B0%E4%B9%B1%E7%A0%81-%E8%A7%A3%E5%86%B3/"/>
+    <updated>2013-01-09T00:00:00+08:00</updated>
+    <id>http://pierreorz.github.com/dengdezhao/blog/2013/01/09/oaf-使用oaexception输出中文时出现乱码-解决</id>
+    <content type="html"><![CDATA[<p>使用throw new OAException(“你们好”,OAException.WARNING);时出现乱码，尝试new String("你们好”.getBytes("GBK"),"UTF-8")依然没用。</p>
+
+
+
+
+<p>检查JDEV的Preferences中ENCODING已经更改为“UTF-8”，纠结了好一阵子，才发现工程的Project Settings的Compiler里也有一个ENCODING没有改，囧改好之后再测试乱码问题即解决</p>
+
+]]></content>
+  </entry>
+  
+</feed>

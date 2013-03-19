@@ -1,0 +1,294 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>如何让af:inputListOfValues（LOV）的初始值显示为Blank而不是默认的VO的First Row - 邓德昭的技术博客</title>
+  <meta name="author" content="pierreorz">
+
+  
+  <meta name="description" content="目前LOV控件在页面初始化时默认显示的是第一条记录，如果想让LOV初始化的时候不显示记录应该如何设置呢？ 方法一. 通过在BackingBean的构造函数里设置LOV的值为空字符串这种做法基本可以达到需求。但总感觉这种方法很别扭，走了弯路。 本文介绍另外一种更为简单的方法。通过EL表达式实现需求 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://pierreorz.github.com/dengdezhao/blog/2011/07/20/%E5%A6%82%E4%BD%95%E8%AE%A9%EF%BC%88lov%EF%BC%89%E7%9A%84%E5%88%9D%E5%A7%8B%E5%80%BC%E6%98%BE%E7%A4%BA%E4%B8%BAblank%E8%80%8C%E4%B8%8D%E6%98%AF%E9%BB%98%E8%AE%A4%E7%9A%84vo%E7%9A%84first-row">
+  <link href="/dengdezhao/favicon.png" rel="icon">
+  <link href="/dengdezhao/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/dengdezhao/atom.xml" rel="alternate" title="邓德昭的技术博客" type="application/atom+xml">
+  <script src="/dengdezhao/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/dengdezhao/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/dengdezhao/">邓德昭的技术博客</a></h1>
+  
+    <h2>最大的懦弱，不是畏葸不前，而是安于现状</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/dengdezhao/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:pierreorz.github.com/dengdezhao" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/dengdezhao/">博客主页</a></li>
+  <li><a href="/dengdezhao/blog/archives">文章列表</a></li>
+  <li><a href="/dengdezhao/tag">标签云</a></li>
+  <li><a href="/dengdezhao/about">关于</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">如何让af:inputListOfValues（LOV）的初始值显示为Blank而不是默认的VO的First Row</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-07-20T00:00:00+08:00" pubdate data-updated="true">Jul 20<span>th</span>, 2011</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>目前LOV控件在页面初始化时默认显示的是第一条记录，如果想让LOV初始化的时候不显示记录应该如何设置呢？</p>
+
+<p>方法一. 通过在BackingBean的构造函数里设置LOV的值为空字符串这种做法基本可以达到需求。但总感觉这种方法很别扭，走了弯路。</p>
+
+<p>本文介绍另外一种更为简单的方法。通过EL表达式实现需求。
+<pre class="brush:java">           &lt;af:inputListOfValues id="ilov1"
+                                    popupTitle="Search and Select: #{bindings.CodeType.hints.label}"
+                                    value="#{adfFacesContext.postback == false ? bindings.CodeType.nullValueString : bindings.CodeType.inputValue}"
+                                    label="#{bindings.CodeType.hints.label}"
+                                    model="#{bindings.CodeType.listOfValuesModel}"
+                                    required="#{bindings.CodeType.hints.mandatory}"
+                                    columns="#{bindings.CodeType.hints.displayWidth}"
+                                    shortDesc="#{bindings.CodeType.hints.tooltip}"
+                                    binding="#{backing_pages_frs001.ilov1}"
+                                    valueChangeListener="#{backing_pages_frs001.valueChange}"
+                                    &gt;</pre>
+看这段代码：
+<blockquote>
+<pre>value="#{<span style="color: #ff0000;">adfFacesContext.postback == false ? bindings.CodeType.nullValueString : </span>bindings.CodeType.inputValue}"</pre>
+</blockquote>
+当页面没有postback的时候，给LOV字段的值设为<strong>nullValueString</strong>，即可。</p>
+
+<p>今天太困了。。。先睡了。。。不贴图了~</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">pierreorz</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-07-20T00:00:00+08:00" pubdate data-updated="true">Jul 20<span>th</span>, 2011</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/dengdezhao/blog/categories/adf/'>ADF</a>
+  
+</span>
+
+
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://pierreorz.github.com/dengdezhao/blog/2011/07/20/%E5%A6%82%E4%BD%95%E8%AE%A9%EF%BC%88lov%EF%BC%89%E7%9A%84%E5%88%9D%E5%A7%8B%E5%80%BC%E6%98%BE%E7%A4%BA%E4%B8%BAblank%E8%80%8C%E4%B8%8D%E6%98%AF%E9%BB%98%E8%AE%A4%E7%9A%84vo%E7%9A%84first-row/" data-via="" data-counturl="http://pierreorz.github.com/dengdezhao/blog/2011/07/20/%E5%A6%82%E4%BD%95%E8%AE%A9%EF%BC%88lov%EF%BC%89%E7%9A%84%E5%88%9D%E5%A7%8B%E5%80%BC%E6%98%BE%E7%A4%BA%E4%B8%BAblank%E8%80%8C%E4%B8%8D%E6%98%AF%E9%BB%98%E8%AE%A4%E7%9A%84vo%E7%9A%84first-row/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/dengdezhao/blog/2011/07/15/%E5%A6%82%E4%BD%95%E8%AE%A9adf%E6%97%A5%E6%9C%9F%E7%BB%84%E4%BB%B6%E6%98%BE%E7%A4%BA%E6%97%B6%E5%88%86%E7%A7%92/" title="Previous Post: 如何让ADF日期组件显示时分秒">&laquo; 如何让ADF日期组件显示时分秒</a>
+      
+      
+        <a class="basic-alignment right" href="/dengdezhao/blog/2012/06/26/adf-table%E7%9A%84%E5%85%A8%E9%80%89%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0/" title="Next Post: ADF table的全选功能实现">ADF table的全选功能实现 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>分类目录</h1>
+  <ul id="categories">
+    <li class='category'><a href='/dengdezhao/blog/categories/adf/'>ADF (18)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/ebs/'>EBS (2)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/oaf/'>OAF (3)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/oracle/'>Oracle (7)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/soa/'>SOA (2)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/sinaappengine/'>SinaAppEngine (1)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/forms/'>forms (1)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/java/'>java (1)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/linux/'>linux (2)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/octopress/'>octopress (1)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/others/'>others (1)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/weblogic/'>weblogic (1)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/wordpress/'>wordpress (1)</a></li>
+
+  </ul>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/dengdezhao/blog/2013/03/19/qian-yi-wordpressbo-ke-zhi-octopress/">迁移WordPress博客至Octopress</a>
+      </li>
+    
+      <li class="post">
+        <a href="/dengdezhao/blog/2013/03/19/use-javascript-in-oaf/">Use Javascript In Oaf</a>
+      </li>
+    
+      <li class="post">
+        <a href="/dengdezhao/blog/2013/01/31/solvedlong-mode-not-supported-rebooting-press-any-key-to-reboot/">[SOLVED]Long mode not supported, rebooting Press any key to reboot</a>
+      </li>
+    
+      <li class="post">
+        <a href="/dengdezhao/blog/2013/01/30/firefox%E5%8D%87%E7%BA%A718%E4%B9%8B%E5%90%8Eautoproxy%E5%A4%B1%E6%95%88goagent%E6%97%A0%E6%B3%95%E4%BD%BF%E7%94%A8%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/">firefox升级18之后,autoproxy失效,goagent无法使用问题解决</a>
+      </li>
+    
+      <li class="post">
+        <a href="/dengdezhao/blog/2013/01/15/%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85ebs-r12/">虚拟机环境RHEL6.3安装EBS R12</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+<section>
+  <h2>友情链接</h2>
+  <a href="http://www.liqifa.cn">[小分号]</a><br/>
+  <a href="http://www.fmw007.com">[梦想左岸]</a<br/>
+</setion>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - pierreorz -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'adfkf';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://pierreorz.github.com/dengdezhao/blog/2011/07/20/%E5%A6%82%E4%BD%95%E8%AE%A9%EF%BC%88lov%EF%BC%89%E7%9A%84%E5%88%9D%E5%A7%8B%E5%80%BC%E6%98%BE%E7%A4%BA%E4%B8%BAblank%E8%80%8C%E4%B8%8D%E6%98%AF%E9%BB%98%E8%AE%A4%E7%9A%84vo%E7%9A%84first-row/';
+        var disqus_url = 'http://pierreorz.github.com/dengdezhao/blog/2011/07/20/%E5%A6%82%E4%BD%95%E8%AE%A9%EF%BC%88lov%EF%BC%89%E7%9A%84%E5%88%9D%E5%A7%8B%E5%80%BC%E6%98%BE%E7%A4%BA%E4%B8%BAblank%E8%80%8C%E4%B8%8D%E6%98%AF%E9%BB%98%E8%AE%A4%E7%9A%84vo%E7%9A%84first-row/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

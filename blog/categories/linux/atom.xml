@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: linux | 邓德昭的技术博客]]></title>
+  <link href="http://pierreorz.github.com/dengdezhao/blog/categories/linux/atom.xml" rel="self"/>
+  <link href="http://pierreorz.github.com/dengdezhao/"/>
+  <updated>2013-03-19T23:29:18+08:00</updated>
+  <id>http://pierreorz.github.com/dengdezhao/</id>
+  <author>
+    <name><![CDATA[pierreorz]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[[SOLVED]Long mode not supported, rebooting Press any key to reboot]]></title>
+    <link href="http://pierreorz.github.com/dengdezhao/blog/2013/01/31/solvedlong-mode-not-supported-rebooting-press-any-key-to-reboot/"/>
+    <updated>2013-01-31T00:00:00+08:00</updated>
+    <id>http://pierreorz.github.com/dengdezhao/blog/2013/01/31/solvedlong-mode-not-supported-rebooting-press-any-key-to-reboot</id>
+    <content type="html"><![CDATA[<p>虚拟机安装solaris 11的时候弹出
+<blockquote>Long mode not supported, rebooting Press any key to reboot........</blockquote>
+原因是solaris11只支持64位，需要把BIOS的CPU选项里Inter Virtualization Technology和Inter VT均设置为ENABLE，</p>
+
+
+
+
+<p>然后将虚拟机的设置如下：
+<blockquote>Virtual Machine Setting-&gt;Processors-&gt;Virtualizatoin engine-&gt;Preferred mode=Intel VT-x/EPT or AMD-v/RVI</blockquote></p>
+
+
+
+
+<p><a rel="attachment wp-att-248" href="http://www.dengdezhao.cn/wp-content/uploads/2013/01/pg-300x260.jpg"><img title="pg" src="http://www.dengdezhao.cn/wp-content/uploads/2013/01/pg-300x260.jpg" alt="" width="300" height="260" /></a></p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[硬盘安装fedora]]></title>
+    <link href="http://pierreorz.github.com/dengdezhao/blog/2012/06/26/%E7%A1%AC%E7%9B%98%E5%AE%89%E8%A3%85fedora/"/>
+    <updated>2012-06-26T00:00:00+08:00</updated>
+    <id>http://pierreorz.github.com/dengdezhao/blog/2012/06/26/硬盘安装fedora</id>
+    <content type="html"><![CDATA[<p>下载好fedora16 ISO镜像文件放在C盘，解压出来images文件，及vmlinuz,initrd.img文件。使用grub引导硬盘安装，分区时报错：<br />
+you have not created a bootloader stage1 target device</p>
+
+
+
+
+<p>This can happen if there is not enough space on your hard drive(s) for the installation.</p>
+
+
+
+
+<p>解决方案：引导参数加上linux askmethod，选择正确的镜像路径sda1即可。</p>
+
+
+
+
+<p>grub&gt;root (hd0,0)<br />
+grub&gt;kernel (hd0,0)/vmlinuz <span style="color: red;">linux askmethod</span> (之前没有加此参数）<br />
+grub&gt;initrd (hd0,0)/initrd.img<br />
+grub&gt;boot</p>
+
+
+
+
+<p>即可开始正常安装。</p>
+
+]]></content>
+  </entry>
+  
+</feed>

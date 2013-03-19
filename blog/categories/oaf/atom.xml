@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: OAF | 邓德昭的技术博客]]></title>
+  <link href="http://pierreorz.github.com/dengdezhao/blog/categories/oaf/atom.xml" rel="self"/>
+  <link href="http://pierreorz.github.com/dengdezhao/"/>
+  <updated>2013-03-19T23:29:18+08:00</updated>
+  <id>http://pierreorz.github.com/dengdezhao/</id>
+  <author>
+    <name><![CDATA[pierreorz]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Use Javascript In Oaf]]></title>
+    <link href="http://pierreorz.github.com/dengdezhao/blog/2013/03/19/use-javascript-in-oaf/"/>
+    <updated>2013-03-19T22:27:00+08:00</updated>
+    <id>http://pierreorz.github.com/dengdezhao/blog/2013/03/19/use-javascript-in-oaf</id>
+    <content type="html"><![CDATA[<h2>Use Javascript in OAF</h2>
+
+<h4>使用Js脚本库</h4>
+
+<p>在CO的<em>processRequest</em>中引入JS库<br/>
+编写JS库:Calendar2013.js
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">pageContext</span><span class="o">.</span><span class="na">putJavaScriptLibrary</span><span class="o">(</span><span class="s">&quot;Calendar&quot;</span><span class="o">,</span><span class="s">&quot;Calendar2013.js&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="o">((</span><span class="n">OAMessageTextInputBean</span><span class="o">)</span><span class="n">webBean</span>
+</span><span class='line'><span class="o">.</span><span class="na">findChildRecursive</span><span class="o">(</span><span class="s">&quot;inputDate&quot;</span><span class="o">))</span>
+</span><span class='line'><span class="o">.</span><span class="na">setOnClick</span><span class="o">(</span><span class="s">&quot;setday(this)&quot;</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>需要把Calendar2013.js放置在$<strong>COMMON_TOP</strong>/html下。</p>
+
+<h4>直接引用javaScript</h4>
+
+<p>编写<em>JavaScript</em>:
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">String</span> <span class="n">javaScript</span><span class="o">=</span><span class="s">&quot;JAVASCRIPT:function setday(){...}&quot;</span><span class="o">;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>在<strong>CO</strong>的<em>processRequest</em>中加载<em>javascript</em></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">pageContext</span><span class="o">.</span><span class="na">putJavaScriptFunction</span><span class="o">(</span><span class="s">&quot;sayday()&quot;</span><span class="o">,</span><span class="n">javaScript</span><span class="o">);</span>
+</span><span class='line'><span class="o">((</span><span class="n">OAMessageTextInputBean</span><span class="o">)</span><span class="n">webBean</span><span class="o">.</span><span class="na">findChildRecursive</span><span class="o">(</span><span class="s">&quot;inputDate&quot;</span><span class="o">))&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;.</span><span class="na">setOnClick</span><span class="o">(</span><span class="s">&quot;javascript:setday()&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[OAF开发通过EXCEL导入数据时，用户需要将可能存在重复的主键信息提示出来]]></title>
+    <link href="http://pierreorz.github.com/dengdezhao/blog/2013/01/10/oaf%E5%BC%80%E5%8F%91%E9%80%9A%E8%BF%87excel%E5%AF%BC%E5%85%A5%E6%95%B0%E6%8D%AE%E6%97%B6%EF%BC%8C%E7%94%A8%E6%88%B7%E9%9C%80%E8%A6%81%E5%B0%86%E5%8F%AF%E8%83%BD%E5%AD%98%E5%9C%A8%E9%87%8D%E5%A4%8D/"/>
+    <updated>2013-01-10T00:00:00+08:00</updated>
+    <id>http://pierreorz.github.com/dengdezhao/blog/2013/01/10/oaf开发通过excel导入数据时，用户需要将可能存在重复</id>
+    <content type="html"><![CDATA[<p>OAF开发通过EXCEL导入数据时，用户需要将可能存在重复的主键信息提示出来.</p>
+
+
+
+
+<p>有以下两种主键冲突情况：</p>
+
+
+
+
+<p>1, 表中不存在重复数据，即将导入的数据中存在重复数据。比如表中记录为空，导入的EXCEL中存在记录ID007,ID008,ID009,ID007，此时OAF页面需要将ID007提示出来；</p>
+
+
+
+
+<p>2,表中存在重复数据。即表中原来已经存在一条记录ID007，此时导入的数据中也存在ID007，需要将ID007提示出来。</p>
+
+
+
+
+<p>解决方案：</p>
+
+
+
+
+<p>原本想通过查询数据库中ID007的记录是否存在再抛出OAException的做法来实现此需求，后来一想感觉好麻烦；便换种思路决定通过异常来判断。</p>
+
+
+
+
+<p>情况1，在ViewObject对象CreateRow()之后，给创建的新Row.setAttribute("id",007)时，如果VO中存在两个007的新ROW，会抛出TooManyObjectsException,此时捕获该异常并返回此ID值。</p>
+
+
+
+
+<p>情况2，难点也在这里，调用commit保存数据时，主键约束异常才会抛出来而且还不知道重复的ID值是多少。重写EO的doDML方法，在此方法中捕获DMLException异常，并且可以得到重复的ID值；
+<pre class="brush:java">  public void doDML(int i,TransactionEvent e)
+  {
+    try{
+    super.doDML(i,e);
+    }catch(oracle.jbo.DMLException ex)
+    {
+        throw new OAException("ERROR:数据库中存在相同的VIN码["+this.getVin()+"],请检查上传文件",OAException.ERROR);
+    }
+  }</pre></p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[OAF 使用OAException输出中文时出现乱码 解决]]></title>
+    <link href="http://pierreorz.github.com/dengdezhao/blog/2013/01/09/oaf-%E4%BD%BF%E7%94%A8oaexception%E8%BE%93%E5%87%BA%E4%B8%AD%E6%96%87%E6%97%B6%E5%87%BA%E7%8E%B0%E4%B9%B1%E7%A0%81-%E8%A7%A3%E5%86%B3/"/>
+    <updated>2013-01-09T00:00:00+08:00</updated>
+    <id>http://pierreorz.github.com/dengdezhao/blog/2013/01/09/oaf-使用oaexception输出中文时出现乱码-解决</id>
+    <content type="html"><![CDATA[<p>使用throw new OAException(“你们好”,OAException.WARNING);时出现乱码，尝试new String("你们好”.getBytes("GBK"),"UTF-8")依然没用。</p>
+
+
+
+
+<p>检查JDEV的Preferences中ENCODING已经更改为“UTF-8”，纠结了好一阵子，才发现工程的Project Settings的Compiler里也有一个ENCODING没有改，囧改好之后再测试乱码问题即解决</p>
+
+]]></content>
+  </entry>
+  
+</feed>

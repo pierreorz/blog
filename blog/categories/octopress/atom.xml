@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: octopress | 邓德昭的技术博客]]></title>
+  <link href="http://pierreorz.github.com/dengdezhao/blog/categories/octopress/atom.xml" rel="self"/>
+  <link href="http://pierreorz.github.com/dengdezhao/"/>
+  <updated>2013-03-19T23:29:18+08:00</updated>
+  <id>http://pierreorz.github.com/dengdezhao/</id>
+  <author>
+    <name><![CDATA[pierreorz]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[迁移WordPress博客至Octopress]]></title>
+    <link href="http://pierreorz.github.com/dengdezhao/blog/2013/03/19/qian-yi-wordpressbo-ke-zhi-octopress/"/>
+    <updated>2013-03-19T22:32:00+08:00</updated>
+    <id>http://pierreorz.github.com/dengdezhao/blog/2013/03/19/qian-yi-wordpressbo-ke-zhi-octopress</id>
+    <content type="html"><![CDATA[<h4>安装GIT</h4>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">yum</span> <span class="o">-</span><span class="n">y</span> <span class="n">install</span> <span class="n">git</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h4>安装RVM需要的包</h4>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">sudo</span> <span class="n">yum</span> <span class="n">install</span> <span class="n">bash</span> <span class="n">curl</span> <span class="n">patch</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h4>安装RVM</h4>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">curl</span> <span class="o">-</span><span class="n">L</span> <span class="nl">https:</span><span class="c1">//get.rvm.io | bash -s stable --ruby</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h4>安装Ruby需要的包</h4>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">sudo</span> <span class="n">yum</span> <span class="n">install</span> <span class="n">gcc</span><span class="o">-</span><span class="n">c</span><span class="o">++</span> <span class="n">patch</span> <span class="n">readline</span> <span class="n">readline</span><span class="o">-</span><span class="n">devel</span> <span class="n">zlib</span> <span class="n">zlib</span><span class="o">-</span><span class="n">devel</span> <span class="n">libyaml</span><span class="o">-</span><span class="n">devel</span> <span class="n">libffi</span><span class="o">-</span><span class="n">devel</span> <span class="n">openssl</span><span class="o">-</span><span class="n">devel</span> <span class="n">make</span> <span class="n">bzip2</span> <span class="n">autoconf</span> <span class="n">automake</span> <span class="n">libtool</span> <span class="n">bison</span> <span class="n">iconv</span><span class="o">-</span><span class="n">devel</span> <span class="n">java</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h4>安装Ruby 1.9.3</h4>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">rvm</span> <span class="n">install</span> <span class="mf">1.9</span><span class="o">.</span><span class="mi">3</span>
+</span><span class='line'><span class="n">rvm</span> <span class="n">use</span> <span class="mf">1.9</span><span class="o">.</span><span class="mi">3</span>
+</span><span class='line'><span class="n">rvm</span> <span class="n">rubygems</span> <span class="n">latest</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h4>下载octopress</h4>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">git</span> <span class="n">clone</span> <span class="nl">git:</span><span class="c1">//github.com/imathis/octopress.git dengdezhao</span>
+</span><span class='line'><span class="n">cd</span> <span class="n">dengdezhao</span>
+</span><span class='line'><span class="n">ruby</span> <span class="o">--</span><span class="n">version</span>  <span class="o">&lt;</span><span class="n">em</span><span class="o">&gt;</span><span class="err">#应该显示</span><span class="mf">1.9</span><span class="o">.</span><span class="mi">3</span><span class="o">&lt;/</span><span class="n">em</span><span class="o">&gt;</span>
+</span><span class='line'><span class="n">gem</span> <span class="n">install</span> <span class="n">bundler</span>
+</span><span class='line'><span class="n">bundle</span> <span class="n">install</span>
+</span><span class='line'><span class="n">rake</span> <span class="n">install</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h4>出现Warning:Insecure world writable dir</h4>
+
+<p>这个一般是由于权限的问题，我出现这个问题是因为是用ROOT安装的RVM，然后用其它用户访问，为了方便我直接把/usr/local目录权限设置为777，然后就弹出这个警告了，/usr/local目录很重要，不允许非owner访问，所以设置为755即可解决该问题。
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">sudo</span> <span class="n">chmod</span> <span class="o">-</span><span class="n">R</span> <span class="mi">755</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h4>将Wordpress数据导出为XML文件</h4>
+
+<p>进入Wordpress后台，将全站数据保存为XML文件，放在Octopress根目录下</p>
+
+<h4>下载迁移工具</h4>
+
+<p>https://gist.github.com/chitsaou/1394128  <br/>
+下载<strong>wordpressdotcom.rb</strong>放到Utils目录中，执行命令
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">ruby</span> <span class="o">-</span><span class="n">r</span> <span class="s">&quot;./utils/wordpressdotcom.rb&quot;</span> <span class="o">-</span><span class="n">e</span> <span class="s">&quot;Jekyll::WordpressDotCom.process&quot;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>运行出错，需要安装hpricot</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">gem</span> <span class="n">install</span> <span class="n">hpricot</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+安装成功之后再执行上面的迁移命令，即可把wordpress中的文章导入到octopress的source/_posts中了</p>
+
+<h4>修改文章图片链接</h4>
+
+<p>迁移过来的文章中图片链接可能不大对，需要修改才能让图片显示正常，把原来wp-contents目录下uploads文件夹拷到相应路径下，替换掉文件中的静态地址为图片地址即可避免点击图片时出现404错误。<br/>
+批量替换命令：</p>
+
+<h4>修改页面名字及新增[标签云]&amp;[关于]页面</h4>
+
+<p>修改navigation.html
+<section>
+vi source/_includes/custom/navigation.html
+</section>
+给各页面修改个性化名字，并新增两个页面
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sr">/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="sr">&lt;ul class=&quot;main-navigation&quot;&gt;</span>
+</span><span class='line'><span class="sr">  &lt;li&gt;&lt;a href=&quot;/</span><span class="s2">&quot;&gt;博客主页&lt;/a&gt;&lt;/li&gt;</span>
+</span><span class='line'><span class="s2">  &lt;li&gt;&lt;a href=&quot;</span><span class="o">/</span><span class="n">blog</span><span class="o">/</span><span class="n">archives</span><span class="s2">&quot;&gt;文章列表&lt;/a&gt;&lt;/li&gt;</span>
+</span><span class='line'><span class="s2">  &lt;li&gt;&lt;a href=&quot;</span><span class="o">/</span><span class="n">tag</span><span class="s2">&quot;&gt;标签云&lt;/a&gt;&lt;/li&gt;</span>
+</span><span class='line'><span class="s2">  &lt;li&gt;&lt;a href=&quot;</span><span class="o">/</span><span class="n">about</span><span class="s2">&quot;&gt;关于&lt;/a&gt;&lt;/li&gt;</span>
+</span><span class='line'><span class="s2">&lt;/ul&gt;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="s2">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>创建tag&amp;about页
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">rake</span> <span class="n">new_page</span><span class="o">[</span><span class="n">tag</span><span class="o">]</span>
+</span><span class='line'><span class="n">rake</span> <span class="n">new_page</span><span class="o">[</span><span class="n">about</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+编辑页面内容，并下载配置标签云插件
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">git</span> <span class="nb">clone</span> <span class="ss">https</span><span class="p">:</span><span class="sr">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">robbyedwards</span><span class="o">/</span><span class="n">octopress</span><span class="o">-</span><span class="n">tag</span><span class="o">-</span><span class="n">pages</span><span class="o">.</span><span class="n">git</span>
+</span><span class='line'><span class="n">git</span> <span class="nb">clone</span> <span class="ss">https</span><span class="p">:</span><span class="sr">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">robbyedwards</span><span class="o">/</span><span class="n">octopress</span><span class="o">-</span><span class="n">tag</span><span class="o">-</span><span class="n">cloud</span><span class="o">.</span><span class="n">git</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+将下载的文件拷贝至相应目录，并在_config.yml中增加一行  <code>tag_dir: tags</code></p>
+
+<h4>生成静态页面及预览</h4>
+
+<p>以上操作完成之后，执行<code>rake generate</code>命令生成静态页面，然后<code>rake preview</code>，在浏览器中输入http://localhost:4000即可预览站点。</p>
+]]></content>
+  </entry>
+  
+</feed>

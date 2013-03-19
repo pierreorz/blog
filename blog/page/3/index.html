@@ -1,0 +1,828 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>邓德昭的技术博客</title>
+  <meta name="author" content="pierreorz">
+
+  
+  <meta name="description" content="如何在MB中对Table的默认&#8221;#{bindings.PromotionVO1.collectionModel.makeCurrent}&#8221;进行调用？ 当需要重写adf:table的缺省的selectListener时，可以在自己绑定的MB的方法里， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://pierreorz.github.com/dengdezhao/blog/page/3">
+  <link href="/dengdezhao/favicon.png" rel="icon">
+  <link href="/dengdezhao/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/dengdezhao/atom.xml" rel="alternate" title="邓德昭的技术博客" type="application/atom+xml">
+  <script src="/dengdezhao/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/dengdezhao/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/dengdezhao/">邓德昭的技术博客</a></h1>
+  
+    <h2>最大的懦弱，不是畏葸不前，而是安于现状</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/dengdezhao/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:pierreorz.github.com/dengdezhao" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/dengdezhao/">博客主页</a></li>
+  <li><a href="/dengdezhao/blog/archives">文章列表</a></li>
+  <li><a href="/dengdezhao/tag">标签云</a></li>
+  <li><a href="/dengdezhao/about">关于</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/dengdezhao/blog/2012/06/26/%E5%A6%82%E4%BD%95%E5%9C%A8mb%E4%B8%AD%E5%AF%B9selectionlistener-collectionmodel-makecurrent%E8%B0%83%E7%94%A8/">如何在MB中对selectionListener collectionModel.makeCurrent调用</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
+        
+         | <a href="/dengdezhao/blog/2012/06/26/%E5%A6%82%E4%BD%95%E5%9C%A8mb%E4%B8%AD%E5%AF%B9selectionlistener-collectionmodel-makecurrent%E8%B0%83%E7%94%A8/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>如何在MB中对Table的默认&#8221;#{bindings.PromotionVO1.collectionModel.makeCurrent}&#8221;进行调用？</p>
+
+<p>当需要重写adf:table的缺省的selectListener时，可以在自己绑定的MB的方法里，调用默认的makeCurrent方法。取得当前行的数据，进行自己的定制操作。方法如下：
+<div>
+<blockquote>//调用缺省makeCurrent<br />
+JSFUtils.resolveMethodExpression(&#8220;#{bindings.yourVO.collectionModel.makeCurrent}&#8221;,<br />
+new Class[] { SelectionEvent.class },<br />
+new Object[] { selectionEvent });</blockquote>
+</div>
+取得选中行的数据
+<div>
+<blockquote>Row selectedRow =<br />
+(Row)JSFUtils.resolveExpression(&#8220;#{bindings.yourVOIterator.currentRow}&#8221;);</blockquote>
+</div>
+然后就可以针对取得的数据进行定制开发了。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/dengdezhao/blog/2012/06/26/%E5%88%A9%E7%94%A8javamail%E5%8F%91%E9%80%81%E9%82%AE%E4%BB%B6%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0/">利用javaMail发送邮件功能实现</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
+        
+         | <a href="/dengdezhao/blog/2012/06/26/%E5%88%A9%E7%94%A8javamail%E5%8F%91%E9%80%81%E9%82%AE%E4%BB%B6%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>由于SMTP服务器需要采用SSL方式访问，所以蛋疼了，默认的连接25端口方式无法连接<br />
+改成465方式访问，又报连接错误，原来是证书文件的问题。<br />
+于是利用 InstallCert.java重新生成证书
+<div>
+<blockquote>java InstallCert smtp.dengdezhao.cn:465</blockquote>
+</div>
+将得到的证书cacert文件放置在任意路径下：比如C盘 c:/cacert</p>
+
+<p>程序中props属性里添加如下参数
+<div>
+<blockquote>props = System.getProperties();<br />
+props.put(&#8220;mail.smtp.host&#8221;, smtp.dengdezhao.cn); // 设置SMTP主机<br />
+props.put(&#8220;mail.smtp.auth&#8221;, &#8220;true&#8221;);<br />
+props.put(&#8220;mail.smtp.socketFactory.class&#8221;,<br />
+&#8220;javax.net.ssl.SSLSocketFactory&#8221;);<br />
+props.put(&#8220;mail.smtp.socketFactory.fallback&#8221;, &#8220;false&#8221;);<br />
+props.put(&#8220;mail.smtp.socketFactory.port&#8221;, &#8220;465&#8221;);<br />
+props.put(&#8220;mail.debug&#8221;, &#8220;true&#8221;);<br />
+props.put(&#8220;javax.net.ssl.keyStore&#8221;, &#8220;c:&#92;cacert&#8221;);<br />
+props.put(&#8220;javax.net.ssl.trustStore&#8221;, &#8220;c:&#92;cacert&#8221;);</blockquote>
+</div>
+即可。</p>
+
+<p>&nbsp;</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/dengdezhao/blog/2012/06/26/%E5%85%B3%E4%BA%8E%E5%AE%9A%E5%88%B6validator/">关于定制validator</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
+        
+         | <a href="/dengdezhao/blog/2012/06/26/%E5%85%B3%E4%BA%8E%E5%AE%9A%E5%88%B6validator/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>一个时刻字段，要求输入00:00-12:60这样的时刻范围<br />
+使用如下的正则表达式，过滤掉了不合规则的数字之后，还差一个逻辑，结束时刻不能小于开始时刻，比如：10：00-9：00这样的输入也是不合法的。正则太折磨眼力了，应该也是可以做到这点的吧，为了偷懒，就定制个validator来处理这个点。
+<div>
+<blockquote>&lt;af:validateRegExp pattern=&#8221;([0-1][0-9]|2[0-4])\:([0-5][0-9]|60)&#45;([0-1][0-9]|2[0-4])\:([0-5][0-9]|60)&#8221; messageDetailNoMatch=&#8221;请输入时刻，例如 00：00-24：60 &#8221; hint=&#8221;请输入时刻，例如 00：00-24：60&#8221;/&gt;</blockquote>
+</div>
+<strong>Step1</strong>。创建一个<strong>ValidatorTime</strong>类实现Validator接口
+<div>
+<blockquote>package com.adfkf.validators;</blockquote></div></p>
+
+<p>import javax.faces.application.FacesMessage;<br />
+import javax.faces.component.UIComponent;<br />
+import javax.faces.component.UIInput;<br />
+import javax.faces.context.FacesContext;<br />
+import javax.faces.validator.Validator;<br />
+import javax.faces.validator.ValidatorException;</p>
+
+<p>import org.apache.myfaces.trinidad.component.UIXInput;</p>
+
+<p>public class ValidatorTime implements Validator {<br />
+public ValidatorTime() {<br />
+super();<br />
+}</p>
+
+<p>public void validate(FacesContext facesContext, UIComponent uiComponent,<br />
+Object object) {</p>
+
+<p>String value = null;<br />
+String a, b, c, d = null;<br />
+Boolean bool = false;<br />
+if ((facesContext == null) || (uiComponent == null)) {<br />
+throw new NullPointerException();<br />
+}
+if (!(uiComponent instanceof UIXInput)) {<br />
+return;<br />
+}
+if (null == object) {<br />
+return;<br />
+}
+//12:00-23:00<br />
+value = object.toString();<br />
+if (value != null &amp;&amp; value.length() == 11) {<br />
+a = value.substring(0, 2);<br />
+b = value.substring(3, 5);<br />
+c = value.substring(6, 8);<br />
+d = value.substring(9, 11);<br />
+try {<br />
+Integer intA = Integer.valueOf(a);<br />
+Integer intB = Integer.valueOf(b);<br />
+Integer intC = Integer.valueOf(c);<br />
+Integer intD = Integer.valueOf(d);<br />
+if (intC &gt; intA || (intA == intC &amp;&amp; intD &gt; intB)) {<br />
+bool = true;<br />
+} else {<br />
+bool = false;<br />
+}</p>
+
+<p>} catch (Exception e) {<br />
+bool = false;<br />
+}</p>
+
+<p>}<br />
+if (!bool) {<br />
+FacesMessage message = new FacesMessage();<br />
+message.setDetail(&#8220;开始时刻大于结束时间&#8221;);<br />
+message.setSummary(&#8220;时刻输入有误&#8221;);<br />
+message.setSeverity(FacesMessage.SEVERITY_ERROR);<br />
+throw new ValidatorException(message);</p>
+
+<p>}</p>
+
+<p>}<br />
+}
+
+<strong>Step2 </strong>在faces-config.xml中注册这个validator
+<div>
+<blockquote>&lt;validator&gt;<br />
+&lt;validator-id&gt;validateTime&lt;/validator-id&gt;<br />
+&lt;validator-class&gt;com.adfkf.validators.ValidatorTime&lt;/validator-class&gt;<br />
+&lt;/validator&gt;</blockquote>
+</div>
+<strong>Step3 </strong>页面中使用定制的validator
+<div>
+<blockquote>&lt;af:inputText value=&#8221;#{row.bindings.ReimTime.inputValue}&#8221; disabled=&#8221;#{sessionScope.flag}&#8221;<br />
+label=&#8221;#{bindings.CostDetailVO.hints.ReimTime.label}&#8221;<br />
+required=&#8221;#{bindings.CostDetailVO.hints.ReimTime.mandatory}&#8221;<br />
+shortDesc=&#8221;#{bindings.CostDetailVO.hints.ReimTime.tooltip}&#8221;<br />
+id=&#8221;id2&#8221;&gt;<br />
+&lt;af:validateRegExp pattern=&#8221;([0-1][0-9]|2[0-4])\:([0-5][0-9]|60)&#45;([0-1][0-9]|2[0-4])\:([0-5][0-9]|60)&#8221; messageDetailNoMatch=&#8221;请输入时刻，例如 00：00-24：60 &#8221; hint=&#8221;请输入时刻，例如 00：00-24：60&#8221;/&gt;<br />
+&lt;f:validator validatorId=&#8221;validateTime&#8221;/&gt;<br />
+&lt;/af:inputText&gt;</blockquote>
+</div>
+看下效果吧</p>
+
+<p><a rel="attachment wp-att-111" href="http://www.dengdezhao.cn/wp-content/uploads/2012/06/T11-300x92.jpg"><img class="alignnone size-medium wp-image-111" title="T1" src="http://www.dengdezhao.cn/wp-content/uploads/2012/06/T11-300x92.jpg" alt="" width="300" height="92" /></a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/dengdezhao/blog/2012/06/26/%E5%85%B3%E4%BA%8Evo%E7%9A%84%E5%8F%AA%E8%AF%BB%E5%8F%AF%E5%86%99%E7%AD%89%E5%B1%9E%E6%80%A7%E8%AE%BE%E7%BD%AE/">关于VO的只读可写等属性设置</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
+        
+         | <a href="/dengdezhao/blog/2012/06/26/%E5%85%B3%E4%BA%8Evo%E7%9A%84%E5%8F%AA%E8%AF%BB%E5%8F%AF%E5%86%99%E7%AD%89%E5%B1%9E%E6%80%A7%E8%AE%BE%E7%BD%AE/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>如果生成ViewObject 的时候选择的是只读的VO的话，会发现VO的source里有ReadOnly=&#8221;true&#8221;。<br />
+需求1：在MB中我通过代码拿到这个VO的实例，我想通过以下代码添加Row
+<div>
+<blockquote>Row newRow=Vo.createRow();<br />
+newRow.setAttribute(&#8220;attribute1&#8221;,&#8221;value1&#8221;);<br />
+newRow.setAttribute(&#8220;attribute2&#8221;,&#8221;value2&#8221;);<br />
+newRow.setAttribute(&#8220;attribute3&#8221;,&#8221;value3&#8221;);<br />
+Vo.insertRow(newRow);</blockquote>
+</div>
+最终发现，只读VO无法插入数据。怎么办？将ReadOnly改成&#8221;false&#8221;之后测试，发现满足需求~！<br />
+需求2：满足需求1之后发现，Vo里的确插入数据了。如果页面上有保存按钮，也会将这个数据更改到数据库，而这个数据只是需要在MB中起过渡作用，不必将newRow的数据postChange到DB，怎么办？<br />
+VO里 这个属性DeleteParticipant 立功了。 DeleteParticipant就是控制数据是否保存到DB的。设置 DeleteParticipant=&#8221;false&#8221;发现满足了需求！</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/dengdezhao/blog/2012/06/26/%E5%85%B3%E4%BA%8Eselectbooleancheckbox-%E7%9A%84%E9%97%AE%E9%A2%98/">关于selectBooleanCheckbox 的问题</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
+        
+         | <a href="/dengdezhao/blog/2012/06/26/%E5%85%B3%E4%BA%8Eselectbooleancheckbox-%E7%9A%84%E9%97%AE%E9%A2%98/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>页面的 selectBooleanCheckbox 选择后，总提示 不是数字（组件value是 true 或 false,数据库存的是Number），怎么解决</p>
+
+<p>方案有三个<br />
+1。如果是基于表的Number字段(假设字段名是Flag，值是1或者0），想生成selectBooleanCheckbox ，可以重写这个VO的的 setFlag()跟getFlag()方法如下：<br />
+public void setFlag(Boolean value){<br />
+this.flag=value==true?1:0;<br />
+}
+public Boolean getFlag(){<br />
+return this.flag==0?false:true;<br />
+}</p>
+
+<p>2。设置valueChangeListener.<br />
+在valueChange方法里捕获当前selectBooleanCheckbox 的值，然后转化成Number类型的传给VO</p>
+
+<p>3。如果是只读的表，可以在UI上通过EL表达式处理。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/dengdezhao/blog/2012/06/26/%E5%85%B3%E4%BA%8Emanagedbean%E4%B8%AD%E5%A4%9A%E6%AC%A1%E6%89%A7%E8%A1%8C%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95%E6%97%B6%E7%9A%84%E9%97%AE%E9%A2%98/">关于ManagedBean中多次执行构造方法时的问题</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
+        
+         | <a href="/dengdezhao/blog/2012/06/26/%E5%85%B3%E4%BA%8Emanagedbean%E4%B8%AD%E5%A4%9A%E6%AC%A1%E6%89%A7%E8%A1%8C%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95%E6%97%B6%E7%9A%84%E9%97%AE%E9%A2%98/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>有时候需要在初始化时执行一些查询，但发现会多次执行。需要在构造方法里添加一行代码避免页面点击时多次执行初始化。<br />
+if (!(Boolean)ADFUtils.getBindObject(&#8220;adfFacesContext.postback&#8221;)) {<br />
+init()；<br />
+}</p>
+
+<p>通过页面是否postback来控制只初始化一次。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/dengdezhao/blog/2012/06/26/weblogic%E5%AE%9A%E6%97%B6%E5%90%AF%E5%8A%A8%E7%A8%8B%E5%BA%8F/">Weblogic定时启动程序</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
+        
+         | <a href="/dengdezhao/blog/2012/06/26/weblogic%E5%AE%9A%E6%97%B6%E5%90%AF%E5%8A%A8%E7%A8%8B%E5%BA%8F/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>有个需求是要求程序在每天晚上3点钟的时候自动调用一个Job执行。</p>
+
+<p>解决方案：定制weblogic的启动类，用来运行Job执行。</p>
+
+<p>STEP1，启动类StartupTask：
+<div>
+<blockquote>public class StartupTask implements T3StartupDef {<br />
+public String startup(String name, Hashtable args) throws Exception {</blockquote></div></p>
+
+<p>Callplsql.main(null);</p>
+
+<p>return &#8220;Callplsql Startup successful completed&#8221;;<br />
+}</p>
+
+<p>public void setServices(T3ServicesDef t3ServicesDef) {<br />
+}</p>
+
+<p>}
+
+Callplsql.java(  即是JOB类，是需要被调用的，要继承TimerTask  ）中的Main方法要有：
+<div>
+<blockquote>public static void main(String[] args) {<br />
+//任务执行间隔时间，默认24小时<br />
+long PERIOD_TIME=24*60*60*1000;<br />
+long delay=0;<br />
+//任务首次启动时间，默认零晨3点<br />
+Calendar end=Calendar.getInstance();<br />
+end.set(Calendar.HOUR_OF_DAY, 3);<br />
+end.set(Calendar.MINUTE, 0);<br />
+end.set(Calendar.SECOND, 0);<br />
+Calendar now=Calendar.getInstance();<br />
+delay=end.getTime().getTime()-now.getTime().getTime();<br />
+if(delay&lt;=0){<br />
+delay=PERIOD_TIME+delay;<br />
+}
+System.out.println(&#8220;当前时间：&#8221;+now.getTime());<br />
+System.out.println(&#8220;首次启动SAP同步程序时间：&#8221;+end.getTime());<br />
+System.out.println(&#8220;延时：&#8221;+delay+&#8221;毫秒启动SAP同步程序！&#8221;);</blockquote></div></p>
+
+<p>//      待执行的任务<br />
+Timer time=new Timer();<br />
+Callplsql task=new Callplsql();<br />
+time.schedule(task,delay,PERIOD_TIME);</p>
+
+<p>}
+
+通过time.schedule每天零晨3：00循环调用JOB。</p>
+
+<p>编译好StartupTask类后，要在weblogic控制台设置好启动类即可实现此需求。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/dengdezhao/blog/2012/06/26/table%E5%86%85%E5%A2%9E%E5%8A%A0%E5%85%A8%E9%80%89checkbox/">Table内增加全选checkbox</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
+        
+         | <a href="/dengdezhao/blog/2012/06/26/table%E5%86%85%E5%A2%9E%E5%8A%A0%E5%85%A8%E9%80%89checkbox/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>如图效果：    
+
+<a rel="attachment wp-att-107" href="http://www.dengdezhao.cn/wp-content/uploads/2012/06/T1.jpg"><img class="alignnone size-full wp-image-107" title="T1" src="http://www.dengdezhao.cn/wp-content/uploads/2012/06/T1.jpg" alt="" width="213" height="286" /></a>
+
+解决方案：</p>
+
+<p>VO里新建Transient属性Checked(Boolean),</p>
+
+<p><a rel="attachment wp-att-108" href="http://www.dengdezhao.cn/wp-content/uploads/2012/06/T2-300x11.jpg"><img class="alignnone size-medium wp-image-108" title="T2" src="http://www.dengdezhao.cn/wp-content/uploads/2012/06/T2-300x11.jpg" alt="" width="300" height="11" /></a></p>
+
+<p>表内添加一个column如下：
+<div>
+<blockquote>&lt;af:column id=&#8221;c10&#8221; headerText=&#8221;选择&#8221; width=&#8221;30&#8221; align=&#8221;center&#8221; noWrap=&#8221;true&#8221;&gt;<br />
+&lt;f:facet name=&#8221;header&#8221;&gt;<br />
+&lt;af:selectBooleanCheckbox valueChangeListener=&#8221;#{backingBean.selectAll}&#8221;<br />
+autoSubmit=&#8221;true&#8221; id=&#8221;selectAll&#8221;<br />
+label=&#8221;&#8221; value=&#8221;&#8220;/&gt;<br />
+&lt;/f:facet&gt;<br />
+&lt;af:selectBooleanCheckbox label=&#8221;选中/非选中&#8221; id=&#8221;sbc1&#8221;  autoSubmit=&#8221;true&#8221; immediate=&#8221;true&#8221;<br />
+value=&#8221;#{row.bindings.Checked.inputValue}&#8221;/&gt;</blockquote></div></p>
+
+<p>&lt;/af:column&gt;
+
+ 
+<div>
+<blockquote>public void selectAll(ValueChangeEvent valueChangeEvent) {<br />
+DCIteratorBinding it = ADFUtils.findIterator(REIM_HEADER_ITER);<br />
+ViewObject vo = it.getViewObject();</blockquote></div></p>
+
+<p>if (valueChangeEvent.getNewValue() != null) {<br />
+Boolean selectAll =<br />
+Boolean.parseBoolean(valueChangeEvent.getNewValue().toString());<br />
+if (!selectAll) {<br />
+for (Row temp : vo.getAllRowsInRange()) {<br />
+temp.setAttribute(&#8220;Checked&#8221;, false);<br />
+}
+} else {<br />
+for (Row temp : vo.getAllRowsInRange()) {<br />
+temp.setAttribute(&#8220;Checked&#8221;, true);<br />
+}
+}<br />
+RichTable table = (RichTable)JSFUtils.findComponentInRoot(&#8220;t1&#8221;);<br />
+AdfFacesContext.getCurrentInstance().addPartialTarget(table);<br />
+}
+}
+
+以上即可实现此需求。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/dengdezhao/blog/2012/06/26/oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E7%94%A8%E6%88%B7%E8%A2%AB%E9%94%81%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/">Oracle数据库用户被锁问题解决</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
+        
+         | <a href="/dengdezhao/blog/2012/06/26/oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E7%94%A8%E6%88%B7%E8%A2%AB%E9%94%81%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>运行AM的时候报个JDBC连接错误，ORA-280000:用户被锁的异常。<br />
+于是在PL/SQL DEV里切换成SYSTEM用户 alter user XXX account unlock;之后，用PL/SQL DEV测试 可以连上了<br />
+再运行AM的时候，又报了个用户被锁。很是蛋疼<br />
+于是换到命令行，尝试以SYSDBA的身份再执行一次alter account unlock;<br />
+发现连不上：报了以下错误：<br />
+ORA-28056: Writing audit records to Windows Event Log failed<br />
+这你妹的，原来是系统日志满了，解决方案：<br />
+打开windows 事件查看器，将应用程序日志清理一下，重新连接数据库，连接成功。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/dengdezhao/blog/2012/06/26/immediatetrue-%E7%9A%84%E5%BC%82%E5%B8%B8/">Immediate=&#8221;true&#8221; 的异常</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
+        
+         | <a href="/dengdezhao/blog/2012/06/26/immediatetrue-%E7%9A%84%E5%BC%82%E5%B8%B8/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>设置按钮的immediate=&#8221;true&#8221; 可以避免因按钮提交FORM导致的页面刷新闪烁，但也会带来麻烦。<br />
+假如对表的取消按钮设置了此属性，可能会发生新增数据，然后点取消作rollback时数据显示异常。<br />
+开发时值得注意</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/dengdezhao/blog/page/4/">&larr; Older</a>
+    
+    <a href="/dengdezhao/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/dengdezhao/blog/page/2/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>分类目录</h1>
+  <ul id="categories">
+    <li class='category'><a href='/dengdezhao/blog/categories/adf/'>ADF (18)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/ebs/'>EBS (2)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/oaf/'>OAF (3)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/oracle/'>Oracle (7)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/soa/'>SOA (2)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/sinaappengine/'>SinaAppEngine (1)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/forms/'>forms (1)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/java/'>java (1)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/linux/'>linux (2)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/octopress/'>octopress (1)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/others/'>others (1)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/weblogic/'>weblogic (1)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/wordpress/'>wordpress (1)</a></li>
+
+  </ul>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/dengdezhao/blog/2013/03/19/qian-yi-wordpressbo-ke-zhi-octopress/">迁移WordPress博客至Octopress</a>
+      </li>
+    
+      <li class="post">
+        <a href="/dengdezhao/blog/2013/03/19/use-javascript-in-oaf/">Use Javascript In Oaf</a>
+      </li>
+    
+      <li class="post">
+        <a href="/dengdezhao/blog/2013/01/31/solvedlong-mode-not-supported-rebooting-press-any-key-to-reboot/">[SOLVED]Long mode not supported, rebooting Press any key to reboot</a>
+      </li>
+    
+      <li class="post">
+        <a href="/dengdezhao/blog/2013/01/30/firefox%E5%8D%87%E7%BA%A718%E4%B9%8B%E5%90%8Eautoproxy%E5%A4%B1%E6%95%88goagent%E6%97%A0%E6%B3%95%E4%BD%BF%E7%94%A8%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/">firefox升级18之后,autoproxy失效,goagent无法使用问题解决</a>
+      </li>
+    
+      <li class="post">
+        <a href="/dengdezhao/blog/2013/01/15/%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85ebs-r12/">虚拟机环境RHEL6.3安装EBS R12</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+<section>
+  <h2>友情链接</h2>
+  <a href="http://www.liqifa.cn">[小分号]</a><br/>
+  <a href="http://www.fmw007.com">[梦想左岸]</a<br/>
+</setion>
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - pierreorz -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'adfkf';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

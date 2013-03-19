@@ -5,15 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>邓德昭的技术博客</title>
+  <title>虚拟机环境RHEL6.3安装EBS R12 - 邓德昭的技术博客</title>
   <meta name="author" content="pierreorz">
 
   
-  <meta name="description" content="安装GIT 1
-yum -y install git 安装RVM需要的包 1
-sudo yum install bash curl patch 安装RVM 1
-curl -L https://get.rvm.io | bash -s stable --ruby 安装Ruby需要的包 1
-sudo &hellip;">
+  <meta name="description" content="一直想自己搭建个R12的环境学习学习，于是买了块500G的移动硬盘，想把R12安装在移动硬盘中。 准备工作： 先安装好虚拟机VMware Workstation。创建一个RHEL6.3的虚拟机，硬盘300G,足够R12的FRESH安装了。（如果想DEMO安装，建议还是再大点，以免出现空间不足） &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -22,7 +18,7 @@ sudo &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://pierreorz.github.com/dengdezhao">
+  <link rel="canonical" href="http://pierreorz.github.com/dengdezhao/blog/2013/01/15/%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85ebs-r12">
   <link href="/dengdezhao/favicon.png" rel="icon">
   <link href="/dengdezhao/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/dengdezhao/atom.xml" rel="alternate" title="邓德昭的技术博客" type="application/atom+xml">
@@ -69,369 +65,12 @@ sudo &hellip;">
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/dengdezhao/blog/2013/03/19/qian-yi-wordpressbo-ke-zhi-octopress/">迁移WordPress博客至Octopress</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-03-19T22:32:00+08:00" pubdate data-updated="true">Mar 19<span>th</span>, 2013</time>
-        
-         | <a href="/dengdezhao/blog/2013/03/19/qian-yi-wordpressbo-ke-zhi-octopress/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h4>安装GIT</h4>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">yum</span> <span class="o">-</span><span class="n">y</span> <span class="n">install</span> <span class="n">git</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>安装RVM需要的包</h4>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">sudo</span> <span class="n">yum</span> <span class="n">install</span> <span class="n">bash</span> <span class="n">curl</span> <span class="n">patch</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>安装RVM</h4>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">curl</span> <span class="o">-</span><span class="n">L</span> <span class="nl">https:</span><span class="c1">//get.rvm.io | bash -s stable --ruby</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>安装Ruby需要的包</h4>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">sudo</span> <span class="n">yum</span> <span class="n">install</span> <span class="n">gcc</span><span class="o">-</span><span class="n">c</span><span class="o">++</span> <span class="n">patch</span> <span class="n">readline</span> <span class="n">readline</span><span class="o">-</span><span class="n">devel</span> <span class="n">zlib</span> <span class="n">zlib</span><span class="o">-</span><span class="n">devel</span> <span class="n">libyaml</span><span class="o">-</span><span class="n">devel</span> <span class="n">libffi</span><span class="o">-</span><span class="n">devel</span> <span class="n">openssl</span><span class="o">-</span><span class="n">devel</span> <span class="n">make</span> <span class="n">bzip2</span> <span class="n">autoconf</span> <span class="n">automake</span> <span class="n">libtool</span> <span class="n">bison</span> <span class="n">iconv</span><span class="o">-</span><span class="n">devel</span> <span class="n">java</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>安装Ruby 1.9.3</h4>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">rvm</span> <span class="n">install</span> <span class="mf">1.9</span><span class="o">.</span><span class="mi">3</span>
-</span><span class='line'><span class="n">rvm</span> <span class="n">use</span> <span class="mf">1.9</span><span class="o">.</span><span class="mi">3</span>
-</span><span class='line'><span class="n">rvm</span> <span class="n">rubygems</span> <span class="n">latest</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>下载octopress</h4>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">git</span> <span class="n">clone</span> <span class="nl">git:</span><span class="c1">//github.com/imathis/octopress.git dengdezhao</span>
-</span><span class='line'><span class="n">cd</span> <span class="n">dengdezhao</span>
-</span><span class='line'><span class="n">ruby</span> <span class="o">--</span><span class="n">version</span>   <span class="o">*</span><span class="err">#应该显示</span><span class="mf">1.9</span><span class="o">.</span><span class="mi">3</span><span class="o">*</span>
-</span><span class='line'><span class="n">gem</span> <span class="n">install</span> <span class="n">bundler</span>
-</span><span class='line'><span class="n">bundle</span> <span class="n">install</span>
-</span><span class='line'><span class="n">rake</span> <span class="n">install</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>出现Warning:Insecure world writable dir</h4>
-
-<p>这个一般是由于权限的问题，我出现这个问题是因为是用ROOT安装的RVM，然后用其它用户访问，为了方便我直接把/usr/local目录权限设置为777，然后就弹出这个警告了，/usr/local目录很重要，不允许非owner访问，所以设置为755即可解决该问题。</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">sudo</span> <span class="n">chmod</span> <span class="o">-</span><span class="n">R</span> <span class="mi">755</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>将Wordpress数据导出为XML文件</h4>
-
-<p>进入Wordpress后台，将全站数据保存为XML文件，放在Octopress根目录下</p>
-
-<h4>下载迁移工具</h4>
-
-<p>https://gist.github.com/chitsaou/1394128  <br/>
-下载<strong>wordpressdotcom.rb</strong>放到Utils目录中，执行命令</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">ruby</span> <span class="o">-</span><span class="n">r</span> <span class="s">&quot;./utils/wordpressdotcom.rb&quot;</span> <span class="o">-</span><span class="n">e</span> <span class="s">&quot;Jekyll::WordpressDotCom.process&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>运行出错，需要安装hpricot</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">gem</span> <span class="n">install</span> <span class="n">hpricot</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>安装成功之后再执行上面的迁移命令，即可把wordpress中的文章导入到octopress的source/_posts中了</p>
-
-<h4>修改文章图片链接</h4>
-
-<p>迁移过来的文章中图片链接可能不大对，需要修改才能让图片显示正常，把原来wp-contents目录下uploads文件夹拷到相应路径下，替换掉文件中的静态地址为图片地址即可避免点击图片时出现404错误。<br/>
-批量替换命令：</p>
-
-<h4>修改页面名字及新增[标签云]&amp;[关于]页面</h4>
-
-<p>修改navigation.html
-<section>
-vi source/_includes/custom/navigation.html
-</section>
-给各页面修改个性化名字，并新增两个页面</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="n">ul</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;main-navigation&quot;</span><span class="o">&gt;</span>
-</span><span class='line'>  <span class="o">&lt;</span><span class="n">li</span><span class="o">&gt;&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;/&quot;</span><span class="o">&gt;</span><span class="err">博客主页</span><span class="o">&lt;</span><span class="sr">/a&gt;&lt;/</span><span class="n">li</span><span class="o">&gt;</span>
-</span><span class='line'>  <span class="o">&lt;</span><span class="n">li</span><span class="o">&gt;&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;/blog/archives&quot;</span><span class="o">&gt;</span><span class="err">文章列表</span><span class="o">&lt;</span><span class="sr">/a&gt;&lt;/</span><span class="n">li</span><span class="o">&gt;</span>
-</span><span class='line'>  <span class="o">&lt;</span><span class="n">li</span><span class="o">&gt;&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;/tag&quot;</span><span class="o">&gt;</span><span class="err">标签云</span><span class="o">&lt;</span><span class="sr">/a&gt;&lt;/</span><span class="n">li</span><span class="o">&gt;</span>
-</span><span class='line'>  <span class="o">&lt;</span><span class="n">li</span><span class="o">&gt;&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;/about&quot;</span><span class="o">&gt;</span><span class="err">关于</span><span class="o">&lt;</span><span class="sr">/a&gt;&lt;/</span><span class="n">li</span><span class="o">&gt;</span>
-</span><span class='line'><span class="o">&lt;</span><span class="sr">/ul&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>创建tag&amp;about页</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">rake</span> <span class="n">new_page</span><span class="o">[</span><span class="n">tag</span><span class="o">]</span>
-</span><span class='line'><span class="n">rake</span> <span class="n">new_page</span><span class="o">[</span><span class="n">about</span><span class="o">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>编辑页面内容，并下载配置标签云插件</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">git</span> <span class="nb">clone</span> <span class="ss">https</span><span class="p">:</span><span class="sr">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">robbyedwards</span><span class="o">/</span><span class="n">octopress</span><span class="o">-</span><span class="n">tag</span><span class="o">-</span><span class="n">pages</span><span class="o">.</span><span class="n">git</span>
-</span><span class='line'><span class="n">git</span> <span class="nb">clone</span> <span class="ss">https</span><span class="p">:</span><span class="sr">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">robbyedwards</span><span class="o">/</span><span class="n">octopress</span><span class="o">-</span><span class="n">tag</span><span class="o">-</span><span class="n">cloud</span><span class="o">.</span><span class="n">git</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>将下载的文件拷贝至相应目录，并在_config.yml中增加一行  <code>tag_dir: tags</code></p>
-
-<h4>生成静态页面及预览</h4>
-
-<p>以上操作完成之后，执行<code>rake generate</code>命令生成静态页面，然后<code>rake preview</code>，在浏览器中输入http://localhost:4000即可预览站点。</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/dengdezhao/blog/2013/03/19/use-javascript-in-oaf/">Use Javascript in Oaf</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-03-19T22:27:00+08:00" pubdate data-updated="true">Mar 19<span>th</span>, 2013</time>
-        
-         | <a href="/dengdezhao/blog/2013/03/19/use-javascript-in-oaf/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>Use Javascript in OAF</h2>
-
-<h4>使用Js脚本库</h4>
-
-<p>在CO的<em>processRequest</em>中引入JS库<br/>
-编写JS库:Calendar2013.js</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">pageContext</span><span class="o">.</span><span class="na">putJavaScriptLibrary</span><span class="o">(</span><span class="s">&quot;Calendar&quot;</span><span class="o">,</span><span class="s">&quot;Calendar2013.js&quot;</span><span class="o">);</span>
-</span><span class='line'><span class="o">((</span><span class="n">OAMessageTextInputBean</span><span class="o">)</span><span class="n">webBean</span>
-</span><span class='line'><span class="o">.</span><span class="na">findChildRecursive</span><span class="o">(</span><span class="s">&quot;inputDate&quot;</span><span class="o">))</span>
-</span><span class='line'><span class="o">.</span><span class="na">setOnClick</span><span class="o">(</span><span class="s">&quot;setday(this)&quot;</span><span class="o">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>需要把Calendar2013.js放置在$<strong>COMMON_TOP</strong>/html下。</p>
-
-<h4>直接引用javaScript</h4>
-
-<p>编写<em>JavaScript</em>:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">String</span> <span class="n">javaScript</span><span class="o">=</span><span class="s">&quot;JAVASCRIPT:function setday(){...}&quot;</span><span class="o">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>在<strong>CO</strong>的<em>processRequest</em>中加载<em>javascript</em></p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">pageContext</span><span class="o">.</span><span class="na">putJavaScriptFunction</span><span class="o">(</span><span class="s">&quot;sayday()&quot;</span><span class="o">,</span><span class="n">javaScript</span><span class="o">);</span>
-</span><span class='line'><span class="o">((</span><span class="n">OAMessageTextInputBean</span><span class="o">)</span><span class="n">webBean</span><span class="o">.</span><span class="na">findChildRecursive</span><span class="o">(</span><span class="s">&quot;inputDate&quot;</span><span class="o">))</span>
-</span><span class='line'>    <span class="o">.</span><span class="na">setOnClick</span><span class="o">(</span><span class="s">&quot;javascript:setday()&quot;</span><span class="o">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/dengdezhao/blog/2013/01/31/solvedlong-mode-not-supported-rebooting-press-any-key-to-reboot/">[SOLVED]Long Mode Not Supported, Rebooting Press Any Key to Reboot</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-31T00:00:00+08:00" pubdate data-updated="true">Jan 31<span>st</span>, 2013</time>
-        
-         | <a href="/dengdezhao/blog/2013/01/31/solvedlong-mode-not-supported-rebooting-press-any-key-to-reboot/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>虚拟机安装solaris 11的时候弹出
-<blockquote>Long mode not supported, rebooting Press any key to reboot&#8230;&#8230;..</blockquote>
-原因是solaris11只支持64位，需要把BIOS的CPU选项里Inter Virtualization Technology和Inter VT均设置为ENABLE，</p>
-
-<p>然后将虚拟机的设置如下：
-<blockquote>Virtual Machine Setting-&gt;Processors-&gt;Virtualizatoin engine-&gt;Preferred mode=Intel VT-x/EPT or AMD-v/RVI</blockquote></p>
-
-<p><a rel="attachment wp-att-248" href="http://www.dengdezhao.cn/wp-content/uploads/2013/01/pg-300x260.jpg"><img title="pg" src="http://www.dengdezhao.cn/wp-content/uploads/2013/01/pg-300x260.jpg" alt="" width="300" height="260" /></a></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/dengdezhao/blog/2013/01/30/firefox%E5%8D%87%E7%BA%A718%E4%B9%8B%E5%90%8Eautoproxy%E5%A4%B1%E6%95%88goagent%E6%97%A0%E6%B3%95%E4%BD%BF%E7%94%A8%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/">Firefox升级18之后,autoproxy失效,goagent无法使用问题解决</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-30T00:00:00+08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2013</time>
-        
-         | <a href="/dengdezhao/blog/2013/01/30/firefox%E5%8D%87%E7%BA%A718%E4%B9%8B%E5%90%8Eautoproxy%E5%A4%B1%E6%95%88goagent%E6%97%A0%E6%B3%95%E4%BD%BF%E7%94%A8%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>之前使用的是17版本的firefox，配置好了autoproxy使用goagent能够正常代理，之后升级firefox18之后，却代理不了了。重装过firefox,重装过goagent，重装过autoproxy都无效。</p>
-
-<p>试过使用IE，设置代理127.0.0.1:8087+goagent可以正常代理，因此排除goagent问题。</p>
-
-<p>后来查看firefox18的版本说明，才发现由于安全性禁用了部分功能猜测可能由此导致无法代理</p>
-
-<p>firefox说明：
-<blockquote>禁用不安全内容：Firefox 可以禁用HTTPS安全网页中的不安全内容，来维护用户在互联网通信中的隐私。目前可以在about:config中启用这个特性。</blockquote>
-打开about:config，过滤栏输入：proxy  修改如下选项</p>
-
-<p>extensions.autoproxy.proxyMode   <strong>auto</strong>
-network.proxy.type               <strong>1</strong>
-signon.autologin.proxy           <strong>true</strong>
-即可解决问题。</p>
-
-<p>&nbsp;</p>
-
-<p>&nbsp;</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/dengdezhao/blog/2013/01/15/%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85ebs-r12/">虚拟机环境RHEL6.3安装EBS R12</a></h1>
+      <h1 class="entry-title">虚拟机环境RHEL6.3安装EBS R12</h1>
     
     
       <p class="meta">
@@ -449,14 +88,14 @@ signon.autologin.proxy           <strong>true</strong>
 
 <time datetime="2013-01-15T00:00:00+08:00" pubdate data-updated="true">Jan 15<span>th</span>, 2013</time>
         
-         | <a href="/dengdezhao/blog/2013/01/15/%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85ebs-r12/#disqus_thread">Comments</a>
+         | <a href="#disqus_thread">Comments</a>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>一直想自己搭建个R12的环境学习学习，于是买了块500G的移动硬盘，想把R12安装在移动硬盘中。</p>
+<div class="entry-content"><p>一直想自己搭建个R12的环境学习学习，于是买了块500G的移动硬盘，想把R12安装在移动硬盘中。</p>
 
 <p>准备工作：</p>
 
@@ -725,62 +364,16 @@ $cp .bash_profile .app</p>
 
 <p></p>
 </div>
-  
-  
 
 
-    </article>
-  
-  
-    <article>
+  <footer>
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/dengdezhao/blog/2013/01/12/%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85ebs-r12%E6%97%B6%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AFrw-50004-%E8%A7%A3%E5%86%B3/">虚拟机安装EBS R12时出现错误RW-50004 解决</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
   
 
+<span class="byline author vcard">Posted by <span class="fn">pierreorz</span></span>
 
-<time datetime="2013-01-12T00:00:00+08:00" pubdate data-updated="true">Jan 12<span>th</span>, 2013</time>
-        
-         | <a href="/dengdezhao/blog/2013/01/12/%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85ebs-r12%E6%97%B6%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AFrw-50004-%E8%A7%A3%E5%86%B3/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>一般出现这个错误多半应该是库文件导致的，查看日志得知是 需要的 unzip 版本过高，RHEL上安装的是6.0的，而R12.1.1.1只支持unzip 5.X 的，很坑爹，yum erase unzip 然后重新安装unzip 5.X rpm即可解决~~</p>
-
-<p>&nbsp;</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/dengdezhao/blog/2013/01/10/oaf%E5%BC%80%E5%8F%91%E9%80%9A%E8%BF%87excel%E5%AF%BC%E5%85%A5%E6%95%B0%E6%8D%AE%E6%97%B6%EF%BC%8C%E7%94%A8%E6%88%B7%E9%9C%80%E8%A6%81%E5%B0%86%E5%8F%AF%E8%83%BD%E5%AD%98%E5%9C%A8%E9%87%8D%E5%A4%8D/">OAF开发通过EXCEL导入数据时，用户需要将可能存在重复的主键信息提示出来</a></h1>
-    
-    
-      <p class="meta">
-        
 
 
 
@@ -792,238 +385,49 @@ $cp .bash_profile .app</p>
   
 
 
-<time datetime="2013-01-10T00:00:00+08:00" pubdate data-updated="true">Jan 10<span>th</span>, 2013</time>
-        
-         | <a href="/dengdezhao/blog/2013/01/10/oaf%E5%BC%80%E5%8F%91%E9%80%9A%E8%BF%87excel%E5%AF%BC%E5%85%A5%E6%95%B0%E6%8D%AE%E6%97%B6%EF%BC%8C%E7%94%A8%E6%88%B7%E9%9C%80%E8%A6%81%E5%B0%86%E5%8F%AF%E8%83%BD%E5%AD%98%E5%9C%A8%E9%87%8D%E5%A4%8D/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>OAF开发通过EXCEL导入数据时，用户需要将可能存在重复的主键信息提示出来.</p>
-
-<p>有以下两种主键冲突情况：</p>
-
-<p>1, 表中不存在重复数据，即将导入的数据中存在重复数据。比如表中记录为空，导入的EXCEL中存在记录ID007,ID008,ID009,ID007，此时OAF页面需要将ID007提示出来；</p>
-
-<p>2,表中存在重复数据。即表中原来已经存在一条记录ID007，此时导入的数据中也存在ID007，需要将ID007提示出来。</p>
-
-<p>解决方案：</p>
-
-<p>原本想通过查询数据库中ID007的记录是否存在再抛出OAException的做法来实现此需求，后来一想感觉好麻烦；便换种思路决定通过异常来判断。</p>
-
-<p>情况1，在ViewObject对象CreateRow()之后，给创建的新Row.setAttribute(&#8220;id&#8221;,007)时，如果VO中存在两个007的新ROW，会抛出TooManyObjectsException,此时捕获该异常并返回此ID值。</p>
-
-<p>情况2，难点也在这里，调用commit保存数据时，主键约束异常才会抛出来而且还不知道重复的ID值是多少。重写EO的doDML方法，在此方法中捕获DMLException异常，并且可以得到重复的ID值；
-<pre class="brush:java">  public void doDML(int i,TransactionEvent e)
-  {
-    try{
-    super.doDML(i,e);
-    }catch(oracle.jbo.DMLException ex)
-    {
-        throw new OAException("ERROR:数据库中存在相同的VIN码["+this.getVin()+"],请检查上传文件",OAException.ERROR);
-    }
-  }</pre></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
+<time datetime="2013-01-15T00:00:00+08:00" pubdate data-updated="true">Jan 15<span>th</span>, 2013</time>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/dengdezhao/blog/2013/01/09/oaf-%E4%BD%BF%E7%94%A8oaexception%E8%BE%93%E5%87%BA%E4%B8%AD%E6%96%87%E6%97%B6%E5%87%BA%E7%8E%B0%E4%B9%B1%E7%A0%81-%E8%A7%A3%E5%86%B3/">OAF 使用OAException输出中文时出现乱码 解决</a></h1>
-    
-    
-      <p class="meta">
-        
 
-
-
-
-
-
-
-
+<span class="categories">
   
-
-
-<time datetime="2013-01-09T00:00:00+08:00" pubdate data-updated="true">Jan 9<span>th</span>, 2013</time>
-        
-         | <a href="/dengdezhao/blog/2013/01/09/oaf-%E4%BD%BF%E7%94%A8oaexception%E8%BE%93%E5%87%BA%E4%B8%AD%E6%96%87%E6%97%B6%E5%87%BA%E7%8E%B0%E4%B9%B1%E7%A0%81-%E8%A7%A3%E5%86%B3/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>使用throw new OAException(“你们好”,OAException.WARNING);时出现乱码，尝试new String(&#8220;你们好”.getBytes(&#8220;GBK&#8221;),&#8221;UTF-8&#8221;)依然没用。</p>
-
-<p>检查JDEV的Preferences中ENCODING已经更改为“UTF-8”，纠结了好一阵子，才发现工程的Project Settings的Compiler里也有一个ENCODING没有改，囧改好之后再测试乱码问题即解决</p>
-</div>
+    <a class='category' href='/dengdezhao/blog/categories/ebs/'>EBS</a>
   
-  
+</span>
 
 
-    </article>
-  
-  
-    <article>
       
-  <header>
+
+
+    </p>
     
-      <h1 class="entry-title"><a href="/dengdezhao/blog/2012/12/14/%E6%96%B0%E6%B5%AA%E5%85%A5%E9%97%A8%E5%BA%94%E7%94%A8%E4%B9%8B-%E5%A4%A7%E7%AC%A8%E9%92%9F/">新浪入门应用之&#8212;大笨钟</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
+      <div class="sharing">
   
-
-
-<time datetime="2012-12-14T00:00:00+08:00" pubdate data-updated="true">Dec 14<span>th</span>, 2012</time>
-        
-         | <a href="/dengdezhao/blog/2012/12/14/%E6%96%B0%E6%B5%AA%E5%85%A5%E9%97%A8%E5%BA%94%E7%94%A8%E4%B9%8B-%E5%A4%A7%E7%AC%A8%E9%92%9F/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>昨日突然对SAE平台产生了兴趣，于是花了一晚上时间，写了个定点发微博的小应用，也算是了解了下SAE平台的开发流程，以下烂笔头纯粹为方便菜鸟学习，老鸟勿笑。</p>
-
-<p>之前玩过豆瓣，里面有个有名的“大笨钟”，每到整点便会发个状态“咚”几声以报时，虽然用处不大，但因其一直准点报时也吸引了不少粉丝关注，所以想自己做个类似的功能定时发微博报时。</p>
-
-<p>于是，看了看SAE的介绍，注册了个开发者账号，新建应用“thebigbenclock&#8221;；</p>
-
-<p>在E盘创建个同名文件夹E:\thebigbenclock</p>
-
-<p>右建checkout出应用代码https://svn.sinaapp.com/thebigbenclock,确保SVN可以正常连接；</p>
-
-<p>进入SAE平台，找到代码仓库中的框架“新浪微博OAuth框架&#8221;，将此框架下载到应用中，并创建版本</p>
-
-<p>然后再checkout应用，便可以将“新浪微博OAuth框架&#8221;的代码取到本地文件夹下了；</p>
-
-<p><a rel="attachment wp-att-195" href="http://www.dengdezhao.cn/wp-content/uploads/2012/12/tt-300x87.jpg"><img class="alignnone size-medium wp-image-195" title="tt" src="http://www.dengdezhao.cn/wp-content/uploads/2012/12/tt-300x87.jpg" alt="" width="554" height="160" /></a></p>
-
-<p>注意，默认版本为1，会新建一个名为“1”的子文件夹。修改config.php，填上APP key , App Sercet 及 WB_CALLBACK_URL。</p>
-
-<p>修改weibolist.php，添加以下代码：
-<pre class="brush:php">    $c = new SaeTClientV2( '3987019479' , '1eaa0834c410537aaef2759ffffffd9' , '<span style="color: #ff0000;">2.00VLxGwBntHp2E04c5f9ad08eyNJFC</span>');
-    $ms  = $c-&gt;home_timeline(); // done
-    $uid_get = $c-&gt;get_uid();
-    $uid = $uid_get['uid'];
-    $user_message = $c-&gt;show_user_by_id( $uid);//根据ID获取用户等基本信息
-    $dateString=date("Y-m-d H:i:s");   //获取当前时间；
-    $hours=substr($dateString,11,2);</pre></p>
-
-<p>    $outString=&#8217;咚!&#8217;;<br />
-    for ($a=1;$a&lt;$hours;$a++){<br />
-        $outString=$outString.&#8217;咚!&#8217;;<br />
-      }</p>
-
-<p>    $ret = $c-&gt;update($dateString.$outString );	//发送微博
-上图中access_token，需要根据测试账号预先生成。</p>
-
-<p>配置config.yaml文件如下：
-<pre class="brush:php">name: thebigbenclock
-version: 1
-accesskey: 3987019479
-cron:
-- description: cron test
-  url: /weibolist.php
-  schedule: every 1 hour,offset 0
-  timezone: Beijing</pre>
-打开应用即可在整点时发送微博
-<pre class="brush:css">2012-12-14 09:00:00咚!咚!咚!咚!咚!咚!咚!咚!咚!</pre>
-&nbsp;</p>
-
-<p>&nbsp;</p>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://pierreorz.github.com/dengdezhao/blog/2013/01/15/%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85ebs-r12/" data-via="" data-counturl="http://pierreorz.github.com/dengdezhao/blog/2013/01/15/%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85ebs-r12/" >Tweet</a>
+  
+  
+  
 </div>
-  
-  
 
-
-    </article>
-  
-  
-    <article>
+    
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/dengdezhao/blog/2012/12/03/ora-1222%EF%BC%9Atnsno-such-protocol-adapter-%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/">ORA-1222：TNS:no Such Protocol Adapter 问题解决</a></h1>
-    
-    
-      <p class="meta">
-        
+        <a class="basic-alignment left" href="/dengdezhao/blog/2013/01/12/%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85ebs-r12%E6%97%B6%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AFrw-50004-%E8%A7%A3%E5%86%B3/" title="Previous Post: 虚拟机安装EBS R12时出现错误RW-50004 解决">&laquo; 虚拟机安装EBS R12时出现错误RW-50004 解决</a>
+      
+      
+        <a class="basic-alignment right" href="/dengdezhao/blog/2013/01/30/firefox%E5%8D%87%E7%BA%A718%E4%B9%8B%E5%90%8Eautoproxy%E5%A4%B1%E6%95%88goagent%E6%97%A0%E6%B3%95%E4%BD%BF%E7%94%A8%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/" title="Next Post: firefox升级18之后,autoproxy失效,goagent无法使用问题解决">firefox升级18之后,autoproxy失效,goagent无法使用问题解决 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
 
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-03T00:00:00+08:00" pubdate data-updated="true">Dec 3<span>rd</span>, 2012</time>
-        
-         | <a href="/dengdezhao/blog/2012/12/03/ora-1222%EF%BC%9Atnsno-such-protocol-adapter-%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>机器上安装的是instantOracleclient-basic-win32-11.2.0.1.0客户端，本来使用PLSQL developer是可以正常连接数据库的；</p>
-
-<p>后来开发需求装上了Form6<em>i，</em>发现连接数据库时弹出来ORA-1222：TNS:no such protocol adapter这个错误；</p>
-
-<p>解决方案：</p>
-
-<p><strong>1.配置PL/SQL Developer -&gt; Preferences ，OracleHome设置为Form6i的路径；</strong></p>
-
-<p>﻿<a rel="attachment wp-att-188" href="http://www.dengdezhao.cn/wp-content/uploads/2012/12/p1-300x249.jpg"><img class="alignnone size-medium wp-image-188" title="p1" src="http://www.dengdezhao.cn/wp-content/uploads/2012/12/p1-300x249.jpg" alt="" width="300" height="249" /></a></p>
-
-<p><strong>2.我的电脑 -&gt; 用户变量 设置ORACLE_HOME 为Form6i路径</strong></p>
-
-<p><strong><a rel="attachment wp-att-189" href="http://www.dengdezhao.cn/wp-content/uploads/2012/12/p2-276x300.jpg"><img class="alignnone size-medium wp-image-189" title="p2" src="http://www.dengdezhao.cn/wp-content/uploads/2012/12/p2-276x300.jpg" alt="" width="276" height="300" /></a></strong></p>
-
-<p><strong>或者可以直接编辑注册表，修改oracle_home的值为[Form安装的HOME文件夹]/[oracle客户端文件夹]；</strong></p>
-
-<p><strong>如果需要切换按以上步骤修改oracle_home再重启PLSQL Developer即可以正常连接数据库；
-</strong></p>
-
-<p><em>
-</em></p>
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
-  
-  
+  </section>
 
-
-    </article>
-  
-  <div class="pagination">
-    
-      <a class="prev" href="/dengdezhao/blog/page/2/">&larr; Older</a>
-    
-    <a href="/dengdezhao/blog/archives">Blog Archives</a>
-    
-  </div>
 </div>
+
 <aside class="sidebar">
   
     <section>
@@ -1084,6 +488,7 @@ cron:
   
 </aside>
 
+
     </div>
   </div>
   <footer role="contentinfo"><p>
@@ -1098,7 +503,10 @@ cron:
       var disqus_shortname = 'adfkf';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://pierreorz.github.com/dengdezhao/blog/2013/01/15/%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85ebs-r12/';
+        var disqus_url = 'http://pierreorz.github.com/dengdezhao/blog/2013/01/15/%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85ebs-r12/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

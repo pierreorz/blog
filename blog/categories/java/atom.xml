@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: java | 邓德昭的技术博客]]></title>
+  <link href="http://pierreorz.github.com/dengdezhao/blog/categories/java/atom.xml" rel="self"/>
+  <link href="http://pierreorz.github.com/dengdezhao/"/>
+  <updated>2013-03-19T23:29:18+08:00</updated>
+  <id>http://pierreorz.github.com/dengdezhao/</id>
+  <author>
+    <name><![CDATA[pierreorz]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[利用javaMail发送邮件功能实现]]></title>
+    <link href="http://pierreorz.github.com/dengdezhao/blog/2012/06/26/%E5%88%A9%E7%94%A8javamail%E5%8F%91%E9%80%81%E9%82%AE%E4%BB%B6%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0/"/>
+    <updated>2012-06-26T00:00:00+08:00</updated>
+    <id>http://pierreorz.github.com/dengdezhao/blog/2012/06/26/利用javamail发送邮件功能实现</id>
+    <content type="html"><![CDATA[<p>由于SMTP服务器需要采用SSL方式访问，所以蛋疼了，默认的连接25端口方式无法连接<br />
+改成465方式访问，又报连接错误，原来是证书文件的问题。<br />
+于是利用 InstallCert.java重新生成证书
+<div>
+<blockquote>java InstallCert smtp.dengdezhao.cn:465</blockquote>
+</div>
+将得到的证书cacert文件放置在任意路径下：比如C盘 c:/cacert</p>
+
+
+
+
+<p>程序中props属性里添加如下参数
+<div>
+<blockquote>props = System.getProperties();<br />
+props.put("mail.smtp.host", smtp.dengdezhao.cn); // 设置SMTP主机<br />
+props.put("mail.smtp.auth", "true");<br />
+props.put("mail.smtp.socketFactory.class",<br />
+"javax.net.ssl.SSLSocketFactory");<br />
+props.put("mail.smtp.socketFactory.fallback", "false");<br />
+props.put("mail.smtp.socketFactory.port", "465");<br />
+props.put("mail.debug", "true");<br />
+props.put("javax.net.ssl.keyStore", "c:\\cacert");<br />
+props.put("javax.net.ssl.trustStore", "c:\\cacert");</blockquote>
+</div>
+即可。</p>
+
+
+
+
+<p>&nbsp;</p>
+
+]]></content>
+  </entry>
+  
+</feed>

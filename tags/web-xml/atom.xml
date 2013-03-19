@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: web.xml | 邓德昭的技术博客]]></title>
+  <link href="http://pierreorz.github.com/dengdezhao/tags/web-xml/atom.xml" rel="self"/>
+  <link href="http://pierreorz.github.com/dengdezhao/"/>
+  <updated>2013-03-19T23:29:18+08:00</updated>
+  <id>http://pierreorz.github.com/dengdezhao/</id>
+  <author>
+    <name><![CDATA[pierreorz]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[定制ADF应用的CSS]]></title>
+    <link href="http://pierreorz.github.com/dengdezhao/blog/2011/06/27/%E5%AE%9A%E5%88%B6adf%E5%BA%94%E7%94%A8%E7%9A%84css/"/>
+    <updated>2011-06-27T00:00:00+08:00</updated>
+    <id>http://pierreorz.github.com/dengdezhao/blog/2011/06/27/定制adf应用的css</id>
+    <content type="html"><![CDATA[<p>客户的要求总是各种变态，如果需要定制默认的控件样式的话，那么以下的文章可能会对你有帮助。</p>
+
+
+
+
+<p>Step.1 首先我们需要定义自己的CSS文件 <span style="color: #0000ff;">CustomSkin.css</span>
+<pre class="brush:css">af|inputListOfValues::search-icon-style{
+  background-image:none;
+}</pre></p>
+
+
+
+
+<p>af|inputListOfValues::search-icon-style:hover{<br />
+  background-image:none;<br />
+}
+af|inputListOfValues::search-icon-style:active{<br />
+  background-image:none;<br />
+}
+af|inputListOfValues::search-icon-style:info{<br />
+  background-image:none;<br />
+}
+Step.2 接着创建 <span style="color: #0000ff;">trinidad-skins.xml</span>
+<pre class="brush:xml">&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;
+&lt;skins xmlns="http://myfaces.apache.org/trinidad/skin"&gt;
+  &lt;skin&gt;
+    &lt;id&gt;customSkin.desktop&lt;/id&gt;
+    &lt;family&gt;CustomSkin&lt;/family&gt;
+    &lt;extends&gt;blafplus-rich.desktop&lt;/extends&gt;
+    &lt;render-kit-id&gt;org.apache.myfaces.trinidad.desktop&lt;/render-kit-id&gt;
+    &lt;style-sheet-name&gt;css/CustomSkin.css&lt;/style-sheet-name&gt;
+  &lt;/skin&gt;
+&lt;/skins&gt;</pre>
+Step.3 修改 <span style="color: #0000ff;">trinidad-config.xml</span>
+<pre class="brush:xml"> &lt;skin-family&gt;CustomSkin&lt;/skin-family&gt;</pre>
+Step.4 修改<span style="color: #0000ff;">web.xml</span>
+<pre class="brush:xml">&lt;context-param&gt;
+    &lt;description&gt;If this parameter is true, there will be an automatic check of the modification date of your JSPs, and saved state will be discarded when JSP's change. It will also automatically check if your skinning css files have changed without you having to restart the server. This makes development easier, but adds overhead. For this reason this parameter should be set to false when your application is deployed.&lt;/description&gt;
+    &lt;param-name&gt;org.apache.myfaces.trinidad.CHECK_FILE_MODIFICATION&lt;/param-name&gt;
+    &lt;param-value&gt;true&lt;/param-value&gt;
+  &lt;/context-param&gt;</pre></p>
+
+
+
+
+<p>&lt;context-param&gt;<br />
+    &lt;description&gt;No obfuscation of CSS.&lt;/description&gt;<br />
+    &lt;param-name&gt;org.apache.myfaces.trinidad.DISABLE_CONTENT_COMPRESSION&lt;/param-name&gt;<br />
+    &lt;param-value&gt;true&lt;/param-value&gt;<br />
+  &lt;/context-param&gt;
+重启下应用就会发现控件样式已经采用自定义CSS文件里的样式了！<span style="color: #0000ff;">
+</span></p>
+
+
+
+
+<p>&nbsp;</p>
+
+]]></content>
+  </entry>
+  
+</feed>

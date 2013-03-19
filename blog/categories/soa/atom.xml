@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: SOA | 邓德昭的技术博客]]></title>
+  <link href="http://pierreorz.github.com/dengdezhao/blog/categories/soa/atom.xml" rel="self"/>
+  <link href="http://pierreorz.github.com/dengdezhao/"/>
+  <updated>2013-03-19T23:29:18+08:00</updated>
+  <id>http://pierreorz.github.com/dengdezhao/</id>
+  <author>
+    <name><![CDATA[pierreorz]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[WebService之-入门DEMO生成]]></title>
+    <link href="http://pierreorz.github.com/dengdezhao/blog/2012/09/30/webservice%E4%B9%8B-%E5%85%A5%E9%97%A8demo%E7%94%9F%E6%88%90/"/>
+    <updated>2012-09-30T00:00:00+08:00</updated>
+    <id>http://pierreorz.github.com/dengdezhao/blog/2012/09/30/webservice之-入门demo生成</id>
+    <content type="html"><![CDATA[<p>WebService的创建方法有多种，这里使用JAVA class生成webservice。</p>
+
+
+
+
+<p>1.创建一个JAVA类Test.java
+<pre class="brush:java">public class Test {
+    public Test() {
+        super();
+    }
+    public String sayHello(String a){
+        return "result"+a;
+    }
+}</pre>
+2.利用Test.java生成webservice</p>
+
+
+
+
+<p><a rel="attachment wp-att-177" href="http://www.dengdezhao.cn/wp-content/uploads/2012/09/aa-300x212.png"><img class="alignnone size-medium wp-image-177" title="aa" src="http://www.dengdezhao.cn/wp-content/uploads/2012/09/aa-300x212.png" alt="" width="300" height="212" /></a></p>
+
+
+
+
+<p><a rel="attachment wp-att-178" href="http://www.dengdezhao.cn/wp-content/uploads/2012/09/bb-300x222.png"><img class="alignnone size-medium wp-image-178" title="bb" src="http://www.dengdezhao.cn/wp-content/uploads/2012/09/bb-300x222.png" alt="" width="300" height="222" /></a></p>
+
+
+
+
+<p><a rel="attachment wp-att-179" href="http://www.dengdezhao.cn/wp-content/uploads/2012/09/cc-300x222.png"><img class="alignnone size-medium wp-image-179" title="cc" src="http://www.dengdezhao.cn/wp-content/uploads/2012/09/cc-300x222.png" alt="" width="300" height="222" /></a></p>
+
+
+
+
+<p>完成即生成Webservice.</p>
+
+
+
+
+<p>3. 发布webservice到weblogic</p>
+
+
+
+
+<p><a rel="attachment wp-att-180" href="http://www.dengdezhao.cn/wp-content/uploads/2012/09/dd-300x216.png"><img class="alignnone size-medium wp-image-180" title="dd" src="http://www.dengdezhao.cn/wp-content/uploads/2012/09/dd-300x216.png" alt="" width="300" height="216" /></a></p>
+
+
+
+
+<p>得到WSDL路径地址：<a href="http://192.168.1.103:7001/Application1-Project1-context-root/TestPort?WSDL">http://dengdezhao.cn:7001/Application1-Project1-context-root/TestPort?WSDL</a></p>
+
+
+
+
+<p>4.创建CallWSDL.java 客户端调用WSDL。Main方法如下：
+<pre class="brush:java">    public static void main(String[] args) throws Exception {</pre></p>
+
+
+
+
+<p>        String wsdlUrl="http://dengdezhao.cn:7001/Application1-Project1-context-root/TestPort?WSDL";<br />
+        String nameSpaceUri="http://tempuri.org/";<br />
+        String serviceName="TestService";<br />
+        String portName="TestPort";<br />
+        //设置工厂属性为axis<br />
+        System.setProperty(ServiceFactory.SERVICEFACTORY_PROPERTY, "org.apache.axis.client.ServiceFactory");//weblogic.webservice.core.rpc.ServiceFactoryImpl<br />
+        //org.apache.axis.client.ServiceFactory<br />
+        ServiceFactory serviceFactory = (ServiceFactory)ServiceFactory.newInstance();<br />
+        QName qname=new QName(nameSpaceUri,serviceName);<br />
+        Service afService =<br />
+            (Service)serviceFactory.createService(new java.net.URL(wsdlUrl), qname);<br />
+        Call call = (Call)afService.createCall();</p>
+
+
+
+
+<p>        call.setTargetEndpointAddress(wsdlUrl);<br />
+        //设定调用方法<br />
+        call.setOperationName(new QName(nameSpaceUri,"sayHello"));<br />
+        //设定输入参数类型<br />
+        call.addParameter("arg0", XMLType.XSD_STRING, ParameterMode.IN);<br />
+        //设定返回参数类型<br />
+        call.setReturnType(XMLType.XSD_STRING);<br />
+        //调用Webservice，传入参数为test.<br />
+        String result = (String)call.invoke(new Object[]{"test"});<br />
+        System.out.println("*******"+result);<br />
+    }
+输入结果为预期：*******resulttest
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[SOA suite 环境搭建]]></title>
+    <link href="http://pierreorz.github.com/dengdezhao/blog/2012/09/29/soa-suite-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/"/>
+    <updated>2012-09-29T00:00:00+08:00</updated>
+    <id>http://pierreorz.github.com/dengdezhao/blog/2012/09/29/soa-suite-环境搭建</id>
+    <content type="html"><![CDATA[<p>好久没碰SOA，最近在win2003上准备搭建个环境玩玩。下载相关安装介质</p>
+
+
+
+
+<p>http://www.oracle.com/technetwork/middleware/soasuite/downloads/index.html</p>
+
+
+
+
+<p>1.<strong>Database</strong> 我用的是oracle 11G</p>
+
+
+
+
+<p>2.<strong>Oracle WebLogic Server </strong>安装的是10.3.6.0</p>
+
+
+
+
+<p>3.<strong>Repository Creation Utility 11.1.1.6.0 </strong>解压缩下载的压缩包，运行/rcuHome/Bin/rcu.bat.执行安装</p>
+
+
+
+
+<p>4.<strong>JDeveloper 11.1.1.6.0 </strong>安装开发工具JDEV，因自带weblogic是11.1.1.5.0安装时可能需要分开不要放在一个oracle主目录里。或者只安装JDEV也行</p>
+
+
+
+
+<p>5.安装好JDEV后，更新<strong>SOA Extension for JDeveloper 11.1.1.6.0</strong>插件</p>
+
+
+
+
+<p>6.安装<strong>SOA Suite </strong>需要注意的是执行安装时要指定JRE目录-jreLoc "c:\java\jre". <strong><a href="http://www.oracle.com/technetwork/middleware/soasuite/overview/index.html">
+</a></strong></p>
+
+
+
+
+<p>&nbsp;</p>
+
+]]></content>
+  </entry>
+  
+</feed>

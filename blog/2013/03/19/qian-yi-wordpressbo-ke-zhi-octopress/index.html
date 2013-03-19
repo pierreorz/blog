@@ -1,0 +1,412 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>迁移WordPress博客至Octopress - 邓德昭的技术博客</title>
+  <meta name="author" content="pierreorz">
+
+  
+  <meta name="description" content="安装GIT 1
+yum -y install git 安装RVM需要的包 1
+sudo yum install bash curl patch 安装RVM 1
+curl -L https://get.rvm.io | bash -s stable --ruby 安装Ruby需要的包 1
+sudo &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://pierreorz.github.com/dengdezhao/blog/2013/03/19/qian-yi-wordpressbo-ke-zhi-octopress">
+  <link href="/dengdezhao/favicon.png" rel="icon">
+  <link href="/dengdezhao/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/dengdezhao/atom.xml" rel="alternate" title="邓德昭的技术博客" type="application/atom+xml">
+  <script src="/dengdezhao/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/dengdezhao/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/dengdezhao/">邓德昭的技术博客</a></h1>
+  
+    <h2>最大的懦弱，不是畏葸不前，而是安于现状</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/dengdezhao/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:pierreorz.github.com/dengdezhao" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/dengdezhao/">博客主页</a></li>
+  <li><a href="/dengdezhao/blog/archives">文章列表</a></li>
+  <li><a href="/dengdezhao/tag">标签云</a></li>
+  <li><a href="/dengdezhao/about">关于</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">迁移WordPress博客至Octopress</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-19T22:32:00+08:00" pubdate data-updated="true">Mar 19<span>th</span>, 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h4>安装GIT</h4>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">yum</span> <span class="o">-</span><span class="n">y</span> <span class="n">install</span> <span class="n">git</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>安装RVM需要的包</h4>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">sudo</span> <span class="n">yum</span> <span class="n">install</span> <span class="n">bash</span> <span class="n">curl</span> <span class="n">patch</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>安装RVM</h4>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">curl</span> <span class="o">-</span><span class="n">L</span> <span class="nl">https:</span><span class="c1">//get.rvm.io | bash -s stable --ruby</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>安装Ruby需要的包</h4>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">sudo</span> <span class="n">yum</span> <span class="n">install</span> <span class="n">gcc</span><span class="o">-</span><span class="n">c</span><span class="o">++</span> <span class="n">patch</span> <span class="n">readline</span> <span class="n">readline</span><span class="o">-</span><span class="n">devel</span> <span class="n">zlib</span> <span class="n">zlib</span><span class="o">-</span><span class="n">devel</span> <span class="n">libyaml</span><span class="o">-</span><span class="n">devel</span> <span class="n">libffi</span><span class="o">-</span><span class="n">devel</span> <span class="n">openssl</span><span class="o">-</span><span class="n">devel</span> <span class="n">make</span> <span class="n">bzip2</span> <span class="n">autoconf</span> <span class="n">automake</span> <span class="n">libtool</span> <span class="n">bison</span> <span class="n">iconv</span><span class="o">-</span><span class="n">devel</span> <span class="n">java</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>安装Ruby 1.9.3</h4>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">rvm</span> <span class="n">install</span> <span class="mf">1.9</span><span class="o">.</span><span class="mi">3</span>
+</span><span class='line'><span class="n">rvm</span> <span class="n">use</span> <span class="mf">1.9</span><span class="o">.</span><span class="mi">3</span>
+</span><span class='line'><span class="n">rvm</span> <span class="n">rubygems</span> <span class="n">latest</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>下载octopress</h4>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">git</span> <span class="n">clone</span> <span class="nl">git:</span><span class="c1">//github.com/imathis/octopress.git dengdezhao</span>
+</span><span class='line'><span class="n">cd</span> <span class="n">dengdezhao</span>
+</span><span class='line'><span class="n">ruby</span> <span class="o">--</span><span class="n">version</span>   <span class="o">*</span><span class="err">#应该显示</span><span class="mf">1.9</span><span class="o">.</span><span class="mi">3</span><span class="o">*</span>
+</span><span class='line'><span class="n">gem</span> <span class="n">install</span> <span class="n">bundler</span>
+</span><span class='line'><span class="n">bundle</span> <span class="n">install</span>
+</span><span class='line'><span class="n">rake</span> <span class="n">install</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>出现Warning:Insecure world writable dir</h4>
+
+<p>这个一般是由于权限的问题，我出现这个问题是因为是用ROOT安装的RVM，然后用其它用户访问，为了方便我直接把/usr/local目录权限设置为777，然后就弹出这个警告了，/usr/local目录很重要，不允许非owner访问，所以设置为755即可解决该问题。</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">sudo</span> <span class="n">chmod</span> <span class="o">-</span><span class="n">R</span> <span class="mi">755</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>将Wordpress数据导出为XML文件</h4>
+
+<p>进入Wordpress后台，将全站数据保存为XML文件，放在Octopress根目录下</p>
+
+<h4>下载迁移工具</h4>
+
+<p>https://gist.github.com/chitsaou/1394128  <br/>
+下载<strong>wordpressdotcom.rb</strong>放到Utils目录中，执行命令</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">ruby</span> <span class="o">-</span><span class="n">r</span> <span class="s">&quot;./utils/wordpressdotcom.rb&quot;</span> <span class="o">-</span><span class="n">e</span> <span class="s">&quot;Jekyll::WordpressDotCom.process&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>运行出错，需要安装hpricot</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">gem</span> <span class="n">install</span> <span class="n">hpricot</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>安装成功之后再执行上面的迁移命令，即可把wordpress中的文章导入到octopress的source/_posts中了</p>
+
+<h4>修改文章图片链接</h4>
+
+<p>迁移过来的文章中图片链接可能不大对，需要修改才能让图片显示正常，把原来wp-contents目录下uploads文件夹拷到相应路径下，替换掉文件中的静态地址为图片地址即可避免点击图片时出现404错误。<br/>
+批量替换命令：</p>
+
+<h4>修改页面名字及新增[标签云]&amp;[关于]页面</h4>
+
+<p>修改navigation.html
+<section>
+vi source/_includes/custom/navigation.html
+</section>
+给各页面修改个性化名字，并新增两个页面</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="n">ul</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;main-navigation&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="n">li</span><span class="o">&gt;&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;/&quot;</span><span class="o">&gt;</span><span class="err">博客主页</span><span class="o">&lt;</span><span class="sr">/a&gt;&lt;/</span><span class="n">li</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="n">li</span><span class="o">&gt;&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;/blog/archives&quot;</span><span class="o">&gt;</span><span class="err">文章列表</span><span class="o">&lt;</span><span class="sr">/a&gt;&lt;/</span><span class="n">li</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="n">li</span><span class="o">&gt;&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;/tag&quot;</span><span class="o">&gt;</span><span class="err">标签云</span><span class="o">&lt;</span><span class="sr">/a&gt;&lt;/</span><span class="n">li</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="n">li</span><span class="o">&gt;&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;/about&quot;</span><span class="o">&gt;</span><span class="err">关于</span><span class="o">&lt;</span><span class="sr">/a&gt;&lt;/</span><span class="n">li</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sr">/ul&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>创建tag&amp;about页</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">rake</span> <span class="n">new_page</span><span class="o">[</span><span class="n">tag</span><span class="o">]</span>
+</span><span class='line'><span class="n">rake</span> <span class="n">new_page</span><span class="o">[</span><span class="n">about</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>编辑页面内容，并下载配置标签云插件</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">git</span> <span class="nb">clone</span> <span class="ss">https</span><span class="p">:</span><span class="sr">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">robbyedwards</span><span class="o">/</span><span class="n">octopress</span><span class="o">-</span><span class="n">tag</span><span class="o">-</span><span class="n">pages</span><span class="o">.</span><span class="n">git</span>
+</span><span class='line'><span class="n">git</span> <span class="nb">clone</span> <span class="ss">https</span><span class="p">:</span><span class="sr">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">robbyedwards</span><span class="o">/</span><span class="n">octopress</span><span class="o">-</span><span class="n">tag</span><span class="o">-</span><span class="n">cloud</span><span class="o">.</span><span class="n">git</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>将下载的文件拷贝至相应目录，并在_config.yml中增加一行  <code>tag_dir: tags</code></p>
+
+<h4>生成静态页面及预览</h4>
+
+<p>以上操作完成之后，执行<code>rake generate</code>命令生成静态页面，然后<code>rake preview</code>，在浏览器中输入http://localhost:4000即可预览站点。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">pierreorz</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-19T22:32:00+08:00" pubdate data-updated="true">Mar 19<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/dengdezhao/blog/categories/octopress/'>octopress</a>
+  
+</span>
+
+
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://pierreorz.github.com/dengdezhao/blog/2013/03/19/qian-yi-wordpressbo-ke-zhi-octopress/" data-via="" data-counturl="http://pierreorz.github.com/dengdezhao/blog/2013/03/19/qian-yi-wordpressbo-ke-zhi-octopress/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/dengdezhao/blog/2013/03/19/use-javascript-in-oaf/" title="Previous Post: Use Javascript In Oaf">&laquo; Use Javascript In Oaf</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>分类目录</h1>
+  <ul id="categories">
+    <li class='category'><a href='/dengdezhao/blog/categories/adf/'>ADF (18)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/ebs/'>EBS (2)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/oaf/'>OAF (3)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/oracle/'>Oracle (7)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/soa/'>SOA (2)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/sinaappengine/'>SinaAppEngine (1)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/forms/'>forms (1)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/java/'>java (1)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/linux/'>linux (2)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/octopress/'>octopress (1)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/others/'>others (1)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/weblogic/'>weblogic (1)</a></li>
+<li class='category'><a href='/dengdezhao/blog/categories/wordpress/'>wordpress (1)</a></li>
+
+  </ul>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/dengdezhao/blog/2013/03/19/qian-yi-wordpressbo-ke-zhi-octopress/">迁移WordPress博客至Octopress</a>
+      </li>
+    
+      <li class="post">
+        <a href="/dengdezhao/blog/2013/03/19/use-javascript-in-oaf/">Use Javascript In Oaf</a>
+      </li>
+    
+      <li class="post">
+        <a href="/dengdezhao/blog/2013/01/31/solvedlong-mode-not-supported-rebooting-press-any-key-to-reboot/">[SOLVED]Long mode not supported, rebooting Press any key to reboot</a>
+      </li>
+    
+      <li class="post">
+        <a href="/dengdezhao/blog/2013/01/30/firefox%E5%8D%87%E7%BA%A718%E4%B9%8B%E5%90%8Eautoproxy%E5%A4%B1%E6%95%88goagent%E6%97%A0%E6%B3%95%E4%BD%BF%E7%94%A8%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/">firefox升级18之后,autoproxy失效,goagent无法使用问题解决</a>
+      </li>
+    
+      <li class="post">
+        <a href="/dengdezhao/blog/2013/01/15/%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85ebs-r12/">虚拟机环境RHEL6.3安装EBS R12</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+<section>
+  <h2>友情链接</h2>
+  <a href="http://www.liqifa.cn">[小分号]</a><br/>
+  <a href="http://www.fmw007.com">[梦想左岸]</a<br/>
+</setion>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - pierreorz -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'adfkf';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://pierreorz.github.com/dengdezhao/blog/2013/03/19/qian-yi-wordpressbo-ke-zhi-octopress/';
+        var disqus_url = 'http://pierreorz.github.com/dengdezhao/blog/2013/03/19/qian-yi-wordpressbo-ke-zhi-octopress/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
