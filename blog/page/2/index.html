@@ -700,19 +700,25 @@ VO的rangeSize 默认是25，<br />
   <a href="http://www.fmw007.com">[梦想左岸]</a><br/>
 </setion>
 <section>
-<h1>新浪微博</h1>
-<ul id="weibo">
-<li>
-<iframe
-width="100%"
-height="550"
-class="share_self"
-frameborder="0"
-scrolling="no"
-src="http://widget.weibo.com/weiboshow/index.php?width=0&height=550&ptype=1&speed=0&skin=&isTitle=0&noborder=1&isWeibo=1&isFans=&uid=1774817797&verifier=75ee09e4">
-</iframe>
-</li>
-</ul>
+ <p>
+<a  id="hover_pop" href="http://weibo.com/49gg"  wb_user_id="1774817797" >49gg@weibo<span id="wb_follow_btn"> </a>
+  </p>
+  <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=1166443256" type="text/javascript"> </script>
+  <script type="text/javascript">
+  WB2.anyWhere(function(W){
+      W.widget.hoverCard({
+          id: "hover_pop"
+          });
+
+
+      W.widget.followButton({
+      //uid: '1769520197',
+      uid: '1774817797',
+      id: "wb_follow_btn"
+        });
+      });
+
+  </script>
 </section>
 
   
