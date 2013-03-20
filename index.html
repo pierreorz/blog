@@ -9,11 +9,14 @@
   <meta name="author" content="pierreorz">
 
   
-  <meta name="description" content="安装GIT 1
-yum -y install git 安装RVM需要的包 1
-sudo yum install bash curl patch 安装RVM 1
-curl -L https://get.rvm.io | bash -s stable --ruby 安装Ruby需要的包 1
-sudo &hellip;">
+  <meta name="description" content="使用JavaMail发送邮件时，邮件主题以及发件人中有中文字符时出现乱码 邮件正文正常。 尝试对中文字符串进行转码： 1
+2
+3
+4
+5
+6
+7
+8 public String encode(String str) { sun.misc.BASE64Encoder enc = new sun. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -71,6 +74,80 @@ sudo &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/03/20/javamailfa-song-you-jian-zhong-wen-luan-ma/">JavaMail发送邮件中文乱码</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-20T16:21:00+08:00" pubdate data-updated="true">Mar 20<span>th</span>, 2013</time>
+        
+         | <a href="/blog/2013/03/20/javamailfa-song-you-jian-zhong-wen-luan-ma/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>使用JavaMail发送邮件时，邮件主题以及发件人中有中文字符时出现乱码</p>
+
+<p>邮件正文正常。</p>
+
+<p>尝试对中文字符串进行转码：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'>    <span class="kd">public</span> <span class="n">String</span> <span class="nf">encode</span><span class="o">(</span><span class="n">String</span> <span class="n">str</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">sun</span><span class="o">.</span><span class="na">misc</span><span class="o">.</span><span class="na">BASE64Encoder</span> <span class="n">enc</span> <span class="o">=</span> <span class="k">new</span> <span class="n">sun</span><span class="o">.</span><span class="na">misc</span><span class="o">.</span><span class="na">BASE64Encoder</span><span class="o">();</span>
+</span><span class='line'>        <span class="k">try</span> <span class="o">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="s">&quot;=?UTF-8?B?&quot;</span> <span class="o">+</span> <span class="n">enc</span><span class="o">.</span><span class="na">encode</span><span class="o">(</span><span class="n">str</span><span class="o">.</span><span class="na">getBytes</span><span class="o">(</span><span class="s">&quot;UTF-8&quot;</span><span class="o">))</span> <span class="o">+</span> <span class="s">&quot;?=&quot;</span><span class="o">;</span>
+</span><span class='line'>        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">UnsupportedEncodingException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="s">&quot;UnsupportedEncodingException&quot;</span><span class="o">;</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>测试发送之后返回<code>邮件主题</code>内容仍然是乱码</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">=?</span><span class="n">UTF</span><span class="o">-</span><span class="mi">8</span><span class="o">?</span><span class="n">B</span><span class="o">?</span><span class="n">WzIwMTMtMDMtMTld5pyq5qOA5pyq5Lqk5pWw5o2uLOaAu</span><span class="o">+</span><span class="n">ijhei9pumXtOaVhemanOi9puWBnOi9</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>通过返回字符串<code>=?UTF-8?B?</code>得知已经转码成功，但为啥邮件主题仍然乱码？百思不得其解。然后突然发现之前另外一个邮件发送功能调用相同的代码显示是正常的，推测乱码可能跟主题字符串的内容有关。</p>
+
+<p>经过反复测试，终于找到乱码原因，结果令人大跌眼镜~！</p>
+
+<p><strong>原来这个版本的JavaMail对邮件主题有长度限制，超过大约15个中文字符就会显示乱码！</strong></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -958,64 +1035,6 @@ cron:
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/12/03/ora-1222%EF%BC%9Atnsno-such-protocol-adapter-%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/">ORA-1222：TNS:no Such Protocol Adapter 问题解决</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-03T00:00:00+08:00" pubdate data-updated="true">Dec 3<span>rd</span>, 2012</time>
-        
-         | <a href="/blog/2012/12/03/ora-1222%EF%BC%9Atnsno-such-protocol-adapter-%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>机器上安装的是instantOracleclient-basic-win32-11.2.0.1.0客户端，本来使用PLSQL developer是可以正常连接数据库的；</p>
-
-<p>后来开发需求装上了Form6<em>i，</em>发现连接数据库时弹出来ORA-1222：TNS:no such protocol adapter这个错误；</p>
-
-<p>解决方案：</p>
-
-<p><strong>1.配置PL/SQL Developer -&gt; Preferences ，OracleHome设置为Form6i的路径；</strong></p>
-
-<p>﻿<a rel="attachment wp-att-188" href="http://www.dengdezhao.cn/wp-content/uploads/2012/12/p1-300x249.jpg"><img class="alignnone size-medium wp-image-188" title="p1" src="http://www.dengdezhao.cn/wp-content/uploads/2012/12/p1-300x249.jpg" alt="" width="300" height="249" /></a></p>
-
-<p><strong>2.我的电脑 -&gt; 用户变量 设置ORACLE_HOME 为Form6i路径</strong></p>
-
-<p><strong><a rel="attachment wp-att-189" href="http://www.dengdezhao.cn/wp-content/uploads/2012/12/p2-276x300.jpg"><img class="alignnone size-medium wp-image-189" title="p2" src="http://www.dengdezhao.cn/wp-content/uploads/2012/12/p2-276x300.jpg" alt="" width="276" height="300" /></a></strong></p>
-
-<p><strong>或者可以直接编辑注册表，修改oracle_home的值为[Form安装的HOME文件夹]/[oracle客户端文件夹]；</strong></p>
-
-<p><strong>如果需要切换按以上步骤修改oracle_home再重启PLSQL Developer即可以正常连接数据库；
-</strong></p>
-
-<p><em>
-</em></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1050,6 +1069,10 @@ cron:
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/03/20/javamailfa-song-you-jian-zhong-wen-luan-ma/">JavaMail发送邮件中文乱码</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/03/19/qian-yi-wordpressbo-ke-zhi-octopress/">迁移WordPress博客至Octopress</a>
       </li>
     
@@ -1063,10 +1086,6 @@ cron:
     
       <li class="post">
         <a href="/blog/2013/01/30/firefox%E5%8D%87%E7%BA%A718%E4%B9%8B%E5%90%8Eautoproxy%E5%A4%B1%E6%95%88goagent%E6%97%A0%E6%B3%95%E4%BD%BF%E7%94%A8%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/">firefox升级18之后,autoproxy失效,goagent无法使用问题解决</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/01/15/%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85ebs-r12/">虚拟机环境RHEL6.3安装EBS R12</a>
       </li>
     
   </ul>
@@ -1090,6 +1109,10 @@ cron:
   Copyright &copy; 2013 - pierreorz -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
+<a title="Web Analytics" href="http://clicky.com/100592601"><img alt="Web Analytics" src="//static.getclicky.com/media/links/badge.gif" border="0" /></a>
+<script src="//static.getclicky.com/js" type="text/javascript"></script>
+<script type="text/javascript">try{ clicky.init(100592601); }catch(e){}</script>
+<noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/100592601ns.gif" /></p></noscript>
 
 </footer>
   

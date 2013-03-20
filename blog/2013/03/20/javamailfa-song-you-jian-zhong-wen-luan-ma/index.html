@@ -5,13 +5,18 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>邓德昭的技术博客</title>
+  <title>JavaMail发送邮件中文乱码 - 邓德昭的技术博客</title>
   <meta name="author" content="pierreorz">
 
   
-  <meta name="description" content="ADF应用debug模式下最常出现的问题就是远程发布失败了。控制台打印的错误信息如下：
-[07:21:55 PM] #### Deployment incomplete. ####
-[07:21:55 PM] Remote deployment failed (oracle.jdevimpl. &hellip;">
+  <meta name="description" content="使用JavaMail发送邮件时，邮件主题以及发件人中有中文字符时出现乱码 邮件正文正常。 尝试对中文字符串进行转码： 1
+2
+3
+4
+5
+6
+7
+8 public String encode(String str) { sun.misc.BASE64Encoder enc = new sun. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -20,7 +25,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.dengdezhao.cn/blog/page/5">
+  <link rel="canonical" href="http://www.dengdezhao.cn/blog/2013/03/20/javamailfa-song-you-jian-zhong-wen-luan-ma">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/dengdezhao/atom.xml" rel="alternate" title="邓德昭的技术博客" type="application/atom+xml">
@@ -67,15 +72,12 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2011/06/28/adf%E5%BA%94%E7%94%A8%E2%80%9Cremote-deployment-failed%E2%80%9D%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/">ADF应用“Remote Deployment Failed”错误解决</a></h1>
+      <h1 class="entry-title">JavaMail发送邮件中文乱码</h1>
     
     
       <p class="meta">
@@ -91,49 +93,63 @@
   
 
 
-<time datetime="2011-06-28T00:00:00+08:00" pubdate data-updated="true">Jun 28<span>th</span>, 2011</time>
+<time datetime="2013-03-20T16:21:00+08:00" pubdate data-updated="true">Mar 20<span>th</span>, 2013</time>
         
-         | <a href="/blog/2011/06/28/adf%E5%BA%94%E7%94%A8%E2%80%9Cremote-deployment-failed%E2%80%9D%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/#disqus_thread">Comments</a>
+         | <a href="#disqus_thread">Comments</a>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>ADF应用debug模式下最常出现的问题就是远程发布失败了。控制台打印的错误信息如下：
-<pre class="brush:plain">[07:21:55 PM] ####  Deployment incomplete.  ####
-[07:21:55 PM] Remote deployment failed (oracle.jdevimpl.deploy.common.Jsr88RemoteDeployer)
-#### Cannot run application XXX due to error deploying to IntegratedWebLogicServer.
-[Application XXX stopped and undeployed from Server Instance IntegratedWebLogicServer]
-&lt;Logger&gt;&lt;error&gt; ServletContainerAdapter manager not initialized correctly.</pre>
-解决方法有两种：</p>
+<div class="entry-content"><p>使用JavaMail发送邮件时，邮件主题以及发件人中有中文字符时出现乱码</p>
 
-<p>方法一：进入weblogic控制台<span style="color: #0000ff;">http://127.0.0.1:7101/console</span>
-<pre class="brush:plain">用户名：weblogic
-密 码：weblogic1</pre>
-此时控制面板的左上区域应该会有两个按钮“<span style="color: #0000ff;">激活更改</span>”，“<span style="color: #0000ff;">撤销所有更改</span>”，点击任一按钮皆可，然后重新debug，问题解决。</p>
+<p>邮件正文正常。</p>
 
-<p>方法二：查看控制台信息，找到类似于“<span style="color: #0000ff;">C:\Documents and Settings\Administrator\Application Data\JDeveloper\system11.1.1.3.37.56.60\o.j2ee\drs\</span>”的路径（这个路径跟你jdeveloper安装路径相关，system目录后的数字也是不同的）。进入到drs目录下，清空所有内容。重新debug，问题解决。</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2011/06/28/adf%E5%BA%94%E7%94%A8%E2%80%9Cremote-deployment-failed%E2%80%9D%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/">Read on &rarr;</a>
-    </footer>
-  
+<p>尝试对中文字符串进行转码：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'>    <span class="kd">public</span> <span class="n">String</span> <span class="nf">encode</span><span class="o">(</span><span class="n">String</span> <span class="n">str</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">sun</span><span class="o">.</span><span class="na">misc</span><span class="o">.</span><span class="na">BASE64Encoder</span> <span class="n">enc</span> <span class="o">=</span> <span class="k">new</span> <span class="n">sun</span><span class="o">.</span><span class="na">misc</span><span class="o">.</span><span class="na">BASE64Encoder</span><span class="o">();</span>
+</span><span class='line'>        <span class="k">try</span> <span class="o">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="s">&quot;=?UTF-8?B?&quot;</span> <span class="o">+</span> <span class="n">enc</span><span class="o">.</span><span class="na">encode</span><span class="o">(</span><span class="n">str</span><span class="o">.</span><span class="na">getBytes</span><span class="o">(</span><span class="s">&quot;UTF-8&quot;</span><span class="o">))</span> <span class="o">+</span> <span class="s">&quot;?=&quot;</span><span class="o">;</span>
+</span><span class='line'>        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">UnsupportedEncodingException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="s">&quot;UnsupportedEncodingException&quot;</span><span class="o">;</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
-    </article>
-  
-  
-    <article>
+<p>测试发送之后返回<code>邮件主题</code>内容仍然是乱码</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">=?</span><span class="n">UTF</span><span class="o">-</span><span class="mi">8</span><span class="o">?</span><span class="n">B</span><span class="o">?</span><span class="n">WzIwMTMtMDMtMTld5pyq5qOA5pyq5Lqk5pWw5o2uLOaAu</span><span class="o">+</span><span class="n">ijhei9pumXtOaVhemanOi9puWBnOi9</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>通过返回字符串<code>=?UTF-8?B?</code>得知已经转码成功，但为啥邮件主题仍然乱码？百思不得其解。然后突然发现之前另外一个邮件发送功能调用相同的代码显示是正常的，推测乱码可能跟主题字符串的内容有关。</p>
+
+<p>经过反复测试，终于找到乱码原因，结果令人大跌眼镜~！</p>
+
+<p><strong>原来这个版本的JavaMail对邮件主题有长度限制，超过大约15个中文字符就会显示乱码！</strong></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2011/06/27/%E5%AE%9A%E5%88%B6adf%E5%BA%94%E7%94%A8%E7%9A%84css/">定制ADF应用的CSS</a></h1>
-    
-    
-      <p class="meta">
-        
+  
+
+<span class="byline author vcard">Posted by <span class="fn">pierreorz</span></span>
+
+      
 
 
 
@@ -145,75 +161,41 @@
   
 
 
-<time datetime="2011-06-27T00:00:00+08:00" pubdate data-updated="true">Jun 27<span>th</span>, 2011</time>
-        
-         | <a href="/blog/2011/06/27/%E5%AE%9A%E5%88%B6adf%E5%BA%94%E7%94%A8%E7%9A%84css/#disqus_thread">Comments</a>
-        
-      </p>
+<time datetime="2013-03-20T16:21:00+08:00" pubdate data-updated="true">Mar 20<span>th</span>, 2013</time>
+      
+
+
+      
+
+
+    </p>
     
-  </header>
-
-
-  <div class="entry-content"><p>客户的要求总是各种变态，如果需要定制默认的控件样式的话，那么以下的文章可能会对你有帮助。</p>
-
-<p>Step.1 首先我们需要定义自己的CSS文件 <span style="color: #0000ff;">CustomSkin.css</span>
-<pre class="brush:css">af|inputListOfValues::search-icon-style{
-  background-image:none;
-}</pre></p>
-
-<p>af|inputListOfValues::search-icon-style:hover{<br />
-  background-image:none;<br />
-}
-af|inputListOfValues::search-icon-style:active{<br />
-  background-image:none;<br />
-}
-af|inputListOfValues::search-icon-style:info{<br />
-  background-image:none;<br />
-}
-Step.2 接着创建 <span style="color: #0000ff;">trinidad-skins.xml</span>
-<pre class="brush:xml">&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;
-&lt;skins xmlns="http://myfaces.apache.org/trinidad/skin"&gt;
-  &lt;skin&gt;
-    &lt;id&gt;customSkin.desktop&lt;/id&gt;
-    &lt;family&gt;CustomSkin&lt;/family&gt;
-    &lt;extends&gt;blafplus-rich.desktop&lt;/extends&gt;
-    &lt;render-kit-id&gt;org.apache.myfaces.trinidad.desktop&lt;/render-kit-id&gt;
-    &lt;style-sheet-name&gt;css/CustomSkin.css&lt;/style-sheet-name&gt;
-  &lt;/skin&gt;
-&lt;/skins&gt;</pre>
-Step.3 修改 <span style="color: #0000ff;">trinidad-config.xml</span>
-<pre class="brush:xml"> &lt;skin-family&gt;CustomSkin&lt;/skin-family&gt;</pre>
-Step.4 修改<span style="color: #0000ff;">web.xml</span>
-<pre class="brush:xml">&lt;context-param&gt;
-    &lt;description&gt;If this parameter is true, there will be an automatic check of the modification date of your JSPs, and saved state will be discarded when JSP's change. It will also automatically check if your skinning css files have changed without you having to restart the server. This makes development easier, but adds overhead. For this reason this parameter should be set to false when your application is deployed.&lt;/description&gt;
-    &lt;param-name&gt;org.apache.myfaces.trinidad.CHECK_FILE_MODIFICATION&lt;/param-name&gt;
-    &lt;param-value&gt;true&lt;/param-value&gt;
-  &lt;/context-param&gt;</pre></p>
-
-<p>&lt;context-param&gt;<br />
-    &lt;description&gt;No obfuscation of CSS.&lt;/description&gt;<br />
-    &lt;param-name&gt;org.apache.myfaces.trinidad.DISABLE_CONTENT_COMPRESSION&lt;/param-name&gt;<br />
-    &lt;param-value&gt;true&lt;/param-value&gt;<br />
-  &lt;/context-param&gt;
-重启下应用就会发现控件样式已经采用自定义CSS文件里的样式了！<span style="color: #0000ff;">
-</span></p>
-
-<p>&nbsp;</p>
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.dengdezhao.cn/blog/2013/03/20/javamailfa-song-you-jian-zhong-wen-luan-ma/" data-via="" data-counturl="http://www.dengdezhao.cn/blog/2013/03/20/javamailfa-song-you-jian-zhong-wen-luan-ma/" >Tweet</a>
+  
+  
+  
 </div>
-  
-  
 
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/03/19/qian-yi-wordpressbo-ke-zhi-octopress/" title="Previous Post: 迁移WordPress博客至Octopress">&laquo; 迁移WordPress博客至Octopress</a>
+      
+      
+    </p>
+  </footer>
+</article>
 
-    </article>
-  
-  <div class="pagination">
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-    <a class="next" href="/blog/page/4/">Newer &rarr;</a>
-    
-  </div>
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
+  </section>
+
+</div>
+
 <aside class="sidebar">
   
     <section>
@@ -274,6 +256,7 @@ Step.4 修改<span style="color: #0000ff;">web.xml</span>
   
 </aside>
 
+
     </div>
   </div>
   <footer role="contentinfo"><p>
@@ -292,7 +275,10 @@ Step.4 修改<span style="color: #0000ff;">web.xml</span>
       var disqus_shortname = 'adfkf';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://www.dengdezhao.cn/blog/2013/03/20/javamailfa-song-you-jian-zhong-wen-luan-ma/';
+        var disqus_url = 'http://www.dengdezhao.cn/blog/2013/03/20/javamailfa-song-you-jian-zhong-wen-luan-ma/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
