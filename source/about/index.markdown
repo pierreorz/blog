@@ -38,6 +38,6 @@ X+++ R+ tv b+ DI- D-- G++ e++ h+ r y+
 
 >2013-03-12 绑定域名*dengdezhao.cn*
 >
->2013-03-09 从*WordPresst*迁移至*Octopress*
+>2013-03-09 从*WordPress*迁移至*Octopress*
 >
 >2011-05-25 *adfkf.com* 基于*wordpress*搭建
