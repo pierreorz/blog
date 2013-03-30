@@ -4,7 +4,7 @@
   <title><![CDATA[邓德昭的技术博客]]></title>
   <link href="http://www.dengdezhao.cn/atom.xml" rel="self"/>
   <link href="http://www.dengdezhao.cn/"/>
-  <updated>2013-03-21T21:59:27+08:00</updated>
+  <updated>2013-03-30T12:32:54+08:00</updated>
   <id>http://www.dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
@@ -153,16 +153,18 @@
 
 <h4>修改文章图片链接</h4>
 
-<p>迁移过来的文章中图片链接可能不大对，需要修改才能让图片显示正常，把原来wp-contents目录下uploads文件夹拷到相应路径下，替换掉文件中的静态地址为图片地址即可避免点击图片时出现404错误。<br/>
-批量替换命令：</p>
+<p>迁移过来的文章中图片链接可能不大对，需要修改才能让图片显示正常，把原来wp-contents目录下uploads文件夹拷到相应路径下，替换掉文件中的静态地址为图片地址即可避免点击图片时出现404错误。</p>
 
 <h4>修改页面名字及新增[标签云]&amp;[关于]页面</h4>
 
-<p>修改navigation.html
-<section>
-vi source/_includes/custom/navigation.html
-</section>
-给各页面修改个性化名字，并新增两个页面</p>
+<p>修改navigation.html</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">vi</span> <span class="n">source</span><span class="o">/</span><span class="n">_includes</span><span class="o">/</span><span class="n">custom</span><span class="o">/</span><span class="n">navigation</span><span class="o">.</span><span class="na">html</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>给各页面修改个性化名字，并新增两个页面</p>
 
 <figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
