@@ -9,14 +9,10 @@
   <meta name="author" content="pierreorz">
 
   
-  <meta name="description" content="使用JavaMail发送邮件时，邮件主题以及发件人中有中文字符时出现乱码 邮件正文正常。 尝试对中文字符串进行转码： 1
+  <meta name="description" content="本文适合木有高配机却不得不在JDEV下开发的屌丝程序员 先来了解下Jdev的两个配置文件 1
 2
-3
-4
-5
-6
-7
-8 public String encode(String str) { sun.misc.BASE64Encoder enc = new sun. &hellip;">
+E:\Oracle\Middleware11.1.2.3.0\jdeveloper\ide\bin\ide.conf
+E:\Oracle\Middleware11.1.2.3.0\jdeveloper &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +70,90 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/04/04/jdeveloperyun-xing-su-du-you-hua/">Jdeveloper运行速度优化</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-04T17:41:00+08:00" pubdate data-updated="true">Apr 4<span>th</span>, 2013</time>
+        
+         | <a href="/blog/2013/04/04/jdeveloperyun-xing-su-du-you-hua/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4><em>本文适合木有高配机却不得不在JDEV下开发的屌丝程序员</em></h4>
+
+<h4>先来了解下Jdev的两个配置文件</h4>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nl">E:</span><span class="err">\</span><span class="n">Oracle</span><span class="err">\</span><span class="n">Middleware11</span><span class="o">.</span><span class="mf">1.2</span><span class="o">.</span><span class="mf">3.0</span><span class="err">\</span><span class="n">jdeveloper</span><span class="err">\</span><span class="n">ide</span><span class="err">\</span><span class="n">bin</span><span class="err">\</span><span class="n">ide</span><span class="o">.</span><span class="na">conf</span>
+</span><span class='line'><span class="nl">E:</span><span class="err">\</span><span class="n">Oracle</span><span class="err">\</span><span class="n">Middleware11</span><span class="o">.</span><span class="mf">1.2</span><span class="o">.</span><span class="mf">3.0</span><span class="err">\</span><span class="n">jdeveloper</span><span class="err">\</span><span class="n">jdev</span><span class="err">\</span><span class="n">bin</span><span class="err">\</span><span class="n">jdev</span><span class="o">.</span><span class="na">conf</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>几个关键参数：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">AddVMOption</span>  <span class="o">-</span><span class="n">Xmx</span>        <span class="c1">//堆大小的最大值，在机器物理内存允许的基础上该值越大越好</span>
+</span><span class='line'><span class="n">AddVMOption</span>  <span class="o">-</span><span class="n">Xms</span>        <span class="c1">//堆大小的初始值（默认给个128差不多）</span>
+</span><span class='line'><span class="n">AddVMOption</span>  <span class="o">-</span><span class="nl">XX:</span><span class="n">MaxPermSize</span> <span class="c1">//PermGen大小，太小会报OutOfMemoryError错误  </span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这几个参数设置得不合适的话JDEV会无法启动并报以下错误：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">Unable</span> <span class="n">to</span> <span class="n">create</span> <span class="n">an</span> <span class="n">instance</span> <span class="n">of</span> <span class="n">the</span> <span class="n">Java</span> <span class="n">Virtual</span> <span class="n">Machine</span> <span class="n">Located</span> <span class="n">at</span> <span class="nl">path:</span>
+</span><span class='line'><span class="nl">E:</span><span class="err">\</span><span class="n">Oracle</span><span class="err">\</span><span class="n">Middleware11</span><span class="o">.</span><span class="mf">1.2</span><span class="o">.</span><span class="mf">3.0</span><span class="err">\</span><span class="n">jdk160_24</span><span class="err">\</span><span class="n">jre</span><span class="err">\</span><span class="n">bin</span><span class="err">\</span><span class="n">client</span><span class="err">\</span><span class="n">jvm</span><span class="o">.</span><span class="na">dll</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>好了~，我们现在需要做的就是将这几个参数的值设置得适合它的大小，以便JDEV运行得到最佳性能</p>
+
+<p>因为我的机器是32位系统WIN2003 6G内存，系统吃掉2G左右，可用内存不到4G
+而32位的JDK最大好像也只能申请1.5G左右,所以在我这机器中Jdev能分配到1G内存就差不多了</p>
+
+<p>先随意设置以上三个参数值，将JDEV能够运行起来，然后使用JDK自带的工具来监控下内存情况
+E:\Oracle\Middleware11.1.2.3.0\jdk160_24\bin\jvisualvm.exe
+<img src="http://www.dengdezhao.cn/wp-content/uploads/20130404.jpg" alt="" /></p>
+
+<p>根据图中<strong>堆</strong>及<strong>PermGen</strong>中显示使用大小调整三个参数值。
+发现在不断操作JDev时PermGen始终维持在128左右不到256的样子，
+所以设置-XX:MaxPermSize值为<code>AddVMOption  -XX:MaxPermSize=256M</code>
+-Xms值为<code>AddVMOption  -Xms128M</code>
+通过不断测试最终调整-Xmx值为<code>AddVMOption  -Xmx896M</code></p>
+
+<p>若在运行中出现OutOfMemoryError错误再根据信息慢慢调整。当然最好还是升级机器配置换成64位的系统及JDK就没有内存限制啦！~</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -951,92 +1031,6 @@ $cp .bash_profile .app</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/12/14/%E6%96%B0%E6%B5%AA%E5%85%A5%E9%97%A8%E5%BA%94%E7%94%A8%E4%B9%8B-%E5%A4%A7%E7%AC%A8%E9%92%9F/">新浪入门应用之&#8212;大笨钟</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-14T00:00:00+08:00" pubdate data-updated="true">Dec 14<span>th</span>, 2012</time>
-        
-         | <a href="/blog/2012/12/14/%E6%96%B0%E6%B5%AA%E5%85%A5%E9%97%A8%E5%BA%94%E7%94%A8%E4%B9%8B-%E5%A4%A7%E7%AC%A8%E9%92%9F/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>昨日突然对SAE平台产生了兴趣，于是花了一晚上时间，写了个定点发微博的小应用，也算是了解了下SAE平台的开发流程，以下烂笔头纯粹为方便菜鸟学习，老鸟勿笑。</p>
-
-<p>之前玩过豆瓣，里面有个有名的“大笨钟”，每到整点便会发个状态“咚”几声以报时，虽然用处不大，但因其一直准点报时也吸引了不少粉丝关注，所以想自己做个类似的功能定时发微博报时。</p>
-
-<p>于是，看了看SAE的介绍，注册了个开发者账号，新建应用“thebigbenclock&#8221;；</p>
-
-<p>在E盘创建个同名文件夹E:\thebigbenclock</p>
-
-<p>右建checkout出应用代码https://svn.sinaapp.com/thebigbenclock,确保SVN可以正常连接；</p>
-
-<p>进入SAE平台，找到代码仓库中的框架“新浪微博OAuth框架&#8221;，将此框架下载到应用中，并创建版本</p>
-
-<p>然后再checkout应用，便可以将“新浪微博OAuth框架&#8221;的代码取到本地文件夹下了；</p>
-
-<p><a rel="attachment wp-att-195" href="http://www.dengdezhao.cn/wp-content/uploads/2012/12/tt-300x87.jpg"><img class="alignnone size-medium wp-image-195" title="tt" src="http://www.dengdezhao.cn/wp-content/uploads/2012/12/tt-300x87.jpg" alt="" width="554" height="160" /></a></p>
-
-<p>注意，默认版本为1，会新建一个名为“1”的子文件夹。修改config.php，填上APP key , App Sercet 及 WB_CALLBACK_URL。</p>
-
-<p>修改weibolist.php，添加以下代码：
-<pre class="brush:php">    $c = new SaeTClientV2( '3987019479' , '1eaa0834c410537aaef2759ffffffd9' , '<span style="color: #ff0000;">2.00VLxGwBntHp2E04c5f9ad08eyNJFC</span>');
-    $ms  = $c-&gt;home_timeline(); // done
-    $uid_get = $c-&gt;get_uid();
-    $uid = $uid_get['uid'];
-    $user_message = $c-&gt;show_user_by_id( $uid);//根据ID获取用户等基本信息
-    $dateString=date("Y-m-d H:i:s");   //获取当前时间；
-    $hours=substr($dateString,11,2);</pre></p>
-
-<p>    $outString=&#8217;咚!&#8217;;<br />
-    for ($a=1;$a&lt;$hours;$a++){<br />
-        $outString=$outString.&#8217;咚!&#8217;;<br />
-      }</p>
-
-<p>    $ret = $c-&gt;update($dateString.$outString );	//发送微博
-上图中access_token，需要根据测试账号预先生成。</p>
-
-<p>配置config.yaml文件如下：
-<pre class="brush:php">name: thebigbenclock
-version: 1
-accesskey: 3987019479
-cron:
-- description: cron test
-  url: /weibolist.php
-  schedule: every 1 hour,offset 0
-  timezone: Beijing</pre>
-打开应用即可在整点时发送微博
-<pre class="brush:css">2012-12-14 09:00:00咚!咚!咚!咚!咚!咚!咚!咚!咚!</pre>
-&nbsp;</p>
-
-<p>&nbsp;</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1058,6 +1052,7 @@ cron:
 <li class='category'><a href='/blog/categories/sinaappengine/'>SinaAppEngine (1)</a></li>
 <li class='category'><a href='/blog/categories/forms/'>forms (1)</a></li>
 <li class='category'><a href='/blog/categories/java/'>java (1)</a></li>
+<li class='category'><a href='/blog/categories/jdeveloper/'>jdeveloper (1)</a></li>
 <li class='category'><a href='/blog/categories/linux/'>linux (2)</a></li>
 <li class='category'><a href='/blog/categories/octopress/'>octopress (1)</a></li>
 <li class='category'><a href='/blog/categories/others/'>others (1)</a></li>
@@ -1069,6 +1064,10 @@ cron:
 <section>
   <h1>最新发表</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/04/04/jdeveloperyun-xing-su-du-you-hua/">Jdeveloper运行速度优化</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/03/20/javamailfa-song-you-jian-zhong-wen-luan-ma/">JavaMail发送邮件中文乱码</a>
@@ -1084,10 +1083,6 @@ cron:
     
       <li class="post">
         <a href="/blog/2013/01/31/solvedlong-mode-not-supported-rebooting-press-any-key-to-reboot/">[SOLVED]Long mode not supported, rebooting Press any key to reboot</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/01/30/firefox%E5%8D%87%E7%BA%A718%E4%B9%8B%E5%90%8Eautoproxy%E5%A4%B1%E6%95%88goagent%E6%97%A0%E6%B3%95%E4%BD%BF%E7%94%A8%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/">firefox升级18之后,autoproxy失效,goagent无法使用问题解决</a>
       </li>
     
   </ul>

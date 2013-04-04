@@ -5,11 +5,14 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>SOA suite 环境搭建 - 邓德昭的技术博客</title>
+  <title>Jdeveloper运行速度优化 - 邓德昭的技术博客</title>
   <meta name="author" content="pierreorz">
 
   
-  <meta name="description" content="好久没碰SOA，最近在win2003上准备搭建个环境玩玩。下载相关安装介质 http://www.oracle.com/technetwork/middleware/soasuite/downloads/index.html 1.Database 我用的是oracle 11G 2.Oracle &hellip;">
+  <meta name="description" content="本文适合木有高配机却不得不在JDEV下开发的屌丝程序员 先来了解下Jdev的两个配置文件 1
+2
+E:\Oracle\Middleware11.1.2.3.0\jdeveloper\ide\bin\ide.conf
+E:\Oracle\Middleware11.1.2.3.0\jdeveloper &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +21,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.dengdezhao.cn/blog/2012/09/29/soa-suite-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA">
+  <link rel="canonical" href="http://www.dengdezhao.cn/blog/2013/04/04/jdeveloperyun-xing-su-du-you-hua">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="邓德昭的技术博客" type="application/atom+xml">
@@ -70,7 +73,7 @@
   
   <header>
     
-      <h1 class="entry-title">SOA Suite 环境搭建</h1>
+      <h1 class="entry-title">Jdeveloper运行速度优化</h1>
     
     
       <p class="meta">
@@ -86,7 +89,7 @@
   
 
 
-<time datetime="2012-09-29T00:00:00+08:00" pubdate data-updated="true">Sep 29<span>th</span>, 2012</time>
+<time datetime="2013-04-04T17:41:00+08:00" pubdate data-updated="true">Apr 4<span>th</span>, 2013</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -95,24 +98,53 @@
   </header>
 
 
-<div class="entry-content"><p>好久没碰SOA，最近在win2003上准备搭建个环境玩玩。下载相关安装介质</p>
+<div class="entry-content"><h4><em>本文适合木有高配机却不得不在JDEV下开发的屌丝程序员</em></h4>
 
-<p>http://www.oracle.com/technetwork/middleware/soasuite/downloads/index.html</p>
+<h4>先来了解下Jdev的两个配置文件</h4>
 
-<p>1.<strong>Database</strong> 我用的是oracle 11G</p>
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nl">E:</span><span class="err">\</span><span class="n">Oracle</span><span class="err">\</span><span class="n">Middleware11</span><span class="o">.</span><span class="mf">1.2</span><span class="o">.</span><span class="mf">3.0</span><span class="err">\</span><span class="n">jdeveloper</span><span class="err">\</span><span class="n">ide</span><span class="err">\</span><span class="n">bin</span><span class="err">\</span><span class="n">ide</span><span class="o">.</span><span class="na">conf</span>
+</span><span class='line'><span class="nl">E:</span><span class="err">\</span><span class="n">Oracle</span><span class="err">\</span><span class="n">Middleware11</span><span class="o">.</span><span class="mf">1.2</span><span class="o">.</span><span class="mf">3.0</span><span class="err">\</span><span class="n">jdeveloper</span><span class="err">\</span><span class="n">jdev</span><span class="err">\</span><span class="n">bin</span><span class="err">\</span><span class="n">jdev</span><span class="o">.</span><span class="na">conf</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>2.<strong>Oracle WebLogic Server </strong>安装的是10.3.6.0</p>
 
-<p>3.<strong>Repository Creation Utility 11.1.1.6.0 </strong>解压缩下载的压缩包，运行/rcuHome/Bin/rcu.bat.执行安装</p>
+<p>几个关键参数：</p>
 
-<p>4.<strong>JDeveloper 11.1.1.6.0 </strong>安装开发工具JDEV，因自带weblogic是11.1.1.5.0安装时可能需要分开不要放在一个oracle主目录里。或者只安装JDEV也行</p>
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">AddVMOption</span>  <span class="o">-</span><span class="n">Xmx</span>        <span class="c1">//堆大小的最大值，在机器物理内存允许的基础上该值越大越好</span>
+</span><span class='line'><span class="n">AddVMOption</span>  <span class="o">-</span><span class="n">Xms</span>        <span class="c1">//堆大小的初始值（默认给个128差不多）</span>
+</span><span class='line'><span class="n">AddVMOption</span>  <span class="o">-</span><span class="nl">XX:</span><span class="n">MaxPermSize</span> <span class="c1">//PermGen大小，太小会报OutOfMemoryError错误  </span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>5.安装好JDEV后，更新<strong>SOA Extension for JDeveloper 11.1.1.6.0</strong>插件</p>
 
-<p>6.安装<strong>SOA Suite </strong>需要注意的是执行安装时要指定JRE目录-jreLoc &#8220;c:\java\jre&#8221;. <strong><a href="http://www.oracle.com/technetwork/middleware/soasuite/overview/index.html">
-</a></strong></p>
+<p>这几个参数设置得不合适的话JDEV会无法启动并报以下错误：</p>
 
-<p>&nbsp;</p>
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">Unable</span> <span class="n">to</span> <span class="n">create</span> <span class="n">an</span> <span class="n">instance</span> <span class="n">of</span> <span class="n">the</span> <span class="n">Java</span> <span class="n">Virtual</span> <span class="n">Machine</span> <span class="n">Located</span> <span class="n">at</span> <span class="nl">path:</span>
+</span><span class='line'><span class="nl">E:</span><span class="err">\</span><span class="n">Oracle</span><span class="err">\</span><span class="n">Middleware11</span><span class="o">.</span><span class="mf">1.2</span><span class="o">.</span><span class="mf">3.0</span><span class="err">\</span><span class="n">jdk160_24</span><span class="err">\</span><span class="n">jre</span><span class="err">\</span><span class="n">bin</span><span class="err">\</span><span class="n">client</span><span class="err">\</span><span class="n">jvm</span><span class="o">.</span><span class="na">dll</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>好了~，我们现在需要做的就是将这几个参数的值设置得适合它的大小，以便JDEV运行得到最佳性能</p>
+
+<p>因为我的机器是32位系统WIN2003 6G内存，系统吃掉2G左右，可用内存不到4G
+而32位的JDK最大好像也只能申请1.5G左右,所以在我这机器中Jdev能分配到1G内存就差不多了</p>
+
+<p>先随意设置以上三个参数值，将JDEV能够运行起来，然后使用JDK自带的工具来监控下内存情况
+E:\Oracle\Middleware11.1.2.3.0\jdk160_24\bin\jvisualvm.exe
+<img src="http://www.dengdezhao.cn/wp-content/uploads/20130404.jpg" alt="" /></p>
+
+<p>根据图中<strong>堆</strong>及<strong>PermGen</strong>中显示使用大小调整三个参数值。
+发现在不断操作JDev时PermGen始终维持在128左右不到256的样子，
+所以设置-XX:MaxPermSize值为<code>AddVMOption  -XX:MaxPermSize=256M</code>
+-Xms值为<code>AddVMOption  -Xms128M</code>
+通过不断测试最终调整-Xmx值为<code>AddVMOption  -Xmx896M</code></p>
+
+<p>若在运行中出现OutOfMemoryError错误再根据信息慢慢调整。当然最好还是升级机器配置换成64位的系统及JDK就没有内存限制啦！~</p>
 </div>
 
 
@@ -135,12 +167,12 @@
   
 
 
-<time datetime="2012-09-29T00:00:00+08:00" pubdate data-updated="true">Sep 29<span>th</span>, 2012</time>
+<time datetime="2013-04-04T17:41:00+08:00" pubdate data-updated="true">Apr 4<span>th</span>, 2013</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/soa/'>SOA</a>
+    <a class='category' href='/blog/categories/jdeveloper/'>jdeveloper</a>
   
 </span>
 
@@ -152,7 +184,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.dengdezhao.cn/blog/2012/09/29/soa-suite-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" data-via="" data-counturl="http://www.dengdezhao.cn/blog/2012/09/29/soa-suite-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.dengdezhao.cn/blog/2013/04/04/jdeveloperyun-xing-su-du-you-hua/" data-via="" data-counturl="http://www.dengdezhao.cn/blog/2013/04/04/jdeveloperyun-xing-su-du-you-hua/" >Tweet</a>
   
   
   
@@ -161,10 +193,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2012/09/20/ebs-%E5%B9%B6%E5%8F%91%E8%AF%B7%E6%B1%82%E8%B0%83%E7%94%A8sql%E6%97%B6%EF%BC%8C%E6%97%A5%E5%BF%97%E8%B7%9F%E8%BE%93%E5%87%BA%E4%B8%AD%E6%96%87%E5%87%BA%E7%8E%B0%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98/" title="Previous Post: EBS 并发请求调用SQL时，日志跟输出中文出现乱码问题">&laquo; EBS 并发请求调用SQL时，日志跟输出中文出现乱码问题</a>
+        <a class="basic-alignment left" href="/blog/2013/03/20/javamailfa-song-you-jian-zhong-wen-luan-ma/" title="Previous Post: JavaMail发送邮件中文乱码">&laquo; JavaMail发送邮件中文乱码</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2012/09/30/webservice%E4%B9%8B-%E5%85%A5%E9%97%A8demo%E7%94%9F%E6%88%90/" title="Next Post: WebService之-入门DEMO生成">WebService之-入门DEMO生成 &raquo;</a>
       
     </p>
   </footer>
@@ -282,8 +312,8 @@ document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://www.dengdezhao.cn/blog/2012/09/29/soa-suite-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/';
-        var disqus_url = 'http://www.dengdezhao.cn/blog/2012/09/29/soa-suite-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/';
+        var disqus_identifier = 'http://www.dengdezhao.cn/blog/2013/04/04/jdeveloperyun-xing-su-du-you-hua/';
+        var disqus_url = 'http://www.dengdezhao.cn/blog/2013/04/04/jdeveloperyun-xing-su-du-you-hua/';
         var disqus_script = 'embed.js';
       
     (function () {
