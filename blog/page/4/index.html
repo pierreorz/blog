@@ -9,10 +9,7 @@
   <meta name="author" content="pierreorz">
 
   
-  <meta name="description" content="运行AM的时候报个JDBC连接错误，ORA-280000:用户被锁的异常。
-于是在PL/SQL DEV里切换成SYSTEM用户 alter user XXX account unlock;之后，用PL/SQL DEV测试 可以连上了
-再运行AM的时候，又报了个用户被锁。很是蛋疼
-于是换到命令行， &hellip;">
+  <meta name="description" content="如图效果： 解决方案： VO里新建Transient属性Checked(Boolean), 表内添加一个column如下： &lt;af:column id=&#8221;c10&#8221; headerText=&#8221;选择&#8221; width=&#8221;30&#8221; &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -70,6 +67,90 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/06/26/table%E5%86%85%E5%A2%9E%E5%8A%A0%E5%85%A8%E9%80%89checkbox/">Table内增加全选checkbox</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
+        
+         | <a href="/blog/2012/06/26/table%E5%86%85%E5%A2%9E%E5%8A%A0%E5%85%A8%E9%80%89checkbox/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>如图效果：    
+
+<a rel="attachment wp-att-107" href="http://www.dengdezhao.cn/wp-content/uploads/2012/06/T1.jpg"><img class="alignnone size-full wp-image-107" title="T1" src="http://www.dengdezhao.cn/wp-content/uploads/2012/06/T1.jpg" alt="" width="213" height="286" /></a>
+
+解决方案：</p>
+
+<p>VO里新建Transient属性Checked(Boolean),</p>
+
+<p><a rel="attachment wp-att-108" href="http://www.dengdezhao.cn/wp-content/uploads/2012/06/T2-300x11.jpg"><img class="alignnone size-medium wp-image-108" title="T2" src="http://www.dengdezhao.cn/wp-content/uploads/2012/06/T2-300x11.jpg" alt="" width="300" height="11" /></a></p>
+
+<p>表内添加一个column如下：
+<div>
+<blockquote>&lt;af:column id=&#8221;c10&#8221; headerText=&#8221;选择&#8221; width=&#8221;30&#8221; align=&#8221;center&#8221; noWrap=&#8221;true&#8221;&gt;<br />
+&lt;f:facet name=&#8221;header&#8221;&gt;<br />
+&lt;af:selectBooleanCheckbox valueChangeListener=&#8221;#{backingBean.selectAll}&#8221;<br />
+autoSubmit=&#8221;true&#8221; id=&#8221;selectAll&#8221;<br />
+label=&#8221;&#8221; value=&#8221;&#8220;/&gt;<br />
+&lt;/f:facet&gt;<br />
+&lt;af:selectBooleanCheckbox label=&#8221;选中/非选中&#8221; id=&#8221;sbc1&#8221;  autoSubmit=&#8221;true&#8221; immediate=&#8221;true&#8221;<br />
+value=&#8221;#{row.bindings.Checked.inputValue}&#8221;/&gt;</blockquote></div></p>
+
+<p>&lt;/af:column&gt;
+
+ 
+<div>
+<blockquote>public void selectAll(ValueChangeEvent valueChangeEvent) {<br />
+DCIteratorBinding it = ADFUtils.findIterator(REIM_HEADER_ITER);<br />
+ViewObject vo = it.getViewObject();</blockquote></div></p>
+
+<p>if (valueChangeEvent.getNewValue() != null) {<br />
+Boolean selectAll =<br />
+Boolean.parseBoolean(valueChangeEvent.getNewValue().toString());<br />
+if (!selectAll) {<br />
+for (Row temp : vo.getAllRowsInRange()) {<br />
+temp.setAttribute(&#8220;Checked&#8221;, false);<br />
+}
+} else {<br />
+for (Row temp : vo.getAllRowsInRange()) {<br />
+temp.setAttribute(&#8220;Checked&#8221;, true);<br />
+}
+}<br />
+RichTable table = (RichTable)JSFUtils.findComponentInRoot(&#8220;t1&#8221;);<br />
+AdfFacesContext.getCurrentInstance().addPartialTarget(table);<br />
+}
+}
+
+以上即可实现此需求。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -676,46 +757,6 @@ return locale;<br />
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2011/06/29/javax-el-propertynotfoundexception%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/">javax.el.PropertyNotFoundException错误解决</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-06-29T00:00:00+08:00" pubdate data-updated="true">Jun 29<span>th</span>, 2011</time>
-        
-         | <a href="/blog/2011/06/29/javax-el-propertynotfoundexception%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>有时候明明没有什么错误，一样的代码在别人机器上跑没问题，自己机器上跑却会出现以下这样的错误：
-<pre class="brush:java">javax.el.PropertyNotFoundException: Target Unreachable, identifier 'bindings' resolved to null</pre>
-这样的错误会随着代码量的增加而越发频繁，是IDE的缓存的BUG，如果重启jdeveloper 还不能解决的话，把报错的那个bindings的pagedef文件改动下（加一行空格）保存，然后clean all，再重新build下，基本能够解决这个问题。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/5/">&larr; Older</a>
@@ -733,7 +774,7 @@ return locale;<br />
   <ul id="categories">
     <li class='category'><a href='/blog/categories/adf/'>ADF (18)</a></li>
 <li class='category'><a href='/blog/categories/ebs/'>EBS (2)</a></li>
-<li class='category'><a href='/blog/categories/oaf/'>OAF (3)</a></li>
+<li class='category'><a href='/blog/categories/oaf/'>OAF (4)</a></li>
 <li class='category'><a href='/blog/categories/oracle/'>Oracle (7)</a></li>
 <li class='category'><a href='/blog/categories/soa/'>SOA (2)</a></li>
 <li class='category'><a href='/blog/categories/sinaappengine/'>SinaAppEngine (1)</a></li>
@@ -753,6 +794,10 @@ return locale;<br />
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/04/09/oafshang-chuan-da-pi-liang-excelwen-jian/">OAF上传大批量EXCEL文件</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/04/04/jdeveloperyun-xing-su-du-you-hua/">Jdeveloper运行速度优化</a>
       </li>
     
@@ -766,10 +811,6 @@ return locale;<br />
     
       <li class="post">
         <a href="/blog/2013/03/19/use-javascript-in-oaf/">Use Javascript In Oaf</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/01/31/solvedlong-mode-not-supported-rebooting-press-any-key-to-reboot/">[SOLVED]Long mode not supported, rebooting Press any key to reboot</a>
       </li>
     
   </ul>

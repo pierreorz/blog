@@ -9,9 +9,8 @@
   <meta name="author" content="pierreorz">
 
   
-  <meta name="description" content="当你需要在ManagedBean中控制页面控制的属性的时候，可以使用以下代码调用javascript实现。 &nbsp;
-//import org.apache.myfaces.trinidad.util.Service;
-String script="你的javascript代码"; &hellip;">
+  <meta name="description" content="有时候明明没有什么错误，一样的代码在别人机器上跑没问题，自己机器上跑却会出现以下这样的错误：
+javax.el.PropertyNotFoundException: Target Unreachable, identifier 'bindings' resolved to null &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -69,6 +68,46 @@ String script="你的javascript代码"; &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/06/29/javax-el-propertynotfoundexception%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/">javax.el.PropertyNotFoundException错误解决</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-06-29T00:00:00+08:00" pubdate data-updated="true">Jun 29<span>th</span>, 2011</time>
+        
+         | <a href="/blog/2011/06/29/javax-el-propertynotfoundexception%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>有时候明明没有什么错误，一样的代码在别人机器上跑没问题，自己机器上跑却会出现以下这样的错误：
+<pre class="brush:java">javax.el.PropertyNotFoundException: Target Unreachable, identifier 'bindings' resolved to null</pre>
+这样的错误会随着代码量的增加而越发频繁，是IDE的缓存的BUG，如果重启jdeveloper 还不能解决的话，把报错的那个bindings的pagedef文件改动下（加一行空格）保存，然后clean all，再重新build下，基本能够解决这个问题。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -274,7 +313,7 @@ Step.4 修改<span style="color: #0000ff;">web.xml</span>
   <ul id="categories">
     <li class='category'><a href='/blog/categories/adf/'>ADF (18)</a></li>
 <li class='category'><a href='/blog/categories/ebs/'>EBS (2)</a></li>
-<li class='category'><a href='/blog/categories/oaf/'>OAF (3)</a></li>
+<li class='category'><a href='/blog/categories/oaf/'>OAF (4)</a></li>
 <li class='category'><a href='/blog/categories/oracle/'>Oracle (7)</a></li>
 <li class='category'><a href='/blog/categories/soa/'>SOA (2)</a></li>
 <li class='category'><a href='/blog/categories/sinaappengine/'>SinaAppEngine (1)</a></li>
@@ -294,6 +333,10 @@ Step.4 修改<span style="color: #0000ff;">web.xml</span>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/04/09/oafshang-chuan-da-pi-liang-excelwen-jian/">OAF上传大批量EXCEL文件</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/04/04/jdeveloperyun-xing-su-du-you-hua/">Jdeveloper运行速度优化</a>
       </li>
     
@@ -307,10 +350,6 @@ Step.4 修改<span style="color: #0000ff;">web.xml</span>
     
       <li class="post">
         <a href="/blog/2013/03/19/use-javascript-in-oaf/">Use Javascript In Oaf</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/01/31/solvedlong-mode-not-supported-rebooting-press-any-key-to-reboot/">[SOLVED]Long mode not supported, rebooting Press any key to reboot</a>
       </li>
     
   </ul>

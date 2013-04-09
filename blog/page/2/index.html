@@ -9,7 +9,7 @@
   <meta name="author" content="pierreorz">
 
   
-  <meta name="description" content="昨日突然对SAE平台产生了兴趣，于是花了一晚上时间，写了个定点发微博的小应用，也算是了解了下SAE平台的开发流程，以下烂笔头纯粹为方便菜鸟学习，老鸟勿笑。 之前玩过豆瓣，里面有个有名的“大笨钟”，每到整点便会发个状态“咚”几声以报时，虽然用处不大，但因其一直准点报时也吸引了不少粉丝关注， &hellip;">
+  <meta name="description" content="使用throw new OAException(“你们好”,OAException.WARNING);时出现乱码，尝试new String(&#8220;你们好”.getBytes(&#8220;GBK&#8221;),&#8221;UTF-8&#8221;)依然没用。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,6 +67,46 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/01/09/oaf-%E4%BD%BF%E7%94%A8oaexception%E8%BE%93%E5%87%BA%E4%B8%AD%E6%96%87%E6%97%B6%E5%87%BA%E7%8E%B0%E4%B9%B1%E7%A0%81-%E8%A7%A3%E5%86%B3/">OAF 使用OAException输出中文时出现乱码 解决</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-09T00:00:00+08:00" pubdate data-updated="true">Jan 9<span>th</span>, 2013</time>
+        
+         | <a href="/blog/2013/01/09/oaf-%E4%BD%BF%E7%94%A8oaexception%E8%BE%93%E5%87%BA%E4%B8%AD%E6%96%87%E6%97%B6%E5%87%BA%E7%8E%B0%E4%B9%B1%E7%A0%81-%E8%A7%A3%E5%86%B3/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>使用throw new OAException(“你们好”,OAException.WARNING);时出现乱码，尝试new String(&#8220;你们好”.getBytes(&#8220;GBK&#8221;),&#8221;UTF-8&#8221;)依然没用。</p>
+
+<p>检查JDEV的Preferences中ENCODING已经更改为“UTF-8”，纠结了好一阵子，才发现工程的Project Settings的Compiler里也有一个ENCODING没有改，囧改好之后再测试乱码问题即解决</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -633,46 +673,6 @@ policy_name     =&gt; &#8216;POLICY_LIMITED_QUERY_T&#8217;);
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/06/26/%E9%80%9A%E8%BF%87java%E4%BB%A3%E7%A0%81%E5%88%B7%E6%96%B0%E7%BB%91%E5%AE%9A%E6%8E%A7%E4%BB%B6/">通过Java代码刷新绑定控件</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
-        
-         | <a href="/blog/2012/06/26/%E9%80%9A%E8%BF%87java%E4%BB%A3%E7%A0%81%E5%88%B7%E6%96%B0%E7%BB%91%E5%AE%9A%E6%8E%A7%E4%BB%B6/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>partialTrigger属性可以刷新控件，通过以下代码也可以刷新绑定的控件</p>
-
-<p><span style="color: #000000;">AdfFacesContext.getCurrentInstance().addPartialTarget(&#8220;绑定控件的instace名或者是UIComponent对象&#8221;)</span></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -690,7 +690,7 @@ policy_name     =&gt; &#8216;POLICY_LIMITED_QUERY_T&#8217;);
   <ul id="categories">
     <li class='category'><a href='/blog/categories/adf/'>ADF (18)</a></li>
 <li class='category'><a href='/blog/categories/ebs/'>EBS (2)</a></li>
-<li class='category'><a href='/blog/categories/oaf/'>OAF (3)</a></li>
+<li class='category'><a href='/blog/categories/oaf/'>OAF (4)</a></li>
 <li class='category'><a href='/blog/categories/oracle/'>Oracle (7)</a></li>
 <li class='category'><a href='/blog/categories/soa/'>SOA (2)</a></li>
 <li class='category'><a href='/blog/categories/sinaappengine/'>SinaAppEngine (1)</a></li>
@@ -710,6 +710,10 @@ policy_name     =&gt; &#8216;POLICY_LIMITED_QUERY_T&#8217;);
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/04/09/oafshang-chuan-da-pi-liang-excelwen-jian/">OAF上传大批量EXCEL文件</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/04/04/jdeveloperyun-xing-su-du-you-hua/">Jdeveloper运行速度优化</a>
       </li>
     
@@ -723,10 +727,6 @@ policy_name     =&gt; &#8216;POLICY_LIMITED_QUERY_T&#8217;);
     
       <li class="post">
         <a href="/blog/2013/03/19/use-javascript-in-oaf/">Use Javascript In Oaf</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/01/31/solvedlong-mode-not-supported-rebooting-press-any-key-to-reboot/">[SOLVED]Long mode not supported, rebooting Press any key to reboot</a>
       </li>
     
   </ul>

@@ -9,10 +9,8 @@
   <meta name="author" content="pierreorz">
 
   
-  <meta name="description" content="测试发现，当数据只有25行的时候，都可以正常勾选，超过25行的数据，总是勾选不中。 问题产生原因：
-由于自定制的checkbox是设置了immediate=true 即时给数据行的checkbox字段赋值。
-VO的rangeSize 默认是25，
-因此导致25条数据内是可选。 &hellip;">
+  <meta name="description" content="partialTrigger属性可以刷新控件，通过以下代码也可以刷新绑定的控件 AdfFacesContext.getCurrentInstance().addPartialTarget(&#8220;绑定控件的instace名或者是UIComponent对象&#8221;)
+">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -70,6 +68,46 @@ VO的rangeSize 默认是25，
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/06/26/%E9%80%9A%E8%BF%87java%E4%BB%A3%E7%A0%81%E5%88%B7%E6%96%B0%E7%BB%91%E5%AE%9A%E6%8E%A7%E4%BB%B6/">通过Java代码刷新绑定控件</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
+        
+         | <a href="/blog/2012/06/26/%E9%80%9A%E8%BF%87java%E4%BB%A3%E7%A0%81%E5%88%B7%E6%96%B0%E7%BB%91%E5%AE%9A%E6%8E%A7%E4%BB%B6/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>partialTrigger属性可以刷新控件，通过以下代码也可以刷新绑定的控件</p>
+
+<p><span style="color: #000000;">AdfFacesContext.getCurrentInstance().addPartialTarget(&#8220;绑定控件的instace名或者是UIComponent对象&#8221;)</span></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -641,90 +679,6 @@ time.schedule(task,delay,PERIOD_TIME);</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/06/26/table%E5%86%85%E5%A2%9E%E5%8A%A0%E5%85%A8%E9%80%89checkbox/">Table内增加全选checkbox</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
-        
-         | <a href="/blog/2012/06/26/table%E5%86%85%E5%A2%9E%E5%8A%A0%E5%85%A8%E9%80%89checkbox/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>如图效果：    
-
-<a rel="attachment wp-att-107" href="http://www.dengdezhao.cn/wp-content/uploads/2012/06/T1.jpg"><img class="alignnone size-full wp-image-107" title="T1" src="http://www.dengdezhao.cn/wp-content/uploads/2012/06/T1.jpg" alt="" width="213" height="286" /></a>
-
-解决方案：</p>
-
-<p>VO里新建Transient属性Checked(Boolean),</p>
-
-<p><a rel="attachment wp-att-108" href="http://www.dengdezhao.cn/wp-content/uploads/2012/06/T2-300x11.jpg"><img class="alignnone size-medium wp-image-108" title="T2" src="http://www.dengdezhao.cn/wp-content/uploads/2012/06/T2-300x11.jpg" alt="" width="300" height="11" /></a></p>
-
-<p>表内添加一个column如下：
-<div>
-<blockquote>&lt;af:column id=&#8221;c10&#8221; headerText=&#8221;选择&#8221; width=&#8221;30&#8221; align=&#8221;center&#8221; noWrap=&#8221;true&#8221;&gt;<br />
-&lt;f:facet name=&#8221;header&#8221;&gt;<br />
-&lt;af:selectBooleanCheckbox valueChangeListener=&#8221;#{backingBean.selectAll}&#8221;<br />
-autoSubmit=&#8221;true&#8221; id=&#8221;selectAll&#8221;<br />
-label=&#8221;&#8221; value=&#8221;&#8220;/&gt;<br />
-&lt;/f:facet&gt;<br />
-&lt;af:selectBooleanCheckbox label=&#8221;选中/非选中&#8221; id=&#8221;sbc1&#8221;  autoSubmit=&#8221;true&#8221; immediate=&#8221;true&#8221;<br />
-value=&#8221;#{row.bindings.Checked.inputValue}&#8221;/&gt;</blockquote></div></p>
-
-<p>&lt;/af:column&gt;
-
- 
-<div>
-<blockquote>public void selectAll(ValueChangeEvent valueChangeEvent) {<br />
-DCIteratorBinding it = ADFUtils.findIterator(REIM_HEADER_ITER);<br />
-ViewObject vo = it.getViewObject();</blockquote></div></p>
-
-<p>if (valueChangeEvent.getNewValue() != null) {<br />
-Boolean selectAll =<br />
-Boolean.parseBoolean(valueChangeEvent.getNewValue().toString());<br />
-if (!selectAll) {<br />
-for (Row temp : vo.getAllRowsInRange()) {<br />
-temp.setAttribute(&#8220;Checked&#8221;, false);<br />
-}
-} else {<br />
-for (Row temp : vo.getAllRowsInRange()) {<br />
-temp.setAttribute(&#8220;Checked&#8221;, true);<br />
-}
-}<br />
-RichTable table = (RichTable)JSFUtils.findComponentInRoot(&#8220;t1&#8221;);<br />
-AdfFacesContext.getCurrentInstance().addPartialTarget(table);<br />
-}
-}
-
-以上即可实现此需求。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -742,7 +696,7 @@ AdfFacesContext.getCurrentInstance().addPartialTarget(table);<br />
   <ul id="categories">
     <li class='category'><a href='/blog/categories/adf/'>ADF (18)</a></li>
 <li class='category'><a href='/blog/categories/ebs/'>EBS (2)</a></li>
-<li class='category'><a href='/blog/categories/oaf/'>OAF (3)</a></li>
+<li class='category'><a href='/blog/categories/oaf/'>OAF (4)</a></li>
 <li class='category'><a href='/blog/categories/oracle/'>Oracle (7)</a></li>
 <li class='category'><a href='/blog/categories/soa/'>SOA (2)</a></li>
 <li class='category'><a href='/blog/categories/sinaappengine/'>SinaAppEngine (1)</a></li>
@@ -762,6 +716,10 @@ AdfFacesContext.getCurrentInstance().addPartialTarget(table);<br />
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/04/09/oafshang-chuan-da-pi-liang-excelwen-jian/">OAF上传大批量EXCEL文件</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/04/04/jdeveloperyun-xing-su-du-you-hua/">Jdeveloper运行速度优化</a>
       </li>
     
@@ -775,10 +733,6 @@ AdfFacesContext.getCurrentInstance().addPartialTarget(table);<br />
     
       <li class="post">
         <a href="/blog/2013/03/19/use-javascript-in-oaf/">Use Javascript In Oaf</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/01/31/solvedlong-mode-not-supported-rebooting-press-any-key-to-reboot/">[SOLVED]Long mode not supported, rebooting Press any key to reboot</a>
       </li>
     
   </ul>

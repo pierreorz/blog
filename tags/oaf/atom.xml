@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: OAF | 邓德昭的技术博客]]></title>
   <link href="http://www.dengdezhao.cn/tags/oaf/atom.xml" rel="self"/>
   <link href="http://www.dengdezhao.cn/"/>
-  <updated>2013-04-05T16:00:13+08:00</updated>
+  <updated>2013-04-09T10:51:05+08:00</updated>
   <id>http://www.dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
@@ -12,6 +12,442 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[OAF上传大批量EXCEL文件]]></title>
+    <link href="http://www.dengdezhao.cn/blog/2013/04/09/oafshang-chuan-da-pi-liang-excelwen-jian/"/>
+    <updated>2013-04-09T10:46:00+08:00</updated>
+    <id>http://www.dengdezhao.cn/blog/2013/04/09/oafshang-chuan-da-pi-liang-excelwen-jian</id>
+    <content type="html"><![CDATA[<p>客户有个需求：大量数据通过EXCEL导入系统表，并能提供效验及去重功能。</p>
+
+<h4>设计思路</h4>
+
+<ul>
+<li>采用POI解析EXCEL文件；</li>
+<li>bulk insert 插入数据到临时表</li>
+<li>临时表结合正式表去除重复</li>
+</ul>
+
+
+<h4>POI解析EXCEL</h4>
+
+<p>在CO的<code>processFormRequest</code>方法中添加如下:  <br/>
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'>  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">processFormRequest</span><span class="o">(</span><span class="n">OAPageContext</span> <span class="n">pageContext</span><span class="o">,</span> <span class="n">OAWebBean</span> <span class="n">webBean</span><span class="o">)</span>
+</span><span class='line'>  <span class="o">{&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kd">super</span><span class="o">.</span><span class="na">processFormRequest</span><span class="o">(</span><span class="n">pageContext</span><span class="o">,</span> <span class="n">webBean</span><span class="o">);</span>
+</span><span class='line'><span class="n">OAApplicationModule</span> <span class="n">am</span> <span class="o">=</span> <span class="n">pageContext</span><span class="o">.</span><span class="na">getApplicationModule</span><span class="o">(</span><span class="n">webBean</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">if</span> <span class="o">(</span><span class="n">pageContext</span><span class="o">.</span><span class="na">getParameter</span><span class="o">(</span><span class="s">&quot;uploadBtn&quot;</span><span class="o">)</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span>
+</span><span class='line'><span class="o">{</span>
+</span><span class='line'>  <span class="n">DataObject</span> <span class="n">fileUploadData</span> <span class="o">=</span> <span class="o">(</span><span class="n">DataObject</span><span class="o">)</span><span class="n">pageContext</span><span class="o">.</span><span class="na">getNamedDataObject</span><span class="o">(</span><span class="s">&quot;uploadFile&quot;</span><span class="o">);</span>
+</span><span class='line'>  <span class="n">String</span> <span class="n">fileName</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'>  <span class="k">try</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">fileName</span> <span class="o">=</span> <span class="o">(</span><span class="n">String</span><span class="o">)</span><span class="n">fileUploadData</span><span class="o">.</span><span class="na">selectValue</span><span class="o">(</span><span class="kc">null</span><span class="o">,</span> <span class="s">&quot;UPLOAD_FILE_NAME&quot;</span><span class="o">);</span>
+</span><span class='line'>  <span class="o">}</span> <span class="k">catch</span><span class="o">(</span><span class="n">NullPointerException</span> <span class="n">ex</span><span class="o">)</span>
+</span><span class='line'>  <span class="o">{</span>
+</span><span class='line'>    <span class="k">throw</span> <span class="k">new</span> <span class="nf">OAException</span><span class="o">(</span><span class="s">&quot;请先选择需要上传的文件&quot;</span><span class="o">,</span> <span class="n">OAException</span><span class="o">.</span><span class="na">INFORMATION</span><span class="o">);</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span><span class="o">(</span><span class="n">fileName</span><span class="o">.</span><span class="na">endsWith</span><span class="o">(</span><span class="s">&quot;.xlsx&quot;</span><span class="o">))</span>
+</span><span class='line'>  <span class="o">{</span>
+</span><span class='line'>            <span class="k">throw</span> <span class="k">new</span> <span class="nf">OAException</span><span class="o">(</span><span class="s">&quot;不支持高版本EXCEL文件,请转换成2003版本的EXCEL再上传&quot;</span><span class="o">,</span><span class="n">OAException</span><span class="o">.</span><span class="na">WARNING</span><span class="o">);</span>
+</span><span class='line'>  <span class="o">}</span><span class="k">else</span> <span class="k">if</span><span class="o">(!</span><span class="n">fileName</span><span class="o">.</span><span class="na">endsWith</span><span class="o">(</span><span class="s">&quot;.xls&quot;</span><span class="o">))</span>
+</span><span class='line'>  <span class="o">{</span>
+</span><span class='line'>            <span class="k">throw</span> <span class="k">new</span> <span class="nf">OAException</span><span class="o">(</span><span class="s">&quot;请上传EXCEL类型文件&quot;</span><span class="o">,</span><span class="n">OAException</span><span class="o">.</span><span class="na">ERROR</span><span class="o">);</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">BlobDomain</span> <span class="n">uploadedByteStream</span> <span class="o">=</span> <span class="o">(</span><span class="n">BlobDomain</span><span class="o">)</span><span class="n">fileUploadData</span><span class="o">.</span><span class="na">selectValue</span><span class="o">(</span><span class="kc">null</span><span class="o">,</span> <span class="n">fileName</span><span class="o">);</span>
+</span><span class='line'>  <span class="n">Serializable</span> <span class="n">aserializable2</span><span class="o">[]</span> <span class="o">=</span> <span class="o">{</span><span class="n">uploadedByteStream</span><span class="o">};</span>
+</span><span class='line'>  <span class="n">Class</span> <span class="n">aclass2</span><span class="o">[]</span> <span class="o">=</span> <span class="o">{</span><span class="n">BlobDomain</span><span class="o">.</span><span class="na">class</span> <span class="o">};</span>
+</span><span class='line'>  <span class="n">am</span><span class="o">.</span><span class="na">invokeMethod</span><span class="o">(</span><span class="s">&quot;importFile&quot;</span><span class="o">,</span> <span class="n">aserializable2</span><span class="o">,</span><span class="n">aclass2</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>  <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h4>在AM中编写importFile方法</h4>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+<span class='line-number'>78</span>
+<span class='line-number'>79</span>
+<span class='line-number'>80</span>
+<span class='line-number'>81</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'>  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">importFile</span><span class="o">(</span><span class="n">BlobDomain</span> <span class="n">fileData</span><span class="o">)</span>
+</span><span class='line'>  <span class="o">{&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">InputStream</span> <span class="n">inStr</span> <span class="o">=</span> <span class="n">fileData</span><span class="o">.</span><span class="na">getInputStream</span><span class="o">();</span>
+</span><span class='line'><span class="n">HSSFWorkbook</span> <span class="n">workbook</span><span class="o">=</span><span class="kc">null</span><span class="o">;</span>
+</span><span class='line'><span class="k">try</span><span class="o">{</span>
+</span><span class='line'> <span class="n">workbook</span><span class="o">=</span> <span class="k">new</span> <span class="n">HSSFWorkbook</span><span class="o">(</span><span class="n">inStr</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span><span class="k">catch</span><span class="o">(</span><span class="n">java</span><span class="o">.</span><span class="na">io</span><span class="o">.</span><span class="na">IOException</span> <span class="n">e</span><span class="o">)</span>
+</span><span class='line'><span class="o">{</span>
+</span><span class='line'>  <span class="k">throw</span> <span class="k">new</span> <span class="nf">OAException</span><span class="o">(</span><span class="s">&quot;读取上传的文件出错,请检查上传的文件是否为97-2003版本的EXCEL可读文件.&quot;</span><span class="o">,</span><span class="n">OAException</span><span class="o">.</span><span class="na">ERROR</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="c1">//信号1</span>
+</span><span class='line'><span class="k">if</span><span class="o">(</span><span class="n">workbook</span><span class="o">==</span><span class="kc">null</span><span class="o">)</span>
+</span><span class='line'><span class="o">{</span>
+</span><span class='line'>  <span class="k">throw</span> <span class="k">new</span> <span class="nf">OAException</span><span class="o">(</span><span class="s">&quot;ERROR001:workbook为空,请重新上传文件.&quot;</span><span class="o">,</span><span class="n">OAException</span><span class="o">.</span><span class="na">ERROR</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="n">HSSFSheet</span> <span class="n">sheet1</span> <span class="o">=</span> <span class="n">workbook</span><span class="o">.</span><span class="na">getSheet</span><span class="o">(</span><span class="s">&quot;1&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="k">if</span><span class="o">(</span><span class="n">sheet1</span><span class="o">==</span><span class="kc">null</span><span class="o">)</span>
+</span><span class='line'><span class="o">{</span>
+</span><span class='line'>  <span class="k">throw</span> <span class="k">new</span> <span class="nf">OAException</span><span class="o">(</span><span class="s">&quot;ERROR002:sheet1为空,上传文件中找不到名字为&#39;1&#39;的工作表,请检查工作表命名是否符合规则.&quot;</span><span class="o">,</span><span class="n">OAException</span><span class="o">.</span><span class="na">ERROR</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="kt">int</span> <span class="n">rowCount1</span> <span class="o">=</span> <span class="n">sheet1</span><span class="o">.</span><span class="na">getLastRowNum</span><span class="o">();</span>
+</span><span class='line'><span class="kt">int</span> <span class="n">realCount1</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">Object</span><span class="o">[]</span> <span class="n">o_vin1</span><span class="o">=</span><span class="k">new</span> <span class="n">Object</span><span class="o">[</span><span class="n">rowCount1</span><span class="o">],</span>
+</span><span class='line'><span class="n">o_type1</span><span class="o">=</span><span class="k">new</span> <span class="n">Object</span><span class="o">[</span><span class="n">rowCount1</span><span class="o">],</span>
+</span><span class='line'><span class="n">o_color1</span><span class="o">=</span><span class="k">new</span> <span class="n">Object</span><span class="o">[</span><span class="n">rowCount1</span><span class="o">],</span>
+</span><span class='line'><span class="n">o_date1</span><span class="o">=</span><span class="k">new</span> <span class="n">Object</span><span class="o">[</span><span class="n">rowCount1</span><span class="o">],</span>
+</span><span class='line'><span class="n">o_des1</span><span class="o">=</span><span class="k">new</span> <span class="n">Object</span><span class="o">[</span><span class="n">rowCount1</span><span class="o">];</span>
+</span><span class='line'><span class="n">String</span> <span class="n">vin1</span><span class="o">=</span><span class="kc">null</span><span class="o">,</span><span class="n">type1</span><span class="o">=</span><span class="kc">null</span><span class="o">,</span><span class="n">color1</span><span class="o">=</span><span class="kc">null</span><span class="o">;</span>
+</span><span class='line'><span class="n">java</span><span class="o">.</span><span class="na">util</span><span class="o">.</span><span class="na">Date</span> <span class="n">vdate1</span><span class="o">=</span><span class="kc">null</span><span class="o">;</span>
+</span><span class='line'><span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">r1</span><span class="o">=</span><span class="mi">1</span><span class="o">;</span> <span class="n">r1</span> <span class="o">&amp;</span><span class="n">lt</span><span class="o">;=</span> <span class="n">rowCount1</span><span class="o">;</span> <span class="n">r1</span><span class="o">++)</span>
+</span><span class='line'><span class="o">{</span>
+</span><span class='line'>  <span class="n">HSSFRow</span> <span class="n">tempRow1</span><span class="o">=</span><span class="n">sheet1</span><span class="o">.</span><span class="na">getRow</span><span class="o">(</span><span class="n">r1</span><span class="o">);</span>
+</span><span class='line'>  <span class="k">if</span><span class="o">(</span><span class="n">tempRow1</span><span class="o">==</span><span class="kc">null</span><span class="o">)</span>
+</span><span class='line'>  <span class="o">{</span>
+</span><span class='line'>    <span class="k">throw</span> <span class="k">new</span> <span class="nf">OAException</span><span class="o">(</span><span class="s">&quot;INFO:sheet[1]中第&quot;</span><span class="o">+(</span><span class="n">r1</span><span class="o">+</span><span class="mi">1</span><span class="o">)+</span><span class="s">&quot;行数据异常,请检查上传文件&quot;</span><span class="o">,</span><span class="n">OAException</span><span class="o">.</span><span class="na">INFORMATION</span><span class="o">);</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>  <span class="k">if</span><span class="o">(</span><span class="n">tempRow1</span><span class="o">.</span><span class="na">getCell</span><span class="o">((</span><span class="kt">short</span><span class="o">)</span><span class="mi">0</span><span class="o">)==</span><span class="kc">null</span><span class="o">||</span><span class="n">tempRow1</span><span class="o">.</span><span class="na">getCell</span><span class="o">((</span><span class="kt">short</span><span class="o">)</span><span class="mi">0</span><span class="o">).</span><span class="na">getStringCellValue</span><span class="o">()==</span><span class="kc">null</span><span class="o">||</span><span class="s">&quot;&quot;</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">tempRow1</span><span class="o">.</span><span class="na">getCell</span><span class="o">((</span><span class="kt">short</span><span class="o">)</span><span class="mi">0</span><span class="o">).</span><span class="na">getStringCellValue</span><span class="o">().</span><span class="na">trim</span><span class="o">()))</span>
+</span><span class='line'>  <span class="o">{</span>
+</span><span class='line'>    <span class="k">throw</span> <span class="k">new</span> <span class="nf">OAException</span><span class="o">(</span><span class="s">&quot;INFO:sheet[1]中第&quot;</span><span class="o">+(</span><span class="n">r1</span><span class="o">+</span><span class="mi">1</span><span class="o">)+</span><span class="s">&quot;行第1列数据异常,请检查上传文件&quot;</span><span class="o">,</span><span class="n">OAException</span><span class="o">.</span><span class="na">INFORMATION</span><span class="o">);</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span><span class="o">(</span><span class="n">tempRow1</span><span class="o">.</span><span class="na">getCell</span><span class="o">((</span><span class="kt">short</span><span class="o">)</span><span class="mi">1</span><span class="o">)==</span><span class="kc">null</span><span class="o">||</span><span class="n">tempRow1</span><span class="o">.</span><span class="na">getCell</span><span class="o">((</span><span class="kt">short</span><span class="o">)</span><span class="mi">1</span><span class="o">).</span><span class="na">getStringCellValue</span><span class="o">()==</span><span class="kc">null</span><span class="o">)</span>
+</span><span class='line'>  <span class="o">{</span>
+</span><span class='line'>    <span class="k">throw</span> <span class="k">new</span> <span class="nf">OAException</span><span class="o">(</span><span class="s">&quot;INFO:sheet[1]中第&quot;</span><span class="o">+(</span><span class="n">r1</span><span class="o">+</span><span class="mi">1</span><span class="o">)+</span><span class="s">&quot;行第2列数据异常,请检查上传文件&quot;</span><span class="o">,</span><span class="n">OAException</span><span class="o">.</span><span class="na">INFORMATION</span><span class="o">);</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span><span class="o">(</span><span class="n">tempRow1</span><span class="o">.</span><span class="na">getCell</span><span class="o">((</span><span class="kt">short</span><span class="o">)</span><span class="mi">2</span><span class="o">)==</span><span class="kc">null</span><span class="o">||</span><span class="n">tempRow1</span><span class="o">.</span><span class="na">getCell</span><span class="o">((</span><span class="kt">short</span><span class="o">)</span><span class="mi">2</span><span class="o">).</span><span class="na">getStringCellValue</span><span class="o">()==</span><span class="kc">null</span><span class="o">)</span>
+</span><span class='line'>  <span class="o">{</span>
+</span><span class='line'>    <span class="k">throw</span> <span class="k">new</span> <span class="nf">OAException</span><span class="o">(</span><span class="s">&quot;INFO:sheet[1]中第&quot;</span><span class="o">+(</span><span class="n">r1</span><span class="o">+</span><span class="mi">1</span><span class="o">)+</span><span class="s">&quot;行第3列数据异常,请检查上传文件&quot;</span><span class="o">,</span><span class="n">OAException</span><span class="o">.</span><span class="na">INFORMATION</span><span class="o">);</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>  <span class="k">if</span><span class="o">(</span><span class="n">tempRow1</span><span class="o">.</span><span class="na">getCell</span><span class="o">((</span><span class="kt">short</span><span class="o">)</span><span class="mi">3</span><span class="o">)==</span><span class="kc">null</span><span class="o">||</span><span class="n">tempRow1</span><span class="o">.</span><span class="na">getCell</span><span class="o">((</span><span class="kt">short</span><span class="o">)</span><span class="mi">3</span><span class="o">).</span><span class="na">getDateCellValue</span><span class="o">()==</span><span class="kc">null</span><span class="o">)</span>
+</span><span class='line'>  <span class="o">{</span>
+</span><span class='line'>    <span class="k">throw</span> <span class="k">new</span> <span class="nf">OAException</span><span class="o">(</span><span class="s">&quot;INFO:sheet[1]中第&quot;</span><span class="o">+(</span><span class="n">r1</span><span class="o">+</span><span class="mi">1</span><span class="o">)+</span><span class="s">&quot;行第4列数据异常,请检查上传文件&quot;</span><span class="o">,</span><span class="n">OAException</span><span class="o">.</span><span class="na">INFORMATION</span><span class="o">);</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>  <span class="n">vin1</span><span class="o">=</span><span class="n">tempRow1</span><span class="o">.</span><span class="na">getCell</span><span class="o">((</span><span class="kt">short</span><span class="o">)</span><span class="mi">0</span><span class="o">).</span><span class="na">getStringCellValue</span><span class="o">().</span><span class="na">trim</span><span class="o">();</span>
+</span><span class='line'>  <span class="n">type1</span><span class="o">=</span><span class="n">tempRow1</span><span class="o">.</span><span class="na">getCell</span><span class="o">((</span><span class="kt">short</span><span class="o">)</span><span class="mi">1</span><span class="o">).</span><span class="na">getStringCellValue</span><span class="o">().</span><span class="na">trim</span><span class="o">();</span>
+</span><span class='line'>  <span class="n">color1</span><span class="o">=</span><span class="n">tempRow1</span><span class="o">.</span><span class="na">getCell</span><span class="o">((</span><span class="kt">short</span><span class="o">)</span><span class="mi">2</span><span class="o">).</span><span class="na">getStringCellValue</span><span class="o">().</span><span class="na">trim</span><span class="o">();</span>
+</span><span class='line'>  <span class="n">vdate1</span><span class="o">=</span><span class="n">tempRow1</span><span class="o">.</span><span class="na">getCell</span><span class="o">((</span><span class="kt">short</span><span class="o">)</span><span class="mi">3</span><span class="o">).</span><span class="na">getDateCellValue</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">o_vin1</span><span class="o">[</span><span class="n">r1</span><span class="o">-</span><span class="mi">1</span><span class="o">]=</span><span class="n">vin1</span><span class="o">;</span>
+</span><span class='line'>  <span class="n">o_type1</span><span class="o">[</span><span class="n">r1</span><span class="o">-</span><span class="mi">1</span><span class="o">]=</span><span class="n">type1</span><span class="o">;</span>
+</span><span class='line'>  <span class="n">o_color1</span><span class="o">[</span><span class="n">r1</span><span class="o">-</span><span class="mi">1</span><span class="o">]=</span><span class="n">color1</span><span class="o">;</span>
+</span><span class='line'>  <span class="n">o_date1</span><span class="o">[</span><span class="n">r1</span><span class="o">-</span><span class="mi">1</span><span class="o">]=</span><span class="k">new</span> <span class="n">oracle</span><span class="o">.</span><span class="na">jbo</span><span class="o">.</span><span class="na">domain</span><span class="o">.</span><span class="na">Date</span><span class="o">(</span><span class="k">new</span> <span class="n">java</span><span class="o">.</span><span class="na">sql</span><span class="o">.</span><span class="na">Date</span><span class="o">(</span><span class="n">vdate1</span><span class="o">.</span><span class="na">getTime</span><span class="o">()));</span>
+</span><span class='line'>  <span class="n">o_des1</span><span class="o">[</span><span class="n">r1</span><span class="o">-</span><span class="mi">1</span><span class="o">]=</span><span class="kc">null</span><span class="o">;</span>
+</span><span class='line'>  <span class="n">realCount1</span><span class="o">++;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">List</span> <span class="n">exceptions</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">();</span>
+</span><span class='line'><span class="n">exceptions</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">OAException</span><span class="o">(</span><span class="s">&quot;解析出上传EXCEL文件中信号1表&quot;</span><span class="o">+</span><span class="n">realCount1</span><span class="o">+</span><span class="s">&quot;条记录&quot;</span><span class="o">,</span><span class="n">OAException</span><span class="o">.</span><span class="na">INFORMATION</span> <span class="o">));</span>
+</span><span class='line'><span class="c1">//bulkinsert...</span>
+</span><span class='line'><span class="n">exceptions</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">OAException</span><span class="o">(</span><span class="s">&quot;开始插入信号1临时表&quot;</span><span class="o">,</span><span class="n">OAException</span><span class="o">.</span><span class="na">INFORMATION</span> <span class="o">));</span>
+</span><span class='line'><span class="n">String</span> <span class="n">result</span><span class="o">=</span><span class="k">this</span><span class="o">.</span><span class="na">bulkInsert1</span><span class="o">(</span><span class="n">o_vin1</span><span class="o">,</span><span class="n">o_type1</span><span class="o">,</span><span class="n">o_color1</span><span class="o">,</span><span class="n">o_date1</span><span class="o">,</span><span class="n">o_des1</span><span class="o">);</span>
+</span><span class='line'><span class="n">exceptions</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">OAException</span><span class="o">(</span><span class="s">&quot;结果:&quot;</span><span class="o">+</span><span class="n">result</span><span class="o">,</span><span class="n">OAException</span><span class="o">.</span><span class="na">INFORMATION</span> <span class="o">));</span>
+</span><span class='line'><span class="n">exceptions</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">OAException</span><span class="o">(</span><span class="s">&quot;结束插入信号1临时表&quot;</span><span class="o">,</span><span class="n">OAException</span><span class="o">.</span><span class="na">INFORMATION</span> <span class="o">));</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">OAException</span><span class="o">.</span><span class="na">raiseBundledOAException</span><span class="o">(</span><span class="n">exceptions</span><span class="o">);</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h4>OAF调用bulk insert插入大批量数据</h4>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'> <span class="kd">public</span> <span class="n">String</span> <span class="nf">bulkInsert1</span><span class="o">(</span><span class="n">Object</span><span class="o">[]</span> <span class="n">vin</span><span class="o">,</span><span class="n">Object</span><span class="o">[]</span> <span class="n">type</span><span class="o">,</span><span class="n">Object</span><span class="o">[]</span> <span class="n">color</span><span class="o">,</span><span class="n">Object</span><span class="o">[]</span> <span class="n">vdate</span><span class="o">,</span> <span class="n">Object</span><span class="o">[]</span> <span class="n">des</span><span class="o">)&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;{</span>
+</span><span class='line'>    <span class="n">CallableStatement</span> <span class="n">st</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'>    <span class="n">String</span> <span class="n">result</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="o">;</span>
+</span><span class='line'>    <span class="n">String</span> <span class="n">stmt</span> <span class="o">=</span> <span class="s">&quot;{ call ch_report_pkg.INSERTREPORT1(?,?,?,?,?,?) }&quot;</span><span class="o">;</span>
+</span><span class='line'>    <span class="k">try</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">st</span><span class="o">=</span><span class="k">this</span><span class="o">.</span><span class="na">getDBTransaction</span><span class="o">().</span><span class="na">createCallableStatement</span><span class="o">(</span><span class="n">stmt</span><span class="o">,</span><span class="mi">0</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">ArrayDescriptor</span> <span class="n">T_VARCHAR30</span><span class="o">=</span><span class="kc">null</span><span class="o">,</span>
+</span><span class='line'>         <span class="n">T_VARCHAR10</span><span class="o">=</span><span class="kc">null</span><span class="o">,</span>
+</span><span class='line'>         <span class="n">T_VARCHAR200</span><span class="o">=</span><span class="kc">null</span><span class="o">,</span>
+</span><span class='line'>         <span class="n">T_DATE</span><span class="o">=</span><span class="kc">null</span><span class="o">;</span>
+</span><span class='line'>        <span class="n">ARRAY</span> <span class="n">a_vin</span><span class="o">=</span><span class="kc">null</span><span class="o">,</span><span class="n">a_type</span><span class="o">=</span><span class="kc">null</span><span class="o">,</span><span class="n">a_color</span><span class="o">=</span><span class="kc">null</span><span class="o">,</span><span class="n">a_vdate</span><span class="o">=</span><span class="kc">null</span><span class="o">,</span><span class="n">a_des</span><span class="o">=</span><span class="kc">null</span><span class="o">;</span>
+</span><span class='line'>        <span class="n">T_VARCHAR30</span><span class="o">=</span><span class="n">oracle</span><span class="o">.</span><span class="na">sql</span><span class="o">.</span><span class="na">ArrayDescriptor</span><span class="o">.</span><span class="na">createDescriptor</span><span class="o">(</span><span class="s">&quot;T_VARCHAR30&quot;</span><span class="o">,</span><span class="n">st</span><span class="o">.</span><span class="na">getConnection</span><span class="o">());</span>
+</span><span class='line'>        <span class="n">T_VARCHAR10</span><span class="o">=</span><span class="n">oracle</span><span class="o">.</span><span class="na">sql</span><span class="o">.</span><span class="na">ArrayDescriptor</span><span class="o">.</span><span class="na">createDescriptor</span><span class="o">(</span><span class="s">&quot;T_VARCHAR10&quot;</span><span class="o">,</span><span class="n">st</span><span class="o">.</span><span class="na">getConnection</span><span class="o">());</span>
+</span><span class='line'>        <span class="n">T_VARCHAR200</span><span class="o">=</span><span class="n">oracle</span><span class="o">.</span><span class="na">sql</span><span class="o">.</span><span class="na">ArrayDescriptor</span><span class="o">.</span><span class="na">createDescriptor</span><span class="o">(</span><span class="s">&quot;T_VARCHAR200&quot;</span><span class="o">,</span><span class="n">st</span><span class="o">.</span><span class="na">getConnection</span><span class="o">());</span>
+</span><span class='line'>        <span class="n">T_DATE</span><span class="o">=</span><span class="n">oracle</span><span class="o">.</span><span class="na">sql</span><span class="o">.</span><span class="na">ArrayDescriptor</span><span class="o">.</span><span class="na">createDescriptor</span><span class="o">(</span><span class="s">&quot;T_DATE&quot;</span><span class="o">,</span><span class="n">st</span><span class="o">.</span><span class="na">getConnection</span><span class="o">());</span>
+</span><span class='line'>        <span class="n">a_vin</span><span class="o">=</span><span class="k">new</span> <span class="n">ARRAY</span><span class="o">(</span><span class="n">T_VARCHAR30</span><span class="o">,</span><span class="n">st</span><span class="o">.</span><span class="na">getConnection</span><span class="o">(),</span><span class="n">vin</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">a_type</span><span class="o">=</span><span class="k">new</span> <span class="n">ARRAY</span><span class="o">(</span><span class="n">T_VARCHAR30</span><span class="o">,</span><span class="n">st</span><span class="o">.</span><span class="na">getConnection</span><span class="o">(),</span><span class="n">type</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">a_color</span><span class="o">=</span><span class="k">new</span> <span class="n">ARRAY</span><span class="o">(</span><span class="n">T_VARCHAR10</span><span class="o">,</span><span class="n">st</span><span class="o">.</span><span class="na">getConnection</span><span class="o">(),</span><span class="n">color</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">a_vdate</span><span class="o">=</span><span class="k">new</span> <span class="n">ARRAY</span><span class="o">(</span><span class="n">T_DATE</span><span class="o">,</span><span class="n">st</span><span class="o">.</span><span class="na">getConnection</span><span class="o">(),</span><span class="n">vdate</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">a_des</span><span class="o">=</span><span class="k">new</span> <span class="n">ARRAY</span><span class="o">(</span><span class="n">T_VARCHAR200</span><span class="o">,</span><span class="n">st</span><span class="o">.</span><span class="na">getConnection</span><span class="o">(),</span><span class="n">des</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">st</span><span class="o">.</span><span class="na">setArray</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="n">a_vin</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">st</span><span class="o">.</span><span class="na">setArray</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span><span class="n">a_type</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">st</span><span class="o">.</span><span class="na">setArray</span><span class="o">(</span><span class="mi">3</span><span class="o">,</span><span class="n">a_color</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">st</span><span class="o">.</span><span class="na">setArray</span><span class="o">(</span><span class="mi">4</span><span class="o">,</span><span class="n">a_vdate</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">st</span><span class="o">.</span><span class="na">setArray</span><span class="o">(</span><span class="mi">5</span><span class="o">,</span><span class="n">a_des</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">st</span><span class="o">.</span><span class="na">registerOutParameter</span><span class="o">(</span><span class="mi">6</span><span class="o">,</span> <span class="n">OracleTypes</span><span class="o">.</span><span class="na">VARCHAR</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">st</span><span class="o">.</span><span class="na">execute</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">result</span><span class="o">=</span><span class="n">st</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="mi">6</span><span class="o">);</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">throw</span> <span class="k">new</span> <span class="nf">JboException</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">st</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="k">try</span> <span class="o">{</span>
+</span><span class='line'>                <span class="n">st</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</span><span class='line'>            <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">SQLException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>                <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+</span><span class='line'>            <span class="o">}</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>将POI解析出来的数据，包装成Object对象作为参数传递给数据库ch_report_pkg包中的INSERTREPORT1方法，bulk insert到数据库，极大地提高了插入数据效率。
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">PROCEDURE</span> <span class="n">INSERTREPORT1</span><span class="p">(</span><span class="n">I_VIN</span>      <span class="k">IN</span> <span class="n">T_VARCHAR30</span><span class="p">,</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span>                      <span class="n">I_CAR_TYPE</span> <span class="k">IN</span> <span class="n">T_VARCHAR30</span><span class="p">,</span>
+</span><span class='line'>                      <span class="n">I_COLOR</span>    <span class="k">IN</span> <span class="n">T_VARCHAR10</span><span class="p">,</span>
+</span><span class='line'>                      <span class="n">I_VDATE</span>    <span class="k">IN</span> <span class="n">T_DATE</span><span class="p">,</span>
+</span><span class='line'>                      <span class="n">I_DES</span>      <span class="k">IN</span> <span class="n">T_VARCHAR200</span><span class="p">,</span>
+</span><span class='line'>                      <span class="n">MESSAGE</span>    <span class="k">OUT</span> <span class="n">VARCHAR2</span><span class="p">)</span> <span class="k">IS</span>
+</span><span class='line'><span class="n">I</span> <span class="nb">INTEGER</span><span class="p">;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>  <span class="k">BEGIN</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">DELETE</span> <span class="k">FROM</span> <span class="n">CH_REPORT_1_TEMP</span><span class="p">;</span>
+</span><span class='line'><span class="k">COMMIT</span><span class="p">;</span>
+</span><span class='line'><span class="n">FORALL</span> <span class="n">I</span> <span class="k">IN</span> <span class="mi">1</span> <span class="p">..</span> <span class="n">I_VIN</span><span class="p">.</span><span class="k">COUNT</span>
+</span><span class='line'>  <span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">CH_REPORT_1_TEMP</span>
+</span><span class='line'>    <span class="p">(</span><span class="n">VIN</span><span class="p">,</span> <span class="n">CAR_TYPE</span><span class="p">,</span> <span class="n">COLOR</span><span class="p">,</span> <span class="n">VDATE</span><span class="p">,</span> <span class="n">DESCRIPTION</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">VALUES</span>
+</span><span class='line'>    <span class="p">(</span><span class="n">I_VIN</span><span class="p">(</span><span class="n">I</span><span class="p">),</span> <span class="n">I_CAR_TYPE</span><span class="p">(</span><span class="n">I</span><span class="p">),</span> <span class="n">I_COLOR</span><span class="p">(</span><span class="n">I</span><span class="p">),</span> <span class="n">I_VDATE</span><span class="p">(</span><span class="n">I</span><span class="p">),</span> <span class="n">I_DES</span><span class="p">(</span><span class="n">I</span><span class="p">));</span>
+</span><span class='line'><span class="n">MESSAGE</span> <span class="p">:</span><span class="o">=</span> <span class="n">I_VIN</span><span class="p">.</span><span class="k">COUNT</span> <span class="o">||</span> <span class="s1">&#39;条数据正常插入!&#39;</span><span class="p">;</span>
+</span><span class='line'><span class="k">COMMIT</span><span class="p">;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>  <span class="n">EXCEPTION</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">WHEN</span> <span class="n">OTHERS</span> <span class="k">THEN</span>
+</span><span class='line'>  <span class="n">MESSAGE</span> <span class="p">:</span><span class="o">=</span> <span class="s1">&#39;出现异常，错误代码如下：&#39;</span> <span class="o">||</span> <span class="n">SQLERRM</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">ROLLBACK</span><span class="p">;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>  <span class="k">END</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>此外，需要先根据表结构定义出字段类型如下：
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">create</span> <span class="k">or</span> <span class="k">replace</span> <span class="k">TYPE</span> <span class="n">T_VARCHAR30</span> <span class="k">IS</span> <span class="k">TABLE</span> <span class="k">OF</span> <span class="n">VARCHAR2</span><span class="p">(</span><span class="mi">30</span><span class="p">);</span>
+</span><span class='line'><span class="k">create</span> <span class="k">or</span> <span class="k">replace</span> <span class="k">TYPE</span> <span class="n">T_VARCHAR10</span> <span class="k">IS</span> <span class="k">TABLE</span> <span class="k">OF</span> <span class="n">VARCHAR2</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+</span><span class='line'><span class="k">create</span> <span class="k">or</span> <span class="k">replace</span> <span class="k">TYPE</span> <span class="n">T_VARCHAR200</span> <span class="k">IS</span> <span class="k">TABLE</span> <span class="k">OF</span> <span class="n">VARCHAR2</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
+</span><span class='line'><span class="k">create</span> <span class="k">or</span> <span class="k">replace</span> <span class="k">TYPE</span> <span class="n">T_DATE</span> <span class="k">IS</span> <span class="k">TABLE</span> <span class="k">OF</span> <span class="nb">DATE</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>那么数据就顺利批量插入到临时表中了。</p>
+
+<h4>数据去除重复</h4>
+
+<p>需要根据插入数据的主键VIN判断是否跟数据库中存在的数据重复，  <br/>
+在程序中对比的话效率很低，所以采用在数据库中通过语句  <br/>
+<code>select count(vin) from (table union temp_table) group by vin</code>  <br/>
+来判断，count数量大于1表示有重复。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[OAF 使用OAException输出中文时出现乱码 解决]]></title>
