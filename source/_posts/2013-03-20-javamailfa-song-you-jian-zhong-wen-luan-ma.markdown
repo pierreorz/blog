@@ -3,7 +3,10 @@ layout: post
 title: "JavaMail发送邮件中文乱码"
 date: 2013-03-20 16:21
 comments: true
-categories: 
+categories: java
+tags:
+- javaMail
+- 乱码
 ---
 使用JavaMail发送邮件时，邮件主题以及发件人中有中文字符时出现乱码
 

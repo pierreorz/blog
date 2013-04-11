@@ -75,14 +75,13 @@ gem install hpricot
 ####修改文章图片链接####
 
 迁移过来的文章中图片链接可能不大对，需要修改才能让图片显示正常，把原来wp-contents目录下uploads文件夹拷到相应路径下，替换掉文件中的静态地址为图片地址即可避免点击图片时出现404错误。  
-批量替换命令：
 
 ####修改页面名字及新增[标签云]&[关于]页面####
 
 修改navigation.html
-<section>
+{% codeblock lang:java %}
 vi source/_includes/custom/navigation.html 
-</section>
+{% endcodeblock %}
 给各页面修改个性化名字，并新增两个页面
 {% codeblock lang:ruby %}
 <ul class="main-navigation">
