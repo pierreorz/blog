@@ -1,0 +1,314 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>ADF table的全选功能实现 - 邓德昭的技术博客</title>
+  <meta name="author" content="pierreorz">
+
+  
+  <meta name="description" content="ADF表想要加个checkbox的全选功能，需要定制。
+Step1先在ADF表基于的VO上加一个Transient属性Checked Step2 页面中，在ADF表中手工添加一个column如下图所示 Step3 MB中加上如下valueChangeEvent监听方法，取得VO，
+遍历所有ROW， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://dengdezhao.cn/blog/2012-06-26/adf-table%E7%9A%84%E5%85%A8%E9%80%89%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="邓德昭的技术博客" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><img src="http://www.dengdezhao.cn/wp-content/uploads/logo.gif" width=40px height=40px  alt="" /><a href="/">邓德昭的技术博客</a></h1>
+  
+    <h2>最大的懦弱，不是畏葸不前，而是安于现状</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:dengdezhao.cn" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客主页</a></li>
+  <li><a href="/blog/archives">文章列表</a></li>
+  <li><a href="/tag">标签云</a></li>
+  <li><a href="/about">关于</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">ADF Table的全选功能实现</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>ADF表想要加个checkbox的全选功能，需要定制。
+<strong>Step1</strong>先在ADF表基于的VO上加一个Transient属性<strong>Checked</strong></p>
+
+<p><strong><a rel="attachment wp-att-101" href="http://www.dengdezhao.cn/wp-content/uploads/2012/06/22362218zcamfkt8c4qua8-300x186.jpg"><img class="alignnone size-medium wp-image-101" title="22362218zcamfkt8c4qua8" src="http://www.dengdezhao.cn/wp-content/uploads/2012/06/22362218zcamfkt8c4qua8-300x186.jpg" alt="" width="300" height="186" /></a></strong>
+
+<strong>Step2</strong> 页面中，在ADF表中手工添加一个column如下图所示
+<a rel="attachment wp-att-102" href="http://www.dengdezhao.cn/wp-content/uploads/2012/06/223624reclell7lhrk3hgg-300x83.jpg"><img class="alignnone size-medium wp-image-102" title="223624reclell7lhrk3hgg" src="http://www.dengdezhao.cn/wp-content/uploads/2012/06/223624reclell7lhrk3hgg-300x83.jpg" alt="" width="300" height="83" /></a></p>
+
+<p><strong>Step3</strong> MB中加上如下valueChangeEvent监听方法，取得VO，<br />
+遍历所有ROW，将Checked属性赋值，最后刷新表显示</p>
+
+<p><a rel="attachment wp-att-103" href="http://www.dengdezhao.cn/wp-content/uploads/2012/06/22362612igg9lrm21lubb6-300x209.jpg"><img class="alignnone size-medium wp-image-103" title="22362612igg9lrm21lubb6" src="http://www.dengdezhao.cn/wp-content/uploads/2012/06/22362612igg9lrm21lubb6-300x209.jpg" alt="" width="300" height="209" /></a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">pierreorz</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/adf/'>ADF</a>
+  
+</span>
+
+
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://dengdezhao.cn/blog/2012-06-26/adf-table%E7%9A%84%E5%85%A8%E9%80%89%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0/" data-via="" data-counturl="http://dengdezhao.cn/blog/2012-06-26/adf-table%E7%9A%84%E5%85%A8%E9%80%89%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2011-07-20/%E5%A6%82%E4%BD%95%E8%AE%A9%EF%BC%88lov%EF%BC%89%E7%9A%84%E5%88%9D%E5%A7%8B%E5%80%BC%E6%98%BE%E7%A4%BA%E4%B8%BAblank%E8%80%8C%E4%B8%8D%E6%98%AF%E9%BB%98%E8%AE%A4%E7%9A%84vo%E7%9A%84first-row/" title="Previous Post: 如何让af:inputListOfValues（LOV）的初始值显示为Blank而不是默认的VO的First Row">&laquo; 如何让af:inputListOfValues（LOV）的初始值显示为Blank而不是默认的VO的First Row</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2012-06-26/adftree%E5%81%9A%E7%9A%84%E6%A0%91%E8%8F%9C%E5%8D%95%E5%A6%82%E4%BD%95%E8%BF%87%E6%BB%A4%E5%AD%90%E8%8A%82%E7%82%B9%E7%9A%84%E6%95%B0%E6%8D%AE%EF%BC%9F/" title="Next Post: adf:tree做的树菜单如何过滤子节点的数据？">adf:tree做的树菜单如何过滤子节点的数据？ &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>分类目录</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/adf/'>ADF (21)</a></li>
+<li class='category'><a href='/blog/categories/ebs/'>EBS (2)</a></li>
+<li class='category'><a href='/blog/categories/oaf/'>OAF (6)</a></li>
+<li class='category'><a href='/blog/categories/oracle/'>Oracle (7)</a></li>
+<li class='category'><a href='/blog/categories/soa/'>SOA (2)</a></li>
+<li class='category'><a href='/blog/categories/sinaappengine/'>SinaAppEngine (1)</a></li>
+<li class='category'><a href='/blog/categories/forms/'>forms (1)</a></li>
+<li class='category'><a href='/blog/categories/java/'>java (2)</a></li>
+<li class='category'><a href='/blog/categories/jdeveloper/'>jdeveloper (1)</a></li>
+<li class='category'><a href='/blog/categories/linux/'>linux (2)</a></li>
+<li class='category'><a href='/blog/categories/octopress/'>octopress (1)</a></li>
+<li class='category'><a href='/blog/categories/others/'>others (1)</a></li>
+<li class='category'><a href='/blog/categories/weblogic/'>weblogic (1)</a></li>
+<li class='category'><a href='/blog/categories/wordpress/'>wordpress (1)</a></li>
+
+  </ul>
+</section>
+<section>
+  <h1>最新发表</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013-04-24/adflei-si-xin-tiao-cheng-xu-shi-xian/">ADF类似心跳程序实现</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-19/adfxue-xi-zong-jie-%5B%3F%5D/">ADF学习总结(一)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-18/oafzhong-chuang-jian-lov/">OAF中创建LOV</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-17/pei-zhi-oafkai-fa-huan-jing/">配置OAF开发环境</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-16/getrowatrangeindex-int-fang-fa-de-ju-xian-xing/">getRowAtRangeIndex(int)方法的局限性</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+<section>
+  <h1>友情链接</h1>
+  <ul>
+  	<li><a href="http://www.liqifa.cn">[小分号]</a></li>
+ 	<li><a href="http://www.fmw007.com">[梦想左岸]</a></li>
+ 	<li><a href="http://ericchan.cn">[小骚骚的技术博客]</a></li>
+  </ul>
+</section>
+
+<section>
+<h1>新浪微博</h1>
+<ul id="weibo">
+<li>
+<iframe
+width="100%"
+height="550"
+class="share_self"
+frameborder="0"
+scrolling="no"
+src="http://widget.weibo.com/weiboshow/index.php?width=0&height=550&ptype=1&speed=0&skin=&isTitle=0&noborder=1&isWeibo=1&isFans=&uid=1774817797&verifier=75ee09e4&colors=17236,003643,004354,00b7ef,ffffff&dpc=1">
+</iframe>
+</li>
+</ul>
+</section>
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - pierreorz -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+<a rel="license" href="http://creativecommons.org/licenses/by/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/88x31.png" /></a>
+<a title="Web Analytics" href="http://clicky.com/100592601">.</a>
+<script src="//static.getclicky.com/js" type="text/javascript"></script>
+<script type="text/javascript">try{ clicky.init(100592601); }catch(e){}</script>
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F2c50098a945120bddaa5f082c4e56cea' type='text/javascript'%3E%3C/script%3E"));
+</script>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'adfkf';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://dengdezhao.cn/blog/2012-06-26/adf-table%E7%9A%84%E5%85%A8%E9%80%89%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0/';
+        var disqus_url = 'http://dengdezhao.cn/blog/2012-06-26/adf-table%E7%9A%84%E5%85%A8%E9%80%89%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

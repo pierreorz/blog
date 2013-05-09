@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: Target Unreachable | 邓德昭的技术博客]]></title>
-  <link href="http://www.dengdezhao.cn/tags/target-unreachable/atom.xml" rel="self"/>
-  <link href="http://www.dengdezhao.cn/"/>
-  <updated>2013-04-09T10:51:05+08:00</updated>
-  <id>http://www.dengdezhao.cn/</id>
+  <link href="http://dengdezhao.cn/tags/target-unreachable/atom.xml" rel="self"/>
+  <link href="http://dengdezhao.cn/"/>
+  <updated>2013-05-09T13:21:28+08:00</updated>
+  <id>http://dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[javax.el.PropertyNotFoundException错误解决]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2011/06/29/javax-el-propertynotfoundexception%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/"/>
+    <link href="http://dengdezhao.cn/blog/2011-06-29/javax-el-propertynotfoundexception%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/"/>
     <updated>2011-06-29T00:00:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2011/06/29/javax-el-propertynotfoundexception错误解决</id>
+    <id>http://dengdezhao.cn/blog/2011-06-29/javax-el-propertynotfoundexception错误解决</id>
     <content type="html"><![CDATA[<p>有时候明明没有什么错误，一样的代码在别人机器上跑没问题，自己机器上跑却会出现以下这样的错误：
 <pre class="brush:java">javax.el.PropertyNotFoundException: Target Unreachable, identifier 'bindings' resolved to null</pre>
 这样的错误会随着代码量的增加而越发频繁，是IDE的缓存的BUG，如果重启jdeveloper 还不能解决的话，把报错的那个bindings的pagedef文件改动下（加一行空格）保存，然后clean all，再重新build下，基本能够解决这个问题。</p>

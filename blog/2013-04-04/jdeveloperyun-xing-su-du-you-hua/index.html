@@ -1,0 +1,357 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Jdeveloper运行速度优化 - 邓德昭的技术博客</title>
+  <meta name="author" content="pierreorz">
+
+  
+  <meta name="description" content="本文适合木有高配机却不得不在JDEV下开发的屌丝程序员 先来了解下Jdev的两个配置文件 1
+2
+E:\Oracle\Middleware11.1.2.3.0\jdeveloper\ide\bin\ide.conf
+E:\Oracle\Middleware11.1.2.3.0\jdeveloper &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://dengdezhao.cn/blog/2013-04-04/jdeveloperyun-xing-su-du-you-hua">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="邓德昭的技术博客" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><img src="http://www.dengdezhao.cn/wp-content/uploads/logo.gif" width=40px height=40px  alt="" /><a href="/">邓德昭的技术博客</a></h1>
+  
+    <h2>最大的懦弱，不是畏葸不前，而是安于现状</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:dengdezhao.cn" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客主页</a></li>
+  <li><a href="/blog/archives">文章列表</a></li>
+  <li><a href="/tag">标签云</a></li>
+  <li><a href="/about">关于</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Jdeveloper运行速度优化</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-04T17:41:00+08:00" pubdate data-updated="true">Apr 4<span>th</span>, 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h4><em>本文适合木有高配机却不得不在JDEV下开发的屌丝程序员</em></h4>
+
+<h4>先来了解下Jdev的两个配置文件</h4>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nl">E:</span><span class="err">\</span><span class="n">Oracle</span><span class="err">\</span><span class="n">Middleware11</span><span class="o">.</span><span class="mf">1.2</span><span class="o">.</span><span class="mf">3.0</span><span class="err">\</span><span class="n">jdeveloper</span><span class="err">\</span><span class="n">ide</span><span class="err">\</span><span class="n">bin</span><span class="err">\</span><span class="n">ide</span><span class="o">.</span><span class="na">conf</span>
+</span><span class='line'><span class="nl">E:</span><span class="err">\</span><span class="n">Oracle</span><span class="err">\</span><span class="n">Middleware11</span><span class="o">.</span><span class="mf">1.2</span><span class="o">.</span><span class="mf">3.0</span><span class="err">\</span><span class="n">jdeveloper</span><span class="err">\</span><span class="n">jdev</span><span class="err">\</span><span class="n">bin</span><span class="err">\</span><span class="n">jdev</span><span class="o">.</span><span class="na">conf</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>几个关键参数：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">AddVMOption</span>  <span class="o">-</span><span class="n">Xmx</span>        <span class="c1">//堆大小的最大值，在机器物理内存允许的基础上该值越大越好</span>
+</span><span class='line'><span class="n">AddVMOption</span>  <span class="o">-</span><span class="n">Xms</span>        <span class="c1">//堆大小的初始值（默认给个128差不多）</span>
+</span><span class='line'><span class="n">AddVMOption</span>  <span class="o">-</span><span class="nl">XX:</span><span class="n">MaxPermSize</span> <span class="c1">//PermGen大小，太小会报OutOfMemoryError错误  </span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这几个参数设置得不合适的话JDEV会无法启动并报以下错误：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">Unable</span> <span class="n">to</span> <span class="n">create</span> <span class="n">an</span> <span class="n">instance</span> <span class="n">of</span> <span class="n">the</span> <span class="n">Java</span> <span class="n">Virtual</span> <span class="n">Machine</span> <span class="n">Located</span> <span class="n">at</span> <span class="nl">path:</span>
+</span><span class='line'><span class="nl">E:</span><span class="err">\</span><span class="n">Oracle</span><span class="err">\</span><span class="n">Middleware11</span><span class="o">.</span><span class="mf">1.2</span><span class="o">.</span><span class="mf">3.0</span><span class="err">\</span><span class="n">jdk160_24</span><span class="err">\</span><span class="n">jre</span><span class="err">\</span><span class="n">bin</span><span class="err">\</span><span class="n">client</span><span class="err">\</span><span class="n">jvm</span><span class="o">.</span><span class="na">dll</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>好了~，我们现在需要做的就是将这几个参数的值设置得适合它的大小，以便JDEV运行得到最佳性能</p>
+
+<p>因为我的机器是32位系统WIN2003 6G内存，系统吃掉2G左右，可用内存不到4G
+而32位的JDK最大好像也只能申请1.5G左右,所以在我这机器中Jdev能分配到1G内存就差不多了</p>
+
+<p>先随意设置以上三个参数值，将JDEV能够运行起来，然后使用JDK自带的工具来监控下内存情况
+E:\Oracle\Middleware11.1.2.3.0\jdk160_24\bin\jvisualvm.exe
+<img src="http://www.dengdezhao.cn/wp-content/uploads/20130404.jpg" alt="" /></p>
+
+<p>根据图中<strong>堆</strong>及<strong>PermGen</strong>中显示使用大小调整三个参数值。
+发现在不断操作JDev时PermGen始终维持在128左右不到256的样子，
+所以设置  <br/>
+-XX:MaxPermSize值为<code>AddVMOption  -XX:MaxPermSize=256M</code>  <br/>
+-Xms值为<code>AddVMOption  -Xms128M</code>  <br/>
+通过不断测试最终调整-Xmx值为<code>AddVMOption  -Xmx896M</code></p>
+
+<p>若在运行中出现OutOfMemoryError错误再根据信息慢慢调整。当然最好还是升级机器配置换成64位的系统及JDK就没有内存限制啦！~</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">pierreorz</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-04T17:41:00+08:00" pubdate data-updated="true">Apr 4<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/jdeveloper/'>jdeveloper</a>
+  
+</span>
+
+
+      
+
+<span class="tags">
+  
+    <a class='tag' href='/tags/addvmoption/'>AddVMOption</a>, <a class='tag' href='/tags/jdeveloper/'>jdeveloper</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://dengdezhao.cn/blog/2013-04-04/jdeveloperyun-xing-su-du-you-hua/" data-via="" data-counturl="http://dengdezhao.cn/blog/2013-04-04/jdeveloperyun-xing-su-du-you-hua/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013-03-20/javamailfa-song-you-jian-zhong-wen-luan-ma/" title="Previous Post: JavaMail发送邮件中文乱码">&laquo; JavaMail发送邮件中文乱码</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013-04-09/oafshang-chuan-da-pi-liang-excelwen-jian/" title="Next Post: OAF上传大批量EXCEL文件">OAF上传大批量EXCEL文件 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>分类目录</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/adf/'>ADF (21)</a></li>
+<li class='category'><a href='/blog/categories/ebs/'>EBS (2)</a></li>
+<li class='category'><a href='/blog/categories/oaf/'>OAF (6)</a></li>
+<li class='category'><a href='/blog/categories/oracle/'>Oracle (7)</a></li>
+<li class='category'><a href='/blog/categories/soa/'>SOA (2)</a></li>
+<li class='category'><a href='/blog/categories/sinaappengine/'>SinaAppEngine (1)</a></li>
+<li class='category'><a href='/blog/categories/forms/'>forms (1)</a></li>
+<li class='category'><a href='/blog/categories/java/'>java (2)</a></li>
+<li class='category'><a href='/blog/categories/jdeveloper/'>jdeveloper (1)</a></li>
+<li class='category'><a href='/blog/categories/linux/'>linux (2)</a></li>
+<li class='category'><a href='/blog/categories/octopress/'>octopress (1)</a></li>
+<li class='category'><a href='/blog/categories/others/'>others (1)</a></li>
+<li class='category'><a href='/blog/categories/weblogic/'>weblogic (1)</a></li>
+<li class='category'><a href='/blog/categories/wordpress/'>wordpress (1)</a></li>
+
+  </ul>
+</section>
+<section>
+  <h1>最新发表</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013-04-24/adflei-si-xin-tiao-cheng-xu-shi-xian/">ADF类似心跳程序实现</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-19/adfxue-xi-zong-jie-%5B%3F%5D/">ADF学习总结(一)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-18/oafzhong-chuang-jian-lov/">OAF中创建LOV</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-17/pei-zhi-oafkai-fa-huan-jing/">配置OAF开发环境</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-16/getrowatrangeindex-int-fang-fa-de-ju-xian-xing/">getRowAtRangeIndex(int)方法的局限性</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+<section>
+  <h1>友情链接</h1>
+  <ul>
+  	<li><a href="http://www.liqifa.cn">[小分号]</a></li>
+ 	<li><a href="http://www.fmw007.com">[梦想左岸]</a></li>
+ 	<li><a href="http://ericchan.cn">[小骚骚的技术博客]</a></li>
+  </ul>
+</section>
+
+<section>
+<h1>新浪微博</h1>
+<ul id="weibo">
+<li>
+<iframe
+width="100%"
+height="550"
+class="share_self"
+frameborder="0"
+scrolling="no"
+src="http://widget.weibo.com/weiboshow/index.php?width=0&height=550&ptype=1&speed=0&skin=&isTitle=0&noborder=1&isWeibo=1&isFans=&uid=1774817797&verifier=75ee09e4&colors=17236,003643,004354,00b7ef,ffffff&dpc=1">
+</iframe>
+</li>
+</ul>
+</section>
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - pierreorz -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+<a rel="license" href="http://creativecommons.org/licenses/by/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/88x31.png" /></a>
+<a title="Web Analytics" href="http://clicky.com/100592601">.</a>
+<script src="//static.getclicky.com/js" type="text/javascript"></script>
+<script type="text/javascript">try{ clicky.init(100592601); }catch(e){}</script>
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F2c50098a945120bddaa5f082c4e56cea' type='text/javascript'%3E%3C/script%3E"));
+</script>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'adfkf';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://dengdezhao.cn/blog/2013-04-04/jdeveloperyun-xing-su-du-you-hua/';
+        var disqus_url = 'http://dengdezhao.cn/blog/2013-04-04/jdeveloperyun-xing-su-du-you-hua/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

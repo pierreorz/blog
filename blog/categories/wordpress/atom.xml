@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: wordpress | 邓德昭的技术博客]]></title>
-  <link href="http://www.dengdezhao.cn/blog/categories/wordpress/atom.xml" rel="self"/>
-  <link href="http://www.dengdezhao.cn/"/>
-  <updated>2013-04-09T10:51:05+08:00</updated>
-  <id>http://www.dengdezhao.cn/</id>
+  <link href="http://dengdezhao.cn/blog/categories/wordpress/atom.xml" rel="self"/>
+  <link href="http://dengdezhao.cn/"/>
+  <updated>2013-05-09T13:21:28+08:00</updated>
+  <id>http://dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[wordpress的elegant-box主题跟syntax-highlighter-optimized插件的冲突解决]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2011/06/30/wordpress%E7%9A%84elegant-box%E4%B8%BB%E9%A2%98%E8%B7%9Fsyntax-highlighter-optimized%E6%8F%92%E4%BB%B6%E7%9A%84%E5%86%B2%E7%AA%81%E8%A7%A3%E5%86%B3/"/>
+    <link href="http://dengdezhao.cn/blog/2011-06-30/wordpress%E7%9A%84elegant-box%E4%B8%BB%E9%A2%98%E8%B7%9Fsyntax-highlighter-optimized%E6%8F%92%E4%BB%B6%E7%9A%84%E5%86%B2%E7%AA%81%E8%A7%A3%E5%86%B3/"/>
     <updated>2011-06-30T00:00:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2011/06/30/wordpress的elegant-box主题跟syntax-highlighter-optimized插件的冲突解决</id>
+    <id>http://dengdezhao.cn/blog/2011-06-30/wordpress的elegant-box主题跟syntax-highlighter-optimized插件的冲突解决</id>
     <content type="html"><![CDATA[<p>当这款主题跟高亮插件同时使用时，一个不兼容的细节表现了出来，具体症状表现参照下图：</p>
 
 

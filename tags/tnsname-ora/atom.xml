@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: tnsname.ora | 邓德昭的技术博客]]></title>
-  <link href="http://www.dengdezhao.cn/tags/tnsname-ora/atom.xml" rel="self"/>
-  <link href="http://www.dengdezhao.cn/"/>
-  <updated>2013-04-09T10:51:05+08:00</updated>
-  <id>http://www.dengdezhao.cn/</id>
+  <link href="http://dengdezhao.cn/tags/tnsname-ora/atom.xml" rel="self"/>
+  <link href="http://dengdezhao.cn/"/>
+  <updated>2013-05-09T13:21:28+08:00</updated>
+  <id>http://dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[oracle 11g 数据库安装后改计算机名出现无法连接的问题解决]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2011/07/15/oracle-11g-%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%89%E8%A3%85%E5%90%8E%E6%94%B9%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%90%8D%E5%87%BA%E7%8E%B0%E6%97%A0%E6%B3%95%E8%BF%9E%E6%8E%A5%E7%9A%84%E9%97%AE%E9%A2%98%E8%A7%A3/"/>
+    <link href="http://dengdezhao.cn/blog/2011-07-15/oracle-11g-%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%89%E8%A3%85%E5%90%8E%E6%94%B9%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%90%8D%E5%87%BA%E7%8E%B0%E6%97%A0%E6%B3%95%E8%BF%9E%E6%8E%A5%E7%9A%84%E9%97%AE%E9%A2%98%E8%A7%A3/"/>
     <updated>2011-07-15T00:00:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2011/07/15/oracle-11g-数据库安装后改计算机名出现无法连接的问题解</id>
+    <id>http://dengdezhao.cn/blog/2011-07-15/oracle-11g-数据库安装后改计算机名出现无法连接的问题解</id>
     <content type="html"><![CDATA[<p>在局域网内一台机器上安装完oracle11g之后，本地测试OK 可以访问orcl。用局域网内另一台机器连接的时候不行。<br />
 两台机器可以PING通。<br />
 修改tnsname.ora  把默认的localhost 都改成了本机IP 试试还是不行。<br />

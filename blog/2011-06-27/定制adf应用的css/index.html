@@ -1,0 +1,350 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>定制ADF应用的CSS - 邓德昭的技术博客</title>
+  <meta name="author" content="pierreorz">
+
+  
+  <meta name="description" content="客户的要求总是各种变态，如果需要定制默认的控件样式的话，那么以下的文章可能会对你有帮助。 Step.1 首先我们需要定义自己的CSS文件 CustomSkin.css
+af|inputListOfValues::search-icon-style{ background-image:none &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://dengdezhao.cn/blog/2011-06-27/%E5%AE%9A%E5%88%B6adf%E5%BA%94%E7%94%A8%E7%9A%84css">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="邓德昭的技术博客" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><img src="http://www.dengdezhao.cn/wp-content/uploads/logo.gif" width=40px height=40px  alt="" /><a href="/">邓德昭的技术博客</a></h1>
+  
+    <h2>最大的懦弱，不是畏葸不前，而是安于现状</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:dengdezhao.cn" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客主页</a></li>
+  <li><a href="/blog/archives">文章列表</a></li>
+  <li><a href="/tag">标签云</a></li>
+  <li><a href="/about">关于</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">定制ADF应用的CSS</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-06-27T00:00:00+08:00" pubdate data-updated="true">Jun 27<span>th</span>, 2011</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>客户的要求总是各种变态，如果需要定制默认的控件样式的话，那么以下的文章可能会对你有帮助。</p>
+
+<p>Step.1 首先我们需要定义自己的CSS文件 <span style="color: #0000ff;">CustomSkin.css</span>
+<pre class="brush:css">af|inputListOfValues::search-icon-style{
+  background-image:none;
+}</pre></p>
+
+<p>af|inputListOfValues::search-icon-style:hover{<br />
+  background-image:none;<br />
+}
+af|inputListOfValues::search-icon-style:active{<br />
+  background-image:none;<br />
+}
+af|inputListOfValues::search-icon-style:info{<br />
+  background-image:none;<br />
+}
+Step.2 接着创建 <span style="color: #0000ff;">trinidad-skins.xml</span>
+<pre class="brush:xml">&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;
+&lt;skins xmlns="http://myfaces.apache.org/trinidad/skin"&gt;
+  &lt;skin&gt;
+    &lt;id&gt;customSkin.desktop&lt;/id&gt;
+    &lt;family&gt;CustomSkin&lt;/family&gt;
+    &lt;extends&gt;blafplus-rich.desktop&lt;/extends&gt;
+    &lt;render-kit-id&gt;org.apache.myfaces.trinidad.desktop&lt;/render-kit-id&gt;
+    &lt;style-sheet-name&gt;css/CustomSkin.css&lt;/style-sheet-name&gt;
+  &lt;/skin&gt;
+&lt;/skins&gt;</pre>
+Step.3 修改 <span style="color: #0000ff;">trinidad-config.xml</span>
+<pre class="brush:xml"> &lt;skin-family&gt;CustomSkin&lt;/skin-family&gt;</pre>
+Step.4 修改<span style="color: #0000ff;">web.xml</span>
+<pre class="brush:xml">&lt;context-param&gt;
+    &lt;description&gt;If this parameter is true, there will be an automatic check of the modification date of your JSPs, and saved state will be discarded when JSP's change. It will also automatically check if your skinning css files have changed without you having to restart the server. This makes development easier, but adds overhead. For this reason this parameter should be set to false when your application is deployed.&lt;/description&gt;
+    &lt;param-name&gt;org.apache.myfaces.trinidad.CHECK_FILE_MODIFICATION&lt;/param-name&gt;
+    &lt;param-value&gt;true&lt;/param-value&gt;
+  &lt;/context-param&gt;</pre></p>
+
+<p>&lt;context-param&gt;<br />
+    &lt;description&gt;No obfuscation of CSS.&lt;/description&gt;<br />
+    &lt;param-name&gt;org.apache.myfaces.trinidad.DISABLE_CONTENT_COMPRESSION&lt;/param-name&gt;<br />
+    &lt;param-value&gt;true&lt;/param-value&gt;<br />
+  &lt;/context-param&gt;
+重启下应用就会发现控件样式已经采用自定义CSS文件里的样式了！<span style="color: #0000ff;">
+</span></p>
+
+<p>&nbsp;</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">pierreorz</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-06-27T00:00:00+08:00" pubdate data-updated="true">Jun 27<span>th</span>, 2011</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/adf/'>ADF</a>
+  
+</span>
+
+
+      
+
+<span class="tags">
+  
+    <a class='tag' href='/tags/adf/'>ADF</a>, <a class='tag' href='/tags/css/'>css</a>, <a class='tag' href='/tags/customskin-css/'>customSkin.css</a>, <a class='tag' href='/tags/trinidad-config-xml/'>trinidad-config.xml</a>, <a class='tag' href='/tags/web-xml/'>web.xml</a>, <a class='tag' href='/tags/定制样式/'>定制样式</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://dengdezhao.cn/blog/2011-06-27/%E5%AE%9A%E5%88%B6adf%E5%BA%94%E7%94%A8%E7%9A%84css/" data-via="" data-counturl="http://dengdezhao.cn/blog/2011-06-27/%E5%AE%9A%E5%88%B6adf%E5%BA%94%E7%94%A8%E7%9A%84css/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+      
+        <a class="basic-alignment right" href="/blog/2011-06-28/adf%E5%BA%94%E7%94%A8%E2%80%9Cremote-deployment-failed%E2%80%9D%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/" title="Next Post: ADF应用“Remote deployment failed”错误解决">ADF应用“Remote deployment failed”错误解决 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>分类目录</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/adf/'>ADF (21)</a></li>
+<li class='category'><a href='/blog/categories/ebs/'>EBS (2)</a></li>
+<li class='category'><a href='/blog/categories/oaf/'>OAF (6)</a></li>
+<li class='category'><a href='/blog/categories/oracle/'>Oracle (7)</a></li>
+<li class='category'><a href='/blog/categories/soa/'>SOA (2)</a></li>
+<li class='category'><a href='/blog/categories/sinaappengine/'>SinaAppEngine (1)</a></li>
+<li class='category'><a href='/blog/categories/forms/'>forms (1)</a></li>
+<li class='category'><a href='/blog/categories/java/'>java (2)</a></li>
+<li class='category'><a href='/blog/categories/jdeveloper/'>jdeveloper (1)</a></li>
+<li class='category'><a href='/blog/categories/linux/'>linux (2)</a></li>
+<li class='category'><a href='/blog/categories/octopress/'>octopress (1)</a></li>
+<li class='category'><a href='/blog/categories/others/'>others (1)</a></li>
+<li class='category'><a href='/blog/categories/weblogic/'>weblogic (1)</a></li>
+<li class='category'><a href='/blog/categories/wordpress/'>wordpress (1)</a></li>
+
+  </ul>
+</section>
+<section>
+  <h1>最新发表</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013-04-24/adflei-si-xin-tiao-cheng-xu-shi-xian/">ADF类似心跳程序实现</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-19/adfxue-xi-zong-jie-%5B%3F%5D/">ADF学习总结(一)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-18/oafzhong-chuang-jian-lov/">OAF中创建LOV</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-17/pei-zhi-oafkai-fa-huan-jing/">配置OAF开发环境</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-16/getrowatrangeindex-int-fang-fa-de-ju-xian-xing/">getRowAtRangeIndex(int)方法的局限性</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+<section>
+  <h1>友情链接</h1>
+  <ul>
+  	<li><a href="http://www.liqifa.cn">[小分号]</a></li>
+ 	<li><a href="http://www.fmw007.com">[梦想左岸]</a></li>
+ 	<li><a href="http://ericchan.cn">[小骚骚的技术博客]</a></li>
+  </ul>
+</section>
+
+<section>
+<h1>新浪微博</h1>
+<ul id="weibo">
+<li>
+<iframe
+width="100%"
+height="550"
+class="share_self"
+frameborder="0"
+scrolling="no"
+src="http://widget.weibo.com/weiboshow/index.php?width=0&height=550&ptype=1&speed=0&skin=&isTitle=0&noborder=1&isWeibo=1&isFans=&uid=1774817797&verifier=75ee09e4&colors=17236,003643,004354,00b7ef,ffffff&dpc=1">
+</iframe>
+</li>
+</ul>
+</section>
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - pierreorz -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+<a rel="license" href="http://creativecommons.org/licenses/by/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/88x31.png" /></a>
+<a title="Web Analytics" href="http://clicky.com/100592601">.</a>
+<script src="//static.getclicky.com/js" type="text/javascript"></script>
+<script type="text/javascript">try{ clicky.init(100592601); }catch(e){}</script>
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F2c50098a945120bddaa5f082c4e56cea' type='text/javascript'%3E%3C/script%3E"));
+</script>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'adfkf';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://dengdezhao.cn/blog/2011-06-27/%E5%AE%9A%E5%88%B6adf%E5%BA%94%E7%94%A8%E7%9A%84css/';
+        var disqus_url = 'http://dengdezhao.cn/blog/2011-06-27/%E5%AE%9A%E5%88%B6adf%E5%BA%94%E7%94%A8%E7%9A%84css/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

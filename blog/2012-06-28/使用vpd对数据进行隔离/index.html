@@ -1,0 +1,351 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>使用VPD对数据进行隔离 - 邓德昭的技术博客</title>
+  <meta name="author" content="pierreorz">
+
+  
+  <meta name="description" content="项目需求：系统数据表删除操作是直接物理删除，不利于维护历史记录，需要变更为逻辑删除模式。 解决方案： 对表增加删除标记字段DEL_FLAG varchar2(1) default ‘0’; 用户执行“删除”操作时，并不执行物理删除操作，而是将DEL_FLAG值设置为‘1’； 针对数据展示时， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://dengdezhao.cn/blog/2012-06-28/%E4%BD%BF%E7%94%A8vpd%E5%AF%B9%E6%95%B0%E6%8D%AE%E8%BF%9B%E8%A1%8C%E9%9A%94%E7%A6%BB">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="邓德昭的技术博客" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><img src="http://www.dengdezhao.cn/wp-content/uploads/logo.gif" width=40px height=40px  alt="" /><a href="/">邓德昭的技术博客</a></h1>
+  
+    <h2>最大的懦弱，不是畏葸不前，而是安于现状</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:dengdezhao.cn" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客主页</a></li>
+  <li><a href="/blog/archives">文章列表</a></li>
+  <li><a href="/tag">标签云</a></li>
+  <li><a href="/about">关于</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">使用VPD对数据进行隔离</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-28T00:00:00+08:00" pubdate data-updated="true">Jun 28<span>th</span>, 2012</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>项目需求：系统数据表删除操作是直接物理删除，不利于维护历史记录，需要变更为逻辑删除模式。</p>
+
+<p>解决方案：</p>
+
+<p>对表增加删除标记字段DEL_FLAG varchar2(1) default ‘0’;</p>
+
+<p>用户执行“删除”操作时，并不执行物理删除操作，而是将DEL_FLAG值设置为‘1’；</p>
+
+<p>针对数据展示时，删除标记为’1’的数据使用VPD技术屏蔽访问；</p>
+
+<p><strong>1．需要修改的基表[T]新增删除字段：</strong></p>
+
+<p><strong>alter table</strong> T <strong>add</strong> (DEL_FLAG varchar2(1) <strong>default</strong> &#8216;0&#8217;);&#8211;缺省为0，逻辑删除改为1</p>
+
+<p><strong>2．创建VPD需要的函数：</strong><strong>f_limited_query_t</strong><strong></strong></p>
+
+<p><strong>CREATE OR REPLACE FUNCTION</strong> f_limited_query_t (s_schema <strong>IN</strong> VARCHAR2,</p>
+
+<p>s_object <strong>IN</strong> VARCHAR2)</p>
+
+<p><strong>RETURN</strong> VARCHAR2</p>
+
+<p><strong>AS</strong></p>
+
+<p><strong>BEGIN</strong></p>
+
+<p><strong>RETURN</strong> &#8216;DEL_FLAG!=&#8221;&#8217;||&#8217;1&#8217;||&#8221;&#8221;;</p>
+
+<p><strong>END;</strong></p>
+
+<p><strong>3．创建策略：</strong><strong>POLICY_LIMITED_QUERY_T</strong><strong></strong></p>
+
+<p><strong>BEGIN</strong>
+DBMS_RLS.add_policy (object_schema   =&gt; &#8216;APPS&#8217;,<br />
+object_name     =&gt; &#8216;T&#8217;,<br />
+policy_name     =&gt; &#8216;POLICY_LIMITED_QUERY_T&#8217;,<br />
+function_schema =&gt; &#8216;APPS&#8217;,<br />
+policy_function =&gt; &#8216;F_LIMITED_QUERY_T&#8217;);
+<strong>END</strong>;</p>
+
+<p><strong>取消策略：</strong><strong>(</strong>不用过滤时使用此命令<strong>)</strong></p>
+
+<p><strong>BEGIN</strong>
+DBMS_RLS.drop_policy (object_schema   =&gt; &#8216;APPS&#8217;,<br />
+object_name     =&gt; &#8216;T&#8217;,<br />
+policy_name     =&gt; &#8216;POLICY_LIMITED_QUERY_T&#8217;);
+<strong>END</strong>;<strong></strong></p>
+
+<p>&nbsp;</p>
+
+<p><strong>4．修改FORM中对相关数据表的删除逻辑为更新DEL_FLAG=1的操作；</strong></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">pierreorz</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-28T00:00:00+08:00" pubdate data-updated="true">Jun 28<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/oracle/'>Oracle</a>
+  
+</span>
+
+
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://dengdezhao.cn/blog/2012-06-28/%E4%BD%BF%E7%94%A8vpd%E5%AF%B9%E6%95%B0%E6%8D%AE%E8%BF%9B%E8%A1%8C%E9%9A%94%E7%A6%BB/" data-via="" data-counturl="http://dengdezhao.cn/blog/2012-06-28/%E4%BD%BF%E7%94%A8vpd%E5%AF%B9%E6%95%B0%E6%8D%AE%E8%BF%9B%E8%A1%8C%E9%9A%94%E7%A6%BB/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012-06-26/%E9%80%9A%E8%BF%87java%E4%BB%A3%E7%A0%81%E5%88%B7%E6%96%B0%E7%BB%91%E5%AE%9A%E6%8E%A7%E4%BB%B6/" title="Previous Post: 通过Java代码刷新绑定控件">&laquo; 通过Java代码刷新绑定控件</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2012-07-06/%E9%80%9A%E8%BF%87%E4%BB%A3%E7%A0%81%E8%AE%BE%E7%BD%AEitem%E5%B1%9E%E6%80%A7%E5%8F%98%E9%BB%84/" title="Next Post: 通过代码设置ITEM属性变黄">通过代码设置ITEM属性变黄 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>分类目录</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/adf/'>ADF (21)</a></li>
+<li class='category'><a href='/blog/categories/ebs/'>EBS (2)</a></li>
+<li class='category'><a href='/blog/categories/oaf/'>OAF (6)</a></li>
+<li class='category'><a href='/blog/categories/oracle/'>Oracle (7)</a></li>
+<li class='category'><a href='/blog/categories/soa/'>SOA (2)</a></li>
+<li class='category'><a href='/blog/categories/sinaappengine/'>SinaAppEngine (1)</a></li>
+<li class='category'><a href='/blog/categories/forms/'>forms (1)</a></li>
+<li class='category'><a href='/blog/categories/java/'>java (2)</a></li>
+<li class='category'><a href='/blog/categories/jdeveloper/'>jdeveloper (1)</a></li>
+<li class='category'><a href='/blog/categories/linux/'>linux (2)</a></li>
+<li class='category'><a href='/blog/categories/octopress/'>octopress (1)</a></li>
+<li class='category'><a href='/blog/categories/others/'>others (1)</a></li>
+<li class='category'><a href='/blog/categories/weblogic/'>weblogic (1)</a></li>
+<li class='category'><a href='/blog/categories/wordpress/'>wordpress (1)</a></li>
+
+  </ul>
+</section>
+<section>
+  <h1>最新发表</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013-04-24/adflei-si-xin-tiao-cheng-xu-shi-xian/">ADF类似心跳程序实现</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-19/adfxue-xi-zong-jie-%5B%3F%5D/">ADF学习总结(一)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-18/oafzhong-chuang-jian-lov/">OAF中创建LOV</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-17/pei-zhi-oafkai-fa-huan-jing/">配置OAF开发环境</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-16/getrowatrangeindex-int-fang-fa-de-ju-xian-xing/">getRowAtRangeIndex(int)方法的局限性</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+<section>
+  <h1>友情链接</h1>
+  <ul>
+  	<li><a href="http://www.liqifa.cn">[小分号]</a></li>
+ 	<li><a href="http://www.fmw007.com">[梦想左岸]</a></li>
+ 	<li><a href="http://ericchan.cn">[小骚骚的技术博客]</a></li>
+  </ul>
+</section>
+
+<section>
+<h1>新浪微博</h1>
+<ul id="weibo">
+<li>
+<iframe
+width="100%"
+height="550"
+class="share_self"
+frameborder="0"
+scrolling="no"
+src="http://widget.weibo.com/weiboshow/index.php?width=0&height=550&ptype=1&speed=0&skin=&isTitle=0&noborder=1&isWeibo=1&isFans=&uid=1774817797&verifier=75ee09e4&colors=17236,003643,004354,00b7ef,ffffff&dpc=1">
+</iframe>
+</li>
+</ul>
+</section>
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - pierreorz -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+<a rel="license" href="http://creativecommons.org/licenses/by/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/88x31.png" /></a>
+<a title="Web Analytics" href="http://clicky.com/100592601">.</a>
+<script src="//static.getclicky.com/js" type="text/javascript"></script>
+<script type="text/javascript">try{ clicky.init(100592601); }catch(e){}</script>
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F2c50098a945120bddaa5f082c4e56cea' type='text/javascript'%3E%3C/script%3E"));
+</script>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'adfkf';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://dengdezhao.cn/blog/2012-06-28/%E4%BD%BF%E7%94%A8vpd%E5%AF%B9%E6%95%B0%E6%8D%AE%E8%BF%9B%E8%A1%8C%E9%9A%94%E7%A6%BB/';
+        var disqus_url = 'http://dengdezhao.cn/blog/2012-06-28/%E4%BD%BF%E7%94%A8vpd%E5%AF%B9%E6%95%B0%E6%8D%AE%E8%BF%9B%E8%A1%8C%E9%9A%94%E7%A6%BB/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

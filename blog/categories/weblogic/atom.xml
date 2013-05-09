@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: weblogic | 邓德昭的技术博客]]></title>
-  <link href="http://www.dengdezhao.cn/blog/categories/weblogic/atom.xml" rel="self"/>
-  <link href="http://www.dengdezhao.cn/"/>
-  <updated>2013-04-09T10:51:05+08:00</updated>
-  <id>http://www.dengdezhao.cn/</id>
+  <link href="http://dengdezhao.cn/blog/categories/weblogic/atom.xml" rel="self"/>
+  <link href="http://dengdezhao.cn/"/>
+  <updated>2013-05-09T13:21:28+08:00</updated>
+  <id>http://dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[weblogic定时启动程序]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2012/06/26/weblogic%E5%AE%9A%E6%97%B6%E5%90%AF%E5%8A%A8%E7%A8%8B%E5%BA%8F/"/>
+    <link href="http://dengdezhao.cn/blog/2012-06-26/weblogic%E5%AE%9A%E6%97%B6%E5%90%AF%E5%8A%A8%E7%A8%8B%E5%BA%8F/"/>
     <updated>2012-06-26T00:00:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2012/06/26/weblogic定时启动程序</id>
+    <id>http://dengdezhao.cn/blog/2012-06-26/weblogic定时启动程序</id>
     <content type="html"><![CDATA[<p>有个需求是要求程序在每天晚上3点钟的时候自动调用一个Job执行。</p>
 
 

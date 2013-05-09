@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: jdeveloper | 邓德昭的技术博客]]></title>
-  <link href="http://www.dengdezhao.cn/blog/categories/jdeveloper/atom.xml" rel="self"/>
-  <link href="http://www.dengdezhao.cn/"/>
-  <updated>2013-04-09T10:51:05+08:00</updated>
-  <id>http://www.dengdezhao.cn/</id>
+  <link href="http://dengdezhao.cn/blog/categories/jdeveloper/atom.xml" rel="self"/>
+  <link href="http://dengdezhao.cn/"/>
+  <updated>2013-05-09T13:21:28+08:00</updated>
+  <id>http://dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Jdeveloper运行速度优化]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2013/04/04/jdeveloperyun-xing-su-du-you-hua/"/>
+    <link href="http://dengdezhao.cn/blog/2013-04-04/jdeveloperyun-xing-su-du-you-hua/"/>
     <updated>2013-04-04T17:41:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2013/04/04/jdeveloperyun-xing-su-du-you-hua</id>
+    <id>http://dengdezhao.cn/blog/2013-04-04/jdeveloperyun-xing-su-du-you-hua</id>
     <content type="html"><![CDATA[<h4><em>本文适合木有高配机却不得不在JDEV下开发的屌丝程序员</em></h4>
 
 <h4>先来了解下Jdev的两个配置文件</h4>
@@ -55,8 +55,9 @@ E:\Oracle\Middleware11.1.2.3.0\jdk160_24\bin\jvisualvm.exe
 
 <p>根据图中<strong>堆</strong>及<strong>PermGen</strong>中显示使用大小调整三个参数值。
 发现在不断操作JDev时PermGen始终维持在128左右不到256的样子，
-所以设置-XX:MaxPermSize值为<code>AddVMOption  -XX:MaxPermSize=256M</code>
--Xms值为<code>AddVMOption  -Xms128M</code>
+所以设置  <br/>
+-XX:MaxPermSize值为<code>AddVMOption  -XX:MaxPermSize=256M</code>  <br/>
+-Xms值为<code>AddVMOption  -Xms128M</code>  <br/>
 通过不断测试最终调整-Xmx值为<code>AddVMOption  -Xmx896M</code></p>
 
 <p>若在运行中出现OutOfMemoryError错误再根据信息慢慢调整。当然最好还是升级机器配置换成64位的系统及JDK就没有内存限制啦！~</p>

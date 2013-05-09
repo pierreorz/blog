@@ -1,0 +1,365 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>配置OAF开发环境 - 邓德昭的技术博客</title>
+  <meta name="author" content="pierreorz">
+
+  
+  <meta name="description" content="查看EBS系统OA版本信息 方法一：使用OPERATIONS用户登陆EBS系统，选择“Diagnostics”后，在页下脚选择“About this Page”后选择“Technology Components”标签可查看相应版本信息。 方法二：访问URI： 1
+http://&lt;HOST& &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://dengdezhao.cn/blog/2013-04-17/pei-zhi-oafkai-fa-huan-jing">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="邓德昭的技术博客" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><img src="http://www.dengdezhao.cn/wp-content/uploads/logo.gif" width=40px height=40px  alt="" /><a href="/">邓德昭的技术博客</a></h1>
+  
+    <h2>最大的懦弱，不是畏葸不前，而是安于现状</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:dengdezhao.cn" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客主页</a></li>
+  <li><a href="/blog/archives">文章列表</a></li>
+  <li><a href="/tag">标签云</a></li>
+  <li><a href="/about">关于</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">配置OAF开发环境</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-17T15:01:00+08:00" pubdate data-updated="true">Apr 17<span>th</span>, 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h4>查看EBS系统OA版本信息</h4>
+
+<p>方法一：使用OPERATIONS用户登陆EBS系统，选择“Diagnostics”后，在页下脚选择“About this Page”后选择“Technology Components”标签可查看相应版本信息。</p>
+
+<p>方法二：访问URI：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nl">http:</span><span class="c1">//&lt;HOST&gt;:&lt;PORT&gt;/OA_HTML/OAInfo.jsp    </span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>查看OAF版本下载相应JDEV开发工具</h4>
+
+<p>metalink document id: 787209.1</p>
+
+<p>例如：p4141787_11i_GENERIC.zip</p>
+
+<p>解压缩后把“/jdevhome/jdev”路径加到系统变量中，变量名：      JDEV_USER_HOME=F:\p4141787_11i_GENERIC\jdevhome\jdev</p>
+
+<h4>配置DBC文件</h4>
+
+<p>确认当前EBS系统使用的dbc文件.</p>
+
+<p>连接EBS数据库，执行以下SQL查询：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="n">host_name</span><span class="o">||</span><span class="s1">&#39;_&#39;</span><span class="o">||</span><span class="n">instance_name</span> <span class="k">from</span> <span class="n">v</span><span class="err">$</span><span class="n">instance</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>telnet到EBS系统，查找dbc文件的的位置并拷贝下来放在jdevhome\jdev\dbc_files\secure目录下:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">ls</span> <span class="err">–</span><span class="n">a</span><span class="o">|</span><span class="n">$FND_SECURE</span><span class="o">/*.</span><span class="na">dbc</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>检验DBC文件是否EBS系统正在使用的DBC可用以下命令：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">java</span> <span class="n">oracle</span><span class="o">.</span><span class="na">apps</span><span class="o">.</span><span class="na">fnd</span><span class="o">.</span><span class="na">security</span><span class="o">.</span><span class="na">AdminAppServer</span> <span class="n">apps</span><span class="o">/</span><span class="n">apps</span> <span class="n">STATUS</span> <span class="n">DBC</span><span class="o">=/</span><span class="n">u01</span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">devappl</span><span class="o">/</span><span class="n">fnd</span><span class="o">/</span><span class="mf">11.5</span><span class="o">.</span><span class="mi">0</span><span class="o">/</span><span class="n">secure</span><span class="o">/</span><span class="n">SIT</span><span class="o">.</span><span class="na">dbc</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>确认系统是否使用这个dbc文件可以在路径
+$APPL_TOP/admin/[SID]<em>[host].xml
+查找</em>dbc_file_name，跟上面说的dbc文件一致即可</p>
+
+<h4>配置JDEV工程属性</h4>
+
+<p>以上准备工作都完成之后，配置JDEV的Preferences中编码为UTF-8  <br/>
+<img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130417144216.jpg" alt="" /></p>
+
+<p>配置project setting中编译器编码  <br/>
+<img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130417144309.jpg" alt="" /></p>
+
+<p>然后配置DBC文件路径，测试EBS账户名及密码，所属职责等信息如下图所示：  <br/>
+<img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130417144424.jpg" alt="" /></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">pierreorz</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-17T15:01:00+08:00" pubdate data-updated="true">Apr 17<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/oaf/'>OAF</a>
+  
+</span>
+
+
+      
+
+<span class="tags">
+  
+    <a class='tag' href='/tags/dbc/'>DBC</a>, <a class='tag' href='/tags/oaf/'>OAF</a>, <a class='tag' href='/tags/配置环境/'>配置环境</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://dengdezhao.cn/blog/2013-04-17/pei-zhi-oafkai-fa-huan-jing/" data-via="" data-counturl="http://dengdezhao.cn/blog/2013-04-17/pei-zhi-oafkai-fa-huan-jing/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013-04-16/getrowatrangeindex-int-fang-fa-de-ju-xian-xing/" title="Previous Post: getRowAtRangeIndex(int)方法的局限性">&laquo; getRowAtRangeIndex(int)方法的局限性</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013-04-18/oafzhong-chuang-jian-lov/" title="Next Post: OAF中创建LOV">OAF中创建LOV &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>分类目录</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/adf/'>ADF (21)</a></li>
+<li class='category'><a href='/blog/categories/ebs/'>EBS (2)</a></li>
+<li class='category'><a href='/blog/categories/oaf/'>OAF (6)</a></li>
+<li class='category'><a href='/blog/categories/oracle/'>Oracle (7)</a></li>
+<li class='category'><a href='/blog/categories/soa/'>SOA (2)</a></li>
+<li class='category'><a href='/blog/categories/sinaappengine/'>SinaAppEngine (1)</a></li>
+<li class='category'><a href='/blog/categories/forms/'>forms (1)</a></li>
+<li class='category'><a href='/blog/categories/java/'>java (2)</a></li>
+<li class='category'><a href='/blog/categories/jdeveloper/'>jdeveloper (1)</a></li>
+<li class='category'><a href='/blog/categories/linux/'>linux (2)</a></li>
+<li class='category'><a href='/blog/categories/octopress/'>octopress (1)</a></li>
+<li class='category'><a href='/blog/categories/others/'>others (1)</a></li>
+<li class='category'><a href='/blog/categories/weblogic/'>weblogic (1)</a></li>
+<li class='category'><a href='/blog/categories/wordpress/'>wordpress (1)</a></li>
+
+  </ul>
+</section>
+<section>
+  <h1>最新发表</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013-04-24/adflei-si-xin-tiao-cheng-xu-shi-xian/">ADF类似心跳程序实现</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-19/adfxue-xi-zong-jie-%5B%3F%5D/">ADF学习总结(一)</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-18/oafzhong-chuang-jian-lov/">OAF中创建LOV</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-17/pei-zhi-oafkai-fa-huan-jing/">配置OAF开发环境</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-16/getrowatrangeindex-int-fang-fa-de-ju-xian-xing/">getRowAtRangeIndex(int)方法的局限性</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+<section>
+  <h1>友情链接</h1>
+  <ul>
+  	<li><a href="http://www.liqifa.cn">[小分号]</a></li>
+ 	<li><a href="http://www.fmw007.com">[梦想左岸]</a></li>
+ 	<li><a href="http://ericchan.cn">[小骚骚的技术博客]</a></li>
+  </ul>
+</section>
+
+<section>
+<h1>新浪微博</h1>
+<ul id="weibo">
+<li>
+<iframe
+width="100%"
+height="550"
+class="share_self"
+frameborder="0"
+scrolling="no"
+src="http://widget.weibo.com/weiboshow/index.php?width=0&height=550&ptype=1&speed=0&skin=&isTitle=0&noborder=1&isWeibo=1&isFans=&uid=1774817797&verifier=75ee09e4&colors=17236,003643,004354,00b7ef,ffffff&dpc=1">
+</iframe>
+</li>
+</ul>
+</section>
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - pierreorz -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+<a rel="license" href="http://creativecommons.org/licenses/by/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/88x31.png" /></a>
+<a title="Web Analytics" href="http://clicky.com/100592601">.</a>
+<script src="//static.getclicky.com/js" type="text/javascript"></script>
+<script type="text/javascript">try{ clicky.init(100592601); }catch(e){}</script>
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F2c50098a945120bddaa5f082c4e56cea' type='text/javascript'%3E%3C/script%3E"));
+</script>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'adfkf';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://dengdezhao.cn/blog/2013-04-17/pei-zhi-oafkai-fa-huan-jing/';
+        var disqus_url = 'http://dengdezhao.cn/blog/2013-04-17/pei-zhi-oafkai-fa-huan-jing/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

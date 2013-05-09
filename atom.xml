@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[邓德昭的技术博客]]></title>
-  <link href="http://www.dengdezhao.cn/atom.xml" rel="self"/>
-  <link href="http://www.dengdezhao.cn/"/>
-  <updated>2013-04-09T10:51:05+08:00</updated>
-  <id>http://www.dengdezhao.cn/</id>
+  <link href="http://dengdezhao.cn/atom.xml" rel="self"/>
+  <link href="http://dengdezhao.cn/"/>
+  <updated>2013-05-09T13:21:28+08:00</updated>
+  <id>http://dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
     
@@ -14,10 +14,396 @@
 
   
   <entry>
+    <title type="html"><![CDATA[ADF类似心跳程序实现]]></title>
+    <link href="http://dengdezhao.cn/blog/2013-04-24/adflei-si-xin-tiao-cheng-xu-shi-xian/"/>
+    <updated>2013-04-24T16:19:00+08:00</updated>
+    <id>http://dengdezhao.cn/blog/2013-04-24/adflei-si-xin-tiao-cheng-xu-shi-xian</id>
+    <content type="html"><![CDATA[<p>使用ADF框架开发WEB应用时，其中令人苦恼的一个需求就是：在两个页面同时展示一个数据源时，如果其中一个页面对数据源作了变更操作，另外一个页面没办法自动获得变更后的数据，需要手工刷新页面才能得到变更后的新数据源。</p>
+
+<p>其实ADF自带的<code>&lt;af:poll/&gt;</code>组件即可实现此需求。</p>
+
+<p>例子：</p>
+
+<ul>
+<li>创建一个可更新的af:table 基于HR的Department表</li>
+</ul>
+
+
+<p>页面如下： <br/>
+<img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130424160613.jpg" alt="" />  <br/>
+可以更改表数据并提交，用多浏览器窗口打开该页面来模拟多用户操作。</p>
+
+<p>将<code>&lt;af:poll/&gt;</code>控件拖入到页面中，控件属性设置如下：</p>
+
+<p><img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130424161027.jpg" alt="" />  <br/>
+设置间隔为1分钟，并绑定PollListener</p>
+
+<ul>
+<li>给该页面绑定ManagedBean，并添加PollListener，方法内容如下：</li>
+</ul>
+
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">heartBeat</span><span class="o">(</span><span class="n">PollEvent</span> <span class="n">pollEvent</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;start poll...&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">DCIteratorBinding</span> <span class="n">it</span> <span class="o">=</span> <span class="n">ADFUtils</span><span class="o">.</span><span class="na">findIterator</span><span class="o">(</span><span class="s">&quot;Departments1Iterator&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">ViewObject</span> <span class="n">vo</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="na">getViewObject</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">vo</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">AdfFacesContext</span><span class="o">.</span><span class="na">getCurrentInstance</span><span class="o">().</span><span class="na">addPartialTarget</span><span class="o">(</span><span class="n">JSFUtils</span><span class="o">.</span><span class="na">findComponentInRoot</span><span class="o">(</span><span class="s">&quot;t1&quot;</span><span class="o">));</span>
+</span><span class='line'>       <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>每隔1分钟自动查询一次VO，并将更新后的内容返回到页面；</p>
+
+<ul>
+<li>这样打开两个页面之后，在其中一个页面更改内容并提交后，也会即时更新另外一个页面（另外一个客户端）；</li>
+</ul>
+
+
+<p>PS：此例子频繁地查询VO，在实际项目中会对服务器造成很大的压力，只为展示<code>&lt;af:poll&gt;</code>控件作用，不建议使用此方案。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ADF学习总结(一)]]></title>
+    <link href="http://dengdezhao.cn/blog/2013-04-19/adfxue-xi-zong-jie-%5B%3F%5D/"/>
+    <updated>2013-04-19T14:15:00+08:00</updated>
+    <id>http://dengdezhao.cn/blog/2013-04-19/adfxue-xi-zong-jie-[?]</id>
+    <content type="html"><![CDATA[<h4>改变VO查询条件</h4>
+
+<ul>
+<li>使用WhereClause改变查询条件</li>
+<li>使用Criteria改变查询条件</li>
+<li>使用Bind Variables改变查询条件</li>
+</ul>
+
+
+<h4>使用WhereClause改变查询条件</h4>
+
+<ul>
+<li><strong>setWhereClause</strong></li>
+</ul>
+
+
+<p>通过VO对象的setWhereClause方法改变查询条件</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">DCIteratorBinding</span> <span class="n">dc</span> <span class="o">=</span> <span class="n">ADFUtils</span><span class="o">.</span><span class="na">findIterator</span><span class="o">(</span><span class="s">&quot;DepartmentsView1Iterator&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="n">ViewObject</span> <span class="n">vo</span> <span class="o">=</span> <span class="n">dc</span><span class="o">.</span><span class="na">getViewObject</span><span class="o">();</span>
+</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">setWhereClause</span><span class="o">(</span><span class="s">&quot; 1=1 &quot;</span><span class="o">);</span>
+</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><strong>addWhereClause</strong></li>
+</ul>
+
+
+<p>addWhereClause是在原有whereClause基础上添加新的查询条件；  <br/>
+跟setWhereClause替换原有whereClaue不同；</p>
+
+<h4>使用ViewCriteria改变查询条件</h4>
+
+<ul>
+<li><strong>使用定义好的ViewCriteria</strong></li>
+</ul>
+
+
+<p>事先在创建VO的时候，定义好几种Criteria：DepartmentsViewCriteria  <br/>
+<img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130419134617.jpg" alt="" /></p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">DCIteratorBinding</span> <span class="n">dc</span> <span class="o">=</span> <span class="n">ADFUtils</span><span class="o">.</span><span class="na">findIterator</span><span class="o">(</span><span class="s">&quot;DepartmentsView1Iterator&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="n">ViewObject</span> <span class="n">vo</span> <span class="o">=</span> <span class="n">dc</span><span class="o">.</span><span class="na">getViewObject</span><span class="o">();</span>
+</span><span class='line'><span class="n">ViewCriteriaManager</span> <span class="n">vcm</span><span class="o">=</span><span class="n">vo</span><span class="o">.</span><span class="na">getViewCriteriaManager</span><span class="o">();</span>
+</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">applyViewCriteria</span><span class="o">(</span><span class="n">vcm</span><span class="o">.</span><span class="na">getViewCriteria</span><span class="o">(</span><span class="s">&quot;DepartmentsViewCriteria&quot;</span><span class="o">));</span>
+</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><strong>动态创建ViewCriteria</strong></li>
+</ul>
+
+
+<p>如果事先没有在VO中定义好ViewCriteria，也可以在MB代码中动态创建</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">DCIteratorBinding</span> <span class="n">dc</span> <span class="o">=</span> <span class="n">ADFUtils</span><span class="o">.</span><span class="na">findIterator</span><span class="o">(</span><span class="s">&quot;DepartmentsView1Iterator&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="n">ViewObject</span> <span class="n">vo</span> <span class="o">=</span> <span class="n">dc</span><span class="o">.</span><span class="na">getViewObject</span><span class="o">();</span>
+</span><span class='line'><span class="n">ViewCriteria</span> <span class="n">vc</span> <span class="o">=</span> <span class="n">vo</span><span class="o">.</span><span class="na">createViewCriteria</span><span class="o">();</span>
+</span><span class='line'><span class="n">ViewCriteriaRow</span> <span class="n">vcr</span> <span class="o">=</span> <span class="n">vc</span><span class="o">.</span><span class="na">createViewCriteriaRow</span><span class="o">();</span>
+</span><span class='line'><span class="n">vcr</span><span class="o">.</span><span class="na">setConjunction</span><span class="o">(</span><span class="n">ViewCriteriaRow</span><span class="o">.</span><span class="na">VC_CONJ_AND</span><span class="o">);</span>
+</span><span class='line'><span class="n">vcr</span><span class="o">.</span><span class="na">setAttribute</span><span class="o">(</span><span class="s">&quot;DepartmentId&quot;</span><span class="o">,</span> <span class="s">&quot;20&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="n">vc</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">vcr</span><span class="o">);</span>
+</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">applyViewCriteria</span><span class="o">(</span><span class="n">vc</span><span class="o">);</span>
+</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>使用Bind Variables改变查询条件</h4>
+
+<ul>
+<li><strong>使用Bind Variables结合ViewCriteria</strong></li>
+</ul>
+
+
+<p>参照以上定义ViewCriteria时，使用Bind Variables。</p>
+
+<ul>
+<li><strong>使用Bind Variables结合SQL</strong></li>
+</ul>
+
+
+<p>在VO的SQL中使用Bind Variables；</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">SELECT</span> <span class="n">Departments</span><span class="p">.</span><span class="n">DEPARTMENT_ID</span><span class="p">,</span>
+</span><span class='line'>       <span class="n">Departments</span><span class="p">.</span><span class="n">DEPARTMENT_NAME</span><span class="p">,</span>
+</span><span class='line'>       <span class="n">Departments</span><span class="p">.</span><span class="n">MANAGER_ID</span><span class="p">,</span>
+</span><span class='line'>       <span class="n">Departments</span><span class="p">.</span><span class="n">LOCATION_ID</span>
+</span><span class='line'><span class="k">FROM</span> <span class="n">DEPARTMENTS</span> <span class="n">Departments</span>
+</span><span class='line'><span class="k">WHERE</span> <span class="n">Departments</span><span class="p">.</span><span class="n">DEPARTMENT_ID</span> <span class="o">=</span> <span class="p">:</span><span class="n">varDeptId</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>创建Bind Variables：varDeptId  <br/>
+<img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130419140752.jpg" alt="" /></p>
+
+<p>在查询VO时，通过如下代码控制即可实现：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">DCIteratorBinding</span> <span class="n">dc</span> <span class="o">=</span> <span class="n">ADFUtils</span><span class="o">.</span><span class="na">findIterator</span><span class="o">(</span><span class="s">&quot;DepartmentsView1Iterator&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="n">ViewObject</span> <span class="n">vo</span> <span class="o">=</span> <span class="n">dc</span><span class="o">.</span><span class="na">getViewObject</span><span class="o">();</span>
+</span><span class='line'><span class="n">ViewCriteria</span> <span class="n">vc</span> <span class="o">=</span> <span class="n">vo</span><span class="o">.</span><span class="na">createViewCriteria</span><span class="o">();</span>
+</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">setNamedWhereClauseParam</span><span class="o">(</span><span class="s">&quot;varDeptId&quot;</span><span class="o">,</span> <span class="mi">20</span><span class="o">);</span>
+</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>以上几种方法均可实现改变VO查询条件进行动态查询，各有灵活度，目前没有比较三种方式带来的性能影响，可以根据个人习惯采用。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[OAF中创建LOV]]></title>
+    <link href="http://dengdezhao.cn/blog/2013-04-18/oafzhong-chuang-jian-lov/"/>
+    <updated>2013-04-18T12:54:00+08:00</updated>
+    <id>http://dengdezhao.cn/blog/2013-04-18/oafzhong-chuang-jian-lov</id>
+    <content type="html"><![CDATA[<p>环境：Oracle9i Jdeveloper+R11i</p>
+
+<h4>首先创建AM</h4>
+
+<p>创建一个LovAM，默认配置即可。</p>
+
+<h4>创建VO</h4>
+
+<p>创建LovVO，不需要基于EO，输入查询SQL如下：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="k">distinct</span> <span class="n">INVENTORY_ITEM_ID</span><span class="p">,</span><span class="n">concatenated_segments</span>
+</span><span class='line'><span class="k">from</span> <span class="n">MTL_SYSTEM_ITEMS_KFV</span> <span class="k">where</span> <span class="n">organization_id</span><span class="o">=</span><span class="mi">85</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>将创建好的VO添加到AM的data module中</p>
+
+<h4>创建RN</h4>
+
+<p>右键工程，创建一个RN，Scope设置为public.  <br/>
+<img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130418113938.jpg" alt="" /></p>
+
+<p>选中创建好的LovRN.xml，在structure Window窗口中选中LovRN右建New Region Using Wizard.找到之前创建的LovVO.</p>
+
+<p><img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130418114930.jpg" alt="" /></p>
+
+<p>修改字段属性如下：   <br/>
+Search Allowed : true   <br/>
+Selective Search Criteria : true  <br/>
+<img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130418115100.jpg" alt="" /></p>
+
+<h4>创建PG页面引用LOV</h4>
+
+<p>创建一个PG页面LovPG.xml，AM Definition设置为之前创建的LovAM路径;  <br/>
+Windows title &amp; tile 随意设置；  <br/>
+在LovPG页面中创建一个Region改名为mainRN，Region Style为messageComponentLayout;  <br/>
+在mainRN中创建一个MessageLovInput控件item1，    修改item1的属性External LOV值为此前步骤中创建好的LovRN路径；
+prompt改为：物料LOV  <br/>
+lovMap1中，设置Lov Region Item 为InventoryItemId;     Return Item为item1;Criteria Item为item1;  <br/>
+运行该lovPG.xml，即可看到效果如下图：</p>
+
+<p><img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130418124811.jpg" alt="" />  <br/>
+<img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130418125343.jpg" alt="" /></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[配置OAF开发环境]]></title>
+    <link href="http://dengdezhao.cn/blog/2013-04-17/pei-zhi-oafkai-fa-huan-jing/"/>
+    <updated>2013-04-17T15:01:00+08:00</updated>
+    <id>http://dengdezhao.cn/blog/2013-04-17/pei-zhi-oafkai-fa-huan-jing</id>
+    <content type="html"><![CDATA[<h4>查看EBS系统OA版本信息</h4>
+
+<p>方法一：使用OPERATIONS用户登陆EBS系统，选择“Diagnostics”后，在页下脚选择“About this Page”后选择“Technology Components”标签可查看相应版本信息。</p>
+
+<p>方法二：访问URI：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nl">http:</span><span class="c1">//&lt;HOST&gt;:&lt;PORT&gt;/OA_HTML/OAInfo.jsp    </span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>查看OAF版本下载相应JDEV开发工具</h4>
+
+<p>metalink document id: 787209.1</p>
+
+<p>例如：p4141787_11i_GENERIC.zip</p>
+
+<p>解压缩后把“/jdevhome/jdev”路径加到系统变量中，变量名：      JDEV_USER_HOME=F:\p4141787_11i_GENERIC\jdevhome\jdev</p>
+
+<h4>配置DBC文件</h4>
+
+<p>确认当前EBS系统使用的dbc文件.</p>
+
+<p>连接EBS数据库，执行以下SQL查询：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="n">host_name</span><span class="o">||</span><span class="s1">&#39;_&#39;</span><span class="o">||</span><span class="n">instance_name</span> <span class="k">from</span> <span class="n">v</span><span class="err">$</span><span class="n">instance</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>telnet到EBS系统，查找dbc文件的的位置并拷贝下来放在jdevhome\jdev\dbc_files\secure目录下:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">ls</span> <span class="err">–</span><span class="n">a</span><span class="o">|</span><span class="n">$FND_SECURE</span><span class="o">/*.</span><span class="na">dbc</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>检验DBC文件是否EBS系统正在使用的DBC可用以下命令：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">java</span> <span class="n">oracle</span><span class="o">.</span><span class="na">apps</span><span class="o">.</span><span class="na">fnd</span><span class="o">.</span><span class="na">security</span><span class="o">.</span><span class="na">AdminAppServer</span> <span class="n">apps</span><span class="o">/</span><span class="n">apps</span> <span class="n">STATUS</span> <span class="n">DBC</span><span class="o">=/</span><span class="n">u01</span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">devappl</span><span class="o">/</span><span class="n">fnd</span><span class="o">/</span><span class="mf">11.5</span><span class="o">.</span><span class="mi">0</span><span class="o">/</span><span class="n">secure</span><span class="o">/</span><span class="n">SIT</span><span class="o">.</span><span class="na">dbc</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>确认系统是否使用这个dbc文件可以在路径
+$APPL_TOP/admin/[SID]<em>[host].xml
+查找</em>dbc_file_name，跟上面说的dbc文件一致即可</p>
+
+<h4>配置JDEV工程属性</h4>
+
+<p>以上准备工作都完成之后，配置JDEV的Preferences中编码为UTF-8  <br/>
+<img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130417144216.jpg" alt="" /></p>
+
+<p>配置project setting中编译器编码  <br/>
+<img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130417144309.jpg" alt="" /></p>
+
+<p>然后配置DBC文件路径，测试EBS账户名及密码，所属职责等信息如下图所示：  <br/>
+<img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130417144424.jpg" alt="" /></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[getRowAtRangeIndex(int)方法的局限性]]></title>
+    <link href="http://dengdezhao.cn/blog/2013-04-16/getrowatrangeindex-int-fang-fa-de-ju-xian-xing/"/>
+    <updated>2013-04-16T14:42:00+08:00</updated>
+    <id>http://dengdezhao.cn/blog/2013-04-16/getrowatrangeindex-int-fang-fa-de-ju-xian-xing</id>
+    <content type="html"><![CDATA[<p>导出VO中的数据到EXCEL中时，循环VO中的Row，写入HSSFRow，是通过getRowAtRangeIndex(int)方法循环取Row，代码如下：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'> <span class="n">ViewObject</span> <span class="n">vo8</span><span class="o">=</span><span class="n">am</span><span class="o">.</span><span class="na">findViewObject</span><span class="o">(</span><span class="s">&quot;ChReport1VO1&quot;</span><span class="o">);</span>
+</span><span class='line'> <span class="k">if</span><span class="o">(</span><span class="n">vo8</span><span class="o">!=</span><span class="kc">null</span><span class="o">)</span>
+</span><span class='line'> <span class="o">{</span>
+</span><span class='line'>      <span class="kt">int</span> <span class="n">rowcount8</span><span class="o">=</span><span class="n">vo8</span><span class="o">.</span><span class="na">getRowCount</span><span class="o">();</span>
+</span><span class='line'>      <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">rowcount8</span><span class="o">;</span><span class="n">i</span><span class="o">++)</span>
+</span><span class='line'>      <span class="o">{</span>
+</span><span class='line'>           <span class="n">Row</span> <span class="n">vo_row8</span><span class="o">=</span><span class="n">vo8</span><span class="o">.</span><span class="na">getRowAtRangeIndex</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+</span><span class='line'>         <span class="c1">//...TODO</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'> <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这样如果VO里有300条数据，但是pageRange设置为100，这里其实只能取到第一页的100条数据，想要导出所有300条数据则需要一页一页导出，很麻烦。于是考虑不用getRowAtRangeIndex方法取ROW数据,改用RowSetIterator。</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">ViewObject</span> <span class="n">vo8</span><span class="o">=</span><span class="n">am</span><span class="o">.</span><span class="na">findViewObject</span><span class="o">(</span><span class="s">&quot;ChReport1VO1&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="k">if</span><span class="o">(</span><span class="n">vo8</span><span class="o">!=</span><span class="kc">null</span><span class="o">)</span>
+</span><span class='line'><span class="o">{</span>
+</span><span class='line'>     <span class="kt">int</span> <span class="n">rowcount8</span><span class="o">=</span><span class="n">vo8</span><span class="o">.</span><span class="na">getRowCount</span><span class="o">();</span>
+</span><span class='line'>     <span class="n">RowSetIterator</span> <span class="n">rowSetIter</span><span class="o">=</span><span class="n">vo8</span><span class="o">.</span><span class="na">createRowSetIterator</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>     <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">rowcount8</span><span class="o">;</span><span class="n">i</span><span class="o">++)</span>
+</span><span class='line'>     <span class="o">{</span>
+</span><span class='line'>           <span class="n">Row</span> <span class="n">vo_row8</span><span class="o">=</span><span class="n">rowSetIter</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+</span><span class='line'>         <span class="c1">//...TODO</span>
+</span><span class='line'>     <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>getRowAtRangeIndex方法只能通过index取出Range中的数据,但是RowSetIterator则是对VO中所有RowSet遍历。</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[OAF上传大批量EXCEL文件]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2013/04/09/oafshang-chuan-da-pi-liang-excelwen-jian/"/>
+    <link href="http://dengdezhao.cn/blog/2013-04-09/oafshang-chuan-da-pi-liang-excelwen-jian/"/>
     <updated>2013-04-09T10:46:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2013/04/09/oafshang-chuan-da-pi-liang-excelwen-jian</id>
+    <id>http://dengdezhao.cn/blog/2013-04-09/oafshang-chuan-da-pi-liang-excelwen-jian</id>
     <content type="html"><![CDATA[<p>客户有个需求：大量数据通过EXCEL导入系统表，并能提供效验及去重功能。</p>
 
 <h4>设计思路</h4>
@@ -421,9 +807,9 @@
   
   <entry>
     <title type="html"><![CDATA[Jdeveloper运行速度优化]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2013/04/04/jdeveloperyun-xing-su-du-you-hua/"/>
+    <link href="http://dengdezhao.cn/blog/2013-04-04/jdeveloperyun-xing-su-du-you-hua/"/>
     <updated>2013-04-04T17:41:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2013/04/04/jdeveloperyun-xing-su-du-you-hua</id>
+    <id>http://dengdezhao.cn/blog/2013-04-04/jdeveloperyun-xing-su-du-you-hua</id>
     <content type="html"><![CDATA[<h4><em>本文适合木有高配机却不得不在JDEV下开发的屌丝程序员</em></h4>
 
 <h4>先来了解下Jdev的两个配置文件</h4>
@@ -466,8 +852,9 @@ E:\Oracle\Middleware11.1.2.3.0\jdk160_24\bin\jvisualvm.exe
 
 <p>根据图中<strong>堆</strong>及<strong>PermGen</strong>中显示使用大小调整三个参数值。
 发现在不断操作JDev时PermGen始终维持在128左右不到256的样子，
-所以设置-XX:MaxPermSize值为<code>AddVMOption  -XX:MaxPermSize=256M</code>
--Xms值为<code>AddVMOption  -Xms128M</code>
+所以设置  <br/>
+-XX:MaxPermSize值为<code>AddVMOption  -XX:MaxPermSize=256M</code>  <br/>
+-Xms值为<code>AddVMOption  -Xms128M</code>  <br/>
 通过不断测试最终调整-Xmx值为<code>AddVMOption  -Xmx896M</code></p>
 
 <p>若在运行中出现OutOfMemoryError错误再根据信息慢慢调整。当然最好还是升级机器配置换成64位的系统及JDK就没有内存限制啦！~</p>
@@ -476,9 +863,9 @@ E:\Oracle\Middleware11.1.2.3.0\jdk160_24\bin\jvisualvm.exe
   
   <entry>
     <title type="html"><![CDATA[JavaMail发送邮件中文乱码]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2013/03/20/javamailfa-song-you-jian-zhong-wen-luan-ma/"/>
+    <link href="http://dengdezhao.cn/blog/2013-03-20/javamailfa-song-you-jian-zhong-wen-luan-ma/"/>
     <updated>2013-03-20T16:21:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2013/03/20/javamailfa-song-you-jian-zhong-wen-luan-ma</id>
+    <id>http://dengdezhao.cn/blog/2013-03-20/javamailfa-song-you-jian-zhong-wen-luan-ma</id>
     <content type="html"><![CDATA[<p>使用JavaMail发送邮件时，邮件主题以及发件人中有中文字符时出现乱码</p>
 
 <p>邮件正文正常。</p>
@@ -521,9 +908,9 @@ E:\Oracle\Middleware11.1.2.3.0\jdk160_24\bin\jvisualvm.exe
   
   <entry>
     <title type="html"><![CDATA[迁移WordPress博客至Octopress]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2013/03/19/qian-yi-wordpressbo-ke-zhi-octopress/"/>
+    <link href="http://dengdezhao.cn/blog/2013-03-19/qian-yi-wordpressbo-ke-zhi-octopress/"/>
     <updated>2013-03-19T22:32:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2013/03/19/qian-yi-wordpressbo-ke-zhi-octopress</id>
+    <id>http://dengdezhao.cn/blog/2013-03-19/qian-yi-wordpressbo-ke-zhi-octopress</id>
     <content type="html"><![CDATA[<h4>安装GIT</h4>
 
 <figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -670,9 +1057,9 @@ E:\Oracle\Middleware11.1.2.3.0\jdk160_24\bin\jvisualvm.exe
   
   <entry>
     <title type="html"><![CDATA[Use Javascript In Oaf]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2013/03/19/use-javascript-in-oaf/"/>
+    <link href="http://dengdezhao.cn/blog/2013-03-19/use-javascript-in-oaf/"/>
     <updated>2013-03-19T22:27:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2013/03/19/use-javascript-in-oaf</id>
+    <id>http://dengdezhao.cn/blog/2013-03-19/use-javascript-in-oaf</id>
     <content type="html"><![CDATA[<h2>Use Javascript in OAF</h2>
 
 <h4>使用Js脚本库</h4>
@@ -719,9 +1106,9 @@ E:\Oracle\Middleware11.1.2.3.0\jdk160_24\bin\jvisualvm.exe
   
   <entry>
     <title type="html"><![CDATA[[SOLVED]Long mode not supported, rebooting Press any key to reboot]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2013/01/31/solvedlong-mode-not-supported-rebooting-press-any-key-to-reboot/"/>
+    <link href="http://dengdezhao.cn/blog/2013-01-31/solvedlong-mode-not-supported-rebooting-press-any-key-to-reboot/"/>
     <updated>2013-01-31T00:00:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2013/01/31/solvedlong-mode-not-supported-rebooting-press-any-key-to-reboot</id>
+    <id>http://dengdezhao.cn/blog/2013-01-31/solvedlong-mode-not-supported-rebooting-press-any-key-to-reboot</id>
     <content type="html"><![CDATA[<p>虚拟机安装solaris 11的时候弹出
 <blockquote>Long mode not supported, rebooting Press any key to reboot&#8230;&#8230;..</blockquote>
 原因是solaris11只支持64位，需要把BIOS的CPU选项里Inter Virtualization Technology和Inter VT均设置为ENABLE，</p>
@@ -735,9 +1122,9 @@ E:\Oracle\Middleware11.1.2.3.0\jdk160_24\bin\jvisualvm.exe
   
   <entry>
     <title type="html"><![CDATA[firefox升级18之后,autoproxy失效,goagent无法使用问题解决]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2013/01/30/firefox%E5%8D%87%E7%BA%A718%E4%B9%8B%E5%90%8Eautoproxy%E5%A4%B1%E6%95%88goagent%E6%97%A0%E6%B3%95%E4%BD%BF%E7%94%A8%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
+    <link href="http://dengdezhao.cn/blog/2013-01-30/firefox%E5%8D%87%E7%BA%A718%E4%B9%8B%E5%90%8Eautoproxy%E5%A4%B1%E6%95%88goagent%E6%97%A0%E6%B3%95%E4%BD%BF%E7%94%A8%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
     <updated>2013-01-30T00:00:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2013/01/30/firefox升级18之后autoproxy失效goagent无法使用问题解决</id>
+    <id>http://dengdezhao.cn/blog/2013-01-30/firefox升级18之后autoproxy失效goagent无法使用问题解决</id>
     <content type="html"><![CDATA[<p>之前使用的是17版本的firefox，配置好了autoproxy使用goagent能够正常代理，之后升级firefox18之后，却代理不了了。重装过firefox,重装过goagent，重装过autoproxy都无效。</p>
 
 <p>试过使用IE，设置代理127.0.0.1:8087+goagent可以正常代理，因此排除goagent问题。</p>
@@ -761,9 +1148,9 @@ signon.autologin.proxy           <strong>true</strong>
   
   <entry>
     <title type="html"><![CDATA[虚拟机环境RHEL6.3安装EBS R12]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2013/01/15/%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85ebs-r12/"/>
+    <link href="http://dengdezhao.cn/blog/2013-01-15/%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85ebs-r12/"/>
     <updated>2013-01-15T00:00:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2013/01/15/虚拟机安装ebs-r12</id>
+    <id>http://dengdezhao.cn/blog/2013-01-15/虚拟机安装ebs-r12</id>
     <content type="html"><![CDATA[<p>一直想自己搭建个R12的环境学习学习，于是买了块500G的移动硬盘，想把R12安装在移动硬盘中。</p>
 
 <p>准备工作：</p>
@@ -1037,9 +1424,9 @@ $cp .bash_profile .app</p>
   
   <entry>
     <title type="html"><![CDATA[虚拟机安装EBS R12时出现错误RW-50004 解决]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2013/01/12/%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85ebs-r12%E6%97%B6%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AFrw-50004-%E8%A7%A3%E5%86%B3/"/>
+    <link href="http://dengdezhao.cn/blog/2013-01-12/%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85ebs-r12%E6%97%B6%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AFrw-50004-%E8%A7%A3%E5%86%B3/"/>
     <updated>2013-01-12T00:00:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2013/01/12/虚拟机安装ebs-r12时出现错误rw-50004-解决</id>
+    <id>http://dengdezhao.cn/blog/2013-01-12/虚拟机安装ebs-r12时出现错误rw-50004-解决</id>
     <content type="html"><![CDATA[<p>一般出现这个错误多半应该是库文件导致的，查看日志得知是 需要的 unzip 版本过高，RHEL上安装的是6.0的，而R12.1.1.1只支持unzip 5.X 的，很坑爹，yum erase unzip 然后重新安装unzip 5.X rpm即可解决~~</p>
 
 <p>&nbsp;</p>
@@ -1048,9 +1435,9 @@ $cp .bash_profile .app</p>
   
   <entry>
     <title type="html"><![CDATA[OAF开发通过EXCEL导入数据时，用户需要将可能存在重复的主键信息提示出来]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2013/01/10/oaf%E5%BC%80%E5%8F%91%E9%80%9A%E8%BF%87excel%E5%AF%BC%E5%85%A5%E6%95%B0%E6%8D%AE%E6%97%B6%EF%BC%8C%E7%94%A8%E6%88%B7%E9%9C%80%E8%A6%81%E5%B0%86%E5%8F%AF%E8%83%BD%E5%AD%98%E5%9C%A8%E9%87%8D%E5%A4%8D/"/>
+    <link href="http://dengdezhao.cn/blog/2013-01-10/oaf%E5%BC%80%E5%8F%91%E9%80%9A%E8%BF%87excel%E5%AF%BC%E5%85%A5%E6%95%B0%E6%8D%AE%E6%97%B6%EF%BC%8C%E7%94%A8%E6%88%B7%E9%9C%80%E8%A6%81%E5%B0%86%E5%8F%AF%E8%83%BD%E5%AD%98%E5%9C%A8%E9%87%8D%E5%A4%8D/"/>
     <updated>2013-01-10T00:00:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2013/01/10/oaf开发通过excel导入数据时，用户需要将可能存在重复</id>
+    <id>http://dengdezhao.cn/blog/2013-01-10/oaf开发通过excel导入数据时，用户需要将可能存在重复</id>
     <content type="html"><![CDATA[<p>OAF开发通过EXCEL导入数据时，用户需要将可能存在重复的主键信息提示出来.</p>
 
 <p>有以下两种主键冲突情况：</p>
@@ -1080,9 +1467,9 @@ $cp .bash_profile .app</p>
   
   <entry>
     <title type="html"><![CDATA[OAF 使用OAException输出中文时出现乱码 解决]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2013/01/09/oaf-%E4%BD%BF%E7%94%A8oaexception%E8%BE%93%E5%87%BA%E4%B8%AD%E6%96%87%E6%97%B6%E5%87%BA%E7%8E%B0%E4%B9%B1%E7%A0%81-%E8%A7%A3%E5%86%B3/"/>
+    <link href="http://dengdezhao.cn/blog/2013-01-09/oaf-%E4%BD%BF%E7%94%A8oaexception%E8%BE%93%E5%87%BA%E4%B8%AD%E6%96%87%E6%97%B6%E5%87%BA%E7%8E%B0%E4%B9%B1%E7%A0%81-%E8%A7%A3%E5%86%B3/"/>
     <updated>2013-01-09T00:00:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2013/01/09/oaf-使用oaexception输出中文时出现乱码-解决</id>
+    <id>http://dengdezhao.cn/blog/2013-01-09/oaf-使用oaexception输出中文时出现乱码-解决</id>
     <content type="html"><![CDATA[<p>使用throw new OAException(“你们好”,OAException.WARNING);时出现乱码，尝试new String(&#8220;你们好”.getBytes(&#8220;GBK&#8221;),&#8221;UTF-8&#8221;)依然没用。</p>
 
 <p>检查JDEV的Preferences中ENCODING已经更改为“UTF-8”，纠结了好一阵子，才发现工程的Project Settings的Compiler里也有一个ENCODING没有改，囧改好之后再测试乱码问题即解决</p>
@@ -1091,9 +1478,9 @@ $cp .bash_profile .app</p>
   
   <entry>
     <title type="html"><![CDATA[新浪入门应用之---大笨钟]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2012/12/14/%E6%96%B0%E6%B5%AA%E5%85%A5%E9%97%A8%E5%BA%94%E7%94%A8%E4%B9%8B-%E5%A4%A7%E7%AC%A8%E9%92%9F/"/>
+    <link href="http://dengdezhao.cn/blog/2012-12-14/%E6%96%B0%E6%B5%AA%E5%85%A5%E9%97%A8%E5%BA%94%E7%94%A8%E4%B9%8B-%E5%A4%A7%E7%AC%A8%E9%92%9F/"/>
     <updated>2012-12-14T00:00:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2012/12/14/新浪入门应用之-大笨钟</id>
+    <id>http://dengdezhao.cn/blog/2012-12-14/新浪入门应用之-大笨钟</id>
     <content type="html"><![CDATA[<p>昨日突然对SAE平台产生了兴趣，于是花了一晚上时间，写了个定点发微博的小应用，也算是了解了下SAE平台的开发流程，以下烂笔头纯粹为方便菜鸟学习，老鸟勿笑。</p>
 
 <p>之前玩过豆瓣，里面有个有名的“大笨钟”，每到整点便会发个状态“咚”几声以报时，虽然用处不大，但因其一直准点报时也吸引了不少粉丝关注，所以想自己做个类似的功能定时发微博报时。</p>
@@ -1148,9 +1535,9 @@ cron:
   
   <entry>
     <title type="html"><![CDATA[ORA-1222：TNS:no such protocol adapter  问题解决]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2012/12/03/ora-1222%EF%BC%9Atnsno-such-protocol-adapter-%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
+    <link href="http://dengdezhao.cn/blog/2012-12-03/ora-1222%EF%BC%9Atnsno-such-protocol-adapter-%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
     <updated>2012-12-03T00:00:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2012/12/03/ora-1222：tnsno-such-protocol-adapter-问题解决</id>
+    <id>http://dengdezhao.cn/blog/2012-12-03/ora-1222：tnsno-such-protocol-adapter-问题解决</id>
     <content type="html"><![CDATA[<p>机器上安装的是instantOracleclient-basic-win32-11.2.0.1.0客户端，本来使用PLSQL developer是可以正常连接数据库的；</p>
 
 <p>后来开发需求装上了Form6<em>i，</em>发现连接数据库时弹出来ORA-1222：TNS:no such protocol adapter这个错误；</p>
@@ -1177,9 +1564,9 @@ cron:
   
   <entry>
     <title type="html"><![CDATA[WebService之-入门DEMO生成]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2012/09/30/webservice%E4%B9%8B-%E5%85%A5%E9%97%A8demo%E7%94%9F%E6%88%90/"/>
+    <link href="http://dengdezhao.cn/blog/2012-09-30/webservice%E4%B9%8B-%E5%85%A5%E9%97%A8demo%E7%94%9F%E6%88%90/"/>
     <updated>2012-09-30T00:00:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2012/09/30/webservice之-入门demo生成</id>
+    <id>http://dengdezhao.cn/blog/2012-09-30/webservice之-入门demo生成</id>
     <content type="html"><![CDATA[<p>WebService的创建方法有多种，这里使用JAVA class生成webservice。</p>
 
 <p>1.创建一个JAVA类Test.java
@@ -1240,9 +1627,9 @@ cron:
   
   <entry>
     <title type="html"><![CDATA[SOA suite 环境搭建]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2012/09/29/soa-suite-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/"/>
+    <link href="http://dengdezhao.cn/blog/2012-09-29/soa-suite-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/"/>
     <updated>2012-09-29T00:00:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2012/09/29/soa-suite-环境搭建</id>
+    <id>http://dengdezhao.cn/blog/2012-09-29/soa-suite-环境搭建</id>
     <content type="html"><![CDATA[<p>好久没碰SOA，最近在win2003上准备搭建个环境玩玩。下载相关安装介质</p>
 
 <p>http://www.oracle.com/technetwork/middleware/soasuite/downloads/index.html</p>
@@ -1261,135 +1648,6 @@ cron:
 </a></strong></p>
 
 <p>&nbsp;</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[EBS 并发请求调用SQL时，日志跟输出中文出现乱码问题]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2012/09/20/ebs-%E5%B9%B6%E5%8F%91%E8%AF%B7%E6%B1%82%E8%B0%83%E7%94%A8sql%E6%97%B6%EF%BC%8C%E6%97%A5%E5%BF%97%E8%B7%9F%E8%BE%93%E5%87%BA%E4%B8%AD%E6%96%87%E5%87%BA%E7%8E%B0%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98/"/>
-    <updated>2012-09-20T00:00:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2012/09/20/ebs-并发请求调用sql时，日志跟输出中文出现乱码问题</id>
-    <content type="html"><![CDATA[<p>已知数据库，数据库所在服务器字符集都是UTF8，在并发请求调用的SQL里，fnd_file.put_line(fnd_file.log,&#8217;中文&#8217;)语句输出时，在EBS界面查看就是乱码。</p>
-
-<p>出现乱码的问题思路：</p>
-
-<p>1.查看客户端系统字符集是否支持中文。确认本机支持，并且NLS_LANG跟数据库都保持一致，可以排除此因素。</p>
-
-<p>2.查看数据库端字符集编码是否支持中文，得知是UTF8编码。</p>
-
-<p>3.查看服务器端是否支持中文编码</p>
-
-<p>发现以上三个因素都可以排除，EBS请求会在服务器端生成log文件，因此telnet到服务器直接查看生成的log文件看是否出现乱码</p>
-
-<p>cd $APPLPTMP</p>
-
-<p>发现生成的文件也是乱码，基本可以确定在数据库端生成文件即出现乱码，需要对中文字符进行转码输出。 exec find_file.put_file(fnd_file.log,convert(&#8216;中文&#8217;,&#8217;UTF8&#8217;,&#8217;ZHS16GBK&#8217;))；</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[EBS请求执行时抛出错误Ora-20100和Ora-06512 问题解决]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2012/09/12/ebs%E8%AF%B7%E6%B1%82%E6%89%A7%E8%A1%8C%E6%97%B6%E6%8A%9B%E5%87%BA%E9%94%99%E8%AF%AFora-20100%E5%92%8Cora-06512-%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
-    <updated>2012-09-12T00:00:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2012/09/12/ebs请求执行时抛出错误ora-20100和ora-06512-问题解决</id>
-    <content type="html"><![CDATA[<p>执行请求时抛出错误Ora-20100：xxxxx. Ora-06512:xxxxx错误，清空临时文件目录$APPLPTMP即可</p>
-
-<p>&nbsp;</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[EBS并发请求调用Oracle reports时，如何写入日志文件]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2012/09/11/ebs%E5%B9%B6%E5%8F%91%E8%AF%B7%E6%B1%82%E8%B0%83%E7%94%A8oracle-reports%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E5%86%99%E5%85%A5%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6/"/>
-    <updated>2012-09-11T00:00:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2012/09/11/ebs并发请求调用oracle-reports时，如何写入日志文件</id>
-    <content type="html"><![CDATA[<p>EBS并发请求调用procedure时，直接在被调用的procedure中使用fnd_file.put_line即可达到要求；</p>
-
-<p>如果并发请求调用的是oracle reports时，写入日志文件需要使用reports的方法。</p>
-
-<p>在Before/After report Trigger中使用SRW.message(0,&#8217;Message&#8217;);</p>
-
-<p>中断报表执行使用SRW.break;</p>
-
-<p>&nbsp;</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[通过代码设置ITEM属性变黄]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2012/07/06/%E9%80%9A%E8%BF%87%E4%BB%A3%E7%A0%81%E8%AE%BE%E7%BD%AEitem%E5%B1%9E%E6%80%A7%E5%8F%98%E9%BB%84/"/>
-    <updated>2012-07-06T00:00:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2012/07/06/通过代码设置item属性变黄</id>
-    <content type="html"><![CDATA[<p>需求：需要设置ITEM背景变黄，类似required时的效果；</p>
-
-<p>创建visual Attributes 属性：<strong>COLOR_YELLOW</strong></p>
-
-<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALUAAAAgCAIAAADbmq4OAAACUElEQVR4nO2a3W7DIAyFefUqz7WbSnmu7CILpbY5OOHHMPlTVFHHgIPPHJolHN9sry13HIzQmd6zjLyKRaHRizrI2fkqx3ZqrFxZsOI5Tzz7gyBrLkeZiTnppY8m5EYjAXBPZRj6aGuu62ZG5mJE/SBdcN/cWZ6q4hTck3+9dTk4Wo1xOWR98JScdvIJ1iW2UyNIQFEBGn2IU2C54IBzkSiv9N/qg4P3p9wY2+CU2E6dySyV+lCOUDSKKRev1PVR1gc/K7oVjWCtrfQRGMXFWY42+tCsYLSkp/RGfaYN9QGmWxRBH8+efxBL/Cr6i+Nwo36WtDv/qolNHx6ONhfzolRFn/sDclJapcoEFH3uXvPpnCH9aeM0zddovH50p1WqTKiqH807OrOxtrqd3nj9cBBePxyEcf3Y3/tPCMf3sb/3ePAu4tZPtIC+eDSxI2nzTWhgj0CUARTbhhgHcYojlUcqDq6P3KLzNvcsuoGUiPrAsVUGsIA+Ruw/TnFc8iDiIPooiiO1KLOlTwnxv6uPuwEsoI/HiC8DkM9r/o8+TkHEZ2vba5tcH+Rm8UwfZORccbKiS/24M/+fPnjlCCGM0Ydm/8EHaVU/jnX18ZgH95dUFib1w/UhMkX9IDUjbXB3cQzertwe5oIFznpBYOd5xHHMUD/Se0r6jz1eP64ewh0BWIpuZHAYrDy+eKtSBiCODGIYjHH94NsO/PvWGYxx/QCvI+VeShpAYJiEMQPW+w9nbqz3H87ceP1wEF4/HITXDwdhWT+KP17OxyE9InSU/AIYb7x1M+SAvQAAAABJRU5ErkJggg==" alt="" /></p>
-
-<p><img src="data:image/png;base64,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" alt="" /></p>
-
-<p>代码如下：
-<pre class="brush:js">	Go_Item('HDPI_FL_CON_TRANSPORT_V.STATION_LEAVE_MEAN');     		Set_Item_Instance_Property('HDPI_FL_CON_TRANSPORT_V.STATION_LEAVE_MEAN',current_record, visual_attribute, 'COLOR_YELLOW');</pre>
-即可实现功能。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[使用VPD对数据进行隔离]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2012/06/28/%E4%BD%BF%E7%94%A8vpd%E5%AF%B9%E6%95%B0%E6%8D%AE%E8%BF%9B%E8%A1%8C%E9%9A%94%E7%A6%BB/"/>
-    <updated>2012-06-28T00:00:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2012/06/28/使用vpd对数据进行隔离</id>
-    <content type="html"><![CDATA[<p>项目需求：系统数据表删除操作是直接物理删除，不利于维护历史记录，需要变更为逻辑删除模式。</p>
-
-<p>解决方案：</p>
-
-<p>对表增加删除标记字段DEL_FLAG varchar2(1) default ‘0’;</p>
-
-<p>用户执行“删除”操作时，并不执行物理删除操作，而是将DEL_FLAG值设置为‘1’；</p>
-
-<p>针对数据展示时，删除标记为’1’的数据使用VPD技术屏蔽访问；</p>
-
-<p><strong>1．需要修改的基表[T]新增删除字段：</strong></p>
-
-<p><strong>alter table</strong> T <strong>add</strong> (DEL_FLAG varchar2(1) <strong>default</strong> &#8216;0&#8217;);&#8211;缺省为0，逻辑删除改为1</p>
-
-<p><strong>2．创建VPD需要的函数：</strong><strong>f_limited_query_t</strong><strong></strong></p>
-
-<p><strong>CREATE OR REPLACE FUNCTION</strong> f_limited_query_t (s_schema <strong>IN</strong> VARCHAR2,</p>
-
-<p>s_object <strong>IN</strong> VARCHAR2)</p>
-
-<p><strong>RETURN</strong> VARCHAR2</p>
-
-<p><strong>AS</strong></p>
-
-<p><strong>BEGIN</strong></p>
-
-<p><strong>RETURN</strong> &#8216;DEL_FLAG!=&#8221;&#8217;||&#8217;1&#8217;||&#8221;&#8221;;</p>
-
-<p><strong>END;</strong></p>
-
-<p><strong>3．创建策略：</strong><strong>POLICY_LIMITED_QUERY_T</strong><strong></strong></p>
-
-<p><strong>BEGIN</strong>
-DBMS_RLS.add_policy (object_schema   =&gt; &#8216;APPS&#8217;,<br />
-object_name     =&gt; &#8216;T&#8217;,<br />
-policy_name     =&gt; &#8216;POLICY_LIMITED_QUERY_T&#8217;,<br />
-function_schema =&gt; &#8216;APPS&#8217;,<br />
-policy_function =&gt; &#8216;F_LIMITED_QUERY_T&#8217;);
-<strong>END</strong>;</p>
-
-<p><strong>取消策略：</strong><strong>(</strong>不用过滤时使用此命令<strong>)</strong></p>
-
-<p><strong>BEGIN</strong>
-DBMS_RLS.drop_policy (object_schema   =&gt; &#8216;APPS&#8217;,<br />
-object_name     =&gt; &#8216;T&#8217;,<br />
-policy_name     =&gt; &#8216;POLICY_LIMITED_QUERY_T&#8217;);
-<strong>END</strong>;<strong></strong></p>
-
-<p>&nbsp;</p>
-
-<p><strong>4．修改FORM中对相关数据表的删除逻辑为更新DEL_FLAG=1的操作；</strong></p>
 ]]></content>
   </entry>
   

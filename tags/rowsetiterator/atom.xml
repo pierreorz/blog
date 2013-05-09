@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: RowSetIterator | 邓德昭的技术博客]]></title>
+  <link href="http://dengdezhao.cn/tags/rowsetiterator/atom.xml" rel="self"/>
+  <link href="http://dengdezhao.cn/"/>
+  <updated>2013-05-09T13:21:28+08:00</updated>
+  <id>http://dengdezhao.cn/</id>
+  <author>
+    <name><![CDATA[pierreorz]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[getRowAtRangeIndex(int)方法的局限性]]></title>
+    <link href="http://dengdezhao.cn/blog/2013-04-16/getrowatrangeindex-int-fang-fa-de-ju-xian-xing/"/>
+    <updated>2013-04-16T14:42:00+08:00</updated>
+    <id>http://dengdezhao.cn/blog/2013-04-16/getrowatrangeindex-int-fang-fa-de-ju-xian-xing</id>
+    <content type="html"><![CDATA[<p>导出VO中的数据到EXCEL中时，循环VO中的Row，写入HSSFRow，是通过getRowAtRangeIndex(int)方法循环取Row，代码如下：  <br/>
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'> <span class="n">ViewObject</span> <span class="n">vo8</span><span class="o">=</span><span class="n">am</span><span class="o">.</span><span class="na">findViewObject</span><span class="o">(</span><span class="s">&quot;ChReport1VO1&quot;</span><span class="o">);</span>
+</span><span class='line'> <span class="k">if</span><span class="o">(</span><span class="n">vo8</span><span class="o">!=</span><span class="kc">null</span><span class="o">)</span>
+</span><span class='line'> <span class="o">{&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span>  <span class="kt">int</span> <span class="n">rowcount8</span><span class="o">=</span><span class="n">vo8</span><span class="o">.</span><span class="na">getRowCount</span><span class="o">();</span>
+</span><span class='line'>  <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">rowcount8</span><span class="o">;</span><span class="n">i</span><span class="o">++)</span>
+</span><span class='line'>  <span class="o">{</span>
+</span><span class='line'>       <span class="n">Row</span> <span class="n">vo_row8</span><span class="o">=</span><span class="n">vo8</span><span class="o">.</span><span class="na">getRowAtRangeIndex</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+</span><span class='line'>       <span class="c1">//...TODO</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span> <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>这样如果VO里有300条数据，但是pageRange设置为100，这里其实只能取到第一页的100条数据，想要导出所有300条数据则需要一页一页导出，很麻烦。于是考虑不用getRowAtRangeIndex方法取ROW数据,改用RowSetIterator。</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">ViewObject</span> <span class="n">vo8</span><span class="o">=</span><span class="n">am</span><span class="o">.</span><span class="na">findViewObject</span><span class="o">(</span><span class="s">&quot;ChReport1VO1&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="k">if</span><span class="o">(</span><span class="n">vo8</span><span class="o">!=</span><span class="kc">null</span><span class="o">)</span>
+</span><span class='line'><span class="o">{&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span> <span class="kt">int</span> <span class="n">rowcount8</span><span class="o">=</span><span class="n">vo8</span><span class="o">.</span><span class="na">getRowCount</span><span class="o">();</span>
+</span><span class='line'> <span class="n">RowSetIterator</span> <span class="n">rowSetIter</span><span class="o">=</span><span class="n">vo8</span><span class="o">.</span><span class="na">createRowSetIterator</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'> <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">rowcount8</span><span class="o">;</span><span class="n">i</span><span class="o">++)</span>
+</span><span class='line'> <span class="o">{</span>
+</span><span class='line'>       <span class="n">Row</span> <span class="n">vo_row8</span><span class="o">=</span><span class="n">rowSetIter</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+</span><span class='line'>       <span class="c1">//...TODO</span>
+</span><span class='line'> <span class="o">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>getRowAtRangeIndex方法只能通过index取出Range中的数据,但是RowSetIterator则是对VO中所有RowSet遍历。</p>
+]]></content>
+  </entry>
+  
+</feed>
