@@ -36,6 +36,8 @@ X+++ R+ tv b+ DI- D-- G++ e++ h+ r y+
 
 #关于本博#
 
+>2013-04-15 托管服务器从*github.com*迁至*stdyun.com*
+>
 >2013-03-12 绑定域名*dengdezhao.cn*
 >
 >2013-03-09 从*WordPress*迁移至*Octopress*

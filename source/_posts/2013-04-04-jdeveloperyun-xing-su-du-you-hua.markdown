@@ -37,12 +37,13 @@ E:\Oracle\Middleware11.1.2.3.0\jdk160_24\jre\bin\client\jvm.dll
 
 先随意设置以上三个参数值，将JDEV能够运行起来，然后使用JDK自带的工具来监控下内存情况
 E:\Oracle\Middleware11.1.2.3.0\jdk160_24\bin\jvisualvm.exe
-![](http://www.dengdezhao.cn/wp-content/uploads/20130404.jpg)
+![](../../../wp-content/uploads/20130404.jpg)
 
 根据图中**堆**及**PermGen**中显示使用大小调整三个参数值。
 发现在不断操作JDev时PermGen始终维持在128左右不到256的样子，
-所以设置-XX:MaxPermSize值为`AddVMOption  -XX:MaxPermSize=256M`
--Xms值为`AddVMOption  -Xms128M`
+所以设置    
+-XX:MaxPermSize值为`AddVMOption  -XX:MaxPermSize=256M`    
+-Xms值为`AddVMOption  -Xms128M`    
 通过不断测试最终调整-Xmx值为`AddVMOption  -Xmx896M`
 
 若在运行中出现OutOfMemoryError错误再根据信息慢慢调整。当然最好还是升级机器配置换成64位的系统及JDK就没有内存限制啦！~
