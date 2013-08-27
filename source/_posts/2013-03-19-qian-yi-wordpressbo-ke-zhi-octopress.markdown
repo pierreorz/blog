@@ -108,3 +108,4 @@ git clone https://github.com/robbyedwards/octopress-tag-cloud.git
 以上操作完成之后，执行`rake generate`命令生成静态页面，然后`rake preview`，在浏览器中输入http://localhost:4000即可预览站点。
 
 
+
