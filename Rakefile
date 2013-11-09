@@ -7,7 +7,7 @@ require "stringex"
 ssh_user       = "pierreorz@o.stdyun.net"
 ssh_port       = "22"
 document_root  = "~/www.dengdezhao.cn/"
-document_root  = "~/dengdezhao.cn/"
+#document_root  = "~/dengdezhao.cn/"
 rsync_delete   = false
 rsync_args     = ""  # Any extra arguments to pass to rsync
 deploy_default = "rsync"

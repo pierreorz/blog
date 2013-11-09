@@ -13,13 +13,13 @@ tags:
    
 方法一：使用OPERATIONS用户登陆EBS系统，选择“Diagnostics”后，在页下脚选择“About this Page”后选择“Technology Components”标签可查看相应版本信息。
 
-方法二：访问URI：    
+方法二：访问URI：*R12不可用*    
 {% codeblock lang:java %}
 http://<HOST>:<PORT>/OA_HTML/OAInfo.jsp    
 {% endcodeblock %}
 
 ####查看OAF版本下载相应JDEV开发工具####
-metalink document id: 787209.1
+metalink document id: 787209.1 & 416708.1
 
 例如：p4141787_11i_GENERIC.zip
 

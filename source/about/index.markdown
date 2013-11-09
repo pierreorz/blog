@@ -7,9 +7,9 @@ footer: true
 ---
 #关于博主#
 
-**NickName：pierreorz**
+**NickName：pierreorz or 49**
 
-目前就职于北京一家IT企业，技术顾问。
+目前就职于深圳一家IT企业，技术顾问。
 
 专注于oracle相关应用开发，很高兴跟大家一起交流学习。
 
