@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: mysql | 邓德昭的技术博客]]></title>
-  <link href="http://www.dengdezhao.cn/tags/mysql/atom.xml" rel="self"/>
-  <link href="http://www.dengdezhao.cn/"/>
-  <updated>2014-05-09T23:06:22+08:00</updated>
-  <id>http://www.dengdezhao.cn/</id>
+  <link href="http://dengdezhao.cn/tags/mysql/atom.xml" rel="self"/>
+  <link href="http://dengdezhao.cn/"/>
+  <updated>2014-05-10T00:05:56+08:00</updated>
+  <id>http://dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Centos下安装mysql5.6后忘记ROOT密码，重置密码]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2013-06-25/centosxia-an-zhuang-mysql5-dot-6hou-wang-ji-rootmi-ma-%2Czhong-zhi-mi-ma/"/>
+    <link href="http://dengdezhao.cn/blog/2013-06-25/centosxia-an-zhuang-mysql5-dot-6hou-wang-ji-rootmi-ma-%2Czhong-zhi-mi-ma/"/>
     <updated>2013-06-25T16:01:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2013-06-25/centosxia-an-zhuang-mysql5-dot-6hou-wang-ji-rootmi-ma-,zhong-zhi-mi-ma</id>
+    <id>http://dengdezhao.cn/blog/2013-06-25/centosxia-an-zhuang-mysql5-dot-6hou-wang-ji-rootmi-ma-,zhong-zhi-mi-ma</id>
     <content type="html"><![CDATA[<p><strong>安装</strong></p>
 
 <p>去<a href="https://edelivery.oracle.com/EPD/Search/handle_go">oracle官网</a>下载mysql5.6 for linux安装介质V38444-01.zip。  <br/>

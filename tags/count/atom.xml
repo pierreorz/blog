@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: count | 邓德昭的技术博客]]></title>
-  <link href="http://www.dengdezhao.cn/tags/count/atom.xml" rel="self"/>
-  <link href="http://www.dengdezhao.cn/"/>
-  <updated>2014-05-09T23:06:22+08:00</updated>
-  <id>http://www.dengdezhao.cn/</id>
+  <link href="http://dengdezhao.cn/tags/count/atom.xml" rel="self"/>
+  <link href="http://dengdezhao.cn/"/>
+  <updated>2014-05-10T00:05:56+08:00</updated>
+  <id>http://dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Groovy在ADF中的应用]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2013-06-02/groovyzai-adfzhong-de-ying-yong/"/>
+    <link href="http://dengdezhao.cn/blog/2013-06-02/groovyzai-adfzhong-de-ying-yong/"/>
     <updated>2013-06-02T11:14:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2013-06-02/groovyzai-adfzhong-de-ying-yong</id>
+    <id>http://dengdezhao.cn/blog/2013-06-02/groovyzai-adfzhong-de-ying-yong</id>
     <content type="html"><![CDATA[<p>使用Groovy脚本，在开发ADF应用中可以极大地提高开发效率，实现某些看似很复杂的功能。</p>
 
 <p>比如在empVO中获取sequence值:  <br/>

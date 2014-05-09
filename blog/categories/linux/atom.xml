@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: linux | 邓德昭的技术博客]]></title>
-  <link href="http://www.dengdezhao.cn/blog/categories/linux/atom.xml" rel="self"/>
-  <link href="http://www.dengdezhao.cn/"/>
-  <updated>2014-05-09T23:06:22+08:00</updated>
-  <id>http://www.dengdezhao.cn/</id>
+  <link href="http://dengdezhao.cn/blog/categories/linux/atom.xml" rel="self"/>
+  <link href="http://dengdezhao.cn/"/>
+  <updated>2014-05-10T00:05:56+08:00</updated>
+  <id>http://dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[[SOLVED]Long mode not supported, rebooting Press any key to reboot]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2013-01-31/solvedlong-mode-not-supported-rebooting-press-any-key-to-reboot/"/>
+    <link href="http://dengdezhao.cn/blog/2013-01-31/solvedlong-mode-not-supported-rebooting-press-any-key-to-reboot/"/>
     <updated>2013-01-31T00:00:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2013-01-31/solvedlong-mode-not-supported-rebooting-press-any-key-to-reboot</id>
+    <id>http://dengdezhao.cn/blog/2013-01-31/solvedlong-mode-not-supported-rebooting-press-any-key-to-reboot</id>
     <content type="html"><![CDATA[<p>虚拟机安装solaris 11的时候弹出
 <blockquote>Long mode not supported, rebooting Press any key to reboot........</blockquote>
 原因是solaris11只支持64位，需要把BIOS的CPU选项里Inter Virtualization Technology和Inter VT均设置为ENABLE，</p>
@@ -38,9 +38,9 @@
   
   <entry>
     <title type="html"><![CDATA[硬盘安装fedora]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2012-06-26/%E7%A1%AC%E7%9B%98%E5%AE%89%E8%A3%85fedora/"/>
+    <link href="http://dengdezhao.cn/blog/2012-06-26/%E7%A1%AC%E7%9B%98%E5%AE%89%E8%A3%85fedora/"/>
     <updated>2012-06-26T00:00:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2012-06-26/硬盘安装fedora</id>
+    <id>http://dengdezhao.cn/blog/2012-06-26/硬盘安装fedora</id>
     <content type="html"><![CDATA[<p>下载好fedora16 ISO镜像文件放在C盘，解压出来images文件，及vmlinuz,initrd.img文件。使用grub引导硬盘安装，分区时报错：<br />
 you have not created a bootloader stage1 target device</p>
 

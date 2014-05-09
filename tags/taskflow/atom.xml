@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: taskflow | 邓德昭的技术博客]]></title>
-  <link href="http://www.dengdezhao.cn/tags/taskflow/atom.xml" rel="self"/>
-  <link href="http://www.dengdezhao.cn/"/>
-  <updated>2014-05-09T23:06:22+08:00</updated>
-  <id>http://www.dengdezhao.cn/</id>
+  <link href="http://dengdezhao.cn/tags/taskflow/atom.xml" rel="self"/>
+  <link href="http://dengdezhao.cn/"/>
+  <updated>2014-05-10T00:05:56+08:00</updated>
+  <id>http://dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[从BackingBean中调用不带fragments的taskflow]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2013-06-08/cong-backingbeanzhong-diao-yong-bu-dai-fragmentsde-taskflow/"/>
+    <link href="http://dengdezhao.cn/blog/2013-06-08/cong-backingbeanzhong-diao-yong-bu-dai-fragmentsde-taskflow/"/>
     <updated>2013-06-08T16:11:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2013-06-08/cong-backingbeanzhong-diao-yong-bu-dai-fragmentsde-taskflow</id>
+    <id>http://dengdezhao.cn/blog/2013-06-08/cong-backingbeanzhong-diao-yong-bu-dai-fragmentsde-taskflow</id>
     <content type="html"><![CDATA[<p>有时候需要在backingBean中调用某一taskflow, 可以使用以下代码调用。不过只适用于可单独运行的taskflow，含有page fragments的taskflow不在此范围。</p>
 
 <p>代码如下：  <br/>

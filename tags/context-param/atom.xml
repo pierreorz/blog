@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: context-param | 邓德昭的技术博客]]></title>
-  <link href="http://www.dengdezhao.cn/tags/context-param/atom.xml" rel="self"/>
-  <link href="http://www.dengdezhao.cn/"/>
-  <updated>2014-05-09T23:06:22+08:00</updated>
-  <id>http://www.dengdezhao.cn/</id>
+  <link href="http://dengdezhao.cn/tags/context-param/atom.xml" rel="self"/>
+  <link href="http://dengdezhao.cn/"/>
+  <updated>2014-05-10T00:05:56+08:00</updated>
+  <id>http://dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[如何获取web.xml中的context-param参数]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2013-09-04/ru-he-huo-qu-web-dot-xmlzhong-de-context-paramcan-shu/"/>
+    <link href="http://dengdezhao.cn/blog/2013-09-04/ru-he-huo-qu-web-dot-xmlzhong-de-context-paramcan-shu/"/>
     <updated>2013-09-04T19:30:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2013-09-04/ru-he-huo-qu-web-dot-xmlzhong-de-context-paramcan-shu</id>
+    <id>http://dengdezhao.cn/blog/2013-09-04/ru-he-huo-qu-web-dot-xmlzhong-de-context-paramcan-shu</id>
     <content type="html"><![CDATA[<p><strong>通过EL表达试获取</strong></p>
 
 <p>以web.xml中的<context-param>参数：javax.faces.FACELETS_VIEW_MAPPINGS为例,

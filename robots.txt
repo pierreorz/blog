@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: 
 
-Sitemap: http://www.dengdezhao.cn/sitemap.xml 
+Sitemap: http://dengdezhao.cn/sitemap.xml 

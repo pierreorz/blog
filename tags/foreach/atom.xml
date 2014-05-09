@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: forEach | 邓德昭的技术博客]]></title>
-  <link href="http://www.dengdezhao.cn/tags/foreach/atom.xml" rel="self"/>
-  <link href="http://www.dengdezhao.cn/"/>
-  <updated>2014-05-09T23:06:22+08:00</updated>
-  <id>http://www.dengdezhao.cn/</id>
+  <link href="http://dengdezhao.cn/tags/foreach/atom.xml" rel="self"/>
+  <link href="http://dengdezhao.cn/"/>
+  <updated>2014-05-10T00:05:56+08:00</updated>
+  <id>http://dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[控件af:iterator以及af:forEach的对比]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2013-09-23/kong-jian-af-iteratoryi-ji-af-foreachde-dui-bi/"/>
+    <link href="http://dengdezhao.cn/blog/2013-09-23/kong-jian-af-iteratoryi-ji-af-foreachde-dui-bi/"/>
     <updated>2013-09-23T18:13:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2013-09-23/kong-jian-af-iteratoryi-ji-af-foreachde-dui-bi</id>
+    <id>http://dengdezhao.cn/blog/2013-09-23/kong-jian-af-iteratoryi-ji-af-foreachde-dui-bi</id>
     <content type="html"><![CDATA[<ul>
 <li><p>平台:Jdeveloper 12c</p></li>
 <li><p>需求：对Collection类型遍历。MB中定义两个List，如何利用iterator&amp;foreach控件将List内容显示到页面。</p></li>

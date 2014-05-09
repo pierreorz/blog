@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Oracle | 邓德昭的技术博客]]></title>
-  <link href="http://www.dengdezhao.cn/blog/categories/oracle/atom.xml" rel="self"/>
-  <link href="http://www.dengdezhao.cn/"/>
-  <updated>2014-05-09T23:06:22+08:00</updated>
-  <id>http://www.dengdezhao.cn/</id>
+  <link href="http://dengdezhao.cn/blog/categories/oracle/atom.xml" rel="self"/>
+  <link href="http://dengdezhao.cn/"/>
+  <updated>2014-05-10T00:05:56+08:00</updated>
+  <id>http://dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[由意外断电导致oracle11g启动不起来的问题解决]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2013-11-09/you-yi-wai-duan-dian-dao-zhi-oracle11gqi-dong-bu-qi-lai-de-wen-ti-jie-jue/"/>
+    <link href="http://dengdezhao.cn/blog/2013-11-09/you-yi-wai-duan-dian-dao-zhi-oracle11gqi-dong-bu-qi-lai-de-wen-ti-jie-jue/"/>
     <updated>2013-11-09T19:24:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2013-11-09/you-yi-wai-duan-dian-dao-zhi-oracle11gqi-dong-bu-qi-lai-de-wen-ti-jie-jue</id>
+    <id>http://dengdezhao.cn/blog/2013-11-09/you-yi-wai-duan-dian-dao-zhi-oracle11gqi-dong-bu-qi-lai-de-wen-ti-jie-jue</id>
     <content type="html"><![CDATA[<ul>
 <li><p>平台: linux + oracle 11g</p></li>
 <li><p>故障: 意外断电之后，监听启动不了</p></li>
@@ -84,9 +84,9 @@
   
   <entry>
     <title type="html"><![CDATA[ORA-1222：TNS:no such protocol adapter  问题解决]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2012-12-03/ora-1222%EF%BC%9Atnsno-such-protocol-adapter-%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
+    <link href="http://dengdezhao.cn/blog/2012-12-03/ora-1222%EF%BC%9Atnsno-such-protocol-adapter-%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
     <updated>2012-12-03T00:00:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2012-12-03/ora-1222：tnsno-such-protocol-adapter-问题解决</id>
+    <id>http://dengdezhao.cn/blog/2012-12-03/ora-1222：tnsno-such-protocol-adapter-问题解决</id>
     <content type="html"><![CDATA[<p>机器上安装的是instantOracleclient-basic-win32-11.2.0.1.0客户端，本来使用PLSQL developer是可以正常连接数据库的；</p>
 
 
@@ -141,9 +141,9 @@
   
   <entry>
     <title type="html"><![CDATA[EBS 并发请求调用SQL时，日志跟输出中文出现乱码问题]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2012-09-20/ebs-%E5%B9%B6%E5%8F%91%E8%AF%B7%E6%B1%82%E8%B0%83%E7%94%A8sql%E6%97%B6%EF%BC%8C%E6%97%A5%E5%BF%97%E8%B7%9F%E8%BE%93%E5%87%BA%E4%B8%AD%E6%96%87%E5%87%BA%E7%8E%B0%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98/"/>
+    <link href="http://dengdezhao.cn/blog/2012-09-20/ebs-%E5%B9%B6%E5%8F%91%E8%AF%B7%E6%B1%82%E8%B0%83%E7%94%A8sql%E6%97%B6%EF%BC%8C%E6%97%A5%E5%BF%97%E8%B7%9F%E8%BE%93%E5%87%BA%E4%B8%AD%E6%96%87%E5%87%BA%E7%8E%B0%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98/"/>
     <updated>2012-09-20T00:00:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2012-09-20/ebs-并发请求调用sql时，日志跟输出中文出现乱码问题</id>
+    <id>http://dengdezhao.cn/blog/2012-09-20/ebs-并发请求调用sql时，日志跟输出中文出现乱码问题</id>
     <content type="html"><![CDATA[<p>已知数据库，数据库所在服务器字符集都是UTF8，在并发请求调用的SQL里，fnd_file.put_line(fnd_file.log,'中文')语句输出时，在EBS界面查看就是乱码。</p>
 
 
@@ -186,9 +186,9 @@
   
   <entry>
     <title type="html"><![CDATA[EBS请求执行时抛出错误Ora-20100和Ora-06512 问题解决]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2012-09-12/ebs%E8%AF%B7%E6%B1%82%E6%89%A7%E8%A1%8C%E6%97%B6%E6%8A%9B%E5%87%BA%E9%94%99%E8%AF%AFora-20100%E5%92%8Cora-06512-%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
+    <link href="http://dengdezhao.cn/blog/2012-09-12/ebs%E8%AF%B7%E6%B1%82%E6%89%A7%E8%A1%8C%E6%97%B6%E6%8A%9B%E5%87%BA%E9%94%99%E8%AF%AFora-20100%E5%92%8Cora-06512-%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
     <updated>2012-09-12T00:00:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2012-09-12/ebs请求执行时抛出错误ora-20100和ora-06512-问题解决</id>
+    <id>http://dengdezhao.cn/blog/2012-09-12/ebs请求执行时抛出错误ora-20100和ora-06512-问题解决</id>
     <content type="html"><![CDATA[<p>执行请求时抛出错误Ora-20100：xxxxx. Ora-06512:xxxxx错误，清空临时文件目录$APPLPTMP即可</p>
 
 
@@ -201,9 +201,9 @@
   
   <entry>
     <title type="html"><![CDATA[EBS并发请求调用Oracle reports时，如何写入日志文件]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2012-09-11/ebs%E5%B9%B6%E5%8F%91%E8%AF%B7%E6%B1%82%E8%B0%83%E7%94%A8oracle-reports%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E5%86%99%E5%85%A5%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6/"/>
+    <link href="http://dengdezhao.cn/blog/2012-09-11/ebs%E5%B9%B6%E5%8F%91%E8%AF%B7%E6%B1%82%E8%B0%83%E7%94%A8oracle-reports%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E5%86%99%E5%85%A5%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6/"/>
     <updated>2012-09-11T00:00:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2012-09-11/ebs并发请求调用oracle-reports时，如何写入日志文件</id>
+    <id>http://dengdezhao.cn/blog/2012-09-11/ebs并发请求调用oracle-reports时，如何写入日志文件</id>
     <content type="html"><![CDATA[<p>EBS并发请求调用procedure时，直接在被调用的procedure中使用fnd_file.put_line即可达到要求；</p>
 
 

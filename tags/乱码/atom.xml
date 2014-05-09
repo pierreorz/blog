@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: 乱码 | 邓德昭的技术博客]]></title>
-  <link href="http://www.dengdezhao.cn/tags/乱码/atom.xml" rel="self"/>
-  <link href="http://www.dengdezhao.cn/"/>
-  <updated>2014-05-09T23:06:22+08:00</updated>
-  <id>http://www.dengdezhao.cn/</id>
+  <link href="http://dengdezhao.cn/tags/乱码/atom.xml" rel="self"/>
+  <link href="http://dengdezhao.cn/"/>
+  <updated>2014-05-10T00:05:56+08:00</updated>
+  <id>http://dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[JavaMail发送邮件中文乱码]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2013-03-20/javamailfa-song-you-jian-zhong-wen-luan-ma/"/>
+    <link href="http://dengdezhao.cn/blog/2013-03-20/javamailfa-song-you-jian-zhong-wen-luan-ma/"/>
     <updated>2013-03-20T16:21:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2013-03-20/javamailfa-song-you-jian-zhong-wen-luan-ma</id>
+    <id>http://dengdezhao.cn/blog/2013-03-20/javamailfa-song-you-jian-zhong-wen-luan-ma</id>
     <content type="html"><![CDATA[<p>使用JavaMail发送邮件时，邮件主题以及发件人中有中文字符时出现乱码</p>
 
 <p>邮件正文正常。</p>

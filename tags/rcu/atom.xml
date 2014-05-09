@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: RCU | 邓德昭的技术博客]]></title>
-  <link href="http://www.dengdezhao.cn/tags/rcu/atom.xml" rel="self"/>
-  <link href="http://www.dengdezhao.cn/"/>
-  <updated>2014-05-09T23:06:22+08:00</updated>
-  <id>http://www.dengdezhao.cn/</id>
+  <link href="http://dengdezhao.cn/tags/rcu/atom.xml" rel="self"/>
+  <link href="http://dengdezhao.cn/"/>
+  <updated>2014-05-10T00:05:56+08:00</updated>
+  <id>http://dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[安装RCU1.7遇到的小问题]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2014-04-18/an-zhuang-rcu1-dot-7yu-dao-de-xiao-wen-ti/"/>
+    <link href="http://dengdezhao.cn/blog/2014-04-18/an-zhuang-rcu1-dot-7yu-dao-de-xiao-wen-ti/"/>
     <updated>2014-04-18T20:24:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2014-04-18/an-zhuang-rcu1-dot-7yu-dao-de-xiao-wen-ti</id>
+    <id>http://dengdezhao.cn/blog/2014-04-18/an-zhuang-rcu1-dot-7yu-dao-de-xiao-wen-ti</id>
     <content type="html"><![CDATA[<ul>
 <li>环境：此前安装过soa1.6，最近重新安装soa1.7时遇到的问题</li>
 <li>安装Rcu1.7时，发现无法运行./rcu,错误提示如下：</li>

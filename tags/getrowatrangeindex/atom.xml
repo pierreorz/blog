@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: getRowAtRangeIndex | 邓德昭的技术博客]]></title>
-  <link href="http://www.dengdezhao.cn/tags/getrowatrangeindex/atom.xml" rel="self"/>
-  <link href="http://www.dengdezhao.cn/"/>
-  <updated>2014-05-09T23:06:22+08:00</updated>
-  <id>http://www.dengdezhao.cn/</id>
+  <link href="http://dengdezhao.cn/tags/getrowatrangeindex/atom.xml" rel="self"/>
+  <link href="http://dengdezhao.cn/"/>
+  <updated>2014-05-10T00:05:56+08:00</updated>
+  <id>http://dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[getRowAtRangeIndex(int)方法的局限性]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2013-04-16/getrowatrangeindex-int-fang-fa-de-ju-xian-xing/"/>
+    <link href="http://dengdezhao.cn/blog/2013-04-16/getrowatrangeindex-int-fang-fa-de-ju-xian-xing/"/>
     <updated>2013-04-16T14:42:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2013-04-16/getrowatrangeindex-int-fang-fa-de-ju-xian-xing</id>
+    <id>http://dengdezhao.cn/blog/2013-04-16/getrowatrangeindex-int-fang-fa-de-ju-xian-xing</id>
     <content type="html"><![CDATA[<p>导出VO中的数据到EXCEL中时，循环VO中的Row，写入HSSFRow，是通过getRowAtRangeIndex(int)方法循环取Row，代码如下：  <br/>
 <div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>

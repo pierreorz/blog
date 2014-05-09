@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: heartBeat | 邓德昭的技术博客]]></title>
-  <link href="http://www.dengdezhao.cn/tags/heartbeat/atom.xml" rel="self"/>
-  <link href="http://www.dengdezhao.cn/"/>
-  <updated>2014-05-09T23:06:22+08:00</updated>
-  <id>http://www.dengdezhao.cn/</id>
+  <link href="http://dengdezhao.cn/tags/heartbeat/atom.xml" rel="self"/>
+  <link href="http://dengdezhao.cn/"/>
+  <updated>2014-05-10T00:05:56+08:00</updated>
+  <id>http://dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[ADF类似心跳程序实现]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2013-04-24/adflei-si-xin-tiao-cheng-xu-shi-xian/"/>
+    <link href="http://dengdezhao.cn/blog/2013-04-24/adflei-si-xin-tiao-cheng-xu-shi-xian/"/>
     <updated>2013-04-24T16:19:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2013-04-24/adflei-si-xin-tiao-cheng-xu-shi-xian</id>
+    <id>http://dengdezhao.cn/blog/2013-04-24/adflei-si-xin-tiao-cheng-xu-shi-xian</id>
     <content type="html"><![CDATA[<p>使用ADF框架开发WEB应用时，其中令人苦恼的一个需求就是：在两个页面同时展示一个数据源时，如果其中一个页面对数据源作了变更操作，另外一个页面没办法自动获得变更后的数据，需要手工刷新页面才能得到变更后的新数据源。</p>
 
 <p>其实ADF自带的<code>&lt;af:poll/&gt;</code>组件即可实现此需求。</p>

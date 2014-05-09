@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: Shared Application Module | 邓德昭的技术博客]]></title>
-  <link href="http://www.dengdezhao.cn/tags/shared-application-module/atom.xml" rel="self"/>
-  <link href="http://www.dengdezhao.cn/"/>
-  <updated>2014-05-09T23:06:22+08:00</updated>
-  <id>http://www.dengdezhao.cn/</id>
+  <link href="http://dengdezhao.cn/tags/shared-application-module/atom.xml" rel="self"/>
+  <link href="http://dengdezhao.cn/"/>
+  <updated>2014-05-10T00:05:56+08:00</updated>
+  <id>http://dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[关于ApplicatoinModule类型总结]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2013-05-28/guan-yu-applicatoinmodulelei-xing-zong-jie/"/>
+    <link href="http://dengdezhao.cn/blog/2013-05-28/guan-yu-applicatoinmodulelei-xing-zong-jie/"/>
     <updated>2013-05-28T15:16:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2013-05-28/guan-yu-applicatoinmodulelei-xing-zong-jie</id>
+    <id>http://dengdezhao.cn/blog/2013-05-28/guan-yu-applicatoinmodulelei-xing-zong-jie</id>
     <content type="html"><![CDATA[<hr />
 
 <h2>平台：Jdev11.1.2.3.0    </h2>

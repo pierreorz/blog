@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[邓德昭的技术博客]]></title>
-  <link href="http://www.dengdezhao.cn/atom.xml" rel="self"/>
-  <link href="http://www.dengdezhao.cn/"/>
-  <updated>2014-05-09T23:06:22+08:00</updated>
-  <id>http://www.dengdezhao.cn/</id>
+  <link href="http://dengdezhao.cn/atom.xml" rel="self"/>
+  <link href="http://dengdezhao.cn/"/>
+  <updated>2014-05-10T00:05:56+08:00</updated>
+  <id>http://dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[安装RCU1.7遇到的小问题]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2014-04-18/an-zhuang-rcu1-dot-7yu-dao-de-xiao-wen-ti/"/>
+    <link href="http://dengdezhao.cn/blog/2014-04-18/an-zhuang-rcu1-dot-7yu-dao-de-xiao-wen-ti/"/>
     <updated>2014-04-18T20:24:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2014-04-18/an-zhuang-rcu1-dot-7yu-dao-de-xiao-wen-ti</id>
+    <id>http://dengdezhao.cn/blog/2014-04-18/an-zhuang-rcu1-dot-7yu-dao-de-xiao-wen-ti</id>
     <content type="html"><![CDATA[<ul>
 <li>环境：此前安装过soa1.6，最近重新安装soa1.7时遇到的问题</li>
 <li>安装Rcu1.7时，发现无法运行./rcu,错误提示如下：</li>
@@ -52,9 +52,9 @@
   
   <entry>
     <title type="html"><![CDATA[定制EL function]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2014-02-07/%E5%AE%9A%E5%88%B6EL/"/>
+    <link href="http://dengdezhao.cn/blog/2014-02-07/%E5%AE%9A%E5%88%B6EL/"/>
     <updated>2014-02-07T19:24:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2014-02-07/定制EL</id>
+    <id>http://dengdezhao.cn/blog/2014-02-07/定制EL</id>
     <content type="html"><![CDATA[<ul>
 <li><p>平台: Jdeveloper 12c</p></li>
 <li><p>有时需要对字符串进行一些后再显示出来，可以写一个简单的taglib来实现，以下Demo是处理一个以冒号分隔的字符串，返回其中的第三个值。比如输入“aaa:bbb:ccc:ddd&#8221;，输出&#8221;ccc&#8221;。</p></li>
@@ -201,9 +201,9 @@
   
   <entry>
     <title type="html"><![CDATA[由意外断电导致oracle11g启动不起来的问题解决]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2013-11-09/you-yi-wai-duan-dian-dao-zhi-oracle11gqi-dong-bu-qi-lai-de-wen-ti-jie-jue/"/>
+    <link href="http://dengdezhao.cn/blog/2013-11-09/you-yi-wai-duan-dian-dao-zhi-oracle11gqi-dong-bu-qi-lai-de-wen-ti-jie-jue/"/>
     <updated>2013-11-09T19:24:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2013-11-09/you-yi-wai-duan-dian-dao-zhi-oracle11gqi-dong-bu-qi-lai-de-wen-ti-jie-jue</id>
+    <id>http://dengdezhao.cn/blog/2013-11-09/you-yi-wai-duan-dian-dao-zhi-oracle11gqi-dong-bu-qi-lai-de-wen-ti-jie-jue</id>
     <content type="html"><![CDATA[<ul>
 <li><p>平台: linux + oracle 11g</p></li>
 <li><p>故障: 意外断电之后，监听启动不了</p></li>
@@ -264,9 +264,9 @@
   
   <entry>
     <title type="html"><![CDATA[如何在页面碎片加载前调用逻辑]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2013-09-23/ru-he-zai-ye-mian-sui-pian-jia-zai-qian-diao-yong-luo-ji/"/>
+    <link href="http://dengdezhao.cn/blog/2013-09-23/ru-he-zai-ye-mian-sui-pian-jia-zai-qian-diao-yong-luo-ji/"/>
     <updated>2013-09-23T18:32:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2013-09-23/ru-he-zai-ye-mian-sui-pian-jia-zai-qian-diao-yong-luo-ji</id>
+    <id>http://dengdezhao.cn/blog/2013-09-23/ru-he-zai-ye-mian-sui-pian-jia-zai-qian-diao-yong-luo-ji</id>
     <content type="html"><![CDATA[<ul>
 <li><p>平台:Jdeveloper 12c</p></li>
 <li><p>需求：在JSPX页面加载前如果需要调用逻辑可以通过重写PhaseListener实现，如果在JSFF页面碎片加载前（也即是region加载前）调用应该如何实现？</p></li>
@@ -389,9 +389,9 @@
   
   <entry>
     <title type="html"><![CDATA[控件af:iterator以及af:forEach的对比]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2013-09-23/kong-jian-af-iteratoryi-ji-af-foreachde-dui-bi/"/>
+    <link href="http://dengdezhao.cn/blog/2013-09-23/kong-jian-af-iteratoryi-ji-af-foreachde-dui-bi/"/>
     <updated>2013-09-23T18:13:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2013-09-23/kong-jian-af-iteratoryi-ji-af-foreachde-dui-bi</id>
+    <id>http://dengdezhao.cn/blog/2013-09-23/kong-jian-af-iteratoryi-ji-af-foreachde-dui-bi</id>
     <content type="html"><![CDATA[<ul>
 <li><p>平台:Jdeveloper 12c</p></li>
 <li><p>需求：对Collection类型遍历。MB中定义两个List，如何利用iterator&amp;foreach控件将List内容显示到页面。</p></li>
@@ -565,9 +565,9 @@
   
   <entry>
     <title type="html"><![CDATA[如何获取web.xml中的context-param参数]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2013-09-04/ru-he-huo-qu-web-dot-xmlzhong-de-context-paramcan-shu/"/>
+    <link href="http://dengdezhao.cn/blog/2013-09-04/ru-he-huo-qu-web-dot-xmlzhong-de-context-paramcan-shu/"/>
     <updated>2013-09-04T19:30:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2013-09-04/ru-he-huo-qu-web-dot-xmlzhong-de-context-paramcan-shu</id>
+    <id>http://dengdezhao.cn/blog/2013-09-04/ru-he-huo-qu-web-dot-xmlzhong-de-context-paramcan-shu</id>
     <content type="html"><![CDATA[<p><strong>通过EL表达试获取</strong></p>
 
 <p>以web.xml中的<context-param>参数：javax.faces.FACELETS_VIEW_MAPPINGS为例,
@@ -620,9 +620,9 @@
   
   <entry>
     <title type="html"><![CDATA[Centos下安装mysql5.6后忘记ROOT密码，重置密码]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2013-06-25/centosxia-an-zhuang-mysql5-dot-6hou-wang-ji-rootmi-ma-%2Czhong-zhi-mi-ma/"/>
+    <link href="http://dengdezhao.cn/blog/2013-06-25/centosxia-an-zhuang-mysql5-dot-6hou-wang-ji-rootmi-ma-%2Czhong-zhi-mi-ma/"/>
     <updated>2013-06-25T16:01:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2013-06-25/centosxia-an-zhuang-mysql5-dot-6hou-wang-ji-rootmi-ma-,zhong-zhi-mi-ma</id>
+    <id>http://dengdezhao.cn/blog/2013-06-25/centosxia-an-zhuang-mysql5-dot-6hou-wang-ji-rootmi-ma-,zhong-zhi-mi-ma</id>
     <content type="html"><![CDATA[<p><strong>安装</strong></p>
 
 <p>去<a href="https://edelivery.oracle.com/EPD/Search/handle_go">oracle官网</a>下载mysql5.6 for linux安装介质V38444-01.zip。  <br/>
@@ -712,9 +712,9 @@
   
   <entry>
     <title type="html"><![CDATA[OAF单选删除行功能]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2013-06-24/oafdan-xuan-shan-chu-xing-gong-neng/"/>
+    <link href="http://dengdezhao.cn/blog/2013-06-24/oafdan-xuan-shan-chu-xing-gong-neng/"/>
     <updated>2013-06-24T11:15:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2013-06-24/oafdan-xuan-shan-chu-xing-gong-neng</id>
+    <id>http://dengdezhao.cn/blog/2013-06-24/oafdan-xuan-shan-chu-xing-gong-neng</id>
     <content type="html"><![CDATA[<hr />
 
 <p>平台：Jdeveloper 9i</p>
@@ -816,9 +816,9 @@
   
   <entry>
     <title type="html"><![CDATA[Attribute set for xxxAttribute in view object xxxVO failed问题解决]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2013-06-19/attribute-set-for-xxxattribute-in-view-object-xxxvo-failedwen-ti-jie-jue/"/>
+    <link href="http://dengdezhao.cn/blog/2013-06-19/attribute-set-for-xxxattribute-in-view-object-xxxvo-failedwen-ti-jie-jue/"/>
     <updated>2013-06-19T15:50:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2013-06-19/attribute-set-for-xxxattribute-in-view-object-xxxvo-failedwen-ti-jie-jue</id>
+    <id>http://dengdezhao.cn/blog/2013-06-19/attribute-set-for-xxxattribute-in-view-object-xxxvo-failedwen-ti-jie-jue</id>
     <content type="html"><![CDATA[<hr />
 
 <h2>平台：Jdeveloper 9i </h2>
@@ -853,9 +853,9 @@
   
   <entry>
     <title type="html"><![CDATA[从BackingBean中调用不带fragments的taskflow]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2013-06-08/cong-backingbeanzhong-diao-yong-bu-dai-fragmentsde-taskflow/"/>
+    <link href="http://dengdezhao.cn/blog/2013-06-08/cong-backingbeanzhong-diao-yong-bu-dai-fragmentsde-taskflow/"/>
     <updated>2013-06-08T16:11:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2013-06-08/cong-backingbeanzhong-diao-yong-bu-dai-fragmentsde-taskflow</id>
+    <id>http://dengdezhao.cn/blog/2013-06-08/cong-backingbeanzhong-diao-yong-bu-dai-fragmentsde-taskflow</id>
     <content type="html"><![CDATA[<p>有时候需要在backingBean中调用某一taskflow, 可以使用以下代码调用。不过只适用于可单独运行的taskflow，含有page fragments的taskflow不在此范围。</p>
 
 <p>代码如下：</p>
@@ -901,9 +901,9 @@
   
   <entry>
     <title type="html"><![CDATA[<af:table>分页栏出现3个问号BUG解决]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2013-06-06/fen-ye-lan-chu-xian-3ge-wen-hao-bugjie-jue/"/>
+    <link href="http://dengdezhao.cn/blog/2013-06-06/fen-ye-lan-chu-xian-3ge-wen-hao-bugjie-jue/"/>
     <updated>2013-06-06T01:58:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2013-06-06/fen-ye-lan-chu-xian-3ge-wen-hao-bugjie-jue</id>
+    <id>http://dengdezhao.cn/blog/2013-06-06/fen-ye-lan-chu-xian-3ge-wen-hao-bugjie-jue</id>
     <content type="html"><![CDATA[<hr />
 
 <p>平台：Jdeveloper 11.1.1.7.0</p>
@@ -1070,9 +1070,9 @@
   
   <entry>
     <title type="html"><![CDATA[Groovy在ADF中的应用]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2013-06-02/groovyzai-adfzhong-de-ying-yong/"/>
+    <link href="http://dengdezhao.cn/blog/2013-06-02/groovyzai-adfzhong-de-ying-yong/"/>
     <updated>2013-06-02T11:14:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2013-06-02/groovyzai-adfzhong-de-ying-yong</id>
+    <id>http://dengdezhao.cn/blog/2013-06-02/groovyzai-adfzhong-de-ying-yong</id>
     <content type="html"><![CDATA[<p>使用Groovy脚本，在开发ADF应用中可以极大地提高开发效率，实现某些看似很复杂的功能。</p>
 
 <p>比如在empVO中获取sequence值:</p>
@@ -1163,9 +1163,9 @@
   
   <entry>
     <title type="html"><![CDATA[利用contextual event刷新Region]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2013-06-01/li-yong-contextual-eventshua-xin-region/"/>
+    <link href="http://dengdezhao.cn/blog/2013-06-01/li-yong-contextual-eventshua-xin-region/"/>
     <updated>2013-06-01T21:20:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2013-06-01/li-yong-contextual-eventshua-xin-region</id>
+    <id>http://dengdezhao.cn/blog/2013-06-01/li-yong-contextual-eventshua-xin-region</id>
     <content type="html"><![CDATA[<hr />
 
 <p>平台： Jdev 11.1.1.7.0</p>
@@ -1211,9 +1211,9 @@
   
   <entry>
     <title type="html"><![CDATA[在ManagedBean中调用AppModuleImpl中自定义方法的两种方式]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2013-06-01/zai-manangedbeanzhong-diao-yong-appmoduleimplzhong-zi-ding-yi-fang-fa-de-liang-chong-fang-shi/"/>
+    <link href="http://dengdezhao.cn/blog/2013-06-01/zai-manangedbeanzhong-diao-yong-appmoduleimplzhong-zi-ding-yi-fang-fa-de-liang-chong-fang-shi/"/>
     <updated>2013-06-01T10:48:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2013-06-01/zai-manangedbeanzhong-diao-yong-appmoduleimplzhong-zi-ding-yi-fang-fa-de-liang-chong-fang-shi</id>
+    <id>http://dengdezhao.cn/blog/2013-06-01/zai-manangedbeanzhong-diao-yong-appmoduleimplzhong-zi-ding-yi-fang-fa-de-liang-chong-fang-shi</id>
     <content type="html"><![CDATA[<hr />
 
 <h2>平台: Jdev11.1.1.7.0</h2>
@@ -1278,9 +1278,9 @@
   
   <entry>
     <title type="html"><![CDATA[关于ApplicatoinModule类型总结]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2013-05-28/guan-yu-applicatoinmodulelei-xing-zong-jie/"/>
+    <link href="http://dengdezhao.cn/blog/2013-05-28/guan-yu-applicatoinmodulelei-xing-zong-jie/"/>
     <updated>2013-05-28T15:16:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2013-05-28/guan-yu-applicatoinmodulelei-xing-zong-jie</id>
+    <id>http://dengdezhao.cn/blog/2013-05-28/guan-yu-applicatoinmodulelei-xing-zong-jie</id>
     <content type="html"><![CDATA[<hr />
 
 <h2>平台：Jdev11.1.2.3.0    </h2>
@@ -1317,9 +1317,9 @@
   
   <entry>
     <title type="html"><![CDATA[ADF创建两个AM基于不同的DB连接]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2013-05-23/adfchuang-jian-liang-ge-amji-yu-bu-tong-de-dblian-jie/"/>
+    <link href="http://dengdezhao.cn/blog/2013-05-23/adfchuang-jian-liang-ge-amji-yu-bu-tong-de-dblian-jie/"/>
     <updated>2013-05-23T13:48:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2013-05-23/adfchuang-jian-liang-ge-amji-yu-bu-tong-de-dblian-jie</id>
+    <id>http://dengdezhao.cn/blog/2013-05-23/adfchuang-jian-liang-ge-amji-yu-bu-tong-de-dblian-jie</id>
     <content type="html"><![CDATA[<hr />
 
 <p>平台：Jdev11.1.2.3.0</p>
@@ -1386,9 +1386,9 @@
   
   <entry>
     <title type="html"><![CDATA[ADF类似心跳程序实现]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2013-04-24/adflei-si-xin-tiao-cheng-xu-shi-xian/"/>
+    <link href="http://dengdezhao.cn/blog/2013-04-24/adflei-si-xin-tiao-cheng-xu-shi-xian/"/>
     <updated>2013-04-24T16:19:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2013-04-24/adflei-si-xin-tiao-cheng-xu-shi-xian</id>
+    <id>http://dengdezhao.cn/blog/2013-04-24/adflei-si-xin-tiao-cheng-xu-shi-xian</id>
     <content type="html"><![CDATA[<p>使用ADF框架开发WEB应用时，其中令人苦恼的一个需求就是：在两个页面同时展示一个数据源时，如果其中一个页面对数据源作了变更操作，另外一个页面没办法自动获得变更后的数据，需要手工刷新页面才能得到变更后的新数据源。</p>
 
 <p>其实ADF自带的<code>&lt;af:poll/&gt;</code>组件即可实现此需求。</p>
@@ -1444,9 +1444,9 @@
   
   <entry>
     <title type="html"><![CDATA[ADF学习总结(一)]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2013-04-19/adfxue-xi-zong-jie-%5B%3F%5D/"/>
+    <link href="http://dengdezhao.cn/blog/2013-04-19/adfxue-xi-zong-jie-%5B%3F%5D/"/>
     <updated>2013-04-19T14:15:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2013-04-19/adfxue-xi-zong-jie-[?]</id>
+    <id>http://dengdezhao.cn/blog/2013-04-19/adfxue-xi-zong-jie-[?]</id>
     <content type="html"><![CDATA[<h4>改变VO查询条件</h4>
 
 <ul>
@@ -1590,9 +1590,9 @@
   
   <entry>
     <title type="html"><![CDATA[OAF中创建LOV]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2013-04-18/oafzhong-chuang-jian-lov/"/>
+    <link href="http://dengdezhao.cn/blog/2013-04-18/oafzhong-chuang-jian-lov/"/>
     <updated>2013-04-18T12:54:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2013-04-18/oafzhong-chuang-jian-lov</id>
+    <id>http://dengdezhao.cn/blog/2013-04-18/oafzhong-chuang-jian-lov</id>
     <content type="html"><![CDATA[<p>环境：Oracle9i Jdeveloper+R11i</p>
 
 <h4>首先创建AM</h4>
@@ -1643,9 +1643,9 @@ lovMap1中，设置Lov Region Item 为InventoryItemId;     Return Item为item1;C
   
   <entry>
     <title type="html"><![CDATA[配置OAF开发环境]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2013-04-17/pei-zhi-oafkai-fa-huan-jing/"/>
+    <link href="http://dengdezhao.cn/blog/2013-04-17/pei-zhi-oafkai-fa-huan-jing/"/>
     <updated>2013-04-17T15:01:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2013-04-17/pei-zhi-oafkai-fa-huan-jing</id>
+    <id>http://dengdezhao.cn/blog/2013-04-17/pei-zhi-oafkai-fa-huan-jing</id>
     <content type="html"><![CDATA[<h4>查看EBS系统OA版本信息</h4>
 
 <p>方法一：使用OPERATIONS用户登陆EBS系统，选择“Diagnostics”后，在页下脚选择“About this Page”后选择“Technology Components”标签可查看相应版本信息。</p>

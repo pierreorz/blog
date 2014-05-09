@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: jdeveloper | 邓德昭的技术博客]]></title>
-  <link href="http://www.dengdezhao.cn/blog/categories/jdeveloper/atom.xml" rel="self"/>
-  <link href="http://www.dengdezhao.cn/"/>
-  <updated>2014-05-09T23:06:22+08:00</updated>
-  <id>http://www.dengdezhao.cn/</id>
+  <link href="http://dengdezhao.cn/blog/categories/jdeveloper/atom.xml" rel="self"/>
+  <link href="http://dengdezhao.cn/"/>
+  <updated>2014-05-10T00:05:56+08:00</updated>
+  <id>http://dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Jdeveloper运行速度优化]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2013-04-04/jdeveloperyun-xing-su-du-you-hua/"/>
+    <link href="http://dengdezhao.cn/blog/2013-04-04/jdeveloperyun-xing-su-du-you-hua/"/>
     <updated>2013-04-04T17:41:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2013-04-04/jdeveloperyun-xing-su-du-you-hua</id>
+    <id>http://dengdezhao.cn/blog/2013-04-04/jdeveloperyun-xing-su-du-you-hua</id>
     <content type="html"><![CDATA[<h4><em>本文适合木有高配机却不得不在JDEV下开发的屌丝程序员</em></h4>
 
 <h4>先来了解下Jdev的两个配置文件</h4>

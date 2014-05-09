@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: refresh | 邓德昭的技术博客]]></title>
-  <link href="http://www.dengdezhao.cn/tags/refresh/atom.xml" rel="self"/>
-  <link href="http://www.dengdezhao.cn/"/>
-  <updated>2014-05-09T23:06:22+08:00</updated>
-  <id>http://www.dengdezhao.cn/</id>
+  <link href="http://dengdezhao.cn/tags/refresh/atom.xml" rel="self"/>
+  <link href="http://dengdezhao.cn/"/>
+  <updated>2014-05-10T00:05:56+08:00</updated>
+  <id>http://dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[利用contextual event刷新Region]]></title>
-    <link href="http://www.dengdezhao.cn/blog/2013-06-01/li-yong-contextual-eventshua-xin-region/"/>
+    <link href="http://dengdezhao.cn/blog/2013-06-01/li-yong-contextual-eventshua-xin-region/"/>
     <updated>2013-06-01T21:20:00+08:00</updated>
-    <id>http://www.dengdezhao.cn/blog/2013-06-01/li-yong-contextual-eventshua-xin-region</id>
+    <id>http://dengdezhao.cn/blog/2013-06-01/li-yong-contextual-eventshua-xin-region</id>
     <content type="html"><![CDATA[<hr />
 
 <p>平台： Jdev 11.1.1.7.0</p>
