@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: 配置环境 | 邓德昭的技术博客]]></title>
-  <link href="http://dengdezhao.cn/tags/配置环境/atom.xml" rel="self"/>
-  <link href="http://dengdezhao.cn/"/>
-  <updated>2013-05-09T15:25:51+08:00</updated>
-  <id>http://dengdezhao.cn/</id>
+  <link href="http://www.dengdezhao.cn/tags/配置环境/atom.xml" rel="self"/>
+  <link href="http://www.dengdezhao.cn/"/>
+  <updated>2014-05-09T23:06:22+08:00</updated>
+  <id>http://www.dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
     
@@ -15,21 +15,21 @@
   
   <entry>
     <title type="html"><![CDATA[配置OAF开发环境]]></title>
-    <link href="http://dengdezhao.cn/blog/2013-04-17/pei-zhi-oafkai-fa-huan-jing/"/>
+    <link href="http://www.dengdezhao.cn/blog/2013-04-17/pei-zhi-oafkai-fa-huan-jing/"/>
     <updated>2013-04-17T15:01:00+08:00</updated>
-    <id>http://dengdezhao.cn/blog/2013-04-17/pei-zhi-oafkai-fa-huan-jing</id>
+    <id>http://www.dengdezhao.cn/blog/2013-04-17/pei-zhi-oafkai-fa-huan-jing</id>
     <content type="html"><![CDATA[<h4>查看EBS系统OA版本信息</h4>
 
 <p>方法一：使用OPERATIONS用户登陆EBS系统，选择“Diagnostics”后，在页下脚选择“About this Page”后选择“Technology Components”标签可查看相应版本信息。</p>
 
-<p>方法二：访问URI：  <br/>
+<p>方法二：访问URI：<em>R12不可用</em>  <br/>
 <div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nl">http:</span><span class="c1">//&lt;HOST&gt;:&lt;PORT&gt;/OA_HTML/OAInfo.jsp  &lt;br/&gt;</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <h4>查看OAF版本下载相应JDEV开发工具</h4>
 
-<p>metalink document id: 787209.1</p>
+<p>metalink document id: 787209.1 &amp; 416708.1</p>
 
 <p>例如：p4141787_11i_GENERIC.zip</p>
 
@@ -61,13 +61,13 @@ $APPL_TOP/admin/[SID]<em>[host].xml
 <h4>配置JDEV工程属性</h4>
 
 <p>以上准备工作都完成之后，配置JDEV的Preferences中编码为UTF-8  <br/>
-<img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130417144216.jpg" alt="" /></p>
+<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130417144216.jpg" alt="" /></p>
 
 <p>配置project setting中编译器编码  <br/>
-<img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130417144309.jpg" alt="" /></p>
+<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130417144309.jpg" alt="" /></p>
 
 <p>然后配置DBC文件路径，测试EBS账户名及密码，所属职责等信息如下图所示：  <br/>
-<img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130417144424.jpg" alt="" /></p>
+<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130417144424.jpg" alt="" /></p>
 ]]></content>
   </entry>
   

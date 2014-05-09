@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: lsnrctl | 邓德昭的技术博客]]></title>
-  <link href="http://dengdezhao.cn/tags/lsnrctl/atom.xml" rel="self"/>
-  <link href="http://dengdezhao.cn/"/>
-  <updated>2013-05-09T15:25:51+08:00</updated>
-  <id>http://dengdezhao.cn/</id>
+  <link href="http://www.dengdezhao.cn/tags/lsnrctl/atom.xml" rel="self"/>
+  <link href="http://www.dengdezhao.cn/"/>
+  <updated>2014-05-09T23:06:22+08:00</updated>
+  <id>http://www.dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
     
@@ -14,10 +14,79 @@
 
   
   <entry>
+    <title type="html"><![CDATA[由意外断电导致oracle11g启动不起来的问题解决]]></title>
+    <link href="http://www.dengdezhao.cn/blog/2013-11-09/you-yi-wai-duan-dian-dao-zhi-oracle11gqi-dong-bu-qi-lai-de-wen-ti-jie-jue/"/>
+    <updated>2013-11-09T19:24:00+08:00</updated>
+    <id>http://www.dengdezhao.cn/blog/2013-11-09/you-yi-wai-duan-dian-dao-zhi-oracle11gqi-dong-bu-qi-lai-de-wen-ti-jie-jue</id>
+    <content type="html"><![CDATA[<ul>
+<li><p>平台: linux + oracle 11g</p></li>
+<li><p>故障: 意外断电之后，监听启动不了</p></li>
+</ul>
+
+
+<h4>解决方法</h4>
+
+<p>执行<code>lsnrctrl start</code>命令时报错误代码如下：</p>
+
+<p><code>TNS-12537</code>  <br/>
+<code>TNS-12560</code>  <br/>
+<code>TNS-00507</code>  <br/>
+<code>Linux Error:29</code></p>
+
+<ul>
+<li><p>检查/etc/hosts文件，没有发现异常。</p></li>
+<li><p>因为未改动任何配置文件，所以基本可以确定是断电造成文件损坏而引起。于是使用<code>relink all</code>看看能否解决该问题。
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">cd</span> <span class="n">$ORACLE_HOME</span><span class="o">/</span><span class="n">bin</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">relink</span> <span class="n">all</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+执行<code>relink all</code>命令之后，再执行<code>lsnrctrl start</code>时，发现不报之前的错误了，出现了新的错误：
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">symbol</span> <span class="n">lookup</span> <span class="nl">error:</span> <span class="n">$ORACLE_HOME</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">libclntsh</span><span class="o">.</span><span class="na">so</span><span class="o">.</span><span class="mf">11.1</span>  <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
+</span><span class='line'><span class="o">:</span> <span class="n">undefined</span> <span class="nl">symbol:</span> <span class="n">nnftboot</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p></li>
+<li><p>看来是这个libclntsh.so.11.1出了问题，于是尝试去下载该文件替换掉。</p></li>
+<li><p>从RPM search网站上下载到oracle-instance-client的RPM文件到本地。</p></li>
+<li><p>使用rpm2cpio命令抽取出里面的libclntsh.so.11.1</p></li>
+</ul>
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">rpm2cpio</span> <span class="n">oracle</span><span class="o">-</span><span class="n">instance</span><span class="o">-</span><span class="n">client</span><span class="o">-</span><span class="n">xxx</span><span class="o">.</span><span class="na">rpm</span> <span class="o">|</span> <span class="n">cpio</span> <span class="o">-</span><span class="n">div</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<ul>
+<li>将得到的libclntsh.so.11.1文件替换掉$ORACLE_HOME/lib下的重名文件即可。</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[oracle 11g 数据库安装后改计算机名出现无法连接的问题解决]]></title>
-    <link href="http://dengdezhao.cn/blog/2011-07-15/oracle-11g-%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%89%E8%A3%85%E5%90%8E%E6%94%B9%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%90%8D%E5%87%BA%E7%8E%B0%E6%97%A0%E6%B3%95%E8%BF%9E%E6%8E%A5%E7%9A%84%E9%97%AE%E9%A2%98%E8%A7%A3/"/>
+    <link href="http://www.dengdezhao.cn/blog/2011-07-15/oracle-11g-%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%89%E8%A3%85%E5%90%8E%E6%94%B9%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%90%8D%E5%87%BA%E7%8E%B0%E6%97%A0%E6%B3%95%E8%BF%9E%E6%8E%A5%E7%9A%84%E9%97%AE%E9%A2%98%E8%A7%A3/"/>
     <updated>2011-07-15T00:00:00+08:00</updated>
-    <id>http://dengdezhao.cn/blog/2011-07-15/oracle-11g-数据库安装后改计算机名出现无法连接的问题解</id>
+    <id>http://www.dengdezhao.cn/blog/2011-07-15/oracle-11g-数据库安装后改计算机名出现无法连接的问题解</id>
     <content type="html"><![CDATA[<p>在局域网内一台机器上安装完oracle11g之后，本地测试OK 可以访问orcl。用局域网内另一台机器连接的时候不行。<br />
 两台机器可以PING通。<br />
 修改tnsname.ora  把默认的localhost 都改成了本机IP 试试还是不行。<br />
@@ -32,7 +101,7 @@ lsnrctl start<br />
 
 
 
-<p><a rel="attachment wp-att-36" href="http://www.dengdezhao.cn/wp-content/uploads/2011/07/q-300x139.jpg"><img class="alignnone size-medium wp-image-36" title="q" src="http://www.dengdezhao.cn/wp-content/uploads/2011/07/q-300x139.jpg" alt="" width="300" height="139" /></a></p>
+<p><a rel="attachment wp-att-36" href="../../../wp-content/uploads/2011/07/q-300x139.jpg"><img class="alignnone size-medium wp-image-36" title="q" src="../../../wp-content/uploads/2011/07/q-300x139.jpg" alt="" width="300" height="139" /></a></p>
 
 ]]></content>
   </entry>

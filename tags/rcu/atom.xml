@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: RCU | 邓德昭的技术博客]]></title>
+  <link href="http://www.dengdezhao.cn/tags/rcu/atom.xml" rel="self"/>
+  <link href="http://www.dengdezhao.cn/"/>
+  <updated>2014-05-09T23:06:22+08:00</updated>
+  <id>http://www.dengdezhao.cn/</id>
+  <author>
+    <name><![CDATA[pierreorz]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[安装RCU1.7遇到的小问题]]></title>
+    <link href="http://www.dengdezhao.cn/blog/2014-04-18/an-zhuang-rcu1-dot-7yu-dao-de-xiao-wen-ti/"/>
+    <updated>2014-04-18T20:24:00+08:00</updated>
+    <id>http://www.dengdezhao.cn/blog/2014-04-18/an-zhuang-rcu1-dot-7yu-dao-de-xiao-wen-ti</id>
+    <content type="html"><![CDATA[<ul>
+<li>环境：此前安装过soa1.6，最近重新安装soa1.7时遇到的问题</li>
+<li>安装Rcu1.7时，发现无法运行./rcu,错误提示如下：</li>
+</ul>
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">rcuHome</span><span class="o">/</span><span class="n">jdk</span><span class="o">/</span><span class="n">jre</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="nl">java:</span> <span class="n">cannot</span> <span class="n">execute</span> <span class="n">binary</span> <span class="n">file</span><span class="o">.</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>查看操作系统发现是32bit,而rcu只有64bit的。</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">$getconf</span> <span class="n">LONG_BIT</span>  <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
+</span><span class='line'><span class="mi">32</span>  <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>在32bit系统上安装64bit软件向下兼容应该是可以安装的，因此怀疑是jdk的问题。</p>
+
+<p>修改rcu文件最后几行的jre_home 为中间件文件夹中的JDK：/home/pierre/Oracle/Middleware/jdk160_24/bin/java 后，重新运行即可解决该问题。</p>
+
+<ul>
+<li><p>成功运行rcu之后，进入配置oracle数据库信息页，一直报 invalid service 错误, 原来是service name 要加上机器名后缀 orcl.localdomain即正常。</p></li>
+<li><p>因为之前安装过rcu1.6，所以需要将此前的mds删除掉，不然在创建soa domain的时候会出现错误。</p></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

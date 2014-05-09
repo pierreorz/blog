@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: resource bundle | 邓德昭的技术博客]]></title>
+  <link href="http://www.dengdezhao.cn/tags/resource-bundle/atom.xml" rel="self"/>
+  <link href="http://www.dengdezhao.cn/"/>
+  <updated>2014-05-09T23:06:22+08:00</updated>
+  <id>http://www.dengdezhao.cn/</id>
+  <author>
+    <name><![CDATA[pierreorz]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[<af:table>分页栏出现3个问号BUG解决]]></title>
+    <link href="http://www.dengdezhao.cn/blog/2013-06-06/fen-ye-lan-chu-xian-3ge-wen-hao-bugjie-jue/"/>
+    <updated>2013-06-06T01:58:00+08:00</updated>
+    <id>http://www.dengdezhao.cn/blog/2013-06-06/fen-ye-lan-chu-xian-3ge-wen-hao-bugjie-jue</id>
+    <content type="html"><![CDATA[<hr />
+
+<p>平台：Jdeveloper 11.1.1.7.0</p>
+
+<hr />
+
+<p><strong>BUG描述</strong></p>
+
+<p><img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130606010242.jpg" alt="../../../wp-content/uploads/QQ截图20130606010242.jpg" /></p>
+
+<p>如上图所示，“页”字前后出现三个问号。</p>
+
+<p><strong>原因分析</strong></p>
+
+<p>查看LOG文件  <br/>
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;</span><span class="n">RenderingContext</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">getTranslatedString</span><span class="o">&gt;</span> <span class="err">无法从外观</span> <span class="n">mySkin</span><span class="o">.</span><span class="na">desktop</span> <span class="err">获取资源关键字</span> <span class="err">页</span>  <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>可见是RenderingContext类中getTranslatedString方法发生异常。  <br/>
+查看源代码分析：</p>
+
+<p><strong>找到源代码所在位置</strong>：</p>
+
+<p><img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130606012628.jpg" alt="../../../wp-content/uploads/QQ截图20130606012628.jpg" /></p>
+
+<p><strong>将JAR包解压得到RenderingContext类，反编译查看</strong></p>
+
+<p><img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130606012734.jpg" alt="../../../wp-content/uploads/QQ截图20130606012734.jpg" /></p>
+
+<p>结果如下<strong>RenderingContext.class</strong>：  <br/>
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'>  <span class="kd">public</span> <span class="n">String</span> <span class="nf">getTranslatedString</span><span class="o">(</span><span class="n">String</span> <span class="n">key</span><span class="o">)</span>
+</span><span class='line'>  <span class="o">{&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="k">if</span> <span class="o">(</span><span class="n">key</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span>
+</span><span class='line'>  <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'><span class="k">try</span>
+</span><span class='line'><span class="o">{</span>
+</span><span class='line'>  <span class="k">return</span> <span class="nf">getSkin</span><span class="o">().</span><span class="na">getTranslatedString</span><span class="o">(</span><span class="n">getLocaleContext</span><span class="o">(),</span> <span class="n">key</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="k">catch</span> <span class="o">(</span><span class="n">MissingResourceException</span> <span class="n">mre</span><span class="o">)</span>
+</span><span class='line'><span class="o">{</span>
+</span><span class='line'>  <span class="n">_LOG</span><span class="o">.</span><span class="na">severe</span><span class="o">(</span><span class="s">&quot;CANNOT_GET_RESOURCE_KEY&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">String</span><span class="o">[]</span> <span class="o">{</span> <span class="n">key</span><span class="o">,</span> <span class="n">getSkin</span><span class="o">().</span><span class="na">getId</span><span class="o">()</span> <span class="o">});</span> <span class="o">}</span>
+</span><span class='line'><span class="k">return</span> <span class="s">&quot;???&quot;</span> <span class="o">+</span> <span class="n">key</span> <span class="o">+</span> <span class="s">&quot;???&quot;</span><span class="o">;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>  <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>可知在调用getTranslatedString获取Resource时，发生MissingResourceException异常所以返回了带"???"+Key+"???"字样的字符串。</p>
+
+<p><strong>解决方案：</strong></p>
+
+<p>根据以上分析基本可知出现问号的原因是在获取resourcebundle时，找不到Key为页的resource，所以直接返回了"???" + key + "???"，就出现分页显示出现问号的BUG。</p>
+
+<p><strong>方案一：</strong>重写ResourceBundle类，增加KEY值为“页”的资源。
+步骤如下：</p>
+
+<ul>
+<li><p>创建SkinBundle类 extends ListResourceBundle   <br/>
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">package</span> <span class="n">cn</span><span class="o">.</span><span class="na">dengdezhao</span><span class="o">.</span><span class="na">bundle</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SkinBundle</span> <span class="kd">extends</span> <span class="n">ListResourceBundle</span> <span class="o">{</span>
+</span><span class='line'>  <span class="nd">@Override</span>
+</span><span class='line'>  <span class="kd">public</span> <span class="n">Object</span><span class="o">[][]</span> <span class="nf">getContents</span><span class="o">()</span> <span class="o">{&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span>  <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;executing...&quot;</span><span class="o">);</span>
+</span><span class='line'>  <span class="k">return</span>  <span class="k">new</span> <span class="n">Object</span><span class="o">[][]{</span> <span class="o">{</span> <span class="s">&quot;页&quot;</span><span class="o">,</span> <span class="s">&quot;页&quot;</span> <span class="o">}</span> <span class="o">};</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p></li>
+<li><p>创建trinidad-skins.xml文件注册定制化Skin  <br/>
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="ni">&amp;lt;</span>?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+</span><span class='line'><span class="nt">&lt;skins</span> <span class="na">xmlns=</span><span class="s">&quot;http://myfaces.apache.org/trinidad/skin&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;skin&gt;&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;pre&gt;&lt;code&gt;</span>  <span class="ni">&amp;lt;</span>id<span class="ni">&amp;gt;</span>mySkin.desktop<span class="ni">&amp;lt;</span>/id<span class="ni">&amp;gt;</span>
+</span><span class='line'>  <span class="ni">&amp;lt;</span>family<span class="ni">&amp;gt;</span>mySkin<span class="ni">&amp;lt;</span>/family<span class="ni">&amp;gt;</span>
+</span><span class='line'>  <span class="ni">&amp;lt;</span>extends<span class="ni">&amp;gt;</span>skyros-v1.desktop<span class="ni">&amp;lt;</span>/extends<span class="ni">&amp;gt;</span>
+</span><span class='line'>  <span class="ni">&amp;lt;</span>render-kit-id<span class="ni">&amp;gt;</span>org.apache.myfaces.trinidad.desktop<span class="ni">&amp;lt;</span>/render-kit-id<span class="ni">&amp;gt;</span>
+</span><span class='line'>  <span class="ni">&amp;lt;</span>style-sheet-name<span class="ni">&amp;gt;</span>css/mySkin.css<span class="ni">&amp;lt;</span>/style-sheet-name<span class="ni">&amp;gt;</span>
+</span><span class='line'>  <span class="ni">&amp;lt;</span>bundle-name<span class="ni">&amp;gt;</span>cn.dengdezhao.bundle.SkinBundle<span class="ni">&amp;lt;</span>/bundle-name<span class="ni">&amp;gt;</span>
+</span><span class='line'>  <span class="ni">&amp;lt;</span>!--<span class="ni">&amp;lt;</span>bundle-name<span class="ni">&amp;gt;</span>ApplicationBundle<span class="ni">&amp;lt;</span>/bundle-name<span class="ni">&amp;gt;</span>--<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>  <span class="nt">&lt;/skin&gt;</span>
+</span><span class='line'><span class="nt">&lt;/skins&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p></li>
+<li><p>修改trinidad-config.xml文件如下：  <br/>
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="ni">&amp;lt;</span>?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+</span><span class='line'><span class="nt">&lt;trinidad-config</span> <span class="na">xmlns=</span><span class="s">&quot;http://myfaces.apache.org/trinidad/config&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'><span class="nt">&lt;skin-family&gt;</span>mySkin<span class="nt">&lt;/skin-family&gt;</span>
+</span><span class='line'><span class="nt">&lt;/trinidad-config&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p></li>
+<li><p>创建css/mySkin.css文件（内容默认CSS即可）</p></li>
+</ul>
+
+
+<p>运行即发现问号消失。</p>
+
+<p><strong>方案二：</strong>其实原理跟方案一一样，也是通过改resourcebundle实现。resourcebundle支持三种类型，一种是以上的扩展ListResourceBundle类实现，一种是通过配置文件properties实现，另外一种是xliff实现。也可创建一个ApplicationBundle.properties文件，内容如下:  <br/>
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="err">页</span> <span class="o">=</span> <span class="err">页</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>trinidad-skins.xml里的bundle-name节点设置成ApplicationBundle也可实现同样效果。</p>
+
+<p>定制CSS可参照<a href="http://www.dengdezhao.cn/blog/2011-06-27/%E5%AE%9A%E5%88%B6adf%E5%BA%94%E7%94%A8%E7%9A%84css/">"定制CSS"</a></p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -9,7 +9,7 @@
   <meta name="author" content="pierreorz">
 
   
-  <meta name="description" content="目前LOV控件在页面初始化时默认显示的是第一条记录，如果想让LOV初始化的时候不显示记录应该如何设置呢？ 方法一. 通过在BackingBean的构造函数里设置LOV的值为空字符串这种做法基本可以达到需求。但总感觉这种方法很别扭，走了弯路。 本文介绍另外一种更为简单的方法。通过EL表达式实现需求 &hellip;">
+  <meta name="description" content="项目需求：系统数据表删除操作是直接物理删除，不利于维护历史记录，需要变更为逻辑删除模式。 解决方案： 对表增加删除标记字段DEL_FLAG varchar2(1) default ‘0’; 用户执行“删除”操作时，并不执行物理删除操作，而是将DEL_FLAG值设置为‘1’； 针对数据展示时， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://dengdezhao.cn/blog/page/5">
+  <link rel="canonical" href="http://www.dengdezhao.cn/blog/page/5">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="邓德昭的技术博客" type="application/atom+xml">
@@ -50,7 +50,7 @@
   
 <form action="http://google.com/search" method="get">
   <fieldset role="search">
-    <input type="hidden" name="q" value="site:dengdezhao.cn" />
+    <input type="hidden" name="q" value="site:www.dengdezhao.cn" />
     <input class="search" type="text" name="q" results="0" placeholder="Search"/>
   </fieldset>
 </form>
@@ -73,7 +73,7 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2011-07-20/%E5%A6%82%E4%BD%95%E8%AE%A9%EF%BC%88lov%EF%BC%89%E7%9A%84%E5%88%9D%E5%A7%8B%E5%80%BC%E6%98%BE%E7%A4%BA%E4%B8%BAblank%E8%80%8C%E4%B8%8D%E6%98%AF%E9%BB%98%E8%AE%A4%E7%9A%84vo%E7%9A%84first-row/">如何让af:inputListOfValues（LOV）的初始值显示为Blank而不是默认的VO的First Row</a></h1>
+      <h1 class="entry-title"><a href="/blog/2012-06-28/%E4%BD%BF%E7%94%A8vpd%E5%AF%B9%E6%95%B0%E6%8D%AE%E8%BF%9B%E8%A1%8C%E9%9A%94%E7%A6%BB/">使用VPD对数据进行隔离</a></h1>
     
     
       <p class="meta">
@@ -89,38 +89,66 @@
   
 
 
-<time datetime="2011-07-20T00:00:00+08:00" pubdate data-updated="true">Jul 20<span>th</span>, 2011</time>
+<time datetime="2012-06-28T00:00:00+08:00" pubdate data-updated="true">Jun 28<span>th</span>, 2012</time>
         
-         | <a href="/blog/2011-07-20/%E5%A6%82%E4%BD%95%E8%AE%A9%EF%BC%88lov%EF%BC%89%E7%9A%84%E5%88%9D%E5%A7%8B%E5%80%BC%E6%98%BE%E7%A4%BA%E4%B8%BAblank%E8%80%8C%E4%B8%8D%E6%98%AF%E9%BB%98%E8%AE%A4%E7%9A%84vo%E7%9A%84first-row/#disqus_thread">Comments</a>
+         | <a href="/blog/2012-06-28/%E4%BD%BF%E7%94%A8vpd%E5%AF%B9%E6%95%B0%E6%8D%AE%E8%BF%9B%E8%A1%8C%E9%9A%94%E7%A6%BB/#disqus_thread">Comments</a>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>目前LOV控件在页面初始化时默认显示的是第一条记录，如果想让LOV初始化的时候不显示记录应该如何设置呢？</p>
+  <div class="entry-content"><p>项目需求：系统数据表删除操作是直接物理删除，不利于维护历史记录，需要变更为逻辑删除模式。</p>
 
-<p>方法一. 通过在BackingBean的构造函数里设置LOV的值为空字符串这种做法基本可以达到需求。但总感觉这种方法很别扭，走了弯路。</p>
+<p>解决方案：</p>
 
-<p>本文介绍另外一种更为简单的方法。通过EL表达式实现需求。
-<pre class="brush:java">           &lt;af:inputListOfValues id="ilov1"
-                                    popupTitle="Search and Select: #{bindings.CodeType.hints.label}"
-                                    value="#{adfFacesContext.postback == false ? bindings.CodeType.nullValueString : bindings.CodeType.inputValue}"
-                                    label="#{bindings.CodeType.hints.label}"
-                                    model="#{bindings.CodeType.listOfValuesModel}"
-                                    required="#{bindings.CodeType.hints.mandatory}"
-                                    columns="#{bindings.CodeType.hints.displayWidth}"
-                                    shortDesc="#{bindings.CodeType.hints.tooltip}"
-                                    binding="#{backing_pages_frs001.ilov1}"
-                                    valueChangeListener="#{backing_pages_frs001.valueChange}"
-                                    &gt;</pre>
-看这段代码：
-<blockquote>
-<pre>value="#{<span style="color: #ff0000;">adfFacesContext.postback == false ? bindings.CodeType.nullValueString : </span>bindings.CodeType.inputValue}"</pre>
-</blockquote>
-当页面没有postback的时候，给LOV字段的值设为<strong>nullValueString</strong>，即可。</p>
+<p>对表增加删除标记字段DEL_FLAG varchar2(1) default ‘0’;</p>
 
-<p>今天太困了。。。先睡了。。。不贴图了~</p>
+<p>用户执行“删除”操作时，并不执行物理删除操作，而是将DEL_FLAG值设置为‘1’；</p>
+
+<p>针对数据展示时，删除标记为’1’的数据使用VPD技术屏蔽访问；</p>
+
+<p><strong>1．需要修改的基表[T]新增删除字段：</strong></p>
+
+<p><strong>alter table</strong> T <strong>add</strong> (DEL_FLAG varchar2(1) <strong>default</strong> &#8216;0&#8217;);&#8211;缺省为0，逻辑删除改为1</p>
+
+<p><strong>2．创建VPD需要的函数：</strong><strong>f_limited_query_t</strong><strong></strong></p>
+
+<p><strong>CREATE OR REPLACE FUNCTION</strong> f_limited_query_t (s_schema <strong>IN</strong> VARCHAR2,</p>
+
+<p>s_object <strong>IN</strong> VARCHAR2)</p>
+
+<p><strong>RETURN</strong> VARCHAR2</p>
+
+<p><strong>AS</strong></p>
+
+<p><strong>BEGIN</strong></p>
+
+<p><strong>RETURN</strong> &#8216;DEL_FLAG!=&#8221;&#8217;||&#8217;1&#8217;||&#8221;&#8221;;</p>
+
+<p><strong>END;</strong></p>
+
+<p><strong>3．创建策略：</strong><strong>POLICY_LIMITED_QUERY_T</strong><strong></strong></p>
+
+<p><strong>BEGIN</strong>
+DBMS_RLS.add_policy (object_schema   =&gt; &#8216;APPS&#8217;,<br />
+object_name     =&gt; &#8216;T&#8217;,<br />
+policy_name     =&gt; &#8216;POLICY_LIMITED_QUERY_T&#8217;,<br />
+function_schema =&gt; &#8216;APPS&#8217;,<br />
+policy_function =&gt; &#8216;F_LIMITED_QUERY_T&#8217;);
+<strong>END</strong>;</p>
+
+<p><strong>取消策略：</strong><strong>(</strong>不用过滤时使用此命令<strong>)</strong></p>
+
+<p><strong>BEGIN</strong>
+DBMS_RLS.drop_policy (object_schema   =&gt; &#8216;APPS&#8217;,<br />
+object_name     =&gt; &#8216;T&#8217;,<br />
+policy_name     =&gt; &#8216;POLICY_LIMITED_QUERY_T&#8217;);
+<strong>END</strong>;<strong></strong></p>
+
+<p>&nbsp;</p>
+
+<p><strong>4．修改FORM中对相关数据表的删除逻辑为更新DEL_FLAG=1的操作；</strong></p>
 </div>
   
   
@@ -133,7 +161,7 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2011-07-15/%E5%A6%82%E4%BD%95%E8%AE%A9adf%E6%97%A5%E6%9C%9F%E7%BB%84%E4%BB%B6%E6%98%BE%E7%A4%BA%E6%97%B6%E5%88%86%E7%A7%92/">如何让ADF日期组件显示时分秒</a></h1>
+      <h1 class="entry-title"><a href="/blog/2012-06-26/%E9%80%9A%E8%BF%87java%E4%BB%A3%E7%A0%81%E5%88%B7%E6%96%B0%E7%BB%91%E5%AE%9A%E6%8E%A7%E4%BB%B6/">通过Java代码刷新绑定控件</a></h1>
     
     
       <p class="meta">
@@ -149,43 +177,225 @@
   
 
 
-<time datetime="2011-07-15T00:00:00+08:00" pubdate data-updated="true">Jul 15<span>th</span>, 2011</time>
+<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
         
-         | <a href="/blog/2011-07-15/%E5%A6%82%E4%BD%95%E8%AE%A9adf%E6%97%A5%E6%9C%9F%E7%BB%84%E4%BB%B6%E6%98%BE%E7%A4%BA%E6%97%B6%E5%88%86%E7%A7%92/#disqus_thread">Comments</a>
+         | <a href="/blog/2012-06-26/%E9%80%9A%E8%BF%87java%E4%BB%A3%E7%A0%81%E5%88%B7%E6%96%B0%E7%BB%91%E5%AE%9A%E6%8E%A7%E4%BB%B6/#disqus_thread">Comments</a>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>默认的ADF的inputDate组件是不显示时分秒的，客户的需求要精确到时分秒的显示。其实只需要一个很小的改动就可以实现这个需求。</p>
+  <div class="entry-content"><p>partialTrigger属性可以刷新控件，通过以下代码也可以刷新绑定的控件</p>
 
-<p>以HR的Employee表为例</p>
+<p><span style="color: #000000;">AdfFacesContext.getCurrentInstance().addPartialTarget(&#8220;绑定控件的instace名或者是UIComponent对象&#8221;)</span></p>
+</div>
+  
+  
 
-<p><strong>Step.1 </strong>创建Business Components from table，得到如下图所示，EO，VO等。</p>
 
-<p><a rel="attachment wp-att-38" href="http://www.dengdezhao.cn/wp-content/uploads/2011/07/11.jpg"><img class="alignnone size-full wp-image-38" title="1" src="http://www.dengdezhao.cn/wp-content/uploads/2011/07/11.jpg" alt="" width="253" height="170" /></a></p>
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012-06-26/%E8%A1%A8%E5%86%85%E7%9A%84checkbox%E5%BD%93%E6%95%B0%E6%8D%AE%E9%87%8F%E5%A4%A7%E6%97%B6%E5%8F%91%E7%8E%B0%E9%83%A8%E5%88%86%E8%A1%8C%E5%8B%BE%E9%80%89%E4%B8%8D%E4%B8%AD/">表内的checkbox当数据量大时发现部分行勾选不中</a></h1>
+    
+    
+      <p class="meta">
+        
 
-<p><strong>Step.2</strong> 双击Employees EO，</p>
 
-<p><a rel="attachment wp-att-39" href="http://www.dengdezhao.cn/wp-content/uploads/2011/07/21-300x236.jpg"><img class="alignnone size-medium wp-image-39" title="2" src="http://www.dengdezhao.cn/wp-content/uploads/2011/07/21-300x236.jpg" alt="" width="300" height="236" /></a></p>
 
-<p><strong>Step.3</strong> 找到日期属性HireDate,双击打开属性编辑页，作如下修改（<span style="color: #ff0000;">Format Type: Simple Date; Format: yyyy-MM-dd HH:mm:ss</span>), OK。</p>
 
-<p><a rel="attachment wp-att-40" href="http://www.dengdezhao.cn/wp-content/uploads/2011/07/31-300x187.jpg"><img class="alignnone size-medium wp-image-40" title="3" src="http://www.dengdezhao.cn/wp-content/uploads/2011/07/31-300x187.jpg" alt="" width="300" height="187" /></a></p>
 
-<p><strong>Step.4 </strong>切换到Source页，将HireDate属性的类型type=&#8221;oracle.jbo.domain.Date&#8221;改为下图所示的&#8221;oracle.jbo.domain.Timestamp&#8221;类型，保存即可。<strong>
-</strong></p>
 
-<p><strong> </strong> <a rel="attachment wp-att-41" href="http://www.dengdezhao.cn/wp-content/uploads/2011/07/4-300x240.jpg"><img class="alignnone size-medium wp-image-41" title="4" src="http://www.dengdezhao.cn/wp-content/uploads/2011/07/4-300x240.jpg" alt="" width="300" height="240" /></a></p>
 
-<p><strong>Step.5</strong> 将Employees VO生成的DataControl拖到页面上生成一个ADF form，然后运行看下效果吧~</p>
 
-<p><a rel="attachment wp-att-42" href="http://www.dengdezhao.cn/wp-content/uploads/2011/07/5-300x218.jpg"><img class="alignnone size-medium wp-image-42" title="5" src="http://www.dengdezhao.cn/wp-content/uploads/2011/07/5-300x218.jpg" alt="" width="300" height="218" /></a></p>
+  
 
-<p><a rel="attachment wp-att-43" href="http://www.dengdezhao.cn/wp-content/uploads/2011/07/6-300x284.jpg"><img class="alignnone size-medium wp-image-43" title="6" src="http://www.dengdezhao.cn/wp-content/uploads/2011/07/6-300x284.jpg" alt="" width="300" height="284" /></a></p>
 
-<p>其实是很简单的吧~~~</p>
+<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
+        
+         | <a href="/blog/2012-06-26/%E8%A1%A8%E5%86%85%E7%9A%84checkbox%E5%BD%93%E6%95%B0%E6%8D%AE%E9%87%8F%E5%A4%A7%E6%97%B6%E5%8F%91%E7%8E%B0%E9%83%A8%E5%88%86%E8%A1%8C%E5%8B%BE%E9%80%89%E4%B8%8D%E4%B8%AD/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>测试发现，当数据只有25行的时候，都可以正常勾选，超过25行的数据，总是勾选不中。</p>
+
+<p>问题产生原因：<br />
+由于自定制的checkbox是设置了immediate=true 即时给数据行的checkbox字段赋值。<br />
+VO的rangeSize 默认是25，<br />
+因此导致25条数据内是可选。25条之外的数据初始时没有取出来，因此对这些没取的数据行设置checkbox自然就不生效了（展现出来就是checkbox勾选不中）</p>
+
+<p>解决方案：<br />
+修正VO的rangeSize为-1，查询全部，即可解决此问题。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012-06-26/%E7%A1%AC%E7%9B%98%E5%AE%89%E8%A3%85fedora/">硬盘安装fedora</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
+        
+         | <a href="/blog/2012-06-26/%E7%A1%AC%E7%9B%98%E5%AE%89%E8%A3%85fedora/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>下载好fedora16 ISO镜像文件放在C盘，解压出来images文件，及vmlinuz,initrd.img文件。使用grub引导硬盘安装，分区时报错：<br />
+you have not created a bootloader stage1 target device</p>
+
+<p>This can happen if there is not enough space on your hard drive(s) for the installation.</p>
+
+<p>解决方案：引导参数加上linux askmethod，选择正确的镜像路径sda1即可。</p>
+
+<p>grub&gt;root (hd0,0)<br />
+grub&gt;kernel (hd0,0)/vmlinuz <span style="color: red;">linux askmethod</span> (之前没有加此参数）<br />
+grub&gt;initrd (hd0,0)/initrd.img<br />
+grub&gt;boot</p>
+
+<p>即可开始正常安装。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012-06-26/%E5%A6%82%E4%BD%95%E5%9C%A8mb%E4%B8%AD%E5%AF%B9selectionlistener-collectionmodel-makecurrent%E8%B0%83%E7%94%A8/">如何在MB中对selectionListener collectionModel.makeCurrent调用</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
+        
+         | <a href="/blog/2012-06-26/%E5%A6%82%E4%BD%95%E5%9C%A8mb%E4%B8%AD%E5%AF%B9selectionlistener-collectionmodel-makecurrent%E8%B0%83%E7%94%A8/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>如何在MB中对Table的默认&#8221;#{bindings.PromotionVO1.collectionModel.makeCurrent}&#8221;进行调用？</p>
+
+<p>当需要重写adf:table的缺省的selectListener时，可以在自己绑定的MB的方法里，调用默认的makeCurrent方法。取得当前行的数据，进行自己的定制操作。方法如下：
+<div>
+<blockquote>//调用缺省makeCurrent<br />
+JSFUtils.resolveMethodExpression(&#8220;#{bindings.yourVO.collectionModel.makeCurrent}&#8221;,<br />
+new Class[] { SelectionEvent.class },<br />
+new Object[] { selectionEvent });</blockquote>
+</div>
+取得选中行的数据
+<div>
+<blockquote>Row selectedRow =<br />
+(Row)JSFUtils.resolveExpression(&#8220;#{bindings.yourVOIterator.currentRow}&#8221;);</blockquote>
+</div>
+然后就可以针对取得的数据进行定制开发了。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012-06-26/%E5%88%A9%E7%94%A8javamail%E5%8F%91%E9%80%81%E9%82%AE%E4%BB%B6%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0/">利用javaMail发送邮件功能实现</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
+        
+         | <a href="/blog/2012-06-26/%E5%88%A9%E7%94%A8javamail%E5%8F%91%E9%80%81%E9%82%AE%E4%BB%B6%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>由于SMTP服务器需要采用SSL方式访问，所以蛋疼了，默认的连接25端口方式无法连接<br />
+改成465方式访问，又报连接错误，原来是证书文件的问题。<br />
+于是利用 InstallCert.java重新生成证书
+<div>
+<blockquote>java InstallCert smtp.dengdezhao.cn:465</blockquote>
+</div>
+将得到的证书cacert文件放置在任意路径下：比如C盘 c:/cacert</p>
+
+<p>程序中props属性里添加如下参数
+<div>
+<blockquote>props = System.getProperties();<br />
+props.put(&#8220;mail.smtp.host&#8221;, smtp.dengdezhao.cn); // 设置SMTP主机<br />
+props.put(&#8220;mail.smtp.auth&#8221;, &#8220;true&#8221;);<br />
+props.put(&#8220;mail.smtp.socketFactory.class&#8221;,<br />
+&#8220;javax.net.ssl.SSLSocketFactory&#8221;);<br />
+props.put(&#8220;mail.smtp.socketFactory.fallback&#8221;, &#8220;false&#8221;);<br />
+props.put(&#8220;mail.smtp.socketFactory.port&#8221;, &#8220;465&#8221;);<br />
+props.put(&#8220;mail.debug&#8221;, &#8220;true&#8221;);<br />
+props.put(&#8220;javax.net.ssl.keyStore&#8221;, &#8220;c:&#92;cacert&#8221;);<br />
+props.put(&#8220;javax.net.ssl.trustStore&#8221;, &#8220;c:&#92;cacert&#8221;);</blockquote>
+</div>
+即可。</p>
 
 <p>&nbsp;</p>
 </div>
@@ -200,7 +410,7 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2011-07-15/oracle-11g-%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%89%E8%A3%85%E5%90%8E%E6%94%B9%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%90%8D%E5%87%BA%E7%8E%B0%E6%97%A0%E6%B3%95%E8%BF%9E%E6%8E%A5%E7%9A%84%E9%97%AE%E9%A2%98%E8%A7%A3/">Oracle 11g 数据库安装后改计算机名出现无法连接的问题解决</a></h1>
+      <h1 class="entry-title"><a href="/blog/2012-06-26/%E5%85%B3%E4%BA%8E%E5%AE%9A%E5%88%B6validator/">关于定制validator</a></h1>
     
     
       <p class="meta">
@@ -216,162 +426,109 @@
   
 
 
-<time datetime="2011-07-15T00:00:00+08:00" pubdate data-updated="true">Jul 15<span>th</span>, 2011</time>
+<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
         
-         | <a href="/blog/2011-07-15/oracle-11g-%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%89%E8%A3%85%E5%90%8E%E6%94%B9%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%90%8D%E5%87%BA%E7%8E%B0%E6%97%A0%E6%B3%95%E8%BF%9E%E6%8E%A5%E7%9A%84%E9%97%AE%E9%A2%98%E8%A7%A3/#disqus_thread">Comments</a>
+         | <a href="/blog/2012-06-26/%E5%85%B3%E4%BA%8E%E5%AE%9A%E5%88%B6validator/#disqus_thread">Comments</a>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>在局域网内一台机器上安装完oracle11g之后，本地测试OK 可以访问orcl。用局域网内另一台机器连接的时候不行。<br />
-两台机器可以PING通。<br />
-修改tnsname.ora  把默认的localhost 都改成了本机IP 试试还是不行。<br />
-然后改了下计算机名，各种测试，打开EM还是只看到实例正常，监听程序为状态为不可用，实例的代理连接状态为不可用。<br />
-很是蛋疼，手贱不应该改计算机名啊。。。<br />
-想想多有可能要改的都改好了。。。怎么还是连不上？<br />
-是不是刚改好的还没有生效？<br />
-lsnrctl stop<br />
-lsnrctl start<br />
-各种重启服务之后，终于见到了全绿~~~</p>
-
-<p><a rel="attachment wp-att-36" href="http://www.dengdezhao.cn/wp-content/uploads/2011/07/q-300x139.jpg"><img class="alignnone size-medium wp-image-36" title="q" src="http://www.dengdezhao.cn/wp-content/uploads/2011/07/q-300x139.jpg" alt="" width="300" height="139" /></a></p>
+  <div class="entry-content"><p>一个时刻字段，要求输入00:00-12:60这样的时刻范围<br />
+使用如下的正则表达式，过滤掉了不合规则的数字之后，还差一个逻辑，结束时刻不能小于开始时刻，比如：10：00-9：00这样的输入也是不合法的。正则太折磨眼力了，应该也是可以做到这点的吧，为了偷懒，就定制个validator来处理这个点。
+<div>
+<blockquote>&lt;af:validateRegExp pattern=&#8221;([0-1][0-9]|2[0-4])\:([0-5][0-9]|60)&#45;([0-1][0-9]|2[0-4])\:([0-5][0-9]|60)&#8221; messageDetailNoMatch=&#8221;请输入时刻，例如 00：00-24：60 &#8221; hint=&#8221;请输入时刻，例如 00：00-24：60&#8221;/&gt;</blockquote>
 </div>
-  
-  
+<strong>Step1</strong>。创建一个<strong>ValidatorTime</strong>类实现Validator接口
+<div>
+<blockquote>package com.adfkf.validators;</blockquote></div></p>
 
+<p>import javax.faces.application.FacesMessage;<br />
+import javax.faces.component.UIComponent;<br />
+import javax.faces.component.UIInput;<br />
+import javax.faces.context.FacesContext;<br />
+import javax.faces.validator.Validator;<br />
+import javax.faces.validator.ValidatorException;</p>
 
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2011-07-13/%E5%A4%9A%E8%AF%AD%E8%A8%80%E5%88%87%E6%8D%A2%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0/">多语言切换功能实现</a></h1>
-    
-    
-      <p class="meta">
-        
+<p>import org.apache.myfaces.trinidad.component.UIXInput;</p>
 
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-07-13T00:00:00+08:00" pubdate data-updated="true">Jul 13<span>th</span>, 2011</time>
-        
-         | <a href="/blog/2011-07-13/%E5%A4%9A%E8%AF%AD%E8%A8%80%E5%88%87%E6%8D%A2%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><strong>Step.1 </strong>新建测试工程<strong> Fusion Web Application(ADF)</strong>。</p>
-
-<p><strong>Step.2 </strong>创建resource Bundle 文件，如下所示，我创建了三个语言版本的文件。
-<blockquote><span style="color: #ff0000;">ScreenConfig</span>_<span style="color: #0000ff;">en</span>_<span style="color: #ff00ff;">US</span>.properties</blockquote></p>
-
-<p><span style="color: #ff0000;">ScreenConfig</span>_<span style="color: #0000ff;">zh</span>_<span style="color: #ff00ff;">CN</span>.properties</p>
-
-<p><span style="color: #ff0000;">ScreenConfig</span>_<span style="color: #0000ff;">ja</span>_<span style="color: #ff00ff;">JP</span>.properties
-<strong>Step.3</strong> 在faces-config.xml中注册以上三个文件。
-<blockquote>&lt;?xml version=&#8221;1.0&#8221; encoding=&#8221;UTF-8&#8221;?&gt;<br />
-&lt;faces-config version=&#8221;1.2&#8221; xmlns=&#8221;http://java.sun.com/xml/ns/javaee&#8221;&gt;<br />
-&lt;application&gt;<br />
-&lt;default-render-kit-id&gt;oracle.adf.rich&lt;/default-render-kit-id&gt;
-<span style="color: #ff00ff;">&lt;resource-bundle&gt;</span>
-<span style="color: #ff00ff;"> &lt;base-name&gt;ScreenConfig&lt;/base-name&gt;</span>
-<span style="color: #ff00ff;"> &lt;var&gt;screen&lt;/var&gt;</span>
-<span style="color: #ff00ff;"> &lt;/resource-bundle&gt;</span>
-<span style="color: #ff00ff;"> &lt;locale-config&gt;</span>
-<span style="color: #ff00ff;"> &lt;default-locale&gt;zh_CN&lt;/default-locale&gt;</span>
-<span style="color: #ff00ff;"> &lt;supported-locale&gt;en_US&lt;/supported-locale&gt;</span>
-<span style="color: #ff00ff;"> &lt;supported-locale&gt;ja_JP&lt;/supported-locale&gt;</span>
-<span style="color: #ff00ff;"> &lt;/locale-config&gt;</span>
-&lt;/application&gt;<br />
-&lt;/faces-config&gt;</blockquote>
-<strong>Step.4</strong> 新建一个测试页面
-<blockquote>&lt;?xml version=&#8217;1.0&#8217; encoding=&#8217;UTF-8&#8217;?&gt;<br />
-&lt;jsp:root xmlns:jsp=&#8221;http://java.sun.com/JSP/Page&#8221; version=&#8221;2.1&#8221;<br />
-xmlns:f=&#8221;http://java.sun.com/jsf/core&#8221;<br />
-xmlns:h=&#8221;http://java.sun.com/jsf/html&#8221;<br />
-xmlns:af=&#8221;http://xmlns.oracle.com/adf/faces/rich&#8221;&gt;<br />
-&lt;jsp:directive.page contentType=&#8221;text/html;charset=UTF-8&#8221;/&gt;<br />
-&lt;f:view &gt;<br />
-&lt;af:document id=&#8221;d1&#8221;&gt;
-<span style="color: #ff00ff;">&lt;f:loadBundle basename=&#8221;ScreenConfig&#8221; var=&#8221;screen&#8221;   /&gt;</span>
-&lt;af:form id=&#8221;f1&#8221;&gt;<br />
-&lt;af:inputText label=&#8221;<span style="color: #ff00ff;">#{screen.test}</span>&#8221; id=&#8221;it1&#8221;/&gt;<br />
-&lt;af:commandButton text=&#8221;<span style="color: #ff00ff;">#{screen.command}</span>&#8221; id=&#8221;en&#8221;  partialTriggers=&#8221;en&#8221;<br />
-action=&#8221;<span style="color: #ff00ff;">#{BackingBean.changeLang}&#8221;</span>/&gt;<br />
-&lt;/af:form&gt;<br />
-&lt;/af:document&gt;<br />
-&lt;/f:view&gt;<br />
-&lt;!&#8211;oracle-jdev-comment:preferred-managed-bean-name:BackingBean&#8211;&gt;<br />
-&lt;/jsp:root&gt;</blockquote>
-<strong>Step.5</strong> 生成的BackingBean中内容如下：
-<blockquote>package view;</blockquote></p>
-
-<p>import java.util.Locale;<br />
-import java.util.ResourceBundle;</p>
-
-<p>import javax.faces.context.FacesContext;</p>
-
-<p>import javax.servlet.http.HttpServletRequest;<br />
-import javax.servlet.http.HttpSession;</p>
-
-<p>public class BackingBean {<br />
-public BackingBean() {<br />
-}
-private Locale locale;</p>
-
-<p>public String changeLang() {</p>
-
-<p>FacesContext facesContext = FacesContext.getCurrentInstance();<br />
-HttpServletRequest request =<br />
-(HttpServletRequest)facesContext.getExternalContext().getRequest();<br />
-String flag =<br />
-request.getSession().getAttribute(&#8220;flag&#8221;) == null ? &#8220;ZH&#8221; :<br />
-request.getSession().getAttribute(&#8220;flag&#8221;).toString();</p>
-
-<p>if (&#8220;ZH&#8221;.equals(flag)) {<br />
-flag = &#8220;EN&#8221;;<br />
-this.setLocale(new Locale(&#8220;zh&#8221;, &#8220;CN&#8221;));<br />
-} else if (&#8220;EN&#8221;.equals(flag)) {<br />
-flag = &#8220;JA&#8221;;<br />
-this.setLocale(new Locale(&#8220;en&#8221;, &#8220;US&#8221;));<br />
-} else if (&#8220;JA&#8221;.equals(flag)) {<br />
-flag = &#8220;ZH&#8221;;<br />
-this.setLocale(new Locale(&#8220;ja&#8221;, &#8220;JP&#8221;));<br />
-}
-request.getSession().setAttribute(&#8220;flag&#8221;, flag);<br />
-facesContext.getViewRoot().setLocale(locale);<br />
-return null;<br />
+<p>public class ValidatorTime implements Validator {<br />
+public ValidatorTime() {<br />
+super();<br />
 }</p>
 
-<p>public void setLocale(Locale locale) {<br />
-this.locale = locale;<br />
+<p>public void validate(FacesContext facesContext, UIComponent uiComponent,<br />
+Object object) {</p>
+
+<p>String value = null;<br />
+String a, b, c, d = null;<br />
+Boolean bool = false;<br />
+if ((facesContext == null) || (uiComponent == null)) {<br />
+throw new NullPointerException();<br />
+}
+if (!(uiComponent instanceof UIXInput)) {<br />
+return;<br />
+}
+if (null == object) {<br />
+return;<br />
+}
+//12:00-23:00<br />
+value = object.toString();<br />
+if (value != null &amp;&amp; value.length() == 11) {<br />
+a = value.substring(0, 2);<br />
+b = value.substring(3, 5);<br />
+c = value.substring(6, 8);<br />
+d = value.substring(9, 11);<br />
+try {<br />
+Integer intA = Integer.valueOf(a);<br />
+Integer intB = Integer.valueOf(b);<br />
+Integer intC = Integer.valueOf(c);<br />
+Integer intD = Integer.valueOf(d);<br />
+if (intC &gt; intA || (intA == intC &amp;&amp; intD &gt; intB)) {<br />
+bool = true;<br />
+} else {<br />
+bool = false;<br />
 }</p>
 
-<p>public Locale getLocale() {<br />
-return locale;<br />
+<p>} catch (Exception e) {<br />
+bool = false;<br />
+}</p>
+
+<p>}<br />
+if (!bool) {<br />
+FacesMessage message = new FacesMessage();<br />
+message.setDetail(&#8220;开始时刻大于结束时间&#8221;);<br />
+message.setSummary(&#8220;时刻输入有误&#8221;);<br />
+message.setSeverity(FacesMessage.SEVERITY_ERROR);<br />
+throw new ValidatorException(message);</p>
+
+<p>}</p>
+
+<p>}<br />
 }
-}
-<strong>Step.6 </strong>测试效果如下
-<blockquote><a href="http://www.dengdezhao.cn/wp-content/uploads/2011/07/1.jpg"><img class="alignnone size-full wp-image-28" title="1" src="http://www.dengdezhao.cn/wp-content/uploads/2011/07/1.jpg" alt="" width="234" height="50" /></a></blockquote>
-点击按键之后
-<blockquote><a href="http://www.dengdezhao.cn/wp-content/uploads/2011/07/2.jpg"><img class="alignnone size-full wp-image-29" title="2" src="http://www.dengdezhao.cn/wp-content/uploads/2011/07/2.jpg" alt="" width="254" height="50" /></a></blockquote>
-再点击按键之后
-<blockquote><a href="http://www.dengdezhao.cn/wp-content/uploads/2011/07/3.jpg"><img class="alignnone size-full wp-image-30" title="3" src="http://www.dengdezhao.cn/wp-content/uploads/2011/07/3.jpg" alt="" width="241" height="54" /></a></blockquote>
-&nbsp;</p>
+
+<strong>Step2 </strong>在faces-config.xml中注册这个validator
+<div>
+<blockquote>&lt;validator&gt;<br />
+&lt;validator-id&gt;validateTime&lt;/validator-id&gt;<br />
+&lt;validator-class&gt;com.adfkf.validators.ValidatorTime&lt;/validator-class&gt;<br />
+&lt;/validator&gt;</blockquote>
+</div>
+<strong>Step3 </strong>页面中使用定制的validator
+<div>
+<blockquote>&lt;af:inputText value=&#8221;#{row.bindings.ReimTime.inputValue}&#8221; disabled=&#8221;#{sessionScope.flag}&#8221;<br />
+label=&#8221;#{bindings.CostDetailVO.hints.ReimTime.label}&#8221;<br />
+required=&#8221;#{bindings.CostDetailVO.hints.ReimTime.mandatory}&#8221;<br />
+shortDesc=&#8221;#{bindings.CostDetailVO.hints.ReimTime.tooltip}&#8221;<br />
+id=&#8221;id2&#8221;&gt;<br />
+&lt;af:validateRegExp pattern=&#8221;([0-1][0-9]|2[0-4])\:([0-5][0-9]|60)&#45;([0-1][0-9]|2[0-4])\:([0-5][0-9]|60)&#8221; messageDetailNoMatch=&#8221;请输入时刻，例如 00：00-24：60 &#8221; hint=&#8221;请输入时刻，例如 00：00-24：60&#8221;/&gt;<br />
+&lt;f:validator validatorId=&#8221;validateTime&#8221;/&gt;<br />
+&lt;/af:inputText&gt;</blockquote>
+</div>
+看下效果吧</p>
+
+<p><a rel="attachment wp-att-111" href="../../../wp-content/uploads/2012/06/T11-300x92.jpg"><img class="alignnone size-medium wp-image-111" title="T1" src="../../../wp-content/uploads/2012/06/T11-300x92.jpg" alt="" width="300" height="92" /></a></p>
 </div>
   
   
@@ -384,7 +541,7 @@ return locale;<br />
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2011-06-30/wordpress%E7%9A%84elegant-box%E4%B8%BB%E9%A2%98%E8%B7%9Fsyntax-highlighter-optimized%E6%8F%92%E4%BB%B6%E7%9A%84%E5%86%B2%E7%AA%81%E8%A7%A3%E5%86%B3/">Wordpress的elegant-box主题跟syntax-highlighter-optimized插件的冲突解决</a></h1>
+      <h1 class="entry-title"><a href="/blog/2012-06-26/%E5%85%B3%E4%BA%8Evo%E7%9A%84%E5%8F%AA%E8%AF%BB%E5%8F%AF%E5%86%99%E7%AD%89%E5%B1%9E%E6%80%A7%E8%AE%BE%E7%BD%AE/">关于VO的只读可写等属性设置</a></h1>
     
     
       <p class="meta">
@@ -400,34 +557,27 @@ return locale;<br />
   
 
 
-<time datetime="2011-06-30T00:00:00+08:00" pubdate data-updated="true">Jun 30<span>th</span>, 2011</time>
+<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
         
-         | <a href="/blog/2011-06-30/wordpress%E7%9A%84elegant-box%E4%B8%BB%E9%A2%98%E8%B7%9Fsyntax-highlighter-optimized%E6%8F%92%E4%BB%B6%E7%9A%84%E5%86%B2%E7%AA%81%E8%A7%A3%E5%86%B3/#disqus_thread">Comments</a>
+         | <a href="/blog/2012-06-26/%E5%85%B3%E4%BA%8Evo%E7%9A%84%E5%8F%AA%E8%AF%BB%E5%8F%AF%E5%86%99%E7%AD%89%E5%B1%9E%E6%80%A7%E8%AE%BE%E7%BD%AE/#disqus_thread">Comments</a>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>当这款主题跟高亮插件同时使用时，一个不兼容的细节表现了出来，具体症状表现参照下图：</p>
-
-<p><a href="http://www.dengdezhao.cn/wp-content/uploads/2011/06/1.jpg"><img class="alignnone size-medium wp-image-22" title="1" src="http://www.dengdezhao.cn/wp-content/uploads/2011/06/1-300x119.jpg" alt="" width="300" height="119" /></a></p>
-
-<p><a href="http://www.dengdezhao.cn/wp-content/uploads/2011/06/21.jpg"><img class="alignnone size-medium wp-image-24" title="2" src="http://www.dengdezhao.cn/wp-content/uploads/2011/06/21-300x118.jpg" alt="" width="300" height="118" /></a></p>
-
-<p>Feeds的下拉菜单被&lt;pre&gt;区域给挡住了，很影响美观。</p>
-
-<p>显示是z-index属性的问题。</p>
-
-<p>解决办法：</p>
-
-<p>Step.1 打开主题的header.php文件</p>
-
-<p>Step.2 替换160行的&lt;ul&gt;为&lt;ul <span style="color: #ff0000;">style=&#8221;z-index:1&#8221;</span>&gt; 当然z-index的值&gt;0都是可以的，因为&lt;pre&gt;区域z-index属性没有设置，默认为0，只要菜单&lt;ul&gt;的z-index值大就会显示在&lt;pre&gt;区域之上。</p>
-
-<p>修改之后的效果图：</p>
-
-<p><a href="http://www.dengdezhao.cn/wp-content/uploads/2011/06/3.jpg"><img class="alignnone size-medium wp-image-25" title="3" src="http://www.dengdezhao.cn/wp-content/uploads/2011/06/3-300x118.jpg" alt="" width="300" height="118" /></a></p>
+  <div class="entry-content"><p>如果生成ViewObject 的时候选择的是只读的VO的话，会发现VO的source里有ReadOnly=&#8221;true&#8221;。<br />
+需求1：在MB中我通过代码拿到这个VO的实例，我想通过以下代码添加Row
+<div>
+<blockquote>Row newRow=Vo.createRow();<br />
+newRow.setAttribute(&#8220;attribute1&#8221;,&#8221;value1&#8221;);<br />
+newRow.setAttribute(&#8220;attribute2&#8221;,&#8221;value2&#8221;);<br />
+newRow.setAttribute(&#8220;attribute3&#8221;,&#8221;value3&#8221;);<br />
+Vo.insertRow(newRow);</blockquote>
+</div>
+最终发现，只读VO无法插入数据。怎么办？将ReadOnly改成&#8221;false&#8221;之后测试，发现满足需求~！<br />
+需求2：满足需求1之后发现，Vo里的确插入数据了。如果页面上有保存按钮，也会将这个数据更改到数据库，而这个数据只是需要在MB中起过渡作用，不必将newRow的数据postChange到DB，怎么办？<br />
+VO里 这个属性DeleteParticipant 立功了。 DeleteParticipant就是控制数据是否保存到DB的。设置 DeleteParticipant=&#8221;false&#8221;发现满足了需求！</p>
 </div>
   
   
@@ -440,7 +590,7 @@ return locale;<br />
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2011-06-29/javax-el-propertynotfoundexception%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/">javax.el.PropertyNotFoundException错误解决</a></h1>
+      <h1 class="entry-title"><a href="/blog/2012-06-26/%E5%85%B3%E4%BA%8Eselectbooleancheckbox-%E7%9A%84%E9%97%AE%E9%A2%98/">关于selectBooleanCheckbox 的问题</a></h1>
     
     
       <p class="meta">
@@ -456,18 +606,30 @@ return locale;<br />
   
 
 
-<time datetime="2011-06-29T00:00:00+08:00" pubdate data-updated="true">Jun 29<span>th</span>, 2011</time>
+<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
         
-         | <a href="/blog/2011-06-29/javax-el-propertynotfoundexception%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/#disqus_thread">Comments</a>
+         | <a href="/blog/2012-06-26/%E5%85%B3%E4%BA%8Eselectbooleancheckbox-%E7%9A%84%E9%97%AE%E9%A2%98/#disqus_thread">Comments</a>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>有时候明明没有什么错误，一样的代码在别人机器上跑没问题，自己机器上跑却会出现以下这样的错误：
-<pre class="brush:java">javax.el.PropertyNotFoundException: Target Unreachable, identifier 'bindings' resolved to null</pre>
-这样的错误会随着代码量的增加而越发频繁，是IDE的缓存的BUG，如果重启jdeveloper 还不能解决的话，把报错的那个bindings的pagedef文件改动下（加一行空格）保存，然后clean all，再重新build下，基本能够解决这个问题。</p>
+  <div class="entry-content"><p>页面的 selectBooleanCheckbox 选择后，总提示 不是数字（组件value是 true 或 false,数据库存的是Number），怎么解决</p>
+
+<p>方案有三个<br />
+1。如果是基于表的Number字段(假设字段名是Flag，值是1或者0），想生成selectBooleanCheckbox ，可以重写这个VO的的 setFlag()跟getFlag()方法如下：<br />
+public void setFlag(Boolean value){<br />
+this.flag=value==true?1:0;<br />
+}
+public Boolean getFlag(){<br />
+return this.flag==0?false:true;<br />
+}</p>
+
+<p>2。设置valueChangeListener.<br />
+在valueChange方法里捕获当前selectBooleanCheckbox 的值，然后转化成Number类型的传给VO</p>
+
+<p>3。如果是只读的表，可以在UI上通过EL表达式处理。</p>
 </div>
   
   
@@ -480,7 +642,7 @@ return locale;<br />
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2011-06-29/adf%E5%BA%94%E7%94%A8%E4%B8%AD%E5%A6%82%E4%BD%95%E5%9C%A8backingbean%E4%B8%AD%E8%B0%83%E7%94%A8javascript%E6%8E%A7%E5%88%B6ui/">ADF应用中如何在BackingBean中调用javascript控制UI</a></h1>
+      <h1 class="entry-title"><a href="/blog/2012-06-26/%E5%85%B3%E4%BA%8Emanagedbean%E4%B8%AD%E5%A4%9A%E6%AC%A1%E6%89%A7%E8%A1%8C%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95%E6%97%B6%E7%9A%84%E9%97%AE%E9%A2%98/">关于ManagedBean中多次执行构造方法时的问题</a></h1>
     
     
       <p class="meta">
@@ -496,167 +658,21 @@ return locale;<br />
   
 
 
-<time datetime="2011-06-29T00:00:00+08:00" pubdate data-updated="true">Jun 29<span>th</span>, 2011</time>
+<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
         
-         | <a href="/blog/2011-06-29/adf%E5%BA%94%E7%94%A8%E4%B8%AD%E5%A6%82%E4%BD%95%E5%9C%A8backingbean%E4%B8%AD%E8%B0%83%E7%94%A8javascript%E6%8E%A7%E5%88%B6ui/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>当你需要在ManagedBean中控制页面控制的属性的时候，可以使用以下代码调用javascript实现。</p>
-
-<p>&nbsp;
-<pre class="brush:java">//import org.apache.myfaces.trinidad.util.Service;
-String script="你的javascript代码";</pre></p>
-
-<p>FacesContext context = <br />
-        FacesContext.getCurrentInstance();</p>
-
-<p>ExtendedRenderKitService erks = <br />
-        (ExtendedRenderKitService)Service.<br />
-        getService(context.getRenderKit(), <br />
-        ExtendedRenderKitService.class);</p>
-
-<p>erks.addScript(context, script);
-&nbsp;</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2011-06-28/adf%E5%BA%94%E7%94%A8%E2%80%9Cremote-deployment-failed%E2%80%9D%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/">ADF应用“Remote Deployment Failed”错误解决</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-06-28T00:00:00+08:00" pubdate data-updated="true">Jun 28<span>th</span>, 2011</time>
-        
-         | <a href="/blog/2011-06-28/adf%E5%BA%94%E7%94%A8%E2%80%9Cremote-deployment-failed%E2%80%9D%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/#disqus_thread">Comments</a>
+         | <a href="/blog/2012-06-26/%E5%85%B3%E4%BA%8Emanagedbean%E4%B8%AD%E5%A4%9A%E6%AC%A1%E6%89%A7%E8%A1%8C%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95%E6%97%B6%E7%9A%84%E9%97%AE%E9%A2%98/#disqus_thread">Comments</a>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>ADF应用debug模式下最常出现的问题就是远程发布失败了。控制台打印的错误信息如下：
-<pre class="brush:plain">[07:21:55 PM] ####  Deployment incomplete.  ####
-[07:21:55 PM] Remote deployment failed (oracle.jdevimpl.deploy.common.Jsr88RemoteDeployer)
-#### Cannot run application XXX due to error deploying to IntegratedWebLogicServer.
-[Application XXX stopped and undeployed from Server Instance IntegratedWebLogicServer]
-&lt;Logger&gt;&lt;error&gt; ServletContainerAdapter manager not initialized correctly.</pre>
-解决方法有两种：</p>
+  <div class="entry-content"><p>有时候需要在初始化时执行一些查询，但发现会多次执行。需要在构造方法里添加一行代码避免页面点击时多次执行初始化。<br />
+if (!(Boolean)ADFUtils.getBindObject(&#8220;adfFacesContext.postback&#8221;)) {<br />
+init()；<br />
+}</p>
 
-<p>方法一：进入weblogic控制台<span style="color: #0000ff;">http://127.0.0.1:7101/console</span>
-<pre class="brush:plain">用户名：weblogic
-密 码：weblogic1</pre>
-此时控制面板的左上区域应该会有两个按钮“<span style="color: #0000ff;">激活更改</span>”，“<span style="color: #0000ff;">撤销所有更改</span>”，点击任一按钮皆可，然后重新debug，问题解决。</p>
-
-<p>方法二：查看控制台信息，找到类似于“<span style="color: #0000ff;">C:\Documents and Settings\Administrator\Application Data\JDeveloper\system11.1.1.3.37.56.60\o.j2ee\drs\</span>”的路径（这个路径跟你jdeveloper安装路径相关，system目录后的数字也是不同的）。进入到drs目录下，清空所有内容。重新debug，问题解决。</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2011-06-28/adf%E5%BA%94%E7%94%A8%E2%80%9Cremote-deployment-failed%E2%80%9D%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2011-06-27/%E5%AE%9A%E5%88%B6adf%E5%BA%94%E7%94%A8%E7%9A%84css/">定制ADF应用的CSS</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-06-27T00:00:00+08:00" pubdate data-updated="true">Jun 27<span>th</span>, 2011</time>
-        
-         | <a href="/blog/2011-06-27/%E5%AE%9A%E5%88%B6adf%E5%BA%94%E7%94%A8%E7%9A%84css/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>客户的要求总是各种变态，如果需要定制默认的控件样式的话，那么以下的文章可能会对你有帮助。</p>
-
-<p>Step.1 首先我们需要定义自己的CSS文件 <span style="color: #0000ff;">CustomSkin.css</span>
-<pre class="brush:css">af|inputListOfValues::search-icon-style{
-  background-image:none;
-}</pre></p>
-
-<p>af|inputListOfValues::search-icon-style:hover{<br />
-  background-image:none;<br />
-}
-af|inputListOfValues::search-icon-style:active{<br />
-  background-image:none;<br />
-}
-af|inputListOfValues::search-icon-style:info{<br />
-  background-image:none;<br />
-}
-Step.2 接着创建 <span style="color: #0000ff;">trinidad-skins.xml</span>
-<pre class="brush:xml">&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;
-&lt;skins xmlns="http://myfaces.apache.org/trinidad/skin"&gt;
-  &lt;skin&gt;
-    &lt;id&gt;customSkin.desktop&lt;/id&gt;
-    &lt;family&gt;CustomSkin&lt;/family&gt;
-    &lt;extends&gt;blafplus-rich.desktop&lt;/extends&gt;
-    &lt;render-kit-id&gt;org.apache.myfaces.trinidad.desktop&lt;/render-kit-id&gt;
-    &lt;style-sheet-name&gt;css/CustomSkin.css&lt;/style-sheet-name&gt;
-  &lt;/skin&gt;
-&lt;/skins&gt;</pre>
-Step.3 修改 <span style="color: #0000ff;">trinidad-config.xml</span>
-<pre class="brush:xml"> &lt;skin-family&gt;CustomSkin&lt;/skin-family&gt;</pre>
-Step.4 修改<span style="color: #0000ff;">web.xml</span>
-<pre class="brush:xml">&lt;context-param&gt;
-    &lt;description&gt;If this parameter is true, there will be an automatic check of the modification date of your JSPs, and saved state will be discarded when JSP's change. It will also automatically check if your skinning css files have changed without you having to restart the server. This makes development easier, but adds overhead. For this reason this parameter should be set to false when your application is deployed.&lt;/description&gt;
-    &lt;param-name&gt;org.apache.myfaces.trinidad.CHECK_FILE_MODIFICATION&lt;/param-name&gt;
-    &lt;param-value&gt;true&lt;/param-value&gt;
-  &lt;/context-param&gt;</pre></p>
-
-<p>&lt;context-param&gt;<br />
-    &lt;description&gt;No obfuscation of CSS.&lt;/description&gt;<br />
-    &lt;param-name&gt;org.apache.myfaces.trinidad.DISABLE_CONTENT_COMPRESSION&lt;/param-name&gt;<br />
-    &lt;param-value&gt;true&lt;/param-value&gt;<br />
-  &lt;/context-param&gt;
-重启下应用就会发现控件样式已经采用自定义CSS文件里的样式了！<span style="color: #0000ff;">
-</span></p>
-
-<p>&nbsp;</p>
+<p>通过页面是否postback来控制只初始化一次。</p>
 </div>
   
   
@@ -665,6 +681,8 @@ Step.4 修改<span style="color: #0000ff;">web.xml</span>
     </article>
   
   <div class="pagination">
+    
+      <a class="prev" href="/blog/page/6/">&larr; Older</a>
     
     <a href="/blog/archives">Blog Archives</a>
     
@@ -675,18 +693,25 @@ Step.4 修改<span style="color: #0000ff;">web.xml</span>
 <aside class="sidebar">
   
     <section>
+
+  <ul>
+  <li><a href="https://me.alipay.com/dengdezhao"><img src="../../../wp-content/uploads/donate.jpg"/></a></li>
+  </ul>
+</section>
+<section>
   <h1>分类目录</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/adf/'>ADF (21)</a></li>
+    <li class='category'><a href='/blog/categories/adf/'>ADF (33)</a></li>
 <li class='category'><a href='/blog/categories/ebs/'>EBS (2)</a></li>
-<li class='category'><a href='/blog/categories/oaf/'>OAF (6)</a></li>
-<li class='category'><a href='/blog/categories/oracle/'>Oracle (7)</a></li>
-<li class='category'><a href='/blog/categories/soa/'>SOA (2)</a></li>
+<li class='category'><a href='/blog/categories/oaf/'>OAF (8)</a></li>
+<li class='category'><a href='/blog/categories/oracle/'>Oracle (8)</a></li>
+<li class='category'><a href='/blog/categories/soa/'>SOA (3)</a></li>
 <li class='category'><a href='/blog/categories/sinaappengine/'>SinaAppEngine (1)</a></li>
 <li class='category'><a href='/blog/categories/forms/'>forms (1)</a></li>
 <li class='category'><a href='/blog/categories/java/'>java (2)</a></li>
 <li class='category'><a href='/blog/categories/jdeveloper/'>jdeveloper (1)</a></li>
 <li class='category'><a href='/blog/categories/linux/'>linux (2)</a></li>
+<li class='category'><a href='/blog/categories/mysql/'>mysql (1)</a></li>
 <li class='category'><a href='/blog/categories/octopress/'>octopress (1)</a></li>
 <li class='category'><a href='/blog/categories/others/'>others (1)</a></li>
 <li class='category'><a href='/blog/categories/weblogic/'>weblogic (1)</a></li>
@@ -699,23 +724,23 @@ Step.4 修改<span style="color: #0000ff;">web.xml</span>
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2013-04-24/adflei-si-xin-tiao-cheng-xu-shi-xian/">ADF类似心跳程序实现</a>
+        <a href="/blog/2014-04-18/an-zhuang-rcu1-dot-7yu-dao-de-xiao-wen-ti/">安装RCU1.7遇到的小问题</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2013-04-19/adfxue-xi-zong-jie-%5B%3F%5D/">ADF学习总结(一)</a>
+        <a href="/blog/2014-02-07/%E5%AE%9A%E5%88%B6EL/">定制EL function</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2013-04-18/oafzhong-chuang-jian-lov/">OAF中创建LOV</a>
+        <a href="/blog/2013-11-09/you-yi-wai-duan-dian-dao-zhi-oracle11gqi-dong-bu-qi-lai-de-wen-ti-jie-jue/">由意外断电导致oracle11g启动不起来的问题解决</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2013-04-17/pei-zhi-oafkai-fa-huan-jing/">配置OAF开发环境</a>
+        <a href="/blog/2013-09-23/ru-he-zai-ye-mian-sui-pian-jia-zai-qian-diao-yong-luo-ji/">如何在页面碎片加载前调用逻辑</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2013-04-16/getrowatrangeindex-int-fang-fa-de-ju-xian-xing/">getRowAtRangeIndex(int)方法的局限性</a>
+        <a href="/blog/2013-09-23/kong-jian-af-iteratoryi-ji-af-foreachde-dui-bi/">控件af:iterator以及af:forEach的对比</a>
       </li>
     
   </ul>
@@ -727,9 +752,12 @@ Step.4 修改<span style="color: #0000ff;">web.xml</span>
 <section>
   <h1>友情链接</h1>
   <ul>
-  	<li><a href="http://www.liqifa.cn">[小分号]</a></li>
+  	<li><a href="http://www.liqifa.com">[小分号]</a></li>
  	<li><a href="http://www.fmw007.com">[梦想左岸]</a></li>
  	<li><a href="http://ericchan.cn">[小骚骚的技术博客]</a></li>
+ 	<li><a href="http://oraclefmw.blog.163.com/">[追梦]</a></li>
+ 	<li><a href="http://blog.csdn.net/ygj26">[小尹妹纸]</a></li>
+ 	<li><a href="http://oracleseeker.com/">[OracleSeeker，Oracle探索者]</a></li>
   </ul>
 </section>
 
@@ -756,12 +784,17 @@ src="http://widget.weibo.com/weiboshow/index.php?width=0&height=550&ptype=1&spee
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2013 - pierreorz -
+  Copyright &copy; 2014 - pierreorz -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 <a rel="license" href="http://creativecommons.org/licenses/by/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/88x31.png" /></a>
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F2c50098a945120bddaa5f082c4e56cea' type='text/javascript'%3E%3C/script%3E"));
+</script>
 <a title="Web Analytics" href="http://clicky.com/100592601">.</a>
 <script src="//static.getclicky.com/js" type="text/javascript"></script>
 <script type="text/javascript">try{ clicky.init(100592601); }catch(e){}</script>
+
 </p>
 
 </footer>

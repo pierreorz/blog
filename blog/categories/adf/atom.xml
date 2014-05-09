@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: ADF | 邓德昭的技术博客]]></title>
-  <link href="http://dengdezhao.cn/blog/categories/adf/atom.xml" rel="self"/>
-  <link href="http://dengdezhao.cn/"/>
-  <updated>2013-05-09T15:25:51+08:00</updated>
-  <id>http://dengdezhao.cn/</id>
+  <link href="http://www.dengdezhao.cn/blog/categories/adf/atom.xml" rel="self"/>
+  <link href="http://www.dengdezhao.cn/"/>
+  <updated>2014-05-09T23:06:22+08:00</updated>
+  <id>http://www.dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
     
@@ -14,253 +14,24 @@
 
   
   <entry>
-    <title type="html"><![CDATA[ADF类似心跳程序实现]]></title>
-    <link href="http://dengdezhao.cn/blog/2013-04-24/adflei-si-xin-tiao-cheng-xu-shi-xian/"/>
-    <updated>2013-04-24T16:19:00+08:00</updated>
-    <id>http://dengdezhao.cn/blog/2013-04-24/adflei-si-xin-tiao-cheng-xu-shi-xian</id>
-    <content type="html"><![CDATA[<p>使用ADF框架开发WEB应用时，其中令人苦恼的一个需求就是：在两个页面同时展示一个数据源时，如果其中一个页面对数据源作了变更操作，另外一个页面没办法自动获得变更后的数据，需要手工刷新页面才能得到变更后的新数据源。</p>
-
-<p>其实ADF自带的<code>&lt;af:poll/&gt;</code>组件即可实现此需求。</p>
-
-<p>例子：</p>
-
-<ul>
-<li>创建一个可更新的af:table 基于HR的Department表</li>
+    <title type="html"><![CDATA[定制EL function]]></title>
+    <link href="http://www.dengdezhao.cn/blog/2014-02-07/%E5%AE%9A%E5%88%B6EL/"/>
+    <updated>2014-02-07T19:24:00+08:00</updated>
+    <id>http://www.dengdezhao.cn/blog/2014-02-07/定制EL</id>
+    <content type="html"><![CDATA[<ul>
+<li><p>平台: Jdeveloper 12c</p></li>
+<li><p>有时需要对字符串进行一些后再显示出来，可以写一个简单的taglib来实现，以下Demo是处理一个以冒号分隔的字符串，返回其中的第三个值。比如输入“aaa:bbb:ccc:ddd"，输出"ccc"。</p></li>
 </ul>
 
 
-<p>页面如下： <br/>
-<img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130424160613.jpg" alt="" />  <br/>
-可以更改表数据并提交，用多浏览器窗口打开该页面来模拟多用户操作。</p>
+<h4>实现方法</h4>
 
-<p>将<code>&lt;af:poll/&gt;</code>控件拖入到页面中，控件属性设置如下：</p>
-
-<p><img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130424161027.jpg" alt="" />  <br/>
-设置间隔为1分钟，并绑定PollListener</p>
+<p>创建一个空的java Project：Taglib</p>
 
 <ul>
-<li>给该页面绑定ManagedBean，并添加PollListener，方法内容如下：</li>
+<li>创建Java类：SplitString.java</li>
 </ul>
 
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kd">public</span> <span class="kt">void</span> <span class="n">heartBeat</span><span class="o">(</span><span class="n">PollEvent</span> <span class="n">pollEvent</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;start poll...&quot;</span><span class="o">);</span>
-</span><span class='line'>    <span class="n">DCIteratorBinding</span> <span class="n">it</span> <span class="o">=</span> <span class="n">ADFUtils</span><span class="o">.</span><span class="na">findIterator</span><span class="o">(</span><span class="s">&quot;Departments1Iterator&quot;</span><span class="o">);</span>
-</span><span class='line'>    <span class="n">ViewObject</span> <span class="n">vo</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="na">getViewObject</span><span class="o">();</span>
-</span><span class='line'>    <span class="n">vo</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">();</span>
-</span><span class='line'>    <span class="n">AdfFacesContext</span><span class="o">.</span><span class="na">getCurrentInstance</span><span class="o">().</span><span class="na">addPartialTarget</span><span class="o">(</span><span class="n">JSFUtils</span><span class="o">.</span><span class="na">findComponentInRoot</span><span class="o">(</span><span class="s">&quot;t1&quot;</span><span class="o">));</span>
-</span><span class='line'>   <span class="o">}</span>
-</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>每隔1分钟自动查询一次VO，并将更新后的内容返回到页面；</p>
-
-<ul>
-<li>这样打开两个页面之后，在其中一个页面更改内容并提交后，也会即时更新另外一个页面（另外一个客户端）；</li>
-</ul>
-
-
-<p>PS：此例子频繁地查询VO，在实际项目中会对服务器造成很大的压力，只为展示<code>&lt;af:poll&gt;</code>控件作用，不建议使用此方案。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[ADF学习总结(一)]]></title>
-    <link href="http://dengdezhao.cn/blog/2013-04-19/adfxue-xi-zong-jie-%5B%3F%5D/"/>
-    <updated>2013-04-19T14:15:00+08:00</updated>
-    <id>http://dengdezhao.cn/blog/2013-04-19/adfxue-xi-zong-jie-[?]</id>
-    <content type="html"><![CDATA[<h4>改变VO查询条件</h4>
-
-<ul>
-<li>使用WhereClause改变查询条件</li>
-<li>使用Criteria改变查询条件</li>
-<li>使用Bind Variables改变查询条件</li>
-</ul>
-
-
-<h4>使用WhereClause改变查询条件</h4>
-
-<ul>
-<li><strong>setWhereClause</strong></li>
-</ul>
-
-
-<p>通过VO对象的setWhereClause方法改变查询条件
-<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">DCIteratorBinding</span> <span class="n">dc</span> <span class="o">=</span> <span class="n">ADFUtils</span><span class="o">.</span><span class="na">findIterator</span><span class="o">(</span><span class="s">&quot;DepartmentsView1Iterator&quot;</span><span class="o">);</span>  <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
-</span><span class='line'><span class="n">ViewObject</span> <span class="n">vo</span> <span class="o">=</span> <span class="n">dc</span><span class="o">.</span><span class="na">getViewObject</span><span class="o">();</span>     <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
-</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">setWhereClause</span><span class="o">(</span><span class="s">&quot; 1=1 &quot;</span><span class="o">);</span>  <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
-</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">();</span>   <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<ul>
-<li><strong>addWhereClause</strong></li>
-</ul>
-
-
-<p>addWhereClause是在原有whereClause基础上添加新的查询条件；  <br/>
-跟setWhereClause替换原有whereClaue不同；</p>
-
-<h4>使用ViewCriteria改变查询条件</h4>
-
-<ul>
-<li><strong>使用定义好的ViewCriteria</strong></li>
-</ul>
-
-
-<p>事先在创建VO的时候，定义好几种Criteria：DepartmentsViewCriteria  <br/>
-<img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130419134617.jpg" alt="" /></p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">DCIteratorBinding</span> <span class="n">dc</span> <span class="o">=</span> <span class="n">ADFUtils</span><span class="o">.</span><span class="na">findIterator</span><span class="o">(</span><span class="s">&quot;DepartmentsView1Iterator&quot;</span><span class="o">);</span>      <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
-</span><span class='line'><span class="n">ViewObject</span> <span class="n">vo</span> <span class="o">=</span> <span class="n">dc</span><span class="o">.</span><span class="na">getViewObject</span><span class="o">();</span>         <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
-</span><span class='line'><span class="n">ViewCriteriaManager</span> <span class="n">vcm</span><span class="o">=</span><span class="n">vo</span><span class="o">.</span><span class="na">getViewCriteriaManager</span><span class="o">();</span>  <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
-</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">applyViewCriteria</span><span class="o">(</span><span class="n">vcm</span><span class="o">.</span><span class="na">getViewCriteria</span><span class="o">(</span><span class="s">&quot;DepartmentsViewCriteria&quot;</span><span class="o">));</span>   <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
-</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">();</span>   <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<ul>
-<li><strong>动态创建ViewCriteria</strong></li>
-</ul>
-
-
-<p>如果事先没有在VO中定义好ViewCriteria，也可以在MB代码中动态创建</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">DCIteratorBinding</span> <span class="n">dc</span> <span class="o">=</span> <span class="n">ADFUtils</span><span class="o">.</span><span class="na">findIterator</span><span class="o">(</span><span class="s">&quot;DepartmentsView1Iterator&quot;</span><span class="o">);</span>  <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
-</span><span class='line'><span class="n">ViewObject</span> <span class="n">vo</span> <span class="o">=</span> <span class="n">dc</span><span class="o">.</span><span class="na">getViewObject</span><span class="o">();</span>  <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
-</span><span class='line'><span class="n">ViewCriteria</span> <span class="n">vc</span> <span class="o">=</span> <span class="n">vo</span><span class="o">.</span><span class="na">createViewCriteria</span><span class="o">();</span>  <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
-</span><span class='line'><span class="n">ViewCriteriaRow</span> <span class="n">vcr</span> <span class="o">=</span> <span class="n">vc</span><span class="o">.</span><span class="na">createViewCriteriaRow</span><span class="o">();</span>  <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
-</span><span class='line'><span class="n">vcr</span><span class="o">.</span><span class="na">setConjunction</span><span class="o">(</span><span class="n">ViewCriteriaRow</span><span class="o">.</span><span class="na">VC_CONJ_AND</span><span class="o">);</span>  <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
-</span><span class='line'><span class="n">vcr</span><span class="o">.</span><span class="na">setAttribute</span><span class="o">(</span><span class="s">&quot;DepartmentId&quot;</span><span class="o">,</span> <span class="s">&quot;20&quot;</span><span class="o">);</span>  <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
-</span><span class='line'><span class="n">vc</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">vcr</span><span class="o">);</span>  <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
-</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">applyViewCriteria</span><span class="o">(</span><span class="n">vc</span><span class="o">);</span>  <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
-</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">();</span>      <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<h4>使用Bind Variables改变查询条件</h4>
-
-<ul>
-<li><strong>使用Bind Variables结合ViewCriteria</strong></li>
-</ul>
-
-
-<p>参照以上定义ViewCriteria时，使用Bind Variables。</p>
-
-<ul>
-<li><strong>使用Bind Variables结合SQL</strong></li>
-</ul>
-
-
-<p>在VO的SQL中使用Bind Variables；</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">SELECT</span> <span class="n">Departments</span><span class="p">.</span><span class="n">DEPARTMENT_ID</span><span class="p">,</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span>   <span class="n">Departments</span><span class="p">.</span><span class="n">DEPARTMENT_NAME</span><span class="p">,</span>
-</span><span class='line'>   <span class="n">Departments</span><span class="p">.</span><span class="n">MANAGER_ID</span><span class="p">,</span>
-</span><span class='line'>   <span class="n">Departments</span><span class="p">.</span><span class="n">LOCATION_ID</span>
-</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="k">FROM</span> <span class="n">DEPARTMENTS</span> <span class="n">Departments</span>
-</span><span class='line'><span class="k">WHERE</span> <span class="n">Departments</span><span class="p">.</span><span class="n">DEPARTMENT_ID</span> <span class="o">=</span> <span class="p">:</span><span class="n">varDeptId</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>创建Bind Variables：varDeptId  <br/>
-<img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130419140752.jpg" alt="" /></p>
-
-<p>在查询VO时，通过如下代码控制即可实现：</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">DCIteratorBinding</span> <span class="n">dc</span> <span class="o">=</span> <span class="n">ADFUtils</span><span class="o">.</span><span class="na">findIterator</span><span class="o">(</span><span class="s">&quot;DepartmentsView1Iterator&quot;</span><span class="o">);</span>  <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
-</span><span class='line'><span class="n">ViewObject</span> <span class="n">vo</span> <span class="o">=</span> <span class="n">dc</span><span class="o">.</span><span class="na">getViewObject</span><span class="o">();</span>  <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
-</span><span class='line'><span class="n">ViewCriteria</span> <span class="n">vc</span> <span class="o">=</span> <span class="n">vo</span><span class="o">.</span><span class="na">createViewCriteria</span><span class="o">();</span>  <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
-</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">setNamedWhereClauseParam</span><span class="o">(</span><span class="s">&quot;varDeptId&quot;</span><span class="o">,</span> <span class="mi">20</span><span class="o">);</span>  <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
-</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">();</span>        <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>以上几种方法均可实现改变VO查询条件进行动态查询，各有灵活度，目前没有比较三种方式带来的性能影响，可以根据个人习惯采用。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[getRowAtRangeIndex(int)方法的局限性]]></title>
-    <link href="http://dengdezhao.cn/blog/2013-04-16/getrowatrangeindex-int-fang-fa-de-ju-xian-xing/"/>
-    <updated>2013-04-16T14:42:00+08:00</updated>
-    <id>http://dengdezhao.cn/blog/2013-04-16/getrowatrangeindex-int-fang-fa-de-ju-xian-xing</id>
-    <content type="html"><![CDATA[<p>导出VO中的数据到EXCEL中时，循环VO中的Row，写入HSSFRow，是通过getRowAtRangeIndex(int)方法循环取Row，代码如下：  <br/>
-<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'> <span class="n">ViewObject</span> <span class="n">vo8</span><span class="o">=</span><span class="n">am</span><span class="o">.</span><span class="na">findViewObject</span><span class="o">(</span><span class="s">&quot;ChReport1VO1&quot;</span><span class="o">);</span>
-</span><span class='line'> <span class="k">if</span><span class="o">(</span><span class="n">vo8</span><span class="o">!=</span><span class="kc">null</span><span class="o">)</span>
-</span><span class='line'> <span class="o">{&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span>  <span class="kt">int</span> <span class="n">rowcount8</span><span class="o">=</span><span class="n">vo8</span><span class="o">.</span><span class="na">getRowCount</span><span class="o">();</span>
-</span><span class='line'>  <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">rowcount8</span><span class="o">;</span><span class="n">i</span><span class="o">++)</span>
-</span><span class='line'>  <span class="o">{</span>
-</span><span class='line'>       <span class="n">Row</span> <span class="n">vo_row8</span><span class="o">=</span><span class="n">vo8</span><span class="o">.</span><span class="na">getRowAtRangeIndex</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
-</span><span class='line'>       <span class="c1">//...TODO</span>
-</span><span class='line'>  <span class="o">}</span>
-</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span> <span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>这样如果VO里有300条数据，但是pageRange设置为100，这里其实只能取到第一页的100条数据，想要导出所有300条数据则需要一页一页导出，很麻烦。于是考虑不用getRowAtRangeIndex方法取ROW数据,改用RowSetIterator。</p>
 
 <p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -277,63 +48,602 @@
 <span class='line-number'>13</span>
 <span class='line-number'>14</span>
 <span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">ViewObject</span> <span class="n">vo8</span><span class="o">=</span><span class="n">am</span><span class="o">.</span><span class="na">findViewObject</span><span class="o">(</span><span class="s">&quot;ChReport1VO1&quot;</span><span class="o">);</span>
-</span><span class='line'><span class="k">if</span><span class="o">(</span><span class="n">vo8</span><span class="o">!=</span><span class="kc">null</span><span class="o">)</span>
-</span><span class='line'><span class="o">{&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span> <span class="kt">int</span> <span class="n">rowcount8</span><span class="o">=</span><span class="n">vo8</span><span class="o">.</span><span class="na">getRowCount</span><span class="o">();</span>
-</span><span class='line'> <span class="n">RowSetIterator</span> <span class="n">rowSetIter</span><span class="o">=</span><span class="n">vo8</span><span class="o">.</span><span class="na">createRowSetIterator</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="kn">package</span> <span class="n">cn</span><span class="o">.</span><span class="na">dengdezhao</span><span class="o">.</span><span class="na">taglib</span><span class="o">;&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
 </span><span class='line'>
-</span><span class='line'> <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">rowcount8</span><span class="o">;</span><span class="n">i</span><span class="o">++)</span>
-</span><span class='line'> <span class="o">{</span>
-</span><span class='line'>       <span class="n">Row</span> <span class="n">vo_row8</span><span class="o">=</span><span class="n">rowSetIter</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
-</span><span class='line'>       <span class="c1">//...TODO</span>
-</span><span class='line'> <span class="o">}</span>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SplitString</span> <span class="o">{&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kd">public</span> <span class="kd">static</span> <span class="n">String</span> <span class="n">getString</span><span class="o">(</span><span class="n">String</span> <span class="n">string</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">String</span><span class="o">[]</span> <span class="n">strings</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="na">split</span><span class="o">(</span><span class="s">&quot;:&quot;</span><span class="o">,</span> <span class="mi">3</span><span class="o">);</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">strings</span><span class="o">.</span><span class="na">length</span> <span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="mi">2</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">strings</span><span class="o">[</span><span class="mi">2</span><span class="o">];</span>
+</span><span class='line'>    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="s">&quot;&quot;</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;}&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<ul>
+<li>创建taglib描述文件splitString.tld</li>
+</ul>
+
+
+<p>New -> From Gallery -> Web Tier -> JSP -> JSP Tag Library</p>
+
+<p>类型为Deployable 文件内容如下：</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;</span><span class="ni">&amp;lt;</span>?xml version = &#39;1.0&#39; encoding = &#39;UTF-8&#39;?&gt;
+</span><span class='line'><span class="ni">&amp;lt;</span>taglib xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;<span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;pre&gt;&lt;code&gt;</span>    xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd&quot;
+</span><span class='line'>    version=&quot;2.1&quot; xmlns=&quot;http://java.sun.com/xml/ns/javaee&quot;<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>  <span class="nt">&lt;description&gt;</span>split String<span class="nt">&lt;/description&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;display-name&gt;</span>splitString<span class="nt">&lt;/display-name&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;tlib-version&gt;</span>1.0<span class="nt">&lt;/tlib-version&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;short-name&gt;</span>splitString<span class="nt">&lt;/short-name&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;uri&gt;</span>http://www.dengdezhao.cn/string<span class="nt">&lt;/uri&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;function&gt;&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;pre&gt;&lt;code&gt;</span><span class="ni">&amp;lt;</span>display-name<span class="ni">&amp;gt;</span>getString<span class="ni">&amp;lt;</span>/display-name<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>name<span class="ni">&amp;gt;</span>getString<span class="ni">&amp;lt;</span>/name<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>function-class<span class="ni">&amp;gt;</span>cn.dengdezhao.taglib.SplitString<span class="ni">&amp;lt;</span>/function-class<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>function-signature<span class="ni">&amp;gt;</span>java.lang.String getString(java.lang.String)<span class="ni">&amp;lt;</span>/function-signature<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>  <span class="nt">&lt;/function&gt;</span>
+</span><span class='line'><span class="nt">&lt;/taglib&gt;&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<ul>
+<li>将该工程发布为jar包。即完成taglib的开发工作。</li>
+</ul>
+
+
+<h4>在工程中应用该taglib</h4>
+
+<ul>
+<li>创建测试工程ViewController</li>
+</ul>
+
+
+<p>右键工程属性 -> JSP Tag Libraries -> Add</p>
+
+<p>将之前发布的Jar包添加进来。</p>
+
+<ul>
+<li>创建测试页面testTaglib.jspx</li>
+</ul>
+
+
+<p>内容如下 ：</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='jsp'><span class='line'><span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;</span><span class="ni">&amp;lt;</span>?xml version=&#39;1.0&#39; encoding=&#39;UTF-8&#39;?&gt;
+</span><span class='line'><span class="ni">&amp;lt;</span>jsp:root xmlns:jsp=&quot;http://java.sun.com/JSP/Page&quot; version=&quot;2.1&quot; xmlns:f=&quot;http://java.sun.com/jsf/core&quot; xmlns:myTag=&quot;http://www.dengdezhao.cn/string&quot;<span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;pre&gt;&lt;code&gt;</span>      xmlns:af=&quot;http://xmlns.oracle.com/adf/faces/rich&quot;<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>jsp:directive.page contentType=&quot;text/html;charset=UTF-8&quot;/<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>f:view<span class="ni">&amp;gt;</span>
+</span><span class='line'>    <span class="ni">&amp;lt;</span>af:document title=&quot;testTaglib.jspx&quot; id=&quot;d1&quot;<span class="ni">&amp;gt;</span>
+</span><span class='line'>        <span class="ni">&amp;lt;</span>af:form id=&quot;f1&quot;<span class="ni">&amp;gt;</span>
+</span><span class='line'>        <span class="ni">&amp;lt;</span>af:outputText id=&quot;ot1&quot; value=&quot;#{myTag:getString(&#39;aaa:ddd:ccc&#39;)}&quot;/<span class="ni">&amp;gt;</span>
+</span><span class='line'>        <span class="ni">&amp;lt;</span>/af:form<span class="ni">&amp;gt;</span>
+</span><span class='line'>    <span class="ni">&amp;lt;</span>/af:document<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="ni">&amp;lt;</span>/f:view<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;</span><span class="ni">&amp;lt;</span>/jsp:root&gt;<span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[如何在页面碎片加载前调用逻辑]]></title>
+    <link href="http://www.dengdezhao.cn/blog/2013-09-23/ru-he-zai-ye-mian-sui-pian-jia-zai-qian-diao-yong-luo-ji/"/>
+    <updated>2013-09-23T18:32:00+08:00</updated>
+    <id>http://www.dengdezhao.cn/blog/2013-09-23/ru-he-zai-ye-mian-sui-pian-jia-zai-qian-diao-yong-luo-ji</id>
+    <content type="html"><![CDATA[<ul>
+<li><p>平台:Jdeveloper 12c</p></li>
+<li><p>需求：在JSPX页面加载前如果需要调用逻辑可以通过重写PhaseListener实现，如果在JSFF页面碎片加载前（也即是region加载前）调用应该如何实现？</p></li>
+</ul>
+
+
+<p><strong>实现方法</strong></p>
+
+<p>重写RegionController方法可以达到以上需求。</p>
+
+<ul>
+<li>重写 RegionController类，在refreshRegion方法中加入需要调用的逻辑即可在页面碎片加载之前调用。</li>
+</ul>
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">package</span> <span class="n">cn</span><span class="o">.</span><span class="na">dengdezhao</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">oracle.adf.model.RegionContext</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">oracle.adf.model.RegionController</span><span class="o">;</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">myController</span> <span class="kd">implements</span> <span class="n">RegionController</span> <span class="o">{&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kd">public</span> <span class="n">myController</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kd">super</span><span class="o">();</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="nd">@Override</span>
+</span><span class='line'><span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">refreshRegion</span><span class="o">(</span><span class="n">RegionContext</span> <span class="n">regionContext</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="c1">// TODO Implement this method</span>
+</span><span class='line'>    <span class="kt">int</span> <span class="n">flag</span><span class="o">=</span><span class="n">regionContext</span><span class="o">.</span><span class="na">getRefreshFlag</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;refreshRegion...&quot;</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="nd">@Override</span>
+</span><span class='line'><span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">validateRegion</span><span class="o">(</span><span class="n">RegionContext</span> <span class="n">regionContext</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="c1">// TODO Implement this method</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="nd">@Override</span>
+</span><span class='line'><span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isRegionViewable</span><span class="o">(</span><span class="n">RegionContext</span> <span class="n">regionContext</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="c1">// TODO Implement this method</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="nd">@Override</span>
+</span><span class='line'><span class="kd">public</span> <span class="n">String</span> <span class="nf">getName</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="c1">// TODO Implement this method</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
 </span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
 </span><span class='line'>
 </span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;}</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
-<p>getRowAtRangeIndex方法只能通过index取出Range中的数据,但是RowSetIterator则是对VO中所有RowSet遍历。</p>
+<ul>
+<li>配置页面碎片pagedef页</li>
+</ul>
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="ni">&amp;lt;</span>?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+</span><span class='line'><span class="ni">&amp;lt;</span>pageDefinition xmlns=&quot;http://xmlns.oracle.com/adfm/uimodel&quot; version=&quot;12.1.2.66.68&quot; id=&quot;iteratorInputPageDef&quot;<span class="nt">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;pre&gt;&lt;code&gt;</span>            ControllerClass=&quot;cn.dengdezhao.myController&quot;
+</span><span class='line'>            Package=&quot;cn.dengdezhao.pageDefs&quot;<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>  <span class="nt">&lt;parameters/&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;executables&gt;&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;pre&gt;&lt;code&gt;</span><span class="ni">&amp;lt;</span>variableIterator id=&quot;variables&quot;/<span class="ni">&amp;gt;</span>
+</span><span class='line'><span class="nt">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>  <span class="nt">&lt;/executables&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;bindings/&gt;</span>
+</span><span class='line'><span class="nt">&lt;/pageDefinition&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><strong>结论</strong></p>
+
+<p>通过重写regionController类可以实现在页面碎片加载前调用POPUP提示等之类的需求。</p>
 ]]></content>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[通过Java代码刷新绑定控件]]></title>
-    <link href="http://dengdezhao.cn/blog/2012-06-26/%E9%80%9A%E8%BF%87java%E4%BB%A3%E7%A0%81%E5%88%B7%E6%96%B0%E7%BB%91%E5%AE%9A%E6%8E%A7%E4%BB%B6/"/>
-    <updated>2012-06-26T00:00:00+08:00</updated>
-    <id>http://dengdezhao.cn/blog/2012-06-26/通过java代码刷新绑定控件</id>
-    <content type="html"><![CDATA[<p>partialTrigger属性可以刷新控件，通过以下代码也可以刷新绑定的控件</p>
+    <title type="html"><![CDATA[控件af:iterator以及af:forEach的对比]]></title>
+    <link href="http://www.dengdezhao.cn/blog/2013-09-23/kong-jian-af-iteratoryi-ji-af-foreachde-dui-bi/"/>
+    <updated>2013-09-23T18:13:00+08:00</updated>
+    <id>http://www.dengdezhao.cn/blog/2013-09-23/kong-jian-af-iteratoryi-ji-af-foreachde-dui-bi</id>
+    <content type="html"><![CDATA[<ul>
+<li><p>平台:Jdeveloper 12c</p></li>
+<li><p>需求：对Collection类型遍历。MB中定义两个List，如何利用iterator&amp;foreach控件将List内容显示到页面。</p></li>
+</ul>
 
 
+<p><strong>页面如下</strong></p>
 
+<p>分别绑定iterBean中的两个集合类型变量，将其中的值取出来。</p>
 
-<p><span style="color: #000000;">AdfFacesContext.getCurrentInstance().addPartialTarget("绑定控件的instace名或者是UIComponent对象")</span></p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="nl">af:</span><span class="n">iterator</span> <span class="n">id</span><span class="o">=</span><span class="s">&quot;i1&quot;</span> <span class="n">var</span><span class="o">=</span><span class="s">&quot;each&quot;</span> <span class="n">value</span><span class="o">=</span><span class="s">&quot;#{iterBean.list}&quot;</span> <span class="n">varStatus</span><span class="o">=</span><span class="s">&quot;row&quot;</span><span class="o">&gt;&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;&amp;</span><span class="n">lt</span><span class="o">;</span><span class="nl">af:</span><span class="n">panelBox</span> <span class="n">text</span><span class="o">=</span><span class="s">&quot;#{each}&quot;</span> <span class="n">id</span><span class="o">=</span><span class="s">&quot;pb1&quot;</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="nl">f:</span><span class="n">facet</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;toolbar&quot;</span><span class="o">/&amp;</span><span class="n">gt</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="nl">af:</span><span class="n">inputText</span> <span class="n">label</span><span class="o">=</span><span class="s">&quot;Values&quot;</span> <span class="n">id</span><span class="o">=</span><span class="s">&quot;it1&quot;</span> <span class="n">value</span><span class="o">=</span><span class="s">&quot;#{iterBean.values[row.index]}&quot;</span><span class="o">/&amp;</span><span class="n">gt</span><span class="o">;</span>
+</span><span class='line'><span class="o">&amp;</span><span class="n">lt</span><span class="o">;/</span><span class="nl">af:</span><span class="n">panelBox</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;&amp;</span><span class="n">lt</span><span class="o">;/</span><span class="nl">af:</span><span class="n">iterator</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="nl">af:</span><span class="n">forEach</span> <span class="n">items</span><span class="o">=</span><span class="s">&quot;#{iterBean.testList}&quot;</span>  <span class="n">var</span><span class="o">=</span><span class="s">&quot;each&quot;</span> <span class="n">varStatus</span><span class="o">=</span><span class="s">&quot;row&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="nl">af:</span><span class="n">panelBox</span> <span class="n">text</span><span class="o">=</span><span class="s">&quot;#{each.title}&quot;</span> <span class="n">id</span><span class="o">=</span><span class="s">&quot;pb2&quot;</span><span class="o">&gt;&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;&amp;</span><span class="n">lt</span><span class="o">;</span><span class="nl">af:</span><span class="n">outputText</span> <span class="n">value</span><span class="o">=</span><span class="s">&quot;#{row.index} #{each.title}&quot;</span> <span class="n">id</span><span class="o">=</span><span class="s">&quot;ot1&quot;</span><span class="o">/&amp;</span><span class="n">gt</span><span class="o">;</span>
+</span><span class='line'><span class="o">&amp;</span><span class="n">lt</span><span class="o">;/</span><span class="nl">af:</span><span class="n">panelBox</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;&amp;</span><span class="n">lt</span><span class="o">;/</span><span class="nl">af:</span><span class="n">forEach</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
+<p><strong>BackingBean内容如下：</strong></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">package</span> <span class="n">cn</span><span class="o">.</span><span class="na">dengdezhao</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">java.util.ArrayList</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">IteratorBean</span> <span class="o">{&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">List</span> <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">();</span>
+</span><span class='line'><span class="n">String</span><span class="o">[]</span> <span class="n">values</span><span class="o">=</span><span class="k">new</span> <span class="n">String</span><span class="o">[]{</span><span class="s">&quot;1&quot;</span><span class="o">,</span><span class="s">&quot;2&quot;</span><span class="o">,</span><span class="s">&quot;3&quot;</span><span class="o">};</span>
+</span><span class='line'><span class="n">List</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">contentList</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">testList</span><span class="o">=</span><span class="k">new</span> <span class="n">ArrayList</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">contentList</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;();</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">setTestList</span><span class="o">(</span><span class="n">List</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">contentList</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">testList</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;setTestList...&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="k">this</span><span class="o">.</span><span class="na">testList</span> <span class="o">=</span> <span class="n">testList</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="kd">public</span> <span class="n">List</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">contentList</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">getTestList</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;getTestList...&quot;</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="n">testList</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">setValues</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">values</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">this</span><span class="o">.</span><span class="na">values</span> <span class="o">=</span> <span class="n">values</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="kd">public</span> <span class="n">String</span><span class="o">[]</span> <span class="nf">getValues</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">values</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="kd">public</span> <span class="nf">IteratorBean</span><span class="o">(){</span>
+</span><span class='line'>    <span class="n">list</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">&quot;A&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">list</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">&quot;B&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">list</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">&quot;C&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">contentList</span> <span class="n">a</span><span class="o">=</span><span class="k">new</span> <span class="n">contentList</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">a</span><span class="o">.</span><span class="na">setTitle</span><span class="o">(</span><span class="s">&quot;aaa&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">testList</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">a</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">contentList</span> <span class="n">b</span><span class="o">=</span><span class="k">new</span> <span class="n">contentList</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">b</span><span class="o">.</span><span class="na">setTitle</span><span class="o">(</span><span class="s">&quot;bbb&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">testList</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">b</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">contentList</span> <span class="n">c</span><span class="o">=</span><span class="k">new</span> <span class="n">contentList</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">c</span><span class="o">.</span><span class="na">setTitle</span><span class="o">(</span><span class="s">&quot;ccc&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">testList</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">c</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;init...&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">setList</span><span class="o">(</span><span class="n">List</span> <span class="n">list</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;setList ...&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="k">this</span><span class="o">.</span><span class="na">list</span> <span class="o">=</span> <span class="n">list</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="kd">public</span> <span class="n">List</span> <span class="nf">getList</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;getList...&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">list</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;}&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">contentList</span> <span class="o">{&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kd">private</span> <span class="n">String</span> <span class="n">title</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">setTitle</span><span class="o">(</span><span class="n">String</span> <span class="n">title</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">this</span><span class="o">.</span><span class="na">title</span> <span class="o">=</span> <span class="n">title</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="n">String</span> <span class="nf">getTitle</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">title</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><strong>测试结果</strong></p>
+
+<p>&lt;af:iterator>只调用了一次get方法；
+&lt;af:forEach>却调用了9次get方法（根据容器中数量递增）；</p>
+
+<p><strong>结论</strong></p>
+
+<p>&lt;af:iterator>跟&lt;af:forEach>控件都可以对容器类型遍历，只不过iterator是一次性取出容器内容，而forEach是多次取出。两控件都支持下标定位。</p>
 ]]></content>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[表内的checkbox当数据量大时发现部分行勾选不中]]></title>
-    <link href="http://dengdezhao.cn/blog/2012-06-26/%E8%A1%A8%E5%86%85%E7%9A%84checkbox%E5%BD%93%E6%95%B0%E6%8D%AE%E9%87%8F%E5%A4%A7%E6%97%B6%E5%8F%91%E7%8E%B0%E9%83%A8%E5%88%86%E8%A1%8C%E5%8B%BE%E9%80%89%E4%B8%8D%E4%B8%AD/"/>
-    <updated>2012-06-26T00:00:00+08:00</updated>
-    <id>http://dengdezhao.cn/blog/2012-06-26/表内的checkbox当数据量大时发现部分行勾选不中</id>
-    <content type="html"><![CDATA[<p>测试发现，当数据只有25行的时候，都可以正常勾选，超过25行的数据，总是勾选不中。</p>
+    <title type="html"><![CDATA[如何获取web.xml中的context-param参数]]></title>
+    <link href="http://www.dengdezhao.cn/blog/2013-09-04/ru-he-huo-qu-web-dot-xmlzhong-de-context-paramcan-shu/"/>
+    <updated>2013-09-04T19:30:00+08:00</updated>
+    <id>http://www.dengdezhao.cn/blog/2013-09-04/ru-he-huo-qu-web-dot-xmlzhong-de-context-paramcan-shu</id>
+    <content type="html"><![CDATA[<p><strong>通过EL表达试获取</strong></p>
 
+<p>以web.xml中的<context-param>参数：javax.faces.FACELETS_VIEW_MAPPINGS为例,
+可通过以下EL获取。  <br/>
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'>  <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
+</span><span class='line'><span class="n">$</span><span class="o">{</span><span class="n">initParam</span><span class="o">[</span><span class="err">&#39;</span><span class="n">javax</span><span class="o">.</span><span class="na">faces</span><span class="o">.</span><span class="na">FACELETS_VIEW_MAPPINGS</span><span class="err">&#39;</span><span class="o">]}</span>  <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
+<p>如果参数名称很简单，比如：testParameter，EL表达式也可以写成以下方式：   <br/>
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'>  <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
+</span><span class='line'><span class="n">$</span><span class="o">{</span><span class="n">initParam</span><span class="o">.</span><span class="na">testParameter</span><span class="o">}</span>  <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
+<p><strong>通过JAVA代码获取</strong></p>
 
-<p>问题产生原因：<br />
-由于自定制的checkbox是设置了immediate=true 即时给数据行的checkbox字段赋值。<br />
-VO的rangeSize 默认是25，<br />
-因此导致25条数据内是可选。25条之外的数据初始时没有取出来，因此对这些没取的数据行设置checkbox自然就不生效了（展现出来就是checkbox勾选不中）</p>
+<p>如果需要在MB方法中获取该参数值，可以参照以下代码：
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kd">public</span> <span class="n">String</span> <span class="n">action</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">FacesContext</span> <span class="n">fctx</span><span class="o">=</span><span class="n">FacesContext</span><span class="o">.</span><span class="na">getCurrentInstance</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">ExternalContext</span> <span class="n">ec</span><span class="o">=</span><span class="n">fctx</span><span class="o">.</span><span class="na">getExternalContext</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">ServletContext</span> <span class="n">servletContext</span><span class="o">=(</span><span class="n">ServletContext</span><span class="o">)</span><span class="n">ec</span><span class="o">.</span><span class="na">getContext</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">String</span> <span class="n">value</span><span class="o">=</span><span class="n">servletContext</span><span class="o">.</span><span class="na">getInitParameter</span><span class="o">(</span><span class="s">&quot;javax.faces.FACELETS_VIEW_MAPPINGS&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">value</span><span class="o">);</span>
+</span><span class='line'>    <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[从BackingBean中调用不带fragments的taskflow]]></title>
+    <link href="http://www.dengdezhao.cn/blog/2013-06-08/cong-backingbeanzhong-diao-yong-bu-dai-fragmentsde-taskflow/"/>
+    <updated>2013-06-08T16:11:00+08:00</updated>
+    <id>http://www.dengdezhao.cn/blog/2013-06-08/cong-backingbeanzhong-diao-yong-bu-dai-fragmentsde-taskflow</id>
+    <content type="html"><![CDATA[<p>有时候需要在backingBean中调用某一taskflow, 可以使用以下代码调用。不过只适用于可单独运行的taskflow，含有page fragments的taskflow不在此范围。</p>
 
-
-
-
-<p>解决方案：<br />
-修正VO的rangeSize为-1，查询全部，即可解决此问题。</p>
-
+<p>代码如下：  <br/>
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kd">public</span> <span class="n">String</span> <span class="n">callTaskFlow</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">FacesContext</span> <span class="n">fctx</span> <span class="o">=</span> <span class="n">FacesContext</span><span class="o">.</span><span class="na">getCurrentInstance</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">ControllerContext</span> <span class="n">cc</span> <span class="o">=</span> <span class="n">ControllerContext</span><span class="o">.</span><span class="na">getInstance</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">String</span> <span class="n">taskflowId</span> <span class="o">=</span> <span class="s">&quot;btf_task&quot;</span><span class="o">;</span>
+</span><span class='line'>    <span class="n">String</span> <span class="n">taskflowDocument</span> <span class="o">=</span> <span class="s">&quot;/WEB-INF/btf_task.xml&quot;</span><span class="o">;</span>
+</span><span class='line'>    <span class="n">Map</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">String</span><span class="o">,</span> <span class="n">Object</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">params</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">String</span><span class="o">,</span> <span class="n">Object</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;();</span>
+</span><span class='line'>    <span class="n">TaskFlowId</span> <span class="n">tid</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TaskFlowId</span><span class="o">(</span><span class="n">taskflowDocument</span><span class="o">,</span> <span class="n">taskflowId</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">String</span> <span class="n">taskflowURL</span> <span class="o">=</span> <span class="n">cc</span><span class="o">.</span><span class="na">getTaskFlowURL</span><span class="o">(</span><span class="kc">false</span><span class="o">,</span> <span class="n">tid</span><span class="o">,</span> <span class="n">params</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">ExtendedRenderKitService</span> <span class="n">erks</span> <span class="o">=</span>
+</span><span class='line'>        <span class="n">Service</span><span class="o">.</span><span class="na">getRenderKitService</span><span class="o">(</span><span class="n">fctx</span><span class="o">,</span> <span class="n">ExtendedRenderKitService</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">StringBuilder</span> <span class="n">sb</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuilder</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">&quot;window.open(\&quot;&quot;</span> <span class="o">+</span> <span class="n">taskflowURL</span> <span class="o">+</span>
+</span><span class='line'>              <span class="s">&quot;\&quot;&quot;</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="s">&quot;,\&quot;_self\&quot;);&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">erks</span><span class="o">.</span><span class="na">addScript</span><span class="o">(</span><span class="n">FacesContext</span><span class="o">.</span><span class="na">getCurrentInstance</span><span class="o">(),</span> <span class="n">sb</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
+</span><span class='line'>    <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 ]]></content>
   </entry>
   

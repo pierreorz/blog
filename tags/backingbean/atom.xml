@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: BackingBean | 邓德昭的技术博客]]></title>
-  <link href="http://dengdezhao.cn/tags/backingbean/atom.xml" rel="self"/>
-  <link href="http://dengdezhao.cn/"/>
-  <updated>2013-05-09T15:25:51+08:00</updated>
-  <id>http://dengdezhao.cn/</id>
+  <link href="http://www.dengdezhao.cn/tags/backingbean/atom.xml" rel="self"/>
+  <link href="http://www.dengdezhao.cn/"/>
+  <updated>2014-05-09T23:06:22+08:00</updated>
+  <id>http://www.dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
     
@@ -14,10 +14,64 @@
 
   
   <entry>
+    <title type="html"><![CDATA[从BackingBean中调用不带fragments的taskflow]]></title>
+    <link href="http://www.dengdezhao.cn/blog/2013-06-08/cong-backingbeanzhong-diao-yong-bu-dai-fragmentsde-taskflow/"/>
+    <updated>2013-06-08T16:11:00+08:00</updated>
+    <id>http://www.dengdezhao.cn/blog/2013-06-08/cong-backingbeanzhong-diao-yong-bu-dai-fragmentsde-taskflow</id>
+    <content type="html"><![CDATA[<p>有时候需要在backingBean中调用某一taskflow, 可以使用以下代码调用。不过只适用于可单独运行的taskflow，含有page fragments的taskflow不在此范围。</p>
+
+<p>代码如下：  <br/>
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kd">public</span> <span class="n">String</span> <span class="n">callTaskFlow</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">FacesContext</span> <span class="n">fctx</span> <span class="o">=</span> <span class="n">FacesContext</span><span class="o">.</span><span class="na">getCurrentInstance</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">ControllerContext</span> <span class="n">cc</span> <span class="o">=</span> <span class="n">ControllerContext</span><span class="o">.</span><span class="na">getInstance</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">String</span> <span class="n">taskflowId</span> <span class="o">=</span> <span class="s">&quot;btf_task&quot;</span><span class="o">;</span>
+</span><span class='line'>    <span class="n">String</span> <span class="n">taskflowDocument</span> <span class="o">=</span> <span class="s">&quot;/WEB-INF/btf_task.xml&quot;</span><span class="o">;</span>
+</span><span class='line'>    <span class="n">Map</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">String</span><span class="o">,</span> <span class="n">Object</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">params</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">String</span><span class="o">,</span> <span class="n">Object</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;();</span>
+</span><span class='line'>    <span class="n">TaskFlowId</span> <span class="n">tid</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TaskFlowId</span><span class="o">(</span><span class="n">taskflowDocument</span><span class="o">,</span> <span class="n">taskflowId</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">String</span> <span class="n">taskflowURL</span> <span class="o">=</span> <span class="n">cc</span><span class="o">.</span><span class="na">getTaskFlowURL</span><span class="o">(</span><span class="kc">false</span><span class="o">,</span> <span class="n">tid</span><span class="o">,</span> <span class="n">params</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">ExtendedRenderKitService</span> <span class="n">erks</span> <span class="o">=</span>
+</span><span class='line'>        <span class="n">Service</span><span class="o">.</span><span class="na">getRenderKitService</span><span class="o">(</span><span class="n">fctx</span><span class="o">,</span> <span class="n">ExtendedRenderKitService</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">StringBuilder</span> <span class="n">sb</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuilder</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">&quot;window.open(\&quot;&quot;</span> <span class="o">+</span> <span class="n">taskflowURL</span> <span class="o">+</span>
+</span><span class='line'>              <span class="s">&quot;\&quot;&quot;</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="s">&quot;,\&quot;_self\&quot;);&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">erks</span><span class="o">.</span><span class="na">addScript</span><span class="o">(</span><span class="n">FacesContext</span><span class="o">.</span><span class="na">getCurrentInstance</span><span class="o">(),</span> <span class="n">sb</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
+</span><span class='line'>    <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[ADF应用中如何在BackingBean中调用javascript控制UI]]></title>
-    <link href="http://dengdezhao.cn/blog/2011-06-29/adf%E5%BA%94%E7%94%A8%E4%B8%AD%E5%A6%82%E4%BD%95%E5%9C%A8backingbean%E4%B8%AD%E8%B0%83%E7%94%A8javascript%E6%8E%A7%E5%88%B6ui/"/>
+    <link href="http://www.dengdezhao.cn/blog/2011-06-29/adf%E5%BA%94%E7%94%A8%E4%B8%AD%E5%A6%82%E4%BD%95%E5%9C%A8backingbean%E4%B8%AD%E8%B0%83%E7%94%A8javascript%E6%8E%A7%E5%88%B6ui/"/>
     <updated>2011-06-29T00:00:00+08:00</updated>
-    <id>http://dengdezhao.cn/blog/2011-06-29/adf应用中如何在backingbean中调用javascript控制ui</id>
+    <id>http://www.dengdezhao.cn/blog/2011-06-29/adf应用中如何在backingbean中调用javascript控制ui</id>
     <content type="html"><![CDATA[<p>当你需要在ManagedBean中控制页面控制的属性的时候，可以使用以下代码调用javascript实现。</p>
 
 

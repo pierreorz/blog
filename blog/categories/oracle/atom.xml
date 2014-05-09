@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Oracle | 邓德昭的技术博客]]></title>
-  <link href="http://dengdezhao.cn/blog/categories/oracle/atom.xml" rel="self"/>
-  <link href="http://dengdezhao.cn/"/>
-  <updated>2013-05-09T15:25:51+08:00</updated>
-  <id>http://dengdezhao.cn/</id>
+  <link href="http://www.dengdezhao.cn/blog/categories/oracle/atom.xml" rel="self"/>
+  <link href="http://www.dengdezhao.cn/"/>
+  <updated>2014-05-09T23:06:22+08:00</updated>
+  <id>http://www.dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
     
@@ -14,10 +14,79 @@
 
   
   <entry>
+    <title type="html"><![CDATA[由意外断电导致oracle11g启动不起来的问题解决]]></title>
+    <link href="http://www.dengdezhao.cn/blog/2013-11-09/you-yi-wai-duan-dian-dao-zhi-oracle11gqi-dong-bu-qi-lai-de-wen-ti-jie-jue/"/>
+    <updated>2013-11-09T19:24:00+08:00</updated>
+    <id>http://www.dengdezhao.cn/blog/2013-11-09/you-yi-wai-duan-dian-dao-zhi-oracle11gqi-dong-bu-qi-lai-de-wen-ti-jie-jue</id>
+    <content type="html"><![CDATA[<ul>
+<li><p>平台: linux + oracle 11g</p></li>
+<li><p>故障: 意外断电之后，监听启动不了</p></li>
+</ul>
+
+
+<h4>解决方法</h4>
+
+<p>执行<code>lsnrctrl start</code>命令时报错误代码如下：</p>
+
+<p><code>TNS-12537</code>  <br/>
+<code>TNS-12560</code>  <br/>
+<code>TNS-00507</code>  <br/>
+<code>Linux Error:29</code></p>
+
+<ul>
+<li><p>检查/etc/hosts文件，没有发现异常。</p></li>
+<li><p>因为未改动任何配置文件，所以基本可以确定是断电造成文件损坏而引起。于是使用<code>relink all</code>看看能否解决该问题。
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">cd</span> <span class="n">$ORACLE_HOME</span><span class="o">/</span><span class="n">bin</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">relink</span> <span class="n">all</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+执行<code>relink all</code>命令之后，再执行<code>lsnrctrl start</code>时，发现不报之前的错误了，出现了新的错误：
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">symbol</span> <span class="n">lookup</span> <span class="nl">error:</span> <span class="n">$ORACLE_HOME</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">libclntsh</span><span class="o">.</span><span class="na">so</span><span class="o">.</span><span class="mf">11.1</span>  <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
+</span><span class='line'><span class="o">:</span> <span class="n">undefined</span> <span class="nl">symbol:</span> <span class="n">nnftboot</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p></li>
+<li><p>看来是这个libclntsh.so.11.1出了问题，于是尝试去下载该文件替换掉。</p></li>
+<li><p>从RPM search网站上下载到oracle-instance-client的RPM文件到本地。</p></li>
+<li><p>使用rpm2cpio命令抽取出里面的libclntsh.so.11.1</p></li>
+</ul>
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">rpm2cpio</span> <span class="n">oracle</span><span class="o">-</span><span class="n">instance</span><span class="o">-</span><span class="n">client</span><span class="o">-</span><span class="n">xxx</span><span class="o">.</span><span class="na">rpm</span> <span class="o">|</span> <span class="n">cpio</span> <span class="o">-</span><span class="n">div</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<ul>
+<li>将得到的libclntsh.so.11.1文件替换掉$ORACLE_HOME/lib下的重名文件即可。</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[ORA-1222：TNS:no such protocol adapter  问题解决]]></title>
-    <link href="http://dengdezhao.cn/blog/2012-12-03/ora-1222%EF%BC%9Atnsno-such-protocol-adapter-%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
+    <link href="http://www.dengdezhao.cn/blog/2012-12-03/ora-1222%EF%BC%9Atnsno-such-protocol-adapter-%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
     <updated>2012-12-03T00:00:00+08:00</updated>
-    <id>http://dengdezhao.cn/blog/2012-12-03/ora-1222：tnsno-such-protocol-adapter-问题解决</id>
+    <id>http://www.dengdezhao.cn/blog/2012-12-03/ora-1222：tnsno-such-protocol-adapter-问题解决</id>
     <content type="html"><![CDATA[<p>机器上安装的是instantOracleclient-basic-win32-11.2.0.1.0客户端，本来使用PLSQL developer是可以正常连接数据库的；</p>
 
 
@@ -38,7 +107,7 @@
 
 
 
-<p>﻿<a rel="attachment wp-att-188" href="http://www.dengdezhao.cn/wp-content/uploads/2012/12/p1-300x249.jpg"><img class="alignnone size-medium wp-image-188" title="p1" src="http://www.dengdezhao.cn/wp-content/uploads/2012/12/p1-300x249.jpg" alt="" width="300" height="249" /></a></p>
+<p>﻿<a rel="attachment wp-att-188" href="../../../wp-content/uploads/2012/12/p1-300x249.jpg"><img class="alignnone size-medium wp-image-188" title="p1" src="../../../wp-content/uploads/2012/12/p1-300x249.jpg" alt="" width="300" height="249" /></a></p>
 
 
 
@@ -48,7 +117,7 @@
 
 
 
-<p><strong><a rel="attachment wp-att-189" href="http://www.dengdezhao.cn/wp-content/uploads/2012/12/p2-276x300.jpg"><img class="alignnone size-medium wp-image-189" title="p2" src="http://www.dengdezhao.cn/wp-content/uploads/2012/12/p2-276x300.jpg" alt="" width="276" height="300" /></a></strong></p>
+<p><strong><a rel="attachment wp-att-189" href="../../../wp-content/uploads/2012/12/p2-276x300.jpg"><img class="alignnone size-medium wp-image-189" title="p2" src="../../../wp-content/uploads/2012/12/p2-276x300.jpg" alt="" width="276" height="300" /></a></strong></p>
 
 
 
@@ -72,9 +141,9 @@
   
   <entry>
     <title type="html"><![CDATA[EBS 并发请求调用SQL时，日志跟输出中文出现乱码问题]]></title>
-    <link href="http://dengdezhao.cn/blog/2012-09-20/ebs-%E5%B9%B6%E5%8F%91%E8%AF%B7%E6%B1%82%E8%B0%83%E7%94%A8sql%E6%97%B6%EF%BC%8C%E6%97%A5%E5%BF%97%E8%B7%9F%E8%BE%93%E5%87%BA%E4%B8%AD%E6%96%87%E5%87%BA%E7%8E%B0%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98/"/>
+    <link href="http://www.dengdezhao.cn/blog/2012-09-20/ebs-%E5%B9%B6%E5%8F%91%E8%AF%B7%E6%B1%82%E8%B0%83%E7%94%A8sql%E6%97%B6%EF%BC%8C%E6%97%A5%E5%BF%97%E8%B7%9F%E8%BE%93%E5%87%BA%E4%B8%AD%E6%96%87%E5%87%BA%E7%8E%B0%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98/"/>
     <updated>2012-09-20T00:00:00+08:00</updated>
-    <id>http://dengdezhao.cn/blog/2012-09-20/ebs-并发请求调用sql时，日志跟输出中文出现乱码问题</id>
+    <id>http://www.dengdezhao.cn/blog/2012-09-20/ebs-并发请求调用sql时，日志跟输出中文出现乱码问题</id>
     <content type="html"><![CDATA[<p>已知数据库，数据库所在服务器字符集都是UTF8，在并发请求调用的SQL里，fnd_file.put_line(fnd_file.log,'中文')语句输出时，在EBS界面查看就是乱码。</p>
 
 
@@ -117,9 +186,9 @@
   
   <entry>
     <title type="html"><![CDATA[EBS请求执行时抛出错误Ora-20100和Ora-06512 问题解决]]></title>
-    <link href="http://dengdezhao.cn/blog/2012-09-12/ebs%E8%AF%B7%E6%B1%82%E6%89%A7%E8%A1%8C%E6%97%B6%E6%8A%9B%E5%87%BA%E9%94%99%E8%AF%AFora-20100%E5%92%8Cora-06512-%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
+    <link href="http://www.dengdezhao.cn/blog/2012-09-12/ebs%E8%AF%B7%E6%B1%82%E6%89%A7%E8%A1%8C%E6%97%B6%E6%8A%9B%E5%87%BA%E9%94%99%E8%AF%AFora-20100%E5%92%8Cora-06512-%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/"/>
     <updated>2012-09-12T00:00:00+08:00</updated>
-    <id>http://dengdezhao.cn/blog/2012-09-12/ebs请求执行时抛出错误ora-20100和ora-06512-问题解决</id>
+    <id>http://www.dengdezhao.cn/blog/2012-09-12/ebs请求执行时抛出错误ora-20100和ora-06512-问题解决</id>
     <content type="html"><![CDATA[<p>执行请求时抛出错误Ora-20100：xxxxx. Ora-06512:xxxxx错误，清空临时文件目录$APPLPTMP即可</p>
 
 
@@ -132,9 +201,9 @@
   
   <entry>
     <title type="html"><![CDATA[EBS并发请求调用Oracle reports时，如何写入日志文件]]></title>
-    <link href="http://dengdezhao.cn/blog/2012-09-11/ebs%E5%B9%B6%E5%8F%91%E8%AF%B7%E6%B1%82%E8%B0%83%E7%94%A8oracle-reports%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E5%86%99%E5%85%A5%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6/"/>
+    <link href="http://www.dengdezhao.cn/blog/2012-09-11/ebs%E5%B9%B6%E5%8F%91%E8%AF%B7%E6%B1%82%E8%B0%83%E7%94%A8oracle-reports%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E5%86%99%E5%85%A5%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6/"/>
     <updated>2012-09-11T00:00:00+08:00</updated>
-    <id>http://dengdezhao.cn/blog/2012-09-11/ebs并发请求调用oracle-reports时，如何写入日志文件</id>
+    <id>http://www.dengdezhao.cn/blog/2012-09-11/ebs并发请求调用oracle-reports时，如何写入日志文件</id>
     <content type="html"><![CDATA[<p>EBS并发请求调用procedure时，直接在被调用的procedure中使用fnd_file.put_line即可达到要求；</p>
 
 
@@ -156,126 +225,6 @@
 
 
 <p>&nbsp;</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[使用VPD对数据进行隔离]]></title>
-    <link href="http://dengdezhao.cn/blog/2012-06-28/%E4%BD%BF%E7%94%A8vpd%E5%AF%B9%E6%95%B0%E6%8D%AE%E8%BF%9B%E8%A1%8C%E9%9A%94%E7%A6%BB/"/>
-    <updated>2012-06-28T00:00:00+08:00</updated>
-    <id>http://dengdezhao.cn/blog/2012-06-28/使用vpd对数据进行隔离</id>
-    <content type="html"><![CDATA[<p>项目需求：系统数据表删除操作是直接物理删除，不利于维护历史记录，需要变更为逻辑删除模式。</p>
-
-
-
-
-<p>解决方案：</p>
-
-
-
-
-<p>对表增加删除标记字段DEL_FLAG varchar2(1) default ‘0’;</p>
-
-
-
-
-<p>用户执行“删除”操作时，并不执行物理删除操作，而是将DEL_FLAG值设置为‘1’；</p>
-
-
-
-
-<p>针对数据展示时，删除标记为’1’的数据使用VPD技术屏蔽访问；</p>
-
-
-
-
-<p><strong>1．需要修改的基表[T]新增删除字段：</strong></p>
-
-
-
-
-<p><strong>alter table</strong> T <strong>add</strong> (DEL_FLAG varchar2(1) <strong>default</strong> '0');--缺省为0，逻辑删除改为1</p>
-
-
-
-
-<p><strong>2．创建VPD需要的函数：</strong><strong>f_limited_query_t</strong><strong></strong></p>
-
-
-
-
-<p><strong>CREATE OR REPLACE FUNCTION</strong> f_limited_query_t (s_schema <strong>IN</strong> VARCHAR2,</p>
-
-
-
-
-<p>s_object <strong>IN</strong> VARCHAR2)</p>
-
-
-
-
-<p><strong>RETURN</strong> VARCHAR2</p>
-
-
-
-
-<p><strong>AS</strong></p>
-
-
-
-
-<p><strong>BEGIN</strong></p>
-
-
-
-
-<p><strong>RETURN</strong> 'DEL_FLAG!='''||'1'||'''';</p>
-
-
-
-
-<p><strong>END;</strong></p>
-
-
-
-
-<p><strong>3．创建策略：</strong><strong>POLICY_LIMITED_QUERY_T</strong><strong></strong></p>
-
-
-
-
-<p><strong>BEGIN</strong>
-DBMS_RLS.add_policy (object_schema   =&gt; 'APPS',<br />
-object_name     =&gt; 'T',<br />
-policy_name     =&gt; 'POLICY_LIMITED_QUERY_T',<br />
-function_schema =&gt; 'APPS',<br />
-policy_function =&gt; 'F_LIMITED_QUERY_T');
-<strong>END</strong>;</p>
-
-
-
-
-<p><strong>取消策略：</strong><strong>(</strong>不用过滤时使用此命令<strong>)</strong></p>
-
-
-
-
-<p><strong>BEGIN</strong>
-DBMS_RLS.drop_policy (object_schema   =&gt; 'APPS',<br />
-object_name     =&gt; 'T',<br />
-policy_name     =&gt; 'POLICY_LIMITED_QUERY_T');
-<strong>END</strong>;<strong></strong></p>
-
-
-
-
-<p>&nbsp;</p>
-
-
-
-
-<p><strong>4．修改FORM中对相关数据表的删除逻辑为更新DEL_FLAG=1的操作；</strong></p>
 
 ]]></content>
   </entry>

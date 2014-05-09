@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: checkbox | 邓德昭的技术博客]]></title>
+  <link href="http://www.dengdezhao.cn/tags/checkbox/atom.xml" rel="self"/>
+  <link href="http://www.dengdezhao.cn/"/>
+  <updated>2014-05-09T23:06:22+08:00</updated>
+  <id>http://www.dengdezhao.cn/</id>
+  <author>
+    <name><![CDATA[pierreorz]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Attribute set for xxxAttribute in view object xxxVO failed问题解决]]></title>
+    <link href="http://www.dengdezhao.cn/blog/2013-06-19/attribute-set-for-xxxattribute-in-view-object-xxxvo-failedwen-ti-jie-jue/"/>
+    <updated>2013-06-19T15:50:00+08:00</updated>
+    <id>http://www.dengdezhao.cn/blog/2013-06-19/attribute-set-for-xxxattribute-in-view-object-xxxvo-failedwen-ti-jie-jue</id>
+    <content type="html"><![CDATA[<hr />
+
+<h2>平台：Jdeveloper 9i </h2>
+
+<p>异常描述：</p>
+
+<p>在表增加单选checkbox时，在VO中创建transient属性selector,最终在页面中无法勾选checkbox，发现值没法保存到VO中，页面抛出该异常：<br/>
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'> <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
+</span><span class='line'><span class="kc">null</span> <span class="o">-</span> <span class="n">Attribute</span> <span class="n">set</span> <span class="k">for</span> <span class="n">Selector</span> <span class="n">in</span> <span class="n">view</span> <span class="n">object</span> <span class="n">employeeVO1</span> <span class="n">failed</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>解决方案：</p>
+
+<ol>
+<li>检查VO中的transient属性selector是否设置为updatable</li>
+<li>如果是在开发模式下，清空所有classes文件，重新编译；如果是在正式环境，删除该路径下的VO对象，可使用以下命令。  <br/>
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">exec</span> <span class="n">jdr_utils</span><span class="o">.</span><span class="na">deletedocument</span><span class="o">(</span><span class="err">&#39;</span><span class="o">/</span><span class="n">oracle</span><span class="o">/</span><span class="n">apps</span><span class="o">/</span><span class="n">dengdezhao</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">server</span><span class="o">/</span><span class="n">employeeVO</span><span class="err">&#39;</span><span class="o">);</span>  <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></li>
+</ol>
+
+]]></content>
+  </entry>
+  
+</feed>

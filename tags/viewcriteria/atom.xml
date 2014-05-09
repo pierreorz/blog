@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: ViewCriteria | 邓德昭的技术博客]]></title>
-  <link href="http://dengdezhao.cn/tags/viewcriteria/atom.xml" rel="self"/>
-  <link href="http://dengdezhao.cn/"/>
-  <updated>2013-05-09T15:25:51+08:00</updated>
-  <id>http://dengdezhao.cn/</id>
+  <link href="http://www.dengdezhao.cn/tags/viewcriteria/atom.xml" rel="self"/>
+  <link href="http://www.dengdezhao.cn/"/>
+  <updated>2014-05-09T23:06:22+08:00</updated>
+  <id>http://www.dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[ADF学习总结(一)]]></title>
-    <link href="http://dengdezhao.cn/blog/2013-04-19/adfxue-xi-zong-jie-%5B%3F%5D/"/>
+    <link href="http://www.dengdezhao.cn/blog/2013-04-19/adfxue-xi-zong-jie-%5B%3F%5D/"/>
     <updated>2013-04-19T14:15:00+08:00</updated>
-    <id>http://dengdezhao.cn/blog/2013-04-19/adfxue-xi-zong-jie-[?]</id>
+    <id>http://www.dengdezhao.cn/blog/2013-04-19/adfxue-xi-zong-jie-[?]</id>
     <content type="html"><![CDATA[<h4>改变VO查询条件</h4>
 
 <ul>
@@ -61,7 +61,7 @@
 
 
 <p>事先在创建VO的时候，定义好几种Criteria：DepartmentsViewCriteria  <br/>
-<img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130419134617.jpg" alt="" /></p>
+<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130419134617.jpg" alt="" /></p>
 
 <p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -139,7 +139,7 @@
 </span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>创建Bind Variables：varDeptId  <br/>
-<img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130419140752.jpg" alt="" /></p>
+<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130419140752.jpg" alt="" /></p>
 
 <p>在查询VO时，通过如下代码控制即可实现：</p>
 

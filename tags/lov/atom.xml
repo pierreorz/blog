@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: LOV | 邓德昭的技术博客]]></title>
-  <link href="http://dengdezhao.cn/tags/lov/atom.xml" rel="self"/>
-  <link href="http://dengdezhao.cn/"/>
-  <updated>2013-05-09T15:25:51+08:00</updated>
-  <id>http://dengdezhao.cn/</id>
+  <link href="http://www.dengdezhao.cn/tags/lov/atom.xml" rel="self"/>
+  <link href="http://www.dengdezhao.cn/"/>
+  <updated>2014-05-09T23:06:22+08:00</updated>
+  <id>http://www.dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[OAF中创建LOV]]></title>
-    <link href="http://dengdezhao.cn/blog/2013-04-18/oafzhong-chuang-jian-lov/"/>
+    <link href="http://www.dengdezhao.cn/blog/2013-04-18/oafzhong-chuang-jian-lov/"/>
     <updated>2013-04-18T12:54:00+08:00</updated>
-    <id>http://dengdezhao.cn/blog/2013-04-18/oafzhong-chuang-jian-lov</id>
+    <id>http://www.dengdezhao.cn/blog/2013-04-18/oafzhong-chuang-jian-lov</id>
     <content type="html"><![CDATA[<p>环境：Oracle9i Jdeveloper+R11i</p>
 
 <h4>首先创建AM</h4>
@@ -38,16 +38,16 @@
 <h4>创建RN</h4>
 
 <p>右键工程，创建一个RN，Scope设置为public.  <br/>
-<img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130418113938.jpg" alt="" /></p>
+<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130418113938.jpg" alt="" /></p>
 
 <p>选中创建好的LovRN.xml，在structure Window窗口中选中LovRN右建New Region Using Wizard.找到之前创建的LovVO.</p>
 
-<p><img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130418114930.jpg" alt="" /></p>
+<p><img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130418114930.jpg" alt="" /></p>
 
 <p>修改字段属性如下：   <br/>
 Search Allowed : true   <br/>
 Selective Search Criteria : true  <br/>
-<img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130418115100.jpg" alt="" /></p>
+<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130418115100.jpg" alt="" /></p>
 
 <h4>创建PG页面引用LOV</h4>
 
@@ -59,8 +59,8 @@ prompt改为：物料LOV  <br/>
 lovMap1中，设置Lov Region Item 为InventoryItemId;     Return Item为item1;Criteria Item为item1;  <br/>
 运行该lovPG.xml，即可看到效果如下图：</p>
 
-<p><img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130418124811.jpg" alt="" />  <br/>
-<img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130418125343.jpg" alt="" /></p>
+<p><img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130418124811.jpg" alt="" />  <br/>
+<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130418125343.jpg" alt="" /></p>
 ]]></content>
   </entry>
   

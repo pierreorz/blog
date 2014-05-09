@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: SOA | 邓德昭的技术博客]]></title>
-  <link href="http://dengdezhao.cn/blog/categories/soa/atom.xml" rel="self"/>
-  <link href="http://dengdezhao.cn/"/>
-  <updated>2013-05-09T15:25:51+08:00</updated>
-  <id>http://dengdezhao.cn/</id>
+  <link href="http://www.dengdezhao.cn/blog/categories/soa/atom.xml" rel="self"/>
+  <link href="http://www.dengdezhao.cn/"/>
+  <updated>2014-05-09T23:06:22+08:00</updated>
+  <id>http://www.dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
     
@@ -14,10 +14,45 @@
 
   
   <entry>
+    <title type="html"><![CDATA[安装RCU1.7遇到的小问题]]></title>
+    <link href="http://www.dengdezhao.cn/blog/2014-04-18/an-zhuang-rcu1-dot-7yu-dao-de-xiao-wen-ti/"/>
+    <updated>2014-04-18T20:24:00+08:00</updated>
+    <id>http://www.dengdezhao.cn/blog/2014-04-18/an-zhuang-rcu1-dot-7yu-dao-de-xiao-wen-ti</id>
+    <content type="html"><![CDATA[<ul>
+<li>环境：此前安装过soa1.6，最近重新安装soa1.7时遇到的问题</li>
+<li>安装Rcu1.7时，发现无法运行./rcu,错误提示如下：</li>
+</ul>
+
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">rcuHome</span><span class="o">/</span><span class="n">jdk</span><span class="o">/</span><span class="n">jre</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="nl">java:</span> <span class="n">cannot</span> <span class="n">execute</span> <span class="n">binary</span> <span class="n">file</span><span class="o">.</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>查看操作系统发现是32bit,而rcu只有64bit的。</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">$getconf</span> <span class="n">LONG_BIT</span>  <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
+</span><span class='line'><span class="mi">32</span>  <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>在32bit系统上安装64bit软件向下兼容应该是可以安装的，因此怀疑是jdk的问题。</p>
+
+<p>修改rcu文件最后几行的jre_home 为中间件文件夹中的JDK：/home/pierre/Oracle/Middleware/jdk160_24/bin/java 后，重新运行即可解决该问题。</p>
+
+<ul>
+<li><p>成功运行rcu之后，进入配置oracle数据库信息页，一直报 invalid service 错误, 原来是service name 要加上机器名后缀 orcl.localdomain即正常。</p></li>
+<li><p>因为之前安装过rcu1.6，所以需要将此前的mds删除掉，不然在创建soa domain的时候会出现错误。</p></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[WebService之-入门DEMO生成]]></title>
-    <link href="http://dengdezhao.cn/blog/2012-09-30/webservice%E4%B9%8B-%E5%85%A5%E9%97%A8demo%E7%94%9F%E6%88%90/"/>
+    <link href="http://www.dengdezhao.cn/blog/2012-09-30/webservice%E4%B9%8B-%E5%85%A5%E9%97%A8demo%E7%94%9F%E6%88%90/"/>
     <updated>2012-09-30T00:00:00+08:00</updated>
-    <id>http://dengdezhao.cn/blog/2012-09-30/webservice之-入门demo生成</id>
+    <id>http://www.dengdezhao.cn/blog/2012-09-30/webservice之-入门demo生成</id>
     <content type="html"><![CDATA[<p>WebService的创建方法有多种，这里使用JAVA class生成webservice。</p>
 
 
@@ -37,17 +72,17 @@
 
 
 
-<p><a rel="attachment wp-att-177" href="http://www.dengdezhao.cn/wp-content/uploads/2012/09/aa-300x212.png"><img class="alignnone size-medium wp-image-177" title="aa" src="http://www.dengdezhao.cn/wp-content/uploads/2012/09/aa-300x212.png" alt="" width="300" height="212" /></a></p>
+<p><a rel="attachment wp-att-177" href="../../../wp-content/uploads/2012/09/aa-300x212.png"><img class="alignnone size-medium wp-image-177" title="aa" src="../../../wp-content/uploads/2012/09/aa-300x212.png" alt="" width="300" height="212" /></a></p>
 
 
 
 
-<p><a rel="attachment wp-att-178" href="http://www.dengdezhao.cn/wp-content/uploads/2012/09/bb-300x222.png"><img class="alignnone size-medium wp-image-178" title="bb" src="http://www.dengdezhao.cn/wp-content/uploads/2012/09/bb-300x222.png" alt="" width="300" height="222" /></a></p>
+<p><a rel="attachment wp-att-178" href="../../../wp-content/uploads/2012/09/bb-300x222.png"><img class="alignnone size-medium wp-image-178" title="bb" src="../../../wp-content/uploads/2012/09/bb-300x222.png" alt="" width="300" height="222" /></a></p>
 
 
 
 
-<p><a rel="attachment wp-att-179" href="http://www.dengdezhao.cn/wp-content/uploads/2012/09/cc-300x222.png"><img class="alignnone size-medium wp-image-179" title="cc" src="http://www.dengdezhao.cn/wp-content/uploads/2012/09/cc-300x222.png" alt="" width="300" height="222" /></a></p>
+<p><a rel="attachment wp-att-179" href="../../../wp-content/uploads/2012/09/cc-300x222.png"><img class="alignnone size-medium wp-image-179" title="cc" src="../../../wp-content/uploads/2012/09/cc-300x222.png" alt="" width="300" height="222" /></a></p>
 
 
 
@@ -62,7 +97,7 @@
 
 
 
-<p><a rel="attachment wp-att-180" href="http://www.dengdezhao.cn/wp-content/uploads/2012/09/dd-300x216.png"><img class="alignnone size-medium wp-image-180" title="dd" src="http://www.dengdezhao.cn/wp-content/uploads/2012/09/dd-300x216.png" alt="" width="300" height="216" /></a></p>
+<p><a rel="attachment wp-att-180" href="../../../wp-content/uploads/2012/09/dd-300x216.png"><img class="alignnone size-medium wp-image-180" title="dd" src="../../../wp-content/uploads/2012/09/dd-300x216.png" alt="" width="300" height="216" /></a></p>
 
 
 
@@ -112,9 +147,9 @@
   
   <entry>
     <title type="html"><![CDATA[SOA suite 环境搭建]]></title>
-    <link href="http://dengdezhao.cn/blog/2012-09-29/soa-suite-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/"/>
+    <link href="http://www.dengdezhao.cn/blog/2012-09-29/soa-suite-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/"/>
     <updated>2012-09-29T00:00:00+08:00</updated>
-    <id>http://dengdezhao.cn/blog/2012-09-29/soa-suite-环境搭建</id>
+    <id>http://www.dengdezhao.cn/blog/2012-09-29/soa-suite-环境搭建</id>
     <content type="html"><![CDATA[<p>好久没碰SOA，最近在win2003上准备搭建个环境玩玩。下载相关安装介质</p>
 
 

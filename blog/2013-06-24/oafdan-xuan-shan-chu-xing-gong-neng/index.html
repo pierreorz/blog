@@ -1,0 +1,414 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>OAF单选删除行功能 - 邓德昭的技术博客</title>
+  <meta name="author" content="pierreorz">
+
+  
+  <meta name="description" content="平台：Jdeveloper 9i 一般实现步骤： 在VO中添加新transient属性selector，updatable设置为always。
+在PG中给table添加singleSelection方法，并绑定view Instance为VO的instance，View &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.dengdezhao.cn/blog/2013-06-24/oafdan-xuan-shan-chu-xing-gong-neng">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="邓德昭的技术博客" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><img src="./wp-content/uploads/logo.gif" width=40px height=40px  alt="" /><a href="/">邓德昭的技术博客</a></h1>
+  
+    <h2>最大的懦弱，不是畏葸不前，而是安于现状</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.dengdezhao.cn" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客主页</a></li>
+  <li><a href="/blog/archives">文章列表</a></li>
+  <li><a href="/tag">标签云</a></li>
+  <li><a href="/about">关于</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">OAF单选删除行功能</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-24T11:15:00+08:00" pubdate data-updated="true">Jun 24<span>th</span>, 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><hr />
+
+<p>平台：Jdeveloper 9i</p>
+
+<hr />
+
+<p><strong>一般实现步骤：</strong></p>
+
+<ol>
+<li>在VO中添加新transient属性selector，updatable设置为always。</li>
+<li>在PG中给table添加singleSelection方法，并绑定view Instance为VO的instance，View Attribute为刚刚新建的transient属性seletor。</li>
+<li>这样当用户勾选checkbox时，会给transient属性变量赋值为Y，因此，在删除逻辑中循环判断VO中的transient属性，当其为Y时执行remove该行即可实现选择删除功能。  <br/>
+<strong>相关代码如下：</strong></li>
+</ol>
+
+
+<p><strong>CO中processFormRequest里添加代码如下：</strong></p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'> <span class="c1">//当单击deleteBtn按钮时执行AM中的deleteAutoSequenceVO方法    </span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">pageContext</span><span class="o">.</span><span class="na">getParameter</span><span class="o">(</span><span class="s">&quot;deleteBtn&quot;</span><span class="o">)!=</span><span class="kc">null</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">{</span>
+</span><span class='line'>      <span class="n">am</span><span class="o">.</span><span class="na">invokeMethod</span><span class="o">(</span><span class="s">&quot;deleteAutoSequenceVO&quot;</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>AM中代码如下：</strong></p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">deleteAutoSequenceVO</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">OAViewObject</span> <span class="n">vo</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">getChAutoSequenceVO1</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">RowSetIterator</span> <span class="n">iter</span> <span class="o">=</span> <span class="n">vo</span><span class="o">.</span><span class="na">createRowSetIterator</span><span class="o">(</span><span class="s">&quot;delete&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">vo</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="kt">int</span> <span class="n">num</span> <span class="o">=</span> <span class="n">vo</span><span class="o">.</span><span class="na">getRowCount</span><span class="o">();</span>
+</span><span class='line'>            <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class='line'>                <span class="n">Row</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">iter</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+</span><span class='line'>                <span class="k">if</span> <span class="o">(</span><span class="s">&quot;Y&quot;</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">temp</span><span class="o">.</span><span class="na">getAttribute</span><span class="o">(</span><span class="s">&quot;selector&quot;</span><span class="o">)))</span> <span class="o">{</span>
+</span><span class='line'>                    <span class="n">vo</span><span class="o">.</span><span class="na">setCurrentRow</span><span class="o">(</span><span class="n">temp</span><span class="o">);</span>
+</span><span class='line'>                    <span class="n">vo</span><span class="o">.</span><span class="na">removeCurrentRow</span><span class="o">();</span>
+</span><span class='line'>                    <span class="k">break</span><span class="o">;</span>
+</span><span class='line'>                <span class="o">}</span>
+</span><span class='line'>            <span class="o">}</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>        <span class="n">iter</span><span class="o">.</span><span class="na">closeRowSetIterator</span><span class="o">();</span>
+</span><span class='line'>        <span class="k">throw</span> <span class="k">new</span> <span class="nf">OAException</span><span class="o">(</span><span class="s">&quot;删除成功,请点击[保存]按钮生效到数据库.&quot;</span><span class="o">,</span>
+</span><span class='line'>                              <span class="n">OAException</span><span class="o">.</span><span class="na">INFORMATION</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>但是在实际开发中，出现一个很诡异的现象，其它页面单选删除功能都正常，某一页面单选之后却无法赋值Y给VO中的transient变量，推测可能是VO用的是复合主键或者其它框架BUG导致，无奈给单选再添加手工赋值功能。</p>
+
+<p>选择单选控件，将其Client Action中的Action Type设置为firePartialAction Submit设置为false。准备在用户单选时调用自定义方法，给变量赋值。</p>
+
+<p><strong>CO中processFormRequest里添加如下方法</strong></p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="s">&quot;update&quot;</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">pageContext</span><span class="o">.</span><span class="na">getParameter</span><span class="o">(</span><span class="n">OAWebBeanConstants</span><span class="o">.</span><span class="na">EVENT_PARAM</span><span class="o">)))</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">String</span> <span class="n">rowRef</span> <span class="o">=</span>
+</span><span class='line'>                <span class="n">pageContext</span><span class="o">.</span><span class="na">getParameter</span><span class="o">(</span><span class="n">OAWebBeanConstants</span><span class="o">.</span><span class="na">EVENT_SOURCE_ROW_REFERENCE</span><span class="o">);</span>
+</span><span class='line'>            <span class="n">Row</span> <span class="n">currentRow</span> <span class="o">=</span> <span class="n">am</span><span class="o">.</span><span class="na">findRowByRef</span><span class="o">(</span><span class="n">rowRef</span><span class="o">);</span>
+</span><span class='line'>            <span class="n">currentRow</span><span class="o">.</span><span class="na">setAttribute</span><span class="o">(</span><span class="s">&quot;selector&quot;</span><span class="o">,</span> <span class="s">&quot;Y&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这样便实现了单选删除功能。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">pierreorz</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-24T11:15:00+08:00" pubdate data-updated="true">Jun 24<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/oaf/'>OAF</a>
+  
+</span>
+
+
+      
+
+<span class="tags">
+  
+    <a class='tag' href='/tags/delete/'>Delete</a>, <a class='tag' href='/tags/jdeveloper-9i/'>Jdeveloper 9i</a>, <a class='tag' href='/tags/oaf/'>OAF</a>, <a class='tag' href='/tags/viewobject/'>ViewObject</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.dengdezhao.cn/blog/2013-06-24/oafdan-xuan-shan-chu-xing-gong-neng/" data-via="" data-counturl="http://www.dengdezhao.cn/blog/2013-06-24/oafdan-xuan-shan-chu-xing-gong-neng/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013-06-19/attribute-set-for-xxxattribute-in-view-object-xxxvo-failedwen-ti-jie-jue/" title="Previous Post: Attribute set for xxxAttribute in view object xxxVO failed问题解决">&laquo; Attribute set for xxxAttribute in view object xxxVO failed问题解决</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013-06-25/centosxia-an-zhuang-mysql5-dot-6hou-wang-ji-rootmi-ma-%2Czhong-zhi-mi-ma/" title="Next Post: Centos下安装mysql5.6后忘记ROOT密码，重置密码">Centos下安装mysql5.6后忘记ROOT密码，重置密码 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+
+  <ul>
+  <li><a href="https://me.alipay.com/dengdezhao"><img src="../../../wp-content/uploads/donate.jpg"/></a></li>
+  </ul>
+</section>
+<section>
+  <h1>分类目录</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/adf/'>ADF (33)</a></li>
+<li class='category'><a href='/blog/categories/ebs/'>EBS (2)</a></li>
+<li class='category'><a href='/blog/categories/oaf/'>OAF (8)</a></li>
+<li class='category'><a href='/blog/categories/oracle/'>Oracle (8)</a></li>
+<li class='category'><a href='/blog/categories/soa/'>SOA (3)</a></li>
+<li class='category'><a href='/blog/categories/sinaappengine/'>SinaAppEngine (1)</a></li>
+<li class='category'><a href='/blog/categories/forms/'>forms (1)</a></li>
+<li class='category'><a href='/blog/categories/java/'>java (2)</a></li>
+<li class='category'><a href='/blog/categories/jdeveloper/'>jdeveloper (1)</a></li>
+<li class='category'><a href='/blog/categories/linux/'>linux (2)</a></li>
+<li class='category'><a href='/blog/categories/mysql/'>mysql (1)</a></li>
+<li class='category'><a href='/blog/categories/octopress/'>octopress (1)</a></li>
+<li class='category'><a href='/blog/categories/others/'>others (1)</a></li>
+<li class='category'><a href='/blog/categories/weblogic/'>weblogic (1)</a></li>
+<li class='category'><a href='/blog/categories/wordpress/'>wordpress (1)</a></li>
+
+  </ul>
+</section>
+<section>
+  <h1>最新发表</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014-04-18/an-zhuang-rcu1-dot-7yu-dao-de-xiao-wen-ti/">安装RCU1.7遇到的小问题</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-02-07/%E5%AE%9A%E5%88%B6EL/">定制EL function</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-11-09/you-yi-wai-duan-dian-dao-zhi-oracle11gqi-dong-bu-qi-lai-de-wen-ti-jie-jue/">由意外断电导致oracle11g启动不起来的问题解决</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-09-23/ru-he-zai-ye-mian-sui-pian-jia-zai-qian-diao-yong-luo-ji/">如何在页面碎片加载前调用逻辑</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-09-23/kong-jian-af-iteratoryi-ji-af-foreachde-dui-bi/">控件af:iterator以及af:forEach的对比</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+<section>
+  <h1>友情链接</h1>
+  <ul>
+  	<li><a href="http://www.liqifa.com">[小分号]</a></li>
+ 	<li><a href="http://www.fmw007.com">[梦想左岸]</a></li>
+ 	<li><a href="http://ericchan.cn">[小骚骚的技术博客]</a></li>
+ 	<li><a href="http://oraclefmw.blog.163.com/">[追梦]</a></li>
+ 	<li><a href="http://blog.csdn.net/ygj26">[小尹妹纸]</a></li>
+ 	<li><a href="http://oracleseeker.com/">[OracleSeeker，Oracle探索者]</a></li>
+  </ul>
+</section>
+
+<section>
+<h1>新浪微博</h1>
+<ul id="weibo">
+<li>
+<iframe
+width="100%"
+height="550"
+class="share_self"
+frameborder="0"
+scrolling="no"
+src="http://widget.weibo.com/weiboshow/index.php?width=0&height=550&ptype=1&speed=0&skin=&isTitle=0&noborder=1&isWeibo=1&isFans=&uid=1774817797&verifier=75ee09e4&colors=17236,003643,004354,00b7ef,ffffff&dpc=1">
+</iframe>
+</li>
+</ul>
+</section>
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - pierreorz -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+<a rel="license" href="http://creativecommons.org/licenses/by/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/88x31.png" /></a>
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F2c50098a945120bddaa5f082c4e56cea' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<a title="Web Analytics" href="http://clicky.com/100592601">.</a>
+<script src="//static.getclicky.com/js" type="text/javascript"></script>
+<script type="text/javascript">try{ clicky.init(100592601); }catch(e){}</script>
+
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'adfkf';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://www.dengdezhao.cn/blog/2013-06-24/oafdan-xuan-shan-chu-xing-gong-neng/';
+        var disqus_url = 'http://www.dengdezhao.cn/blog/2013-06-24/oafdan-xuan-shan-chu-xing-gong-neng/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: wordpress | 邓德昭的技术博客]]></title>
-  <link href="http://dengdezhao.cn/blog/categories/wordpress/atom.xml" rel="self"/>
-  <link href="http://dengdezhao.cn/"/>
-  <updated>2013-05-09T15:25:51+08:00</updated>
-  <id>http://dengdezhao.cn/</id>
+  <link href="http://www.dengdezhao.cn/blog/categories/wordpress/atom.xml" rel="self"/>
+  <link href="http://www.dengdezhao.cn/"/>
+  <updated>2014-05-09T23:06:22+08:00</updated>
+  <id>http://www.dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
     
@@ -15,20 +15,20 @@
   
   <entry>
     <title type="html"><![CDATA[wordpress的elegant-box主题跟syntax-highlighter-optimized插件的冲突解决]]></title>
-    <link href="http://dengdezhao.cn/blog/2011-06-30/wordpress%E7%9A%84elegant-box%E4%B8%BB%E9%A2%98%E8%B7%9Fsyntax-highlighter-optimized%E6%8F%92%E4%BB%B6%E7%9A%84%E5%86%B2%E7%AA%81%E8%A7%A3%E5%86%B3/"/>
+    <link href="http://www.dengdezhao.cn/blog/2011-06-30/wordpress%E7%9A%84elegant-box%E4%B8%BB%E9%A2%98%E8%B7%9Fsyntax-highlighter-optimized%E6%8F%92%E4%BB%B6%E7%9A%84%E5%86%B2%E7%AA%81%E8%A7%A3%E5%86%B3/"/>
     <updated>2011-06-30T00:00:00+08:00</updated>
-    <id>http://dengdezhao.cn/blog/2011-06-30/wordpress的elegant-box主题跟syntax-highlighter-optimized插件的冲突解决</id>
+    <id>http://www.dengdezhao.cn/blog/2011-06-30/wordpress的elegant-box主题跟syntax-highlighter-optimized插件的冲突解决</id>
     <content type="html"><![CDATA[<p>当这款主题跟高亮插件同时使用时，一个不兼容的细节表现了出来，具体症状表现参照下图：</p>
 
 
 
 
-<p><a href="http://www.dengdezhao.cn/wp-content/uploads/2011/06/1.jpg"><img class="alignnone size-medium wp-image-22" title="1" src="http://www.dengdezhao.cn/wp-content/uploads/2011/06/1-300x119.jpg" alt="" width="300" height="119" /></a></p>
+<p><a href="../../../wp-content/uploads/2011/06/1.jpg"><img class="alignnone size-medium wp-image-22" title="1" src="../../../wp-content/uploads/2011/06/1-300x119.jpg" alt="" width="300" height="119" /></a></p>
 
 
 
 
-<p><a href="http://www.dengdezhao.cn/wp-content/uploads/2011/06/21.jpg"><img class="alignnone size-medium wp-image-24" title="2" src="http://www.dengdezhao.cn/wp-content/uploads/2011/06/21-300x118.jpg" alt="" width="300" height="118" /></a></p>
+<p><a href="../../../wp-content/uploads/2011/06/21.jpg"><img class="alignnone size-medium wp-image-24" title="2" src="../../../wp-content/uploads/2011/06/21-300x118.jpg" alt="" width="300" height="118" /></a></p>
 
 
 
@@ -63,7 +63,7 @@
 
 
 
-<p><a href="http://www.dengdezhao.cn/wp-content/uploads/2011/06/3.jpg"><img class="alignnone size-medium wp-image-25" title="3" src="http://www.dengdezhao.cn/wp-content/uploads/2011/06/3-300x118.jpg" alt="" width="300" height="118" /></a></p>
+<p><a href="../../../wp-content/uploads/2011/06/3.jpg"><img class="alignnone size-medium wp-image-25" title="3" src="../../../wp-content/uploads/2011/06/3-300x118.jpg" alt="" width="300" height="118" /></a></p>
 
 ]]></content>
   </entry>

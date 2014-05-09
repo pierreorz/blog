@@ -1,0 +1,644 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>邓德昭的技术博客</title>
+  <meta name="author" content="pierreorz">
+
+  
+  <meta name="description" content="Step.1 新建测试工程 Fusion Web Application(ADF)。 Step.2 创建resource Bundle 文件，如下所示，我创建了三个语言版本的文件。
+ScreenConfig_en_US.properties ScreenConfig_zh_CN. &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.dengdezhao.cn/blog/page/7">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="邓德昭的技术博客" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><img src="./wp-content/uploads/logo.gif" width=40px height=40px  alt="" /><a href="/">邓德昭的技术博客</a></h1>
+  
+    <h2>最大的懦弱，不是畏葸不前，而是安于现状</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:www.dengdezhao.cn" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客主页</a></li>
+  <li><a href="/blog/archives">文章列表</a></li>
+  <li><a href="/tag">标签云</a></li>
+  <li><a href="/about">关于</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011-07-13/%E5%A4%9A%E8%AF%AD%E8%A8%80%E5%88%87%E6%8D%A2%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0/">多语言切换功能实现</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-07-13T00:00:00+08:00" pubdate data-updated="true">Jul 13<span>th</span>, 2011</time>
+        
+         | <a href="/blog/2011-07-13/%E5%A4%9A%E8%AF%AD%E8%A8%80%E5%88%87%E6%8D%A2%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><strong>Step.1 </strong>新建测试工程<strong> Fusion Web Application(ADF)</strong>。</p>
+
+<p><strong>Step.2 </strong>创建resource Bundle 文件，如下所示，我创建了三个语言版本的文件。
+<blockquote><span style="color: #ff0000;">ScreenConfig</span>_<span style="color: #0000ff;">en</span>_<span style="color: #ff00ff;">US</span>.properties</blockquote></p>
+
+<p><span style="color: #ff0000;">ScreenConfig</span>_<span style="color: #0000ff;">zh</span>_<span style="color: #ff00ff;">CN</span>.properties</p>
+
+<p><span style="color: #ff0000;">ScreenConfig</span>_<span style="color: #0000ff;">ja</span>_<span style="color: #ff00ff;">JP</span>.properties
+<strong>Step.3</strong> 在faces-config.xml中注册以上三个文件。
+<blockquote>&lt;?xml version=&#8221;1.0&#8221; encoding=&#8221;UTF-8&#8221;?&gt;<br />
+&lt;faces-config version=&#8221;1.2&#8221; xmlns=&#8221;http://java.sun.com/xml/ns/javaee&#8221;&gt;<br />
+&lt;application&gt;<br />
+&lt;default-render-kit-id&gt;oracle.adf.rich&lt;/default-render-kit-id&gt;
+<span style="color: #ff00ff;">&lt;resource-bundle&gt;</span>
+<span style="color: #ff00ff;"> &lt;base-name&gt;ScreenConfig&lt;/base-name&gt;</span>
+<span style="color: #ff00ff;"> &lt;var&gt;screen&lt;/var&gt;</span>
+<span style="color: #ff00ff;"> &lt;/resource-bundle&gt;</span>
+<span style="color: #ff00ff;"> &lt;locale-config&gt;</span>
+<span style="color: #ff00ff;"> &lt;default-locale&gt;zh_CN&lt;/default-locale&gt;</span>
+<span style="color: #ff00ff;"> &lt;supported-locale&gt;en_US&lt;/supported-locale&gt;</span>
+<span style="color: #ff00ff;"> &lt;supported-locale&gt;ja_JP&lt;/supported-locale&gt;</span>
+<span style="color: #ff00ff;"> &lt;/locale-config&gt;</span>
+&lt;/application&gt;<br />
+&lt;/faces-config&gt;</blockquote>
+<strong>Step.4</strong> 新建一个测试页面
+<blockquote>&lt;?xml version=&#8217;1.0&#8217; encoding=&#8217;UTF-8&#8217;?&gt;<br />
+&lt;jsp:root xmlns:jsp=&#8221;http://java.sun.com/JSP/Page&#8221; version=&#8221;2.1&#8221;<br />
+xmlns:f=&#8221;http://java.sun.com/jsf/core&#8221;<br />
+xmlns:h=&#8221;http://java.sun.com/jsf/html&#8221;<br />
+xmlns:af=&#8221;http://xmlns.oracle.com/adf/faces/rich&#8221;&gt;<br />
+&lt;jsp:directive.page contentType=&#8221;text/html;charset=UTF-8&#8221;/&gt;<br />
+&lt;f:view &gt;<br />
+&lt;af:document id=&#8221;d1&#8221;&gt;
+<span style="color: #ff00ff;">&lt;f:loadBundle basename=&#8221;ScreenConfig&#8221; var=&#8221;screen&#8221;   /&gt;</span>
+&lt;af:form id=&#8221;f1&#8221;&gt;<br />
+&lt;af:inputText label=&#8221;<span style="color: #ff00ff;">#{screen.test}</span>&#8221; id=&#8221;it1&#8221;/&gt;<br />
+&lt;af:commandButton text=&#8221;<span style="color: #ff00ff;">#{screen.command}</span>&#8221; id=&#8221;en&#8221;  partialTriggers=&#8221;en&#8221;<br />
+action=&#8221;<span style="color: #ff00ff;">#{BackingBean.changeLang}&#8221;</span>/&gt;<br />
+&lt;/af:form&gt;<br />
+&lt;/af:document&gt;<br />
+&lt;/f:view&gt;<br />
+&lt;!&#8211;oracle-jdev-comment:preferred-managed-bean-name:BackingBean&#8211;&gt;<br />
+&lt;/jsp:root&gt;</blockquote>
+<strong>Step.5</strong> 生成的BackingBean中内容如下：
+<blockquote>package view;</blockquote></p>
+
+<p>import java.util.Locale;<br />
+import java.util.ResourceBundle;</p>
+
+<p>import javax.faces.context.FacesContext;</p>
+
+<p>import javax.servlet.http.HttpServletRequest;<br />
+import javax.servlet.http.HttpSession;</p>
+
+<p>public class BackingBean {<br />
+public BackingBean() {<br />
+}
+private Locale locale;</p>
+
+<p>public String changeLang() {</p>
+
+<p>FacesContext facesContext = FacesContext.getCurrentInstance();<br />
+HttpServletRequest request =<br />
+(HttpServletRequest)facesContext.getExternalContext().getRequest();<br />
+String flag =<br />
+request.getSession().getAttribute(&#8220;flag&#8221;) == null ? &#8220;ZH&#8221; :<br />
+request.getSession().getAttribute(&#8220;flag&#8221;).toString();</p>
+
+<p>if (&#8220;ZH&#8221;.equals(flag)) {<br />
+flag = &#8220;EN&#8221;;<br />
+this.setLocale(new Locale(&#8220;zh&#8221;, &#8220;CN&#8221;));<br />
+} else if (&#8220;EN&#8221;.equals(flag)) {<br />
+flag = &#8220;JA&#8221;;<br />
+this.setLocale(new Locale(&#8220;en&#8221;, &#8220;US&#8221;));<br />
+} else if (&#8220;JA&#8221;.equals(flag)) {<br />
+flag = &#8220;ZH&#8221;;<br />
+this.setLocale(new Locale(&#8220;ja&#8221;, &#8220;JP&#8221;));<br />
+}
+request.getSession().setAttribute(&#8220;flag&#8221;, flag);<br />
+facesContext.getViewRoot().setLocale(locale);<br />
+return null;<br />
+}</p>
+
+<p>public void setLocale(Locale locale) {<br />
+this.locale = locale;<br />
+}</p>
+
+<p>public Locale getLocale() {<br />
+return locale;<br />
+}
+}
+<strong>Step.6 </strong>测试效果如下
+<blockquote><a href="../../../wp-content/uploads/2011/07/1.jpg"><img class="alignnone size-full wp-image-28" title="1" src="../../../wp-content/uploads/2011/07/1.jpg" alt="" width="234" height="50" /></a></blockquote>
+点击按键之后
+<blockquote><a href="../../../wp-content/uploads/2011/07/2.jpg"><img class="alignnone size-full wp-image-29" title="2" src="../../../wp-content/uploads/2011/07/2.jpg" alt="" width="254" height="50" /></a></blockquote>
+再点击按键之后
+<blockquote><a href="../../../wp-content/uploads/2011/07/3.jpg"><img class="alignnone size-full wp-image-30" title="3" src="../../../wp-content/uploads/2011/07/3.jpg" alt="" width="241" height="54" /></a></blockquote>
+&nbsp;</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011-06-30/wordpress%E7%9A%84elegant-box%E4%B8%BB%E9%A2%98%E8%B7%9Fsyntax-highlighter-optimized%E6%8F%92%E4%BB%B6%E7%9A%84%E5%86%B2%E7%AA%81%E8%A7%A3%E5%86%B3/">Wordpress的elegant-box主题跟syntax-highlighter-optimized插件的冲突解决</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-06-30T00:00:00+08:00" pubdate data-updated="true">Jun 30<span>th</span>, 2011</time>
+        
+         | <a href="/blog/2011-06-30/wordpress%E7%9A%84elegant-box%E4%B8%BB%E9%A2%98%E8%B7%9Fsyntax-highlighter-optimized%E6%8F%92%E4%BB%B6%E7%9A%84%E5%86%B2%E7%AA%81%E8%A7%A3%E5%86%B3/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>当这款主题跟高亮插件同时使用时，一个不兼容的细节表现了出来，具体症状表现参照下图：</p>
+
+<p><a href="../../../wp-content/uploads/2011/06/1.jpg"><img class="alignnone size-medium wp-image-22" title="1" src="../../../wp-content/uploads/2011/06/1-300x119.jpg" alt="" width="300" height="119" /></a></p>
+
+<p><a href="../../../wp-content/uploads/2011/06/21.jpg"><img class="alignnone size-medium wp-image-24" title="2" src="../../../wp-content/uploads/2011/06/21-300x118.jpg" alt="" width="300" height="118" /></a></p>
+
+<p>Feeds的下拉菜单被&lt;pre&gt;区域给挡住了，很影响美观。</p>
+
+<p>显示是z-index属性的问题。</p>
+
+<p>解决办法：</p>
+
+<p>Step.1 打开主题的header.php文件</p>
+
+<p>Step.2 替换160行的&lt;ul&gt;为&lt;ul <span style="color: #ff0000;">style=&#8221;z-index:1&#8221;</span>&gt; 当然z-index的值&gt;0都是可以的，因为&lt;pre&gt;区域z-index属性没有设置，默认为0，只要菜单&lt;ul&gt;的z-index值大就会显示在&lt;pre&gt;区域之上。</p>
+
+<p>修改之后的效果图：</p>
+
+<p><a href="../../../wp-content/uploads/2011/06/3.jpg"><img class="alignnone size-medium wp-image-25" title="3" src="../../../wp-content/uploads/2011/06/3-300x118.jpg" alt="" width="300" height="118" /></a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011-06-29/javax-el-propertynotfoundexception%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/">javax.el.PropertyNotFoundException错误解决</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-06-29T00:00:00+08:00" pubdate data-updated="true">Jun 29<span>th</span>, 2011</time>
+        
+         | <a href="/blog/2011-06-29/javax-el-propertynotfoundexception%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>有时候明明没有什么错误，一样的代码在别人机器上跑没问题，自己机器上跑却会出现以下这样的错误：
+<pre class="brush:java">javax.el.PropertyNotFoundException: Target Unreachable, identifier 'bindings' resolved to null</pre>
+这样的错误会随着代码量的增加而越发频繁，是IDE的缓存的BUG，如果重启jdeveloper 还不能解决的话，把报错的那个bindings的pagedef文件改动下（加一行空格）保存，然后clean all，再重新build下，基本能够解决这个问题。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011-06-29/adf%E5%BA%94%E7%94%A8%E4%B8%AD%E5%A6%82%E4%BD%95%E5%9C%A8backingbean%E4%B8%AD%E8%B0%83%E7%94%A8javascript%E6%8E%A7%E5%88%B6ui/">ADF应用中如何在BackingBean中调用javascript控制UI</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-06-29T00:00:00+08:00" pubdate data-updated="true">Jun 29<span>th</span>, 2011</time>
+        
+         | <a href="/blog/2011-06-29/adf%E5%BA%94%E7%94%A8%E4%B8%AD%E5%A6%82%E4%BD%95%E5%9C%A8backingbean%E4%B8%AD%E8%B0%83%E7%94%A8javascript%E6%8E%A7%E5%88%B6ui/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>当你需要在ManagedBean中控制页面控制的属性的时候，可以使用以下代码调用javascript实现。</p>
+
+<p>&nbsp;
+<pre class="brush:java">//import org.apache.myfaces.trinidad.util.Service;
+String script="你的javascript代码";</pre></p>
+
+<p>FacesContext context = <br />
+        FacesContext.getCurrentInstance();</p>
+
+<p>ExtendedRenderKitService erks = <br />
+        (ExtendedRenderKitService)Service.<br />
+        getService(context.getRenderKit(), <br />
+        ExtendedRenderKitService.class);</p>
+
+<p>erks.addScript(context, script);
+&nbsp;</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011-06-28/adf%E5%BA%94%E7%94%A8%E2%80%9Cremote-deployment-failed%E2%80%9D%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/">ADF应用“Remote Deployment Failed”错误解决</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-06-28T00:00:00+08:00" pubdate data-updated="true">Jun 28<span>th</span>, 2011</time>
+        
+         | <a href="/blog/2011-06-28/adf%E5%BA%94%E7%94%A8%E2%80%9Cremote-deployment-failed%E2%80%9D%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>ADF应用debug模式下最常出现的问题就是远程发布失败了。控制台打印的错误信息如下：
+<pre class="brush:plain">[07:21:55 PM] ####  Deployment incomplete.  ####
+[07:21:55 PM] Remote deployment failed (oracle.jdevimpl.deploy.common.Jsr88RemoteDeployer)
+#### Cannot run application XXX due to error deploying to IntegratedWebLogicServer.
+[Application XXX stopped and undeployed from Server Instance IntegratedWebLogicServer]
+&lt;Logger&gt;&lt;error&gt; ServletContainerAdapter manager not initialized correctly.</pre>
+解决方法有两种：</p>
+
+<p>方法一：进入weblogic控制台<span style="color: #0000ff;">http://127.0.0.1:7101/console</span>
+<pre class="brush:plain">用户名：weblogic
+密 码：weblogic1</pre>
+此时控制面板的左上区域应该会有两个按钮“<span style="color: #0000ff;">激活更改</span>”，“<span style="color: #0000ff;">撤销所有更改</span>”，点击任一按钮皆可，然后重新debug，问题解决。</p>
+
+<p>方法二：查看控制台信息，找到类似于“<span style="color: #0000ff;">C:\Documents and Settings\Administrator\Application Data\JDeveloper\system11.1.1.3.37.56.60\o.j2ee\drs\</span>”的路径（这个路径跟你jdeveloper安装路径相关，system目录后的数字也是不同的）。进入到drs目录下，清空所有内容。重新debug，问题解决。</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2011-06-28/adf%E5%BA%94%E7%94%A8%E2%80%9Cremote-deployment-failed%E2%80%9D%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011-06-27/%E5%AE%9A%E5%88%B6adf%E5%BA%94%E7%94%A8%E7%9A%84css/">定制ADF应用的CSS</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-06-27T00:00:00+08:00" pubdate data-updated="true">Jun 27<span>th</span>, 2011</time>
+        
+         | <a href="/blog/2011-06-27/%E5%AE%9A%E5%88%B6adf%E5%BA%94%E7%94%A8%E7%9A%84css/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>客户的要求总是各种变态，如果需要定制默认的控件样式的话，那么以下的文章可能会对你有帮助。</p>
+
+<p>Step.1 首先我们需要定义自己的CSS文件 <span style="color: #0000ff;">CustomSkin.css</span>
+<pre class="brush:css">af|inputListOfValues::search-icon-style{
+  background-image:none;
+}</pre></p>
+
+<p>af|inputListOfValues::search-icon-style:hover{<br />
+  background-image:none;<br />
+}
+af|inputListOfValues::search-icon-style:active{<br />
+  background-image:none;<br />
+}
+af|inputListOfValues::search-icon-style:info{<br />
+  background-image:none;<br />
+}
+Step.2 接着创建 <span style="color: #0000ff;">trinidad-skins.xml</span>
+<pre class="brush:xml">&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;
+&lt;skins xmlns="http://myfaces.apache.org/trinidad/skin"&gt;
+  &lt;skin&gt;
+    &lt;id&gt;customSkin.desktop&lt;/id&gt;
+    &lt;family&gt;CustomSkin&lt;/family&gt;
+    &lt;extends&gt;blafplus-rich.desktop&lt;/extends&gt;
+    &lt;render-kit-id&gt;org.apache.myfaces.trinidad.desktop&lt;/render-kit-id&gt;
+    &lt;style-sheet-name&gt;css/CustomSkin.css&lt;/style-sheet-name&gt;
+  &lt;/skin&gt;
+&lt;/skins&gt;</pre>
+Step.3 修改 <span style="color: #0000ff;">trinidad-config.xml</span>
+<pre class="brush:xml"> &lt;skin-family&gt;CustomSkin&lt;/skin-family&gt;</pre>
+Step.4 修改<span style="color: #0000ff;">web.xml</span>
+<pre class="brush:xml">&lt;context-param&gt;
+    &lt;description&gt;If this parameter is true, there will be an automatic check of the modification date of your JSPs, and saved state will be discarded when JSP's change. It will also automatically check if your skinning css files have changed without you having to restart the server. This makes development easier, but adds overhead. For this reason this parameter should be set to false when your application is deployed.&lt;/description&gt;
+    &lt;param-name&gt;org.apache.myfaces.trinidad.CHECK_FILE_MODIFICATION&lt;/param-name&gt;
+    &lt;param-value&gt;true&lt;/param-value&gt;
+  &lt;/context-param&gt;</pre></p>
+
+<p>&lt;context-param&gt;<br />
+    &lt;description&gt;No obfuscation of CSS.&lt;/description&gt;<br />
+    &lt;param-name&gt;org.apache.myfaces.trinidad.DISABLE_CONTENT_COMPRESSION&lt;/param-name&gt;<br />
+    &lt;param-value&gt;true&lt;/param-value&gt;<br />
+  &lt;/context-param&gt;
+重启下应用就会发现控件样式已经采用自定义CSS文件里的样式了！<span style="color: #0000ff;">
+</span></p>
+
+<p>&nbsp;</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/blog/page/6/">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+
+  <ul>
+  <li><a href="https://me.alipay.com/dengdezhao"><img src="../../../wp-content/uploads/donate.jpg"/></a></li>
+  </ul>
+</section>
+<section>
+  <h1>分类目录</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/adf/'>ADF (33)</a></li>
+<li class='category'><a href='/blog/categories/ebs/'>EBS (2)</a></li>
+<li class='category'><a href='/blog/categories/oaf/'>OAF (8)</a></li>
+<li class='category'><a href='/blog/categories/oracle/'>Oracle (8)</a></li>
+<li class='category'><a href='/blog/categories/soa/'>SOA (3)</a></li>
+<li class='category'><a href='/blog/categories/sinaappengine/'>SinaAppEngine (1)</a></li>
+<li class='category'><a href='/blog/categories/forms/'>forms (1)</a></li>
+<li class='category'><a href='/blog/categories/java/'>java (2)</a></li>
+<li class='category'><a href='/blog/categories/jdeveloper/'>jdeveloper (1)</a></li>
+<li class='category'><a href='/blog/categories/linux/'>linux (2)</a></li>
+<li class='category'><a href='/blog/categories/mysql/'>mysql (1)</a></li>
+<li class='category'><a href='/blog/categories/octopress/'>octopress (1)</a></li>
+<li class='category'><a href='/blog/categories/others/'>others (1)</a></li>
+<li class='category'><a href='/blog/categories/weblogic/'>weblogic (1)</a></li>
+<li class='category'><a href='/blog/categories/wordpress/'>wordpress (1)</a></li>
+
+  </ul>
+</section>
+<section>
+  <h1>最新发表</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014-04-18/an-zhuang-rcu1-dot-7yu-dao-de-xiao-wen-ti/">安装RCU1.7遇到的小问题</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-02-07/%E5%AE%9A%E5%88%B6EL/">定制EL function</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-11-09/you-yi-wai-duan-dian-dao-zhi-oracle11gqi-dong-bu-qi-lai-de-wen-ti-jie-jue/">由意外断电导致oracle11g启动不起来的问题解决</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-09-23/ru-he-zai-ye-mian-sui-pian-jia-zai-qian-diao-yong-luo-ji/">如何在页面碎片加载前调用逻辑</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-09-23/kong-jian-af-iteratoryi-ji-af-foreachde-dui-bi/">控件af:iterator以及af:forEach的对比</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+<section>
+  <h1>友情链接</h1>
+  <ul>
+  	<li><a href="http://www.liqifa.com">[小分号]</a></li>
+ 	<li><a href="http://www.fmw007.com">[梦想左岸]</a></li>
+ 	<li><a href="http://ericchan.cn">[小骚骚的技术博客]</a></li>
+ 	<li><a href="http://oraclefmw.blog.163.com/">[追梦]</a></li>
+ 	<li><a href="http://blog.csdn.net/ygj26">[小尹妹纸]</a></li>
+ 	<li><a href="http://oracleseeker.com/">[OracleSeeker，Oracle探索者]</a></li>
+  </ul>
+</section>
+
+<section>
+<h1>新浪微博</h1>
+<ul id="weibo">
+<li>
+<iframe
+width="100%"
+height="550"
+class="share_self"
+frameborder="0"
+scrolling="no"
+src="http://widget.weibo.com/weiboshow/index.php?width=0&height=550&ptype=1&speed=0&skin=&isTitle=0&noborder=1&isWeibo=1&isFans=&uid=1774817797&verifier=75ee09e4&colors=17236,003643,004354,00b7ef,ffffff&dpc=1">
+</iframe>
+</li>
+</ul>
+</section>
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - pierreorz -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+<a rel="license" href="http://creativecommons.org/licenses/by/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/88x31.png" /></a>
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F2c50098a945120bddaa5f082c4e56cea' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<a title="Web Analytics" href="http://clicky.com/100592601">.</a>
+<script src="//static.getclicky.com/js" type="text/javascript"></script>
+<script type="text/javascript">try{ clicky.init(100592601); }catch(e){}</script>
+
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'adfkf';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

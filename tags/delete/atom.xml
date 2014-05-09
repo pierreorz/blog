@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: Delete | 邓德昭的技术博客]]></title>
+  <link href="http://www.dengdezhao.cn/tags/delete/atom.xml" rel="self"/>
+  <link href="http://www.dengdezhao.cn/"/>
+  <updated>2014-05-09T23:06:22+08:00</updated>
+  <id>http://www.dengdezhao.cn/</id>
+  <author>
+    <name><![CDATA[pierreorz]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[OAF单选删除行功能]]></title>
+    <link href="http://www.dengdezhao.cn/blog/2013-06-24/oafdan-xuan-shan-chu-xing-gong-neng/"/>
+    <updated>2013-06-24T11:15:00+08:00</updated>
+    <id>http://www.dengdezhao.cn/blog/2013-06-24/oafdan-xuan-shan-chu-xing-gong-neng</id>
+    <content type="html"><![CDATA[<hr />
+
+<p>平台：Jdeveloper 9i</p>
+
+<hr />
+
+<p><strong>一般实现步骤：</strong></p>
+
+<ol>
+<li>在VO中添加新transient属性selector，updatable设置为always。</li>
+<li>在PG中给table添加singleSelection方法，并绑定view Instance为VO的instance，View Attribute为刚刚新建的transient属性seletor。</li>
+<li>这样当用户勾选checkbox时，会给transient属性变量赋值为Y，因此，在删除逻辑中循环判断VO中的transient属性，当其为Y时执行remove该行即可实现选择删除功能。  <br/>
+<strong>相关代码如下：</strong></li>
+</ol>
+
+
+<p><strong>CO中processFormRequest里添加代码如下：</strong></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="c1">//当单击deleteBtn按钮时执行AM中的deleteAutoSequenceVO方法    </span>
+</span><span class='line'><span class="k">if</span> <span class="o">(</span><span class="n">pageContext</span><span class="o">.</span><span class="na">getParameter</span><span class="o">(</span><span class="s">&quot;deleteBtn&quot;</span><span class="o">)!=</span><span class="kc">null</span><span class="o">)</span>
+</span><span class='line'><span class="o">{</span>
+</span><span class='line'>  <span class="n">am</span><span class="o">.</span><span class="na">invokeMethod</span><span class="o">(</span><span class="s">&quot;deleteAutoSequenceVO&quot;</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><strong>AM中代码如下：</strong></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kd">public</span> <span class="kt">void</span> <span class="n">deleteAutoSequenceVO</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">OAViewObject</span> <span class="n">vo</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">getChAutoSequenceVO1</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">RowSetIterator</span> <span class="n">iter</span> <span class="o">=</span> <span class="n">vo</span><span class="o">.</span><span class="na">createRowSetIterator</span><span class="o">(</span><span class="s">&quot;delete&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">vo</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="kt">int</span> <span class="n">num</span> <span class="o">=</span> <span class="n">vo</span><span class="o">.</span><span class="na">getRowCount</span><span class="o">();</span>
+</span><span class='line'>        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span> <span class="n">num</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">Row</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">iter</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+</span><span class='line'>            <span class="k">if</span> <span class="o">(</span><span class="s">&quot;Y&quot;</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">temp</span><span class="o">.</span><span class="na">getAttribute</span><span class="o">(</span><span class="s">&quot;selector&quot;</span><span class="o">)))</span> <span class="o">{</span>
+</span><span class='line'>                <span class="n">vo</span><span class="o">.</span><span class="na">setCurrentRow</span><span class="o">(</span><span class="n">temp</span><span class="o">);</span>
+</span><span class='line'>                <span class="n">vo</span><span class="o">.</span><span class="na">removeCurrentRow</span><span class="o">();</span>
+</span><span class='line'>                <span class="k">break</span><span class="o">;</span>
+</span><span class='line'>            <span class="o">}</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="n">iter</span><span class="o">.</span><span class="na">closeRowSetIterator</span><span class="o">();</span>
+</span><span class='line'>    <span class="k">throw</span> <span class="k">new</span> <span class="nf">OAException</span><span class="o">(</span><span class="s">&quot;删除成功,请点击[保存]按钮生效到数据库.&quot;</span><span class="o">,</span>
+</span><span class='line'>                          <span class="n">OAException</span><span class="o">.</span><span class="na">INFORMATION</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>但是在实际开发中，出现一个很诡异的现象，其它页面单选删除功能都正常，某一页面单选之后却无法赋值Y给VO中的transient变量，推测可能是VO用的是复合主键或者其它框架BUG导致，无奈给单选再添加手工赋值功能。</p>
+
+<p>选择单选控件，将其Client Action中的Action Type设置为firePartialAction Submit设置为false。准备在用户单选时调用自定义方法，给变量赋值。</p>
+
+<p><strong>CO中processFormRequest里添加如下方法</strong>
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span>    <span class="k">if</span> <span class="o">(</span><span class="s">&quot;update&quot;</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">pageContext</span><span class="o">.</span><span class="na">getParameter</span><span class="o">(</span><span class="n">OAWebBeanConstants</span><span class="o">.</span><span class="na">EVENT_PARAM</span><span class="o">)))</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">String</span> <span class="n">rowRef</span> <span class="o">=</span>
+</span><span class='line'>            <span class="n">pageContext</span><span class="o">.</span><span class="na">getParameter</span><span class="o">(</span><span class="n">OAWebBeanConstants</span><span class="o">.</span><span class="na">EVENT_SOURCE_ROW_REFERENCE</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">Row</span> <span class="n">currentRow</span> <span class="o">=</span> <span class="n">am</span><span class="o">.</span><span class="na">findRowByRef</span><span class="o">(</span><span class="n">rowRef</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">currentRow</span><span class="o">.</span><span class="na">setAttribute</span><span class="o">(</span><span class="s">&quot;selector&quot;</span><span class="o">,</span> <span class="s">&quot;Y&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>这样便实现了单选删除功能。</p>
+]]></content>
+  </entry>
+  
+</feed>

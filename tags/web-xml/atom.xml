@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: web.xml | 邓德昭的技术博客]]></title>
-  <link href="http://dengdezhao.cn/tags/web-xml/atom.xml" rel="self"/>
-  <link href="http://dengdezhao.cn/"/>
-  <updated>2013-05-09T15:25:51+08:00</updated>
-  <id>http://dengdezhao.cn/</id>
+  <link href="http://www.dengdezhao.cn/tags/web-xml/atom.xml" rel="self"/>
+  <link href="http://www.dengdezhao.cn/"/>
+  <updated>2014-05-09T23:06:22+08:00</updated>
+  <id>http://www.dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
     
@@ -14,10 +14,65 @@
 
   
   <entry>
+    <title type="html"><![CDATA[如何获取web.xml中的context-param参数]]></title>
+    <link href="http://www.dengdezhao.cn/blog/2013-09-04/ru-he-huo-qu-web-dot-xmlzhong-de-context-paramcan-shu/"/>
+    <updated>2013-09-04T19:30:00+08:00</updated>
+    <id>http://www.dengdezhao.cn/blog/2013-09-04/ru-he-huo-qu-web-dot-xmlzhong-de-context-paramcan-shu</id>
+    <content type="html"><![CDATA[<p><strong>通过EL表达试获取</strong></p>
+
+<p>以web.xml中的<context-param>参数：javax.faces.FACELETS_VIEW_MAPPINGS为例,
+可通过以下EL获取。  <br/>
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'>  <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
+</span><span class='line'><span class="n">$</span><span class="o">{</span><span class="n">initParam</span><span class="o">[</span><span class="err">&#39;</span><span class="n">javax</span><span class="o">.</span><span class="na">faces</span><span class="o">.</span><span class="na">FACELETS_VIEW_MAPPINGS</span><span class="err">&#39;</span><span class="o">]}</span>  <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>如果参数名称很简单，比如：testParameter，EL表达式也可以写成以下方式：   <br/>
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'>  <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
+</span><span class='line'><span class="n">$</span><span class="o">{</span><span class="n">initParam</span><span class="o">.</span><span class="na">testParameter</span><span class="o">}</span>  <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><strong>通过JAVA代码获取</strong></p>
+
+<p>如果需要在MB方法中获取该参数值，可以参照以下代码：
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kd">public</span> <span class="n">String</span> <span class="n">action</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">FacesContext</span> <span class="n">fctx</span><span class="o">=</span><span class="n">FacesContext</span><span class="o">.</span><span class="na">getCurrentInstance</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">ExternalContext</span> <span class="n">ec</span><span class="o">=</span><span class="n">fctx</span><span class="o">.</span><span class="na">getExternalContext</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">ServletContext</span> <span class="n">servletContext</span><span class="o">=(</span><span class="n">ServletContext</span><span class="o">)</span><span class="n">ec</span><span class="o">.</span><span class="na">getContext</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">String</span> <span class="n">value</span><span class="o">=</span><span class="n">servletContext</span><span class="o">.</span><span class="na">getInitParameter</span><span class="o">(</span><span class="s">&quot;javax.faces.FACELETS_VIEW_MAPPINGS&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">value</span><span class="o">);</span>
+</span><span class='line'>    <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[定制ADF应用的CSS]]></title>
-    <link href="http://dengdezhao.cn/blog/2011-06-27/%E5%AE%9A%E5%88%B6adf%E5%BA%94%E7%94%A8%E7%9A%84css/"/>
+    <link href="http://www.dengdezhao.cn/blog/2011-06-27/%E5%AE%9A%E5%88%B6adf%E5%BA%94%E7%94%A8%E7%9A%84css/"/>
     <updated>2011-06-27T00:00:00+08:00</updated>
-    <id>http://dengdezhao.cn/blog/2011-06-27/定制adf应用的css</id>
+    <id>http://www.dengdezhao.cn/blog/2011-06-27/定制adf应用的css</id>
     <content type="html"><![CDATA[<p>客户的要求总是各种变态，如果需要定制默认的控件样式的话，那么以下的文章可能会对你有帮助。</p>
 
 

@@ -9,8 +9,7 @@
   <meta name="author" content="pierreorz">
 
   
-  <meta name="description" content="一个时刻字段，要求输入00:00-12:60这样的时刻范围
-使用如下的正则表达式，过滤掉了不合规则的数字之后，还差一个逻辑，结束时刻不能小于开始时刻，比如：10：00-9：00这样的输入也是不合法的。正则太折磨眼力了，应该也是可以做到这点的吧，为了偷懒，就定制个validator来处理这个点。 & &hellip;">
+  <meta name="description" content="OAF开发通过EXCEL导入数据时，用户需要将可能存在重复的主键信息提示出来. 有以下两种主键冲突情况： 1, 表中不存在重复数据，即将导入的数据中存在重复数据。比如表中记录为空，导入的EXCEL中存在记录ID007,ID008,ID009,ID007，此时OAF页面需要将ID007提示出来； 2 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://dengdezhao.cn/blog/page/4">
+  <link rel="canonical" href="http://www.dengdezhao.cn/blog/page/4">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="邓德昭的技术博客" type="application/atom+xml">
@@ -51,7 +50,7 @@
   
 <form action="http://google.com/search" method="get">
   <fieldset role="search">
-    <input type="hidden" name="q" value="site:dengdezhao.cn" />
+    <input type="hidden" name="q" value="site:www.dengdezhao.cn" />
     <input class="search" type="text" name="q" results="0" placeholder="Search"/>
   </fieldset>
 </form>
@@ -74,7 +73,7 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2012-06-26/%E5%85%B3%E4%BA%8E%E5%AE%9A%E5%88%B6validator/">关于定制validator</a></h1>
+      <h1 class="entry-title"><a href="/blog/2013-01-10/oaf%E5%BC%80%E5%8F%91%E9%80%9A%E8%BF%87excel%E5%AF%BC%E5%85%A5%E6%95%B0%E6%8D%AE%E6%97%B6%EF%BC%8C%E7%94%A8%E6%88%B7%E9%9C%80%E8%A6%81%E5%B0%86%E5%8F%AF%E8%83%BD%E5%AD%98%E5%9C%A8%E9%87%8D%E5%A4%8D/">OAF开发通过EXCEL导入数据时，用户需要将可能存在重复的主键信息提示出来</a></h1>
     
     
       <p class="meta">
@@ -90,109 +89,39 @@
   
 
 
-<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
+<time datetime="2013-01-10T00:00:00+08:00" pubdate data-updated="true">Jan 10<span>th</span>, 2013</time>
         
-         | <a href="/blog/2012-06-26/%E5%85%B3%E4%BA%8E%E5%AE%9A%E5%88%B6validator/#disqus_thread">Comments</a>
+         | <a href="/blog/2013-01-10/oaf%E5%BC%80%E5%8F%91%E9%80%9A%E8%BF%87excel%E5%AF%BC%E5%85%A5%E6%95%B0%E6%8D%AE%E6%97%B6%EF%BC%8C%E7%94%A8%E6%88%B7%E9%9C%80%E8%A6%81%E5%B0%86%E5%8F%AF%E8%83%BD%E5%AD%98%E5%9C%A8%E9%87%8D%E5%A4%8D/#disqus_thread">Comments</a>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>一个时刻字段，要求输入00:00-12:60这样的时刻范围<br />
-使用如下的正则表达式，过滤掉了不合规则的数字之后，还差一个逻辑，结束时刻不能小于开始时刻，比如：10：00-9：00这样的输入也是不合法的。正则太折磨眼力了，应该也是可以做到这点的吧，为了偷懒，就定制个validator来处理这个点。
-<div>
-<blockquote>&lt;af:validateRegExp pattern=&#8221;([0-1][0-9]|2[0-4])\:([0-5][0-9]|60)&#45;([0-1][0-9]|2[0-4])\:([0-5][0-9]|60)&#8221; messageDetailNoMatch=&#8221;请输入时刻，例如 00：00-24：60 &#8221; hint=&#8221;请输入时刻，例如 00：00-24：60&#8221;/&gt;</blockquote>
-</div>
-<strong>Step1</strong>。创建一个<strong>ValidatorTime</strong>类实现Validator接口
-<div>
-<blockquote>package com.adfkf.validators;</blockquote></div></p>
+  <div class="entry-content"><p>OAF开发通过EXCEL导入数据时，用户需要将可能存在重复的主键信息提示出来.</p>
 
-<p>import javax.faces.application.FacesMessage;<br />
-import javax.faces.component.UIComponent;<br />
-import javax.faces.component.UIInput;<br />
-import javax.faces.context.FacesContext;<br />
-import javax.faces.validator.Validator;<br />
-import javax.faces.validator.ValidatorException;</p>
+<p>有以下两种主键冲突情况：</p>
 
-<p>import org.apache.myfaces.trinidad.component.UIXInput;</p>
+<p>1, 表中不存在重复数据，即将导入的数据中存在重复数据。比如表中记录为空，导入的EXCEL中存在记录ID007,ID008,ID009,ID007，此时OAF页面需要将ID007提示出来；</p>
 
-<p>public class ValidatorTime implements Validator {<br />
-public ValidatorTime() {<br />
-super();<br />
-}</p>
+<p>2,表中存在重复数据。即表中原来已经存在一条记录ID007，此时导入的数据中也存在ID007，需要将ID007提示出来。</p>
 
-<p>public void validate(FacesContext facesContext, UIComponent uiComponent,<br />
-Object object) {</p>
+<p>解决方案：</p>
 
-<p>String value = null;<br />
-String a, b, c, d = null;<br />
-Boolean bool = false;<br />
-if ((facesContext == null) || (uiComponent == null)) {<br />
-throw new NullPointerException();<br />
-}
-if (!(uiComponent instanceof UIXInput)) {<br />
-return;<br />
-}
-if (null == object) {<br />
-return;<br />
-}
-//12:00-23:00<br />
-value = object.toString();<br />
-if (value != null &amp;&amp; value.length() == 11) {<br />
-a = value.substring(0, 2);<br />
-b = value.substring(3, 5);<br />
-c = value.substring(6, 8);<br />
-d = value.substring(9, 11);<br />
-try {<br />
-Integer intA = Integer.valueOf(a);<br />
-Integer intB = Integer.valueOf(b);<br />
-Integer intC = Integer.valueOf(c);<br />
-Integer intD = Integer.valueOf(d);<br />
-if (intC &gt; intA || (intA == intC &amp;&amp; intD &gt; intB)) {<br />
-bool = true;<br />
-} else {<br />
-bool = false;<br />
-}</p>
+<p>原本想通过查询数据库中ID007的记录是否存在再抛出OAException的做法来实现此需求，后来一想感觉好麻烦；便换种思路决定通过异常来判断。</p>
 
-<p>} catch (Exception e) {<br />
-bool = false;<br />
-}</p>
+<p>情况1，在ViewObject对象CreateRow()之后，给创建的新Row.setAttribute(&#8220;id&#8221;,007)时，如果VO中存在两个007的新ROW，会抛出TooManyObjectsException,此时捕获该异常并返回此ID值。</p>
 
-<p>}<br />
-if (!bool) {<br />
-FacesMessage message = new FacesMessage();<br />
-message.setDetail(&#8220;开始时刻大于结束时间&#8221;);<br />
-message.setSummary(&#8220;时刻输入有误&#8221;);<br />
-message.setSeverity(FacesMessage.SEVERITY_ERROR);<br />
-throw new ValidatorException(message);</p>
-
-<p>}</p>
-
-<p>}<br />
-}
-
-<strong>Step2 </strong>在faces-config.xml中注册这个validator
-<div>
-<blockquote>&lt;validator&gt;<br />
-&lt;validator-id&gt;validateTime&lt;/validator-id&gt;<br />
-&lt;validator-class&gt;com.adfkf.validators.ValidatorTime&lt;/validator-class&gt;<br />
-&lt;/validator&gt;</blockquote>
-</div>
-<strong>Step3 </strong>页面中使用定制的validator
-<div>
-<blockquote>&lt;af:inputText value=&#8221;#{row.bindings.ReimTime.inputValue}&#8221; disabled=&#8221;#{sessionScope.flag}&#8221;<br />
-label=&#8221;#{bindings.CostDetailVO.hints.ReimTime.label}&#8221;<br />
-required=&#8221;#{bindings.CostDetailVO.hints.ReimTime.mandatory}&#8221;<br />
-shortDesc=&#8221;#{bindings.CostDetailVO.hints.ReimTime.tooltip}&#8221;<br />
-id=&#8221;id2&#8221;&gt;<br />
-&lt;af:validateRegExp pattern=&#8221;([0-1][0-9]|2[0-4])\:([0-5][0-9]|60)&#45;([0-1][0-9]|2[0-4])\:([0-5][0-9]|60)&#8221; messageDetailNoMatch=&#8221;请输入时刻，例如 00：00-24：60 &#8221; hint=&#8221;请输入时刻，例如 00：00-24：60&#8221;/&gt;<br />
-&lt;f:validator validatorId=&#8221;validateTime&#8221;/&gt;<br />
-&lt;/af:inputText&gt;</blockquote>
-</div>
-看下效果吧</p>
-
-<p><a rel="attachment wp-att-111" href="http://www.dengdezhao.cn/wp-content/uploads/2012/06/T11-300x92.jpg"><img class="alignnone size-medium wp-image-111" title="T1" src="http://www.dengdezhao.cn/wp-content/uploads/2012/06/T11-300x92.jpg" alt="" width="300" height="92" /></a></p>
+<p>情况2，难点也在这里，调用commit保存数据时，主键约束异常才会抛出来而且还不知道重复的ID值是多少。重写EO的doDML方法，在此方法中捕获DMLException异常，并且可以得到重复的ID值；
+<pre class="brush:java">  public void doDML(int i,TransactionEvent e)
+  {
+    try{
+    super.doDML(i,e);
+    }catch(oracle.jbo.DMLException ex)
+    {
+        throw new OAException("ERROR:数据库中存在相同的VIN码["+this.getVin()+"],请检查上传文件",OAException.ERROR);
+    }
+  }</pre></p>
 </div>
   
   
@@ -205,7 +134,7 @@ id=&#8221;id2&#8221;&gt;<br />
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2012-06-26/%E5%85%B3%E4%BA%8Evo%E7%9A%84%E5%8F%AA%E8%AF%BB%E5%8F%AF%E5%86%99%E7%AD%89%E5%B1%9E%E6%80%A7%E8%AE%BE%E7%BD%AE/">关于VO的只读可写等属性设置</a></h1>
+      <h1 class="entry-title"><a href="/blog/2013-01-09/oaf-%E4%BD%BF%E7%94%A8oaexception%E8%BE%93%E5%87%BA%E4%B8%AD%E6%96%87%E6%97%B6%E5%87%BA%E7%8E%B0%E4%B9%B1%E7%A0%81-%E8%A7%A3%E5%86%B3/">OAF 使用OAException输出中文时出现乱码 解决</a></h1>
     
     
       <p class="meta">
@@ -221,27 +150,18 @@ id=&#8221;id2&#8221;&gt;<br />
   
 
 
-<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
+<time datetime="2013-01-09T00:00:00+08:00" pubdate data-updated="true">Jan 9<span>th</span>, 2013</time>
         
-         | <a href="/blog/2012-06-26/%E5%85%B3%E4%BA%8Evo%E7%9A%84%E5%8F%AA%E8%AF%BB%E5%8F%AF%E5%86%99%E7%AD%89%E5%B1%9E%E6%80%A7%E8%AE%BE%E7%BD%AE/#disqus_thread">Comments</a>
+         | <a href="/blog/2013-01-09/oaf-%E4%BD%BF%E7%94%A8oaexception%E8%BE%93%E5%87%BA%E4%B8%AD%E6%96%87%E6%97%B6%E5%87%BA%E7%8E%B0%E4%B9%B1%E7%A0%81-%E8%A7%A3%E5%86%B3/#disqus_thread">Comments</a>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>如果生成ViewObject 的时候选择的是只读的VO的话，会发现VO的source里有ReadOnly=&#8221;true&#8221;。<br />
-需求1：在MB中我通过代码拿到这个VO的实例，我想通过以下代码添加Row
-<div>
-<blockquote>Row newRow=Vo.createRow();<br />
-newRow.setAttribute(&#8220;attribute1&#8221;,&#8221;value1&#8221;);<br />
-newRow.setAttribute(&#8220;attribute2&#8221;,&#8221;value2&#8221;);<br />
-newRow.setAttribute(&#8220;attribute3&#8221;,&#8221;value3&#8221;);<br />
-Vo.insertRow(newRow);</blockquote>
-</div>
-最终发现，只读VO无法插入数据。怎么办？将ReadOnly改成&#8221;false&#8221;之后测试，发现满足需求~！<br />
-需求2：满足需求1之后发现，Vo里的确插入数据了。如果页面上有保存按钮，也会将这个数据更改到数据库，而这个数据只是需要在MB中起过渡作用，不必将newRow的数据postChange到DB，怎么办？<br />
-VO里 这个属性DeleteParticipant 立功了。 DeleteParticipant就是控制数据是否保存到DB的。设置 DeleteParticipant=&#8221;false&#8221;发现满足了需求！</p>
+  <div class="entry-content"><p>使用throw new OAException(“你们好”,OAException.WARNING);时出现乱码，尝试new String(&#8220;你们好”.getBytes(&#8220;GBK&#8221;),&#8221;UTF-8&#8221;)依然没用。</p>
+
+<p>检查JDEV的Preferences中ENCODING已经更改为“UTF-8”，纠结了好一阵子，才发现工程的Project Settings的Compiler里也有一个ENCODING没有改，囧改好之后再测试乱码问题即解决</p>
 </div>
   
   
@@ -254,7 +174,7 @@ VO里 这个属性DeleteParticipant 立功了。 DeleteParticipant就是控制�
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2012-06-26/%E5%85%B3%E4%BA%8Eselectbooleancheckbox-%E7%9A%84%E9%97%AE%E9%A2%98/">关于selectBooleanCheckbox 的问题</a></h1>
+      <h1 class="entry-title"><a href="/blog/2012-12-14/%E6%96%B0%E6%B5%AA%E5%85%A5%E9%97%A8%E5%BA%94%E7%94%A8%E4%B9%8B-%E5%A4%A7%E7%AC%A8%E9%92%9F/">新浪入门应用之&#8212;大笨钟</a></h1>
     
     
       <p class="meta">
@@ -270,30 +190,64 @@ VO里 这个属性DeleteParticipant 立功了。 DeleteParticipant就是控制�
   
 
 
-<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
+<time datetime="2012-12-14T00:00:00+08:00" pubdate data-updated="true">Dec 14<span>th</span>, 2012</time>
         
-         | <a href="/blog/2012-06-26/%E5%85%B3%E4%BA%8Eselectbooleancheckbox-%E7%9A%84%E9%97%AE%E9%A2%98/#disqus_thread">Comments</a>
+         | <a href="/blog/2012-12-14/%E6%96%B0%E6%B5%AA%E5%85%A5%E9%97%A8%E5%BA%94%E7%94%A8%E4%B9%8B-%E5%A4%A7%E7%AC%A8%E9%92%9F/#disqus_thread">Comments</a>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>页面的 selectBooleanCheckbox 选择后，总提示 不是数字（组件value是 true 或 false,数据库存的是Number），怎么解决</p>
+  <div class="entry-content"><p>昨日突然对SAE平台产生了兴趣，于是花了一晚上时间，写了个定点发微博的小应用，也算是了解了下SAE平台的开发流程，以下烂笔头纯粹为方便菜鸟学习，老鸟勿笑。</p>
 
-<p>方案有三个<br />
-1。如果是基于表的Number字段(假设字段名是Flag，值是1或者0），想生成selectBooleanCheckbox ，可以重写这个VO的的 setFlag()跟getFlag()方法如下：<br />
-public void setFlag(Boolean value){<br />
-this.flag=value==true?1:0;<br />
-}
-public Boolean getFlag(){<br />
-return this.flag==0?false:true;<br />
-}</p>
+<p>之前玩过豆瓣，里面有个有名的“大笨钟”，每到整点便会发个状态“咚”几声以报时，虽然用处不大，但因其一直准点报时也吸引了不少粉丝关注，所以想自己做个类似的功能定时发微博报时。</p>
 
-<p>2。设置valueChangeListener.<br />
-在valueChange方法里捕获当前selectBooleanCheckbox 的值，然后转化成Number类型的传给VO</p>
+<p>于是，看了看SAE的介绍，注册了个开发者账号，新建应用“thebigbenclock&#8221;；</p>
 
-<p>3。如果是只读的表，可以在UI上通过EL表达式处理。</p>
+<p>在E盘创建个同名文件夹E:\thebigbenclock</p>
+
+<p>右建checkout出应用代码https://svn.sinaapp.com/thebigbenclock,确保SVN可以正常连接；</p>
+
+<p>进入SAE平台，找到代码仓库中的框架“新浪微博OAuth框架&#8221;，将此框架下载到应用中，并创建版本</p>
+
+<p>然后再checkout应用，便可以将“新浪微博OAuth框架&#8221;的代码取到本地文件夹下了；</p>
+
+<p><a rel="attachment wp-att-195" href="../../../wp-content/uploads/2012/12/tt-300x87.jpg"><img class="alignnone size-medium wp-image-195" title="tt" src="../../../wp-content/uploads/2012/12/tt-300x87.jpg" alt="" width="554" height="160" /></a></p>
+
+<p>注意，默认版本为1，会新建一个名为“1”的子文件夹。修改config.php，填上APP key , App Sercet 及 WB_CALLBACK_URL。</p>
+
+<p>修改weibolist.php，添加以下代码：
+<pre class="brush:php">    $c = new SaeTClientV2( '3987019479' , '1eaa0834c410537aaef2759ffffffd9' , '<span style="color: #ff0000;">2.00VLxGwBntHp2E04c5f9ad08eyNJFC</span>');
+    $ms  = $c-&gt;home_timeline(); // done
+    $uid_get = $c-&gt;get_uid();
+    $uid = $uid_get['uid'];
+    $user_message = $c-&gt;show_user_by_id( $uid);//根据ID获取用户等基本信息
+    $dateString=date("Y-m-d H:i:s");   //获取当前时间；
+    $hours=substr($dateString,11,2);</pre></p>
+
+<p>    $outString=&#8217;咚!&#8217;;<br />
+    for ($a=1;$a&lt;$hours;$a++){<br />
+        $outString=$outString.&#8217;咚!&#8217;;<br />
+      }</p>
+
+<p>    $ret = $c-&gt;update($dateString.$outString );	//发送微博
+上图中access_token，需要根据测试账号预先生成。</p>
+
+<p>配置config.yaml文件如下：
+<pre class="brush:php">name: thebigbenclock
+version: 1
+accesskey: 3987019479
+cron:
+- description: cron test
+  url: /weibolist.php
+  schedule: every 1 hour,offset 0
+  timezone: Beijing</pre>
+打开应用即可在整点时发送微博
+<pre class="brush:css">2012-12-14 09:00:00咚!咚!咚!咚!咚!咚!咚!咚!咚!</pre>
+&nbsp;</p>
+
+<p>&nbsp;</p>
 </div>
   
   
@@ -306,7 +260,7 @@ return this.flag==0?false:true;<br />
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2012-06-26/%E5%85%B3%E4%BA%8Emanagedbean%E4%B8%AD%E5%A4%9A%E6%AC%A1%E6%89%A7%E8%A1%8C%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95%E6%97%B6%E7%9A%84%E9%97%AE%E9%A2%98/">关于ManagedBean中多次执行构造方法时的问题</a></h1>
+      <h1 class="entry-title"><a href="/blog/2012-12-03/ora-1222%EF%BC%9Atnsno-such-protocol-adapter-%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/">ORA-1222：TNS:no Such Protocol Adapter 问题解决</a></h1>
     
     
       <p class="meta">
@@ -322,21 +276,36 @@ return this.flag==0?false:true;<br />
   
 
 
-<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
+<time datetime="2012-12-03T00:00:00+08:00" pubdate data-updated="true">Dec 3<span>rd</span>, 2012</time>
         
-         | <a href="/blog/2012-06-26/%E5%85%B3%E4%BA%8Emanagedbean%E4%B8%AD%E5%A4%9A%E6%AC%A1%E6%89%A7%E8%A1%8C%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95%E6%97%B6%E7%9A%84%E9%97%AE%E9%A2%98/#disqus_thread">Comments</a>
+         | <a href="/blog/2012-12-03/ora-1222%EF%BC%9Atnsno-such-protocol-adapter-%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/#disqus_thread">Comments</a>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>有时候需要在初始化时执行一些查询，但发现会多次执行。需要在构造方法里添加一行代码避免页面点击时多次执行初始化。<br />
-if (!(Boolean)ADFUtils.getBindObject(&#8220;adfFacesContext.postback&#8221;)) {<br />
-init()；<br />
-}</p>
+  <div class="entry-content"><p>机器上安装的是instantOracleclient-basic-win32-11.2.0.1.0客户端，本来使用PLSQL developer是可以正常连接数据库的；</p>
 
-<p>通过页面是否postback来控制只初始化一次。</p>
+<p>后来开发需求装上了Form6<em>i，</em>发现连接数据库时弹出来ORA-1222：TNS:no such protocol adapter这个错误；</p>
+
+<p>解决方案：</p>
+
+<p><strong>1.配置PL/SQL Developer -&gt; Preferences ，OracleHome设置为Form6i的路径；</strong></p>
+
+<p>﻿<a rel="attachment wp-att-188" href="../../../wp-content/uploads/2012/12/p1-300x249.jpg"><img class="alignnone size-medium wp-image-188" title="p1" src="../../../wp-content/uploads/2012/12/p1-300x249.jpg" alt="" width="300" height="249" /></a></p>
+
+<p><strong>2.我的电脑 -&gt; 用户变量 设置ORACLE_HOME 为Form6i路径</strong></p>
+
+<p><strong><a rel="attachment wp-att-189" href="../../../wp-content/uploads/2012/12/p2-276x300.jpg"><img class="alignnone size-medium wp-image-189" title="p2" src="../../../wp-content/uploads/2012/12/p2-276x300.jpg" alt="" width="276" height="300" /></a></strong></p>
+
+<p><strong>或者可以直接编辑注册表，修改oracle_home的值为[Form安装的HOME文件夹]/[oracle客户端文件夹]；</strong></p>
+
+<p><strong>如果需要切换按以上步骤修改oracle_home再重启PLSQL Developer即可以正常连接数据库；
+</strong></p>
+
+<p><em>
+</em></p>
 </div>
   
   
@@ -349,7 +318,7 @@ init()；<br />
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2012-06-26/weblogic%E5%AE%9A%E6%97%B6%E5%90%AF%E5%8A%A8%E7%A8%8B%E5%BA%8F/">Weblogic定时启动程序</a></h1>
+      <h1 class="entry-title"><a href="/blog/2012-09-30/webservice%E4%B9%8B-%E5%85%A5%E9%97%A8demo%E7%94%9F%E6%88%90/">WebService之-入门DEMO生成</a></h1>
     
     
       <p class="meta">
@@ -365,64 +334,70 @@ init()；<br />
   
 
 
-<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
+<time datetime="2012-09-30T00:00:00+08:00" pubdate data-updated="true">Sep 30<span>th</span>, 2012</time>
         
-         | <a href="/blog/2012-06-26/weblogic%E5%AE%9A%E6%97%B6%E5%90%AF%E5%8A%A8%E7%A8%8B%E5%BA%8F/#disqus_thread">Comments</a>
+         | <a href="/blog/2012-09-30/webservice%E4%B9%8B-%E5%85%A5%E9%97%A8demo%E7%94%9F%E6%88%90/#disqus_thread">Comments</a>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>有个需求是要求程序在每天晚上3点钟的时候自动调用一个Job执行。</p>
+  <div class="entry-content"><p>WebService的创建方法有多种，这里使用JAVA class生成webservice。</p>
 
-<p>解决方案：定制weblogic的启动类，用来运行Job执行。</p>
+<p>1.创建一个JAVA类Test.java
+<pre class="brush:java">public class Test {
+    public Test() {
+        super();
+    }
+    public String sayHello(String a){
+        return "result"+a;
+    }
+}</pre>
+2.利用Test.java生成webservice</p>
 
-<p>STEP1，启动类StartupTask：
-<div>
-<blockquote>public class StartupTask implements T3StartupDef {<br />
-public String startup(String name, Hashtable args) throws Exception {</blockquote></div></p>
+<p><a rel="attachment wp-att-177" href="../../../wp-content/uploads/2012/09/aa-300x212.png"><img class="alignnone size-medium wp-image-177" title="aa" src="../../../wp-content/uploads/2012/09/aa-300x212.png" alt="" width="300" height="212" /></a></p>
 
-<p>Callplsql.main(null);</p>
+<p><a rel="attachment wp-att-178" href="../../../wp-content/uploads/2012/09/bb-300x222.png"><img class="alignnone size-medium wp-image-178" title="bb" src="../../../wp-content/uploads/2012/09/bb-300x222.png" alt="" width="300" height="222" /></a></p>
 
-<p>return &#8220;Callplsql Startup successful completed&#8221;;<br />
-}</p>
+<p><a rel="attachment wp-att-179" href="../../../wp-content/uploads/2012/09/cc-300x222.png"><img class="alignnone size-medium wp-image-179" title="cc" src="../../../wp-content/uploads/2012/09/cc-300x222.png" alt="" width="300" height="222" /></a></p>
 
-<p>public void setServices(T3ServicesDef t3ServicesDef) {<br />
-}</p>
+<p>完成即生成Webservice.</p>
 
-<p>}
+<p>3. 发布webservice到weblogic</p>
 
-Callplsql.java(  即是JOB类，是需要被调用的，要继承TimerTask  ）中的Main方法要有：
-<div>
-<blockquote>public static void main(String[] args) {<br />
-//任务执行间隔时间，默认24小时<br />
-long PERIOD_TIME=24*60*60*1000;<br />
-long delay=0;<br />
-//任务首次启动时间，默认零晨3点<br />
-Calendar end=Calendar.getInstance();<br />
-end.set(Calendar.HOUR_OF_DAY, 3);<br />
-end.set(Calendar.MINUTE, 0);<br />
-end.set(Calendar.SECOND, 0);<br />
-Calendar now=Calendar.getInstance();<br />
-delay=end.getTime().getTime()-now.getTime().getTime();<br />
-if(delay&lt;=0){<br />
-delay=PERIOD_TIME+delay;<br />
-}
-System.out.println(&#8220;当前时间：&#8221;+now.getTime());<br />
-System.out.println(&#8220;首次启动SAP同步程序时间：&#8221;+end.getTime());<br />
-System.out.println(&#8220;延时：&#8221;+delay+&#8221;毫秒启动SAP同步程序！&#8221;);</blockquote></div></p>
+<p><a rel="attachment wp-att-180" href="../../../wp-content/uploads/2012/09/dd-300x216.png"><img class="alignnone size-medium wp-image-180" title="dd" src="../../../wp-content/uploads/2012/09/dd-300x216.png" alt="" width="300" height="216" /></a></p>
 
-<p>//      待执行的任务<br />
-Timer time=new Timer();<br />
-Callplsql task=new Callplsql();<br />
-time.schedule(task,delay,PERIOD_TIME);</p>
+<p>得到WSDL路径地址：<a href="http://192.168.1.103:7001/Application1-Project1-context-root/TestPort?WSDL">http://dengdezhao.cn:7001/Application1-Project1-context-root/TestPort?WSDL</a></p>
 
-<p>}
+<p>4.创建CallWSDL.java 客户端调用WSDL。Main方法如下：
+<pre class="brush:java">    public static void main(String[] args) throws Exception {</pre></p>
 
-通过time.schedule每天零晨3：00循环调用JOB。</p>
+<p>        String wsdlUrl=&#8221;http://dengdezhao.cn:7001/Application1-Project1-context-root/TestPort?WSDL&#8221;;<br />
+        String nameSpaceUri=&#8221;http://tempuri.org/&#8221;;<br />
+        String serviceName=&#8221;TestService&#8221;;<br />
+        String portName=&#8221;TestPort&#8221;;<br />
+        //设置工厂属性为axis<br />
+        System.setProperty(ServiceFactory.SERVICEFACTORY_PROPERTY, &#8220;org.apache.axis.client.ServiceFactory&#8221;);//weblogic.webservice.core.rpc.ServiceFactoryImpl<br />
+        //org.apache.axis.client.ServiceFactory<br />
+        ServiceFactory serviceFactory = (ServiceFactory)ServiceFactory.newInstance();<br />
+        QName qname=new QName(nameSpaceUri,serviceName);<br />
+        Service afService =<br />
+            (Service)serviceFactory.createService(new java.net.URL(wsdlUrl), qname);<br />
+        Call call = (Call)afService.createCall();</p>
 
-<p>编译好StartupTask类后，要在weblogic控制台设置好启动类即可实现此需求。</p>
+<p>        call.setTargetEndpointAddress(wsdlUrl);<br />
+        //设定调用方法<br />
+        call.setOperationName(new QName(nameSpaceUri,&#8221;sayHello&#8221;));<br />
+        //设定输入参数类型<br />
+        call.addParameter(&#8220;arg0&#8221;, XMLType.XSD_STRING, ParameterMode.IN);<br />
+        //设定返回参数类型<br />
+        call.setReturnType(XMLType.XSD_STRING);<br />
+        //调用Webservice，传入参数为test.<br />
+        String result = (String)call.invoke(new Object[]{&#8220;test&#8221;});<br />
+        System.out.println(&#8220;*******&#8221;+result);<br />
+    }
+输入结果为预期：*******resulttest
 </div>
   
   
@@ -435,7 +410,7 @@ time.schedule(task,delay,PERIOD_TIME);</p>
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2012-06-26/table%E5%86%85%E5%A2%9E%E5%8A%A0%E5%85%A8%E9%80%89checkbox/">Table内增加全选checkbox</a></h1>
+      <h1 class="entry-title"><a href="/blog/2012-09-29/soa-suite-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">SOA Suite 环境搭建</a></h1>
     
     
       <p class="meta">
@@ -451,62 +426,33 @@ time.schedule(task,delay,PERIOD_TIME);</p>
   
 
 
-<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
+<time datetime="2012-09-29T00:00:00+08:00" pubdate data-updated="true">Sep 29<span>th</span>, 2012</time>
         
-         | <a href="/blog/2012-06-26/table%E5%86%85%E5%A2%9E%E5%8A%A0%E5%85%A8%E9%80%89checkbox/#disqus_thread">Comments</a>
+         | <a href="/blog/2012-09-29/soa-suite-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/#disqus_thread">Comments</a>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>如图效果：    
+  <div class="entry-content"><p>好久没碰SOA，最近在win2003上准备搭建个环境玩玩。下载相关安装介质</p>
 
-<a rel="attachment wp-att-107" href="http://www.dengdezhao.cn/wp-content/uploads/2012/06/T1.jpg"><img class="alignnone size-full wp-image-107" title="T1" src="http://www.dengdezhao.cn/wp-content/uploads/2012/06/T1.jpg" alt="" width="213" height="286" /></a>
+<p>http://www.oracle.com/technetwork/middleware/soasuite/downloads/index.html</p>
 
-解决方案：</p>
+<p>1.<strong>Database</strong> 我用的是oracle 11G</p>
 
-<p>VO里新建Transient属性Checked(Boolean),</p>
+<p>2.<strong>Oracle WebLogic Server </strong>安装的是10.3.6.0</p>
 
-<p><a rel="attachment wp-att-108" href="http://www.dengdezhao.cn/wp-content/uploads/2012/06/T2-300x11.jpg"><img class="alignnone size-medium wp-image-108" title="T2" src="http://www.dengdezhao.cn/wp-content/uploads/2012/06/T2-300x11.jpg" alt="" width="300" height="11" /></a></p>
+<p>3.<strong>Repository Creation Utility 11.1.1.6.0 </strong>解压缩下载的压缩包，运行/rcuHome/Bin/rcu.bat.执行安装</p>
 
-<p>表内添加一个column如下：
-<div>
-<blockquote>&lt;af:column id=&#8221;c10&#8221; headerText=&#8221;选择&#8221; width=&#8221;30&#8221; align=&#8221;center&#8221; noWrap=&#8221;true&#8221;&gt;<br />
-&lt;f:facet name=&#8221;header&#8221;&gt;<br />
-&lt;af:selectBooleanCheckbox valueChangeListener=&#8221;#{backingBean.selectAll}&#8221;<br />
-autoSubmit=&#8221;true&#8221; id=&#8221;selectAll&#8221;<br />
-label=&#8221;&#8221; value=&#8221;&#8220;/&gt;<br />
-&lt;/f:facet&gt;<br />
-&lt;af:selectBooleanCheckbox label=&#8221;选中/非选中&#8221; id=&#8221;sbc1&#8221;  autoSubmit=&#8221;true&#8221; immediate=&#8221;true&#8221;<br />
-value=&#8221;#{row.bindings.Checked.inputValue}&#8221;/&gt;</blockquote></div></p>
+<p>4.<strong>JDeveloper 11.1.1.6.0 </strong>安装开发工具JDEV，因自带weblogic是11.1.1.5.0安装时可能需要分开不要放在一个oracle主目录里。或者只安装JDEV也行</p>
 
-<p>&lt;/af:column&gt;
+<p>5.安装好JDEV后，更新<strong>SOA Extension for JDeveloper 11.1.1.6.0</strong>插件</p>
 
- 
-<div>
-<blockquote>public void selectAll(ValueChangeEvent valueChangeEvent) {<br />
-DCIteratorBinding it = ADFUtils.findIterator(REIM_HEADER_ITER);<br />
-ViewObject vo = it.getViewObject();</blockquote></div></p>
+<p>6.安装<strong>SOA Suite </strong>需要注意的是执行安装时要指定JRE目录-jreLoc &#8220;c:\java\jre&#8221;. <strong><a href="http://www.oracle.com/technetwork/middleware/soasuite/overview/index.html">
+</a></strong></p>
 
-<p>if (valueChangeEvent.getNewValue() != null) {<br />
-Boolean selectAll =<br />
-Boolean.parseBoolean(valueChangeEvent.getNewValue().toString());<br />
-if (!selectAll) {<br />
-for (Row temp : vo.getAllRowsInRange()) {<br />
-temp.setAttribute(&#8220;Checked&#8221;, false);<br />
-}
-} else {<br />
-for (Row temp : vo.getAllRowsInRange()) {<br />
-temp.setAttribute(&#8220;Checked&#8221;, true);<br />
-}
-}<br />
-RichTable table = (RichTable)JSFUtils.findComponentInRoot(&#8220;t1&#8221;);<br />
-AdfFacesContext.getCurrentInstance().addPartialTarget(table);<br />
-}
-}
-
-以上即可实现此需求。</p>
+<p>&nbsp;</p>
 </div>
   
   
@@ -519,7 +465,7 @@ AdfFacesContext.getCurrentInstance().addPartialTarget(table);<br />
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2012-06-26/oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E7%94%A8%E6%88%B7%E8%A2%AB%E9%94%81%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/">Oracle数据库用户被锁问题解决</a></h1>
+      <h1 class="entry-title"><a href="/blog/2012-09-20/ebs-%E5%B9%B6%E5%8F%91%E8%AF%B7%E6%B1%82%E8%B0%83%E7%94%A8sql%E6%97%B6%EF%BC%8C%E6%97%A5%E5%BF%97%E8%B7%9F%E8%BE%93%E5%87%BA%E4%B8%AD%E6%96%87%E5%87%BA%E7%8E%B0%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98/">EBS 并发请求调用SQL时，日志跟输出中文出现乱码问题</a></h1>
     
     
       <p class="meta">
@@ -535,23 +481,30 @@ AdfFacesContext.getCurrentInstance().addPartialTarget(table);<br />
   
 
 
-<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
+<time datetime="2012-09-20T00:00:00+08:00" pubdate data-updated="true">Sep 20<span>th</span>, 2012</time>
         
-         | <a href="/blog/2012-06-26/oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E7%94%A8%E6%88%B7%E8%A2%AB%E9%94%81%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/#disqus_thread">Comments</a>
+         | <a href="/blog/2012-09-20/ebs-%E5%B9%B6%E5%8F%91%E8%AF%B7%E6%B1%82%E8%B0%83%E7%94%A8sql%E6%97%B6%EF%BC%8C%E6%97%A5%E5%BF%97%E8%B7%9F%E8%BE%93%E5%87%BA%E4%B8%AD%E6%96%87%E5%87%BA%E7%8E%B0%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98/#disqus_thread">Comments</a>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>运行AM的时候报个JDBC连接错误，ORA-280000:用户被锁的异常。<br />
-于是在PL/SQL DEV里切换成SYSTEM用户 alter user XXX account unlock;之后，用PL/SQL DEV测试 可以连上了<br />
-再运行AM的时候，又报了个用户被锁。很是蛋疼<br />
-于是换到命令行，尝试以SYSDBA的身份再执行一次alter account unlock;<br />
-发现连不上：报了以下错误：<br />
-ORA-28056: Writing audit records to Windows Event Log failed<br />
-这你妹的，原来是系统日志满了，解决方案：<br />
-打开windows 事件查看器，将应用程序日志清理一下，重新连接数据库，连接成功。</p>
+  <div class="entry-content"><p>已知数据库，数据库所在服务器字符集都是UTF8，在并发请求调用的SQL里，fnd_file.put_line(fnd_file.log,&#8217;中文&#8217;)语句输出时，在EBS界面查看就是乱码。</p>
+
+<p>出现乱码的问题思路：</p>
+
+<p>1.查看客户端系统字符集是否支持中文。确认本机支持，并且NLS_LANG跟数据库都保持一致，可以排除此因素。</p>
+
+<p>2.查看数据库端字符集编码是否支持中文，得知是UTF8编码。</p>
+
+<p>3.查看服务器端是否支持中文编码</p>
+
+<p>发现以上三个因素都可以排除，EBS请求会在服务器端生成log文件，因此telnet到服务器直接查看生成的log文件看是否出现乱码</p>
+
+<p>cd $APPLPTMP</p>
+
+<p>发现生成的文件也是乱码，基本可以确定在数据库端生成文件即出现乱码，需要对中文字符进行转码输出。 exec find_file.put_file(fnd_file.log,convert(&#8216;中文&#8217;,&#8217;UTF8&#8217;,&#8217;ZHS16GBK&#8217;))；</p>
 </div>
   
   
@@ -564,7 +517,7 @@ ORA-28056: Writing audit records to Windows Event Log failed<br />
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2012-06-26/immediatetrue-%E7%9A%84%E5%BC%82%E5%B8%B8/">Immediate=&#8221;true&#8221; 的异常</a></h1>
+      <h1 class="entry-title"><a href="/blog/2012-09-12/ebs%E8%AF%B7%E6%B1%82%E6%89%A7%E8%A1%8C%E6%97%B6%E6%8A%9B%E5%87%BA%E9%94%99%E8%AF%AFora-20100%E5%92%8Cora-06512-%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/">EBS请求执行时抛出错误Ora-20100和Ora-06512 问题解决</a></h1>
     
     
       <p class="meta">
@@ -580,18 +533,18 @@ ORA-28056: Writing audit records to Windows Event Log failed<br />
   
 
 
-<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
+<time datetime="2012-09-12T00:00:00+08:00" pubdate data-updated="true">Sep 12<span>th</span>, 2012</time>
         
-         | <a href="/blog/2012-06-26/immediatetrue-%E7%9A%84%E5%BC%82%E5%B8%B8/#disqus_thread">Comments</a>
+         | <a href="/blog/2012-09-12/ebs%E8%AF%B7%E6%B1%82%E6%89%A7%E8%A1%8C%E6%97%B6%E6%8A%9B%E5%87%BA%E9%94%99%E8%AF%AFora-20100%E5%92%8Cora-06512-%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/#disqus_thread">Comments</a>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>设置按钮的immediate=&#8221;true&#8221; 可以避免因按钮提交FORM导致的页面刷新闪烁，但也会带来麻烦。<br />
-假如对表的取消按钮设置了此属性，可能会发生新增数据，然后点取消作rollback时数据显示异常。<br />
-开发时值得注意</p>
+  <div class="entry-content"><p>执行请求时抛出错误Ora-20100：xxxxx. Ora-06512:xxxxx错误，清空临时文件目录$APPLPTMP即可</p>
+
+<p>&nbsp;</p>
 </div>
   
   
@@ -604,7 +557,7 @@ ORA-28056: Writing audit records to Windows Event Log failed<br />
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2012-06-26/adftree%E5%81%9A%E7%9A%84%E6%A0%91%E8%8F%9C%E5%8D%95%E5%A6%82%E4%BD%95%E8%BF%87%E6%BB%A4%E5%AD%90%E8%8A%82%E7%82%B9%E7%9A%84%E6%95%B0%E6%8D%AE%EF%BC%9F/">Adf:tree做的树菜单如何过滤子节点的数据？</a></h1>
+      <h1 class="entry-title"><a href="/blog/2012-09-11/ebs%E5%B9%B6%E5%8F%91%E8%AF%B7%E6%B1%82%E8%B0%83%E7%94%A8oracle-reports%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E5%86%99%E5%85%A5%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6/">EBS并发请求调用Oracle Reports时，如何写入日志文件</a></h1>
     
     
       <p class="meta">
@@ -620,82 +573,24 @@ ORA-28056: Writing audit records to Windows Event Log failed<br />
   
 
 
-<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
+<time datetime="2012-09-11T00:00:00+08:00" pubdate data-updated="true">Sep 11<span>th</span>, 2012</time>
         
-         | <a href="/blog/2012-06-26/adftree%E5%81%9A%E7%9A%84%E6%A0%91%E8%8F%9C%E5%8D%95%E5%A6%82%E4%BD%95%E8%BF%87%E6%BB%A4%E5%AD%90%E8%8A%82%E7%82%B9%E7%9A%84%E6%95%B0%E6%8D%AE%EF%BC%9F/#disqus_thread">Comments</a>
+         | <a href="/blog/2012-09-11/ebs%E5%B9%B6%E5%8F%91%E8%AF%B7%E6%B1%82%E8%B0%83%E7%94%A8oracle-reports%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E5%86%99%E5%85%A5%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6/#disqus_thread">Comments</a>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>需求：项目中的树菜单需要权限用户的权限过滤显示子菜单，通过用户所在的用户组可以查看的页面ID（List)过滤子节点<br />
-解决方案：<br />
-因为树是通过viewLink关联自身的VO生成的，想在AM里添加方法，对VO进行过滤处理把结果返回。<br />
-但实现起来比较麻烦，调用方法之后要刷新页面，初始化的树数据过滤处理困难。<br />
-于是想重写VO的方法看能不能在VO层就过滤掉子节点。重写createViewLinkAccessorRS，此方法返回ViewLink的结果，也就是菜单的子节点数据
-<div>
-<blockquote>
-@Override<br />
-protected ViewRowSetImpl createViewLinkAccessorRS(AssociationDefImpl associationDefImpl,<br />
-ViewObjectImpl viewObjectImpl,<br />
-Row row,<br />
-Object[] object) {<br />
-ViewRowSetImpl viewRowSetImpl =<br />
-super.createViewLinkAccessorRS(associationDefImpl, viewObjectImpl,<br />
-row, object);<br />
-int count = 0;<br />
-// getList()拿到可以查看的pageId的列表，对比Row中的pageId属性，如果在List中存在，就取该Row，如果不存      //在，表示此子节点不予以显示，remove掉<br />
-if (this.getList() != null &amp;&amp; this.getList().size() != 0 &amp;&amp;<br />
-viewRowSetImpl != null) {<br />
-for (int m = 0; m &lt; viewRowSetImpl.getRowCount(); m++) {<br />
-if (viewRowSetImpl.getRow(m).getAttribute(&#8220;pageId&#8221;) ==<br />
-null) {<br />
-continue;<br />
-}
-for (int i = 0; i &lt; this.getList().size(); i++) {<br />
-if (this.getList().get(i).equals(viewRowSetImpl.getRow(m).getAttribute(&#8220;pageId&#8221;))) {<br />
-count++;<br />
-}
-}<br />
-if (count == 0) {<br />
-viewRowSetImpl.removeRowAt(m);<br />
-//因为remove掉一行之后，viewRowSetImpl的RowCount就少了1，需要给m也减一，不然可漏掉一行数据未处理。<br />
-m&#8211;;<br />
-}
-count = 0;<br />
-}
-}</blockquote></div></p>
+  <div class="entry-content"><p>EBS并发请求调用procedure时，直接在被调用的procedure中使用fnd_file.put_line即可达到要求；</p>
 
-<p>return viewRowSetImpl;</p>
+<p>如果并发请求调用的是oracle reports时，写入日志文件需要使用reports的方法。</p>
 
-<p>}
+<p>在Before/After report Trigger中使用SRW.message(0,&#8217;Message&#8217;);</p>
 
-如此重写了这个方法之后，在调用的时候需要给List赋值，以方便过滤。因此需要给List的 SetList()方法生成Client接口。<br />
-在VO中为setList()添加clientInterface.
-<div>
-<blockquote>&lt;ClientInterface&gt;<br />
-&lt;Method<br />
-Name=&#8221;setList&#8221;&gt;<br />
-&lt;Return<br />
-Type=&#8221;void&#8221;/&gt;<br />
-&lt;Parameter<br />
-Name=&#8221;list&#8221;<br />
-Type=&#8221;java.util.ArrayList&#8221;<br />
-IsGeneric=&#8221;true&#8221;&gt;<br />
-&lt;Element<br />
-Type=&#8221;java.lang.String&#8221;/&gt;<br />
-&lt;/Parameter&gt;<br />
-&lt;/Method&gt;<br />
-&lt;/ClientInterface&gt;</blockquote>
-</div>
-这样，只需要在页面初始化的时候，给这个VO的list赋值，就可以过滤子节点了
-<div>
-<blockquote>DCIteratorBinding it2 = ADFUtils.findIterator(&#8220;MenuVO1Iterator&#8221;);<br />
-MenuVOImpl vo2 = (MenuVOImpl)it2.getViewObject();<br />
-vo2.setList(list);    //给VO的List赋值。<br />
-vo2.executeQuery();</blockquote>
-</div></p>
+<p>中断报表执行使用SRW.break;</p>
+
+<p>&nbsp;</p>
 </div>
   
   
@@ -708,7 +603,7 @@ vo2.executeQuery();</blockquote>
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2012-06-26/adf-table%E7%9A%84%E5%85%A8%E9%80%89%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0/">ADF Table的全选功能实现</a></h1>
+      <h1 class="entry-title"><a href="/blog/2012-07-06/%E9%80%9A%E8%BF%87%E4%BB%A3%E7%A0%81%E8%AE%BE%E7%BD%AEitem%E5%B1%9E%E6%80%A7%E5%8F%98%E9%BB%84/">通过代码设置ITEM属性变黄</a></h1>
     
     
       <p class="meta">
@@ -724,27 +619,26 @@ vo2.executeQuery();</blockquote>
   
 
 
-<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
+<time datetime="2012-07-06T00:00:00+08:00" pubdate data-updated="true">Jul 6<span>th</span>, 2012</time>
         
-         | <a href="/blog/2012-06-26/adf-table%E7%9A%84%E5%85%A8%E9%80%89%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0/#disqus_thread">Comments</a>
+         | <a href="/blog/2012-07-06/%E9%80%9A%E8%BF%87%E4%BB%A3%E7%A0%81%E8%AE%BE%E7%BD%AEitem%E5%B1%9E%E6%80%A7%E5%8F%98%E9%BB%84/#disqus_thread">Comments</a>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>ADF表想要加个checkbox的全选功能，需要定制。
-<strong>Step1</strong>先在ADF表基于的VO上加一个Transient属性<strong>Checked</strong></p>
+  <div class="entry-content"><p>需求：需要设置ITEM背景变黄，类似required时的效果；</p>
 
-<p><strong><a rel="attachment wp-att-101" href="http://www.dengdezhao.cn/wp-content/uploads/2012/06/22362218zcamfkt8c4qua8-300x186.jpg"><img class="alignnone size-medium wp-image-101" title="22362218zcamfkt8c4qua8" src="http://www.dengdezhao.cn/wp-content/uploads/2012/06/22362218zcamfkt8c4qua8-300x186.jpg" alt="" width="300" height="186" /></a></strong>
+<p>创建visual Attributes 属性：<strong>COLOR_YELLOW</strong></p>
 
-<strong>Step2</strong> 页面中，在ADF表中手工添加一个column如下图所示
-<a rel="attachment wp-att-102" href="http://www.dengdezhao.cn/wp-content/uploads/2012/06/223624reclell7lhrk3hgg-300x83.jpg"><img class="alignnone size-medium wp-image-102" title="223624reclell7lhrk3hgg" src="http://www.dengdezhao.cn/wp-content/uploads/2012/06/223624reclell7lhrk3hgg-300x83.jpg" alt="" width="300" height="83" /></a></p>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALUAAAAgCAIAAADbmq4OAAACUElEQVR4nO2a3W7DIAyFefUqz7WbSnmu7CILpbY5OOHHMPlTVFHHgIPPHJolHN9sry13HIzQmd6zjLyKRaHRizrI2fkqx3ZqrFxZsOI5Tzz7gyBrLkeZiTnppY8m5EYjAXBPZRj6aGuu62ZG5mJE/SBdcN/cWZ6q4hTck3+9dTk4Wo1xOWR98JScdvIJ1iW2UyNIQFEBGn2IU2C54IBzkSiv9N/qg4P3p9wY2+CU2E6dySyV+lCOUDSKKRev1PVR1gc/K7oVjWCtrfQRGMXFWY42+tCsYLSkp/RGfaYN9QGmWxRBH8+efxBL/Cr6i+Nwo36WtDv/qolNHx6ONhfzolRFn/sDclJapcoEFH3uXvPpnCH9aeM0zddovH50p1WqTKiqH807OrOxtrqd3nj9cBBePxyEcf3Y3/tPCMf3sb/3ePAu4tZPtIC+eDSxI2nzTWhgj0CUARTbhhgHcYojlUcqDq6P3KLzNvcsuoGUiPrAsVUGsIA+Ruw/TnFc8iDiIPooiiO1KLOlTwnxv6uPuwEsoI/HiC8DkM9r/o8+TkHEZ2vba5tcH+Rm8UwfZORccbKiS/24M/+fPnjlCCGM0Ydm/8EHaVU/jnX18ZgH95dUFib1w/UhMkX9IDUjbXB3cQzertwe5oIFznpBYOd5xHHMUD/Se0r6jz1eP64ewh0BWIpuZHAYrDy+eKtSBiCODGIYjHH94NsO/PvWGYxx/QCvI+VeShpAYJiEMQPW+w9nbqz3H87ceP1wEF4/HITXDwdhWT+KP17OxyE9InSU/AIYb7x1M+SAvQAAAABJRU5ErkJggg==" alt="" /></p>
 
-<p><strong>Step3</strong> MB中加上如下valueChangeEvent监听方法，取得VO，<br />
-遍历所有ROW，将Checked属性赋值，最后刷新表显示</p>
+<p><img src="data:image/png;base64,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" alt="" /></p>
 
-<p><a rel="attachment wp-att-103" href="http://www.dengdezhao.cn/wp-content/uploads/2012/06/22362612igg9lrm21lubb6-300x209.jpg"><img class="alignnone size-medium wp-image-103" title="22362612igg9lrm21lubb6" src="http://www.dengdezhao.cn/wp-content/uploads/2012/06/22362612igg9lrm21lubb6-300x209.jpg" alt="" width="300" height="209" /></a></p>
+<p>代码如下：
+<pre class="brush:js">	Go_Item('HDPI_FL_CON_TRANSPORT_V.STATION_LEAVE_MEAN');     		Set_Item_Instance_Property('HDPI_FL_CON_TRANSPORT_V.STATION_LEAVE_MEAN',current_record, visual_attribute, 'COLOR_YELLOW');</pre>
+即可实现功能。</p>
 </div>
   
   
@@ -765,18 +659,25 @@ vo2.executeQuery();</blockquote>
 <aside class="sidebar">
   
     <section>
+
+  <ul>
+  <li><a href="https://me.alipay.com/dengdezhao"><img src="../../../wp-content/uploads/donate.jpg"/></a></li>
+  </ul>
+</section>
+<section>
   <h1>分类目录</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/adf/'>ADF (21)</a></li>
+    <li class='category'><a href='/blog/categories/adf/'>ADF (33)</a></li>
 <li class='category'><a href='/blog/categories/ebs/'>EBS (2)</a></li>
-<li class='category'><a href='/blog/categories/oaf/'>OAF (6)</a></li>
-<li class='category'><a href='/blog/categories/oracle/'>Oracle (7)</a></li>
-<li class='category'><a href='/blog/categories/soa/'>SOA (2)</a></li>
+<li class='category'><a href='/blog/categories/oaf/'>OAF (8)</a></li>
+<li class='category'><a href='/blog/categories/oracle/'>Oracle (8)</a></li>
+<li class='category'><a href='/blog/categories/soa/'>SOA (3)</a></li>
 <li class='category'><a href='/blog/categories/sinaappengine/'>SinaAppEngine (1)</a></li>
 <li class='category'><a href='/blog/categories/forms/'>forms (1)</a></li>
 <li class='category'><a href='/blog/categories/java/'>java (2)</a></li>
 <li class='category'><a href='/blog/categories/jdeveloper/'>jdeveloper (1)</a></li>
 <li class='category'><a href='/blog/categories/linux/'>linux (2)</a></li>
+<li class='category'><a href='/blog/categories/mysql/'>mysql (1)</a></li>
 <li class='category'><a href='/blog/categories/octopress/'>octopress (1)</a></li>
 <li class='category'><a href='/blog/categories/others/'>others (1)</a></li>
 <li class='category'><a href='/blog/categories/weblogic/'>weblogic (1)</a></li>
@@ -789,23 +690,23 @@ vo2.executeQuery();</blockquote>
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2013-04-24/adflei-si-xin-tiao-cheng-xu-shi-xian/">ADF类似心跳程序实现</a>
+        <a href="/blog/2014-04-18/an-zhuang-rcu1-dot-7yu-dao-de-xiao-wen-ti/">安装RCU1.7遇到的小问题</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2013-04-19/adfxue-xi-zong-jie-%5B%3F%5D/">ADF学习总结(一)</a>
+        <a href="/blog/2014-02-07/%E5%AE%9A%E5%88%B6EL/">定制EL function</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2013-04-18/oafzhong-chuang-jian-lov/">OAF中创建LOV</a>
+        <a href="/blog/2013-11-09/you-yi-wai-duan-dian-dao-zhi-oracle11gqi-dong-bu-qi-lai-de-wen-ti-jie-jue/">由意外断电导致oracle11g启动不起来的问题解决</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2013-04-17/pei-zhi-oafkai-fa-huan-jing/">配置OAF开发环境</a>
+        <a href="/blog/2013-09-23/ru-he-zai-ye-mian-sui-pian-jia-zai-qian-diao-yong-luo-ji/">如何在页面碎片加载前调用逻辑</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2013-04-16/getrowatrangeindex-int-fang-fa-de-ju-xian-xing/">getRowAtRangeIndex(int)方法的局限性</a>
+        <a href="/blog/2013-09-23/kong-jian-af-iteratoryi-ji-af-foreachde-dui-bi/">控件af:iterator以及af:forEach的对比</a>
       </li>
     
   </ul>
@@ -817,9 +718,12 @@ vo2.executeQuery();</blockquote>
 <section>
   <h1>友情链接</h1>
   <ul>
-  	<li><a href="http://www.liqifa.cn">[小分号]</a></li>
+  	<li><a href="http://www.liqifa.com">[小分号]</a></li>
  	<li><a href="http://www.fmw007.com">[梦想左岸]</a></li>
  	<li><a href="http://ericchan.cn">[小骚骚的技术博客]</a></li>
+ 	<li><a href="http://oraclefmw.blog.163.com/">[追梦]</a></li>
+ 	<li><a href="http://blog.csdn.net/ygj26">[小尹妹纸]</a></li>
+ 	<li><a href="http://oracleseeker.com/">[OracleSeeker，Oracle探索者]</a></li>
   </ul>
 </section>
 
@@ -846,12 +750,17 @@ src="http://widget.weibo.com/weiboshow/index.php?width=0&height=550&ptype=1&spee
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2013 - pierreorz -
+  Copyright &copy; 2014 - pierreorz -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 <a rel="license" href="http://creativecommons.org/licenses/by/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/88x31.png" /></a>
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F2c50098a945120bddaa5f082c4e56cea' type='text/javascript'%3E%3C/script%3E"));
+</script>
 <a title="Web Analytics" href="http://clicky.com/100592601">.</a>
 <script src="//static.getclicky.com/js" type="text/javascript"></script>
 <script type="text/javascript">try{ clicky.init(100592601); }catch(e){}</script>
+
 </p>
 
 </footer>

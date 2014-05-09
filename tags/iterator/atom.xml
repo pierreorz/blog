@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: iterator | 邓德昭的技术博客]]></title>
+  <link href="http://www.dengdezhao.cn/tags/iterator/atom.xml" rel="self"/>
+  <link href="http://www.dengdezhao.cn/"/>
+  <updated>2014-05-09T23:06:22+08:00</updated>
+  <id>http://www.dengdezhao.cn/</id>
+  <author>
+    <name><![CDATA[pierreorz]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[控件af:iterator以及af:forEach的对比]]></title>
+    <link href="http://www.dengdezhao.cn/blog/2013-09-23/kong-jian-af-iteratoryi-ji-af-foreachde-dui-bi/"/>
+    <updated>2013-09-23T18:13:00+08:00</updated>
+    <id>http://www.dengdezhao.cn/blog/2013-09-23/kong-jian-af-iteratoryi-ji-af-foreachde-dui-bi</id>
+    <content type="html"><![CDATA[<ul>
+<li><p>平台:Jdeveloper 12c</p></li>
+<li><p>需求：对Collection类型遍历。MB中定义两个List，如何利用iterator&amp;foreach控件将List内容显示到页面。</p></li>
+</ul>
+
+
+<p><strong>页面如下</strong></p>
+
+<p>分别绑定iterBean中的两个集合类型变量，将其中的值取出来。</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="nl">af:</span><span class="n">iterator</span> <span class="n">id</span><span class="o">=</span><span class="s">&quot;i1&quot;</span> <span class="n">var</span><span class="o">=</span><span class="s">&quot;each&quot;</span> <span class="n">value</span><span class="o">=</span><span class="s">&quot;#{iterBean.list}&quot;</span> <span class="n">varStatus</span><span class="o">=</span><span class="s">&quot;row&quot;</span><span class="o">&gt;&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;&amp;</span><span class="n">lt</span><span class="o">;</span><span class="nl">af:</span><span class="n">panelBox</span> <span class="n">text</span><span class="o">=</span><span class="s">&quot;#{each}&quot;</span> <span class="n">id</span><span class="o">=</span><span class="s">&quot;pb1&quot;</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="nl">f:</span><span class="n">facet</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;toolbar&quot;</span><span class="o">/&amp;</span><span class="n">gt</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="nl">af:</span><span class="n">inputText</span> <span class="n">label</span><span class="o">=</span><span class="s">&quot;Values&quot;</span> <span class="n">id</span><span class="o">=</span><span class="s">&quot;it1&quot;</span> <span class="n">value</span><span class="o">=</span><span class="s">&quot;#{iterBean.values[row.index]}&quot;</span><span class="o">/&amp;</span><span class="n">gt</span><span class="o">;</span>
+</span><span class='line'><span class="o">&amp;</span><span class="n">lt</span><span class="o">;/</span><span class="nl">af:</span><span class="n">panelBox</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;&amp;</span><span class="n">lt</span><span class="o">;/</span><span class="nl">af:</span><span class="n">iterator</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="nl">af:</span><span class="n">forEach</span> <span class="n">items</span><span class="o">=</span><span class="s">&quot;#{iterBean.testList}&quot;</span>  <span class="n">var</span><span class="o">=</span><span class="s">&quot;each&quot;</span> <span class="n">varStatus</span><span class="o">=</span><span class="s">&quot;row&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="nl">af:</span><span class="n">panelBox</span> <span class="n">text</span><span class="o">=</span><span class="s">&quot;#{each.title}&quot;</span> <span class="n">id</span><span class="o">=</span><span class="s">&quot;pb2&quot;</span><span class="o">&gt;&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;&amp;</span><span class="n">lt</span><span class="o">;</span><span class="nl">af:</span><span class="n">outputText</span> <span class="n">value</span><span class="o">=</span><span class="s">&quot;#{row.index} #{each.title}&quot;</span> <span class="n">id</span><span class="o">=</span><span class="s">&quot;ot1&quot;</span><span class="o">/&amp;</span><span class="n">gt</span><span class="o">;</span>
+</span><span class='line'><span class="o">&amp;</span><span class="n">lt</span><span class="o">;/</span><span class="nl">af:</span><span class="n">panelBox</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;&amp;</span><span class="n">lt</span><span class="o">;/</span><span class="nl">af:</span><span class="n">forEach</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><strong>BackingBean内容如下：</strong></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">package</span> <span class="n">cn</span><span class="o">.</span><span class="na">dengdezhao</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">java.util.ArrayList</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">IteratorBean</span> <span class="o">{&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">List</span> <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">();</span>
+</span><span class='line'><span class="n">String</span><span class="o">[]</span> <span class="n">values</span><span class="o">=</span><span class="k">new</span> <span class="n">String</span><span class="o">[]{</span><span class="s">&quot;1&quot;</span><span class="o">,</span><span class="s">&quot;2&quot;</span><span class="o">,</span><span class="s">&quot;3&quot;</span><span class="o">};</span>
+</span><span class='line'><span class="n">List</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">contentList</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">testList</span><span class="o">=</span><span class="k">new</span> <span class="n">ArrayList</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">contentList</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;();</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">setTestList</span><span class="o">(</span><span class="n">List</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">contentList</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">testList</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;setTestList...&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="k">this</span><span class="o">.</span><span class="na">testList</span> <span class="o">=</span> <span class="n">testList</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="kd">public</span> <span class="n">List</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">contentList</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">getTestList</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;getTestList...&quot;</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="n">testList</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">setValues</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">values</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">this</span><span class="o">.</span><span class="na">values</span> <span class="o">=</span> <span class="n">values</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="kd">public</span> <span class="n">String</span><span class="o">[]</span> <span class="nf">getValues</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">values</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="kd">public</span> <span class="nf">IteratorBean</span><span class="o">(){</span>
+</span><span class='line'>    <span class="n">list</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">&quot;A&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">list</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">&quot;B&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">list</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">&quot;C&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">contentList</span> <span class="n">a</span><span class="o">=</span><span class="k">new</span> <span class="n">contentList</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">a</span><span class="o">.</span><span class="na">setTitle</span><span class="o">(</span><span class="s">&quot;aaa&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">testList</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">a</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">contentList</span> <span class="n">b</span><span class="o">=</span><span class="k">new</span> <span class="n">contentList</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">b</span><span class="o">.</span><span class="na">setTitle</span><span class="o">(</span><span class="s">&quot;bbb&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">testList</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">b</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">contentList</span> <span class="n">c</span><span class="o">=</span><span class="k">new</span> <span class="n">contentList</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">c</span><span class="o">.</span><span class="na">setTitle</span><span class="o">(</span><span class="s">&quot;ccc&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">testList</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">c</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;init...&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">setList</span><span class="o">(</span><span class="n">List</span> <span class="n">list</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;setList ...&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="k">this</span><span class="o">.</span><span class="na">list</span> <span class="o">=</span> <span class="n">list</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="kd">public</span> <span class="n">List</span> <span class="nf">getList</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;getList...&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">list</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;}&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">contentList</span> <span class="o">{&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kd">private</span> <span class="n">String</span> <span class="n">title</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">setTitle</span><span class="o">(</span><span class="n">String</span> <span class="n">title</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">this</span><span class="o">.</span><span class="na">title</span> <span class="o">=</span> <span class="n">title</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="n">String</span> <span class="nf">getTitle</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">title</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><strong>测试结果</strong></p>
+
+<p>&lt;af:iterator>只调用了一次get方法；
+&lt;af:forEach>却调用了9次get方法（根据容器中数量递增）；</p>
+
+<p><strong>结论</strong></p>
+
+<p>&lt;af:iterator>跟&lt;af:forEach>控件都可以对容器类型遍历，只不过iterator是一次性取出容器内容，而forEach是多次取出。两控件都支持下标定位。</p>
+]]></content>
+  </entry>
+  
+</feed>

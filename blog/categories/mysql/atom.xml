@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: mysql | 邓德昭的技术博客]]></title>
+  <link href="http://www.dengdezhao.cn/blog/categories/mysql/atom.xml" rel="self"/>
+  <link href="http://www.dengdezhao.cn/"/>
+  <updated>2014-05-09T23:06:22+08:00</updated>
+  <id>http://www.dengdezhao.cn/</id>
+  <author>
+    <name><![CDATA[pierreorz]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Centos下安装mysql5.6后忘记ROOT密码，重置密码]]></title>
+    <link href="http://www.dengdezhao.cn/blog/2013-06-25/centosxia-an-zhuang-mysql5-dot-6hou-wang-ji-rootmi-ma-%2Czhong-zhi-mi-ma/"/>
+    <updated>2013-06-25T16:01:00+08:00</updated>
+    <id>http://www.dengdezhao.cn/blog/2013-06-25/centosxia-an-zhuang-mysql5-dot-6hou-wang-ji-rootmi-ma-,zhong-zhi-mi-ma</id>
+    <content type="html"><![CDATA[<p><strong>安装</strong></p>
+
+<p>去<a href="https://edelivery.oracle.com/EPD/Search/handle_go">oracle官网</a>下载mysql5.6 for linux安装介质V38444-01.zip。  <br/>
+解压缩之后  <br/>
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">MySQL</span><span class="o">-</span><span class="n">client</span><span class="o">-</span><span class="n">advanced</span><span class="o">-</span><span class="mf">5.6</span><span class="o">.</span><span class="mi">12</span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="na">el6</span><span class="o">.</span><span class="na">i686</span><span class="o">.</span><span class="na">rpm</span>
+</span><span class='line'><span class="n">MySQL</span><span class="o">-</span><span class="n">devel</span><span class="o">-</span><span class="n">advanced</span><span class="o">-</span><span class="mf">5.6</span><span class="o">.</span><span class="mi">12</span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="na">el6</span><span class="o">.</span><span class="na">i686</span><span class="o">.</span><span class="na">rpm</span>
+</span><span class='line'><span class="n">MySQL</span><span class="o">-</span><span class="n">embedded</span><span class="o">-</span><span class="n">advanced</span><span class="o">-</span><span class="mf">5.6</span><span class="o">.</span><span class="mi">12</span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="na">el6</span><span class="o">.</span><span class="na">i686</span><span class="o">.</span><span class="na">rpm</span>
+</span><span class='line'><span class="n">MySQL</span><span class="o">-</span><span class="n">server</span><span class="o">-</span><span class="n">advanced</span><span class="o">-</span><span class="mf">5.6</span><span class="o">.</span><span class="mi">12</span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="na">el6</span><span class="o">.</span><span class="na">i686</span><span class="o">.</span><span class="na">rpm</span>
+</span><span class='line'><span class="n">MySQL</span><span class="o">-</span><span class="n">shared</span><span class="o">-</span><span class="n">advanced</span><span class="o">-</span><span class="mf">5.6</span><span class="o">.</span><span class="mi">12</span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="na">el6</span><span class="o">.</span><span class="na">i686</span><span class="o">.</span><span class="na">rpm</span>
+</span><span class='line'><span class="n">MySQL</span><span class="o">-</span><span class="n">shared</span><span class="o">-</span><span class="n">compat</span><span class="o">-</span><span class="n">advanced</span><span class="o">-</span><span class="mf">5.6</span><span class="o">.</span><span class="mi">12</span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="na">el6</span><span class="o">.</span><span class="na">i686</span><span class="o">.</span><span class="na">rpm</span>
+</span><span class='line'><span class="n">MySQL</span><span class="o">-</span><span class="n">test</span><span class="o">-</span><span class="n">advanced</span><span class="o">-</span><span class="mf">5.6</span><span class="o">.</span><span class="mi">12</span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="na">el6</span><span class="o">.</span><span class="na">i686</span><span class="o">.</span><span class="na">rpm</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>开始安装  <br/>
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">rpm</span> <span class="o">-</span><span class="n">ivh</span> <span class="n">MySQL</span><span class="o">-*</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Mysql5.6的安全机制加强了，默认安装时会随机给ROOT用户生成一个密码保存在安装用户目录下/root/.mysql_secret中。由于没认真看英文文档，我直接安装完就把这个文件里的随机密码给改掉了，就无法得知ROOT初始密码，也无法登录进数据库了，囧。</p>
+
+<p><strong>重置Mysql初始密码</strong></p>
+
+<p>用ROOT用户登录，STOP数据库 <br/>
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">init</span><span class="o">.</span><span class="na">d</span><span class="o">/</span><span class="n">mysql</span> <span class="n">stop</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>跳过授权表启动Mysql服务器   <br/>
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">mysqld_safe</span> <span class="o">--</span><span class="n">skip</span><span class="o">-</span><span class="n">grant</span><span class="o">-</span><span class="n">tables</span><span class="o">&amp;</span><span class="n">amp</span><span class="o">;</span>  <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>输入CTRL+C中断进程后应该可以看到mysqld已经在运行了</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">mysql</span> <span class="o">--</span><span class="n">user</span><span class="o">=</span><span class="n">root</span> <span class="n">mysql</span><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">update</span> <span class="n">user</span> <span class="n">set</span> <span class="n">Password</span><span class="o">=</span><span class="n">PASSWORD</span><span class="o">(</span><span class="err">&#39;</span><span class="k">new</span><span class="o">-</span><span class="n">password</span><span class="err">&#39;</span><span class="o">);</span>
+</span><span class='line'><span class="n">flush</span> <span class="n">privileges</span><span class="o">;</span>
+</span><span class='line'><span class="n">exit</span><span class="o">;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>操作完以上变更密码的命令后，可以重启mysqld了。</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">killall</span> <span class="n">mysqld_safe</span><span class="o">&amp;</span><span class="n">amp</span><span class="o">;</span>  <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>按CTRL+C退出，接着正常启动mysql</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">init</span><span class="o">.</span><span class="na">d</span><span class="o">/</span><span class="n">mysql</span> <span class="n">start</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>用刚刚修改的新密码登录mysql即可</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">mysql</span> <span class="o">-</span><span class="n">uroot</span> <span class="o">-</span><span class="n">p</span>  <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Tag: jdeveloper | 邓德昭的技术博客]]></title>
-  <link href="http://dengdezhao.cn/tags/jdeveloper/atom.xml" rel="self"/>
-  <link href="http://dengdezhao.cn/"/>
-  <updated>2013-05-09T15:25:51+08:00</updated>
-  <id>http://dengdezhao.cn/</id>
+  <title><![CDATA[Tag: Jdeveloper | 邓德昭的技术博客]]></title>
+  <link href="http://www.dengdezhao.cn/tags/jdeveloper/atom.xml" rel="self"/>
+  <link href="http://www.dengdezhao.cn/"/>
+  <updated>2014-05-09T23:06:22+08:00</updated>
+  <id>http://www.dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
     
@@ -14,64 +14,32 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Jdeveloper运行速度优化]]></title>
-    <link href="http://dengdezhao.cn/blog/2013-04-04/jdeveloperyun-xing-su-du-you-hua/"/>
-    <updated>2013-04-04T17:41:00+08:00</updated>
-    <id>http://dengdezhao.cn/blog/2013-04-04/jdeveloperyun-xing-su-du-you-hua</id>
-    <content type="html"><![CDATA[<h4><em>本文适合木有高配机却不得不在JDEV下开发的屌丝程序员</em></h4>
+    <title type="html"><![CDATA[Attribute set for xxxAttribute in view object xxxVO failed问题解决]]></title>
+    <link href="http://www.dengdezhao.cn/blog/2013-06-19/attribute-set-for-xxxattribute-in-view-object-xxxvo-failedwen-ti-jie-jue/"/>
+    <updated>2013-06-19T15:50:00+08:00</updated>
+    <id>http://www.dengdezhao.cn/blog/2013-06-19/attribute-set-for-xxxattribute-in-view-object-xxxvo-failedwen-ti-jie-jue</id>
+    <content type="html"><![CDATA[<hr />
 
-<h4>先来了解下Jdev的两个配置文件</h4>
+<h2>平台：Jdeveloper 9i </h2>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nl">E:</span><span class="err">\</span><span class="n">Oracle</span><span class="err">\</span><span class="n">Middleware11</span><span class="o">.</span><span class="mf">1.2</span><span class="o">.</span><span class="mf">3.0</span><span class="err">\</span><span class="n">jdeveloper</span><span class="err">\</span><span class="n">ide</span><span class="err">\</span><span class="n">bin</span><span class="err">\</span><span class="n">ide</span><span class="o">.</span><span class="na">conf</span>  <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
-</span><span class='line'><span class="nl">E:</span><span class="err">\</span><span class="n">Oracle</span><span class="err">\</span><span class="n">Middleware11</span><span class="o">.</span><span class="mf">1.2</span><span class="o">.</span><span class="mf">3.0</span><span class="err">\</span><span class="n">jdeveloper</span><span class="err">\</span><span class="n">jdev</span><span class="err">\</span><span class="n">bin</span><span class="err">\</span><span class="n">jdev</span><span class="o">.</span><span class="na">conf</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>异常描述：</p>
 
-<p>几个关键参数：
+<p>在表增加单选checkbox时，在VO中创建transient属性selector,最终在页面中无法勾选checkbox，发现值没法保存到VO中，页面抛出该异常：<br/>
 <div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">AddVMOption</span>  <span class="o">-</span><span class="n">Xmx</span>        <span class="c1">//堆大小的最大值，在机器物理内存允许的基础上该值越大越好</span>
-</span><span class='line'><span class="n">AddVMOption</span>  <span class="o">-</span><span class="n">Xms</span>        <span class="c1">//堆大小的初始值（默认给个128差不多）</span>
-</span><span class='line'><span class="n">AddVMOption</span>  <span class="o">-</span><span class="nl">XX:</span><span class="n">MaxPermSize</span> <span class="c1">//PermGen大小，太小会报OutOfMemoryError错误&lt;br/&gt;</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'> <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
+</span><span class='line'><span class="kc">null</span> <span class="o">-</span> <span class="n">Attribute</span> <span class="n">set</span> <span class="k">for</span> <span class="n">Selector</span> <span class="n">in</span> <span class="n">view</span> <span class="n">object</span> <span class="n">employeeVO1</span> <span class="n">failed</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
-<p>这几个参数设置得不合适的话JDEV会无法启动并报以下错误：
+<p>解决方案：</p>
+
+<ol>
+<li>检查VO中的transient属性selector是否设置为updatable</li>
+<li>如果是在开发模式下，清空所有classes文件，重新编译；如果是在正式环境，删除该路径下的VO对象，可使用以下命令。  <br/>
 <div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">Unable</span> <span class="n">to</span> <span class="n">create</span> <span class="n">an</span> <span class="n">instance</span> <span class="n">of</span> <span class="n">the</span> <span class="n">Java</span> <span class="n">Virtual</span> <span class="n">Machine</span> <span class="n">Located</span> <span class="n">at</span> <span class="nl">path:</span>
-</span><span class='line'><span class="nl">E:</span><span class="err">\</span><span class="n">Oracle</span><span class="err">\</span><span class="n">Middleware11</span><span class="o">.</span><span class="mf">1.2</span><span class="o">.</span><span class="mf">3.0</span><span class="err">\</span><span class="n">jdk160_24</span><span class="err">\</span><span class="n">jre</span><span class="err">\</span><span class="n">bin</span><span class="err">\</span><span class="n">client</span><span class="err">\</span><span class="n">jvm</span><span class="o">.</span><span class="na">dll</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>好了~，我们现在需要做的就是将这几个参数的值设置得适合它的大小，以便JDEV运行得到最佳性能</p>
-
-<p>因为我的机器是32位系统WIN2003 6G内存，系统吃掉2G左右，可用内存不到4G
-而32位的JDK最大好像也只能申请1.5G左右,所以在我这机器中Jdev能分配到1G内存就差不多了</p>
-
-<p>先随意设置以上三个参数值，将JDEV能够运行起来，然后使用JDK自带的工具来监控下内存情况
-E:\Oracle\Middleware11.1.2.3.0\jdk160_24\bin\jvisualvm.exe
-<img src="http://www.dengdezhao.cn/wp-content/uploads/20130404.jpg" alt="" /></p>
-
-<p>根据图中<strong>堆</strong>及<strong>PermGen</strong>中显示使用大小调整三个参数值。
-发现在不断操作JDev时PermGen始终维持在128左右不到256的样子，
-所以设置  <br/>
--XX:MaxPermSize值为<code>AddVMOption  -XX:MaxPermSize=256M</code>  <br/>
--Xms值为<code>AddVMOption  -Xms128M</code>  <br/>
-通过不断测试最终调整-Xmx值为<code>AddVMOption  -Xmx896M</code></p>
-
-<p>若在运行中出现OutOfMemoryError错误再根据信息慢慢调整。当然最好还是升级机器配置换成64位的系统及JDK就没有内存限制啦！~</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[javax.el.PropertyNotFoundException错误解决]]></title>
-    <link href="http://dengdezhao.cn/blog/2011-06-29/javax-el-propertynotfoundexception%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3/"/>
-    <updated>2011-06-29T00:00:00+08:00</updated>
-    <id>http://dengdezhao.cn/blog/2011-06-29/javax-el-propertynotfoundexception错误解决</id>
-    <content type="html"><![CDATA[<p>有时候明明没有什么错误，一样的代码在别人机器上跑没问题，自己机器上跑却会出现以下这样的错误：
-<pre class="brush:java">javax.el.PropertyNotFoundException: Target Unreachable, identifier 'bindings' resolved to null</pre>
-这样的错误会随着代码量的增加而越发频繁，是IDE的缓存的BUG，如果重启jdeveloper 还不能解决的话，把报错的那个bindings的pagedef文件改动下（加一行空格）保存，然后clean all，再重新build下，基本能够解决这个问题。</p>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">exec</span> <span class="n">jdr_utils</span><span class="o">.</span><span class="na">deletedocument</span><span class="o">(</span><span class="err">&#39;</span><span class="o">/</span><span class="n">oracle</span><span class="o">/</span><span class="n">apps</span><span class="o">/</span><span class="n">dengdezhao</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">server</span><span class="o">/</span><span class="n">employeeVO</span><span class="err">&#39;</span><span class="o">);</span>  <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></li>
+</ol>
 
 ]]></content>
   </entry>

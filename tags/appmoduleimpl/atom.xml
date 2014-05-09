@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: AppModuleImpl | 邓德昭的技术博客]]></title>
+  <link href="http://www.dengdezhao.cn/tags/appmoduleimpl/atom.xml" rel="self"/>
+  <link href="http://www.dengdezhao.cn/"/>
+  <updated>2014-05-09T23:06:22+08:00</updated>
+  <id>http://www.dengdezhao.cn/</id>
+  <author>
+    <name><![CDATA[pierreorz]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[在ManagedBean中调用AppModuleImpl中自定义方法的两种方式]]></title>
+    <link href="http://www.dengdezhao.cn/blog/2013-06-01/zai-manangedbeanzhong-diao-yong-appmoduleimplzhong-zi-ding-yi-fang-fa-de-liang-chong-fang-shi/"/>
+    <updated>2013-06-01T10:48:00+08:00</updated>
+    <id>http://www.dengdezhao.cn/blog/2013-06-01/zai-manangedbeanzhong-diao-yong-appmoduleimplzhong-zi-ding-yi-fang-fa-de-liang-chong-fang-shi</id>
+    <content type="html"><![CDATA[<hr />
+
+<h2>平台: Jdev11.1.1.7.0</h2>
+
+<hr />
+
+<ol>
+<li><strong><strong>AM</strong></strong>中创建自定义方法sayHello  <br/>
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'> <span class="kd">public</span> <span class="kt">void</span> <span class="nf">sayHello</span><span class="o">(</span><span class="n">String</span> <span class="n">value</span><span class="o">){</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span> <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;hello world...&quot;</span><span class="o">+</span><span class="n">value</span><span class="o">);</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span> <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p></li>
+<li><p>暴露该方法以便在ManagedBean中调用  <br/>
+<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130601103416.jpg" alt="../../../wp-content/uploads/QQ截图20130601103416.jpg" /></p></li>
+<li><p>从Data Controls中将该方法拖到页面生成Bindings或者手工添加该Bindings。  <br/>
+<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130601103826.jpg" alt="../../../wp-content/uploads/QQ截图20130601103826.jpg" /></p></li>
+<li><p>为了测试方便，创建了一个inputText，并绑定该inputText的valueChangeListener为ManagedBean中的valueChange方法.  <br/>
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'> <span class="kd">public</span> <span class="kt">void</span> <span class="nf">valueChange</span><span class="o">(</span><span class="n">ValueChangeEvent</span> <span class="n">valueChangeEvent</span><span class="o">)</span> <span class="o">{&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span> <span class="n">String</span> <span class="n">newValue</span> <span class="o">=</span> <span class="n">valueChangeEvent</span><span class="o">.</span><span class="na">getNewValue</span><span class="o">().</span><span class="na">toString</span><span class="o">();</span>
+</span><span class='line'> <span class="c1">//方法一：调用bindings</span>
+</span><span class='line'> <span class="n">BindingContainer</span> <span class="n">bindings</span> <span class="o">=</span> <span class="n">ADFUtils</span><span class="o">.</span><span class="na">getBindingContainer</span><span class="o">();</span>
+</span><span class='line'> <span class="n">OperationBinding</span> <span class="n">refreshChecklist</span> <span class="o">=</span> <span class="n">bindings</span><span class="o">.</span><span class="na">getOperationBinding</span><span class="o">(</span><span class="s">&quot;sayHello&quot;</span><span class="o">);</span>
+</span><span class='line'> <span class="n">refreshChecklist</span><span class="o">.</span><span class="na">getParamsMap</span><span class="o">().</span><span class="na">put</span><span class="o">(</span><span class="s">&quot;value&quot;</span><span class="o">,</span> <span class="n">newValue</span><span class="o">);</span>
+</span><span class='line'> <span class="n">refreshChecklist</span><span class="o">.</span><span class="na">execute</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'> <span class="c1">//方法二：直接调用AM，通过AM调用该方法</span>
+</span><span class='line'> <span class="n">AppModuleImpl</span> <span class="n">am</span> <span class="o">=</span> <span class="o">(</span><span class="n">AppModuleImpl</span><span class="o">)</span><span class="n">ADFUtils</span><span class="o">.</span>
+</span><span class='line'> <span class="n">getApplicationModuleForDataControl</span><span class="o">(</span><span class="s">&quot;AppModuleDataControl&quot;</span><span class="o">);</span>
+</span><span class='line'> <span class="n">am</span><span class="o">.</span><span class="na">sayHello</span><span class="o">(</span><span class="n">newValue</span><span class="o">);</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span> <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p></li>
+</ol>
+
+
+<p>以上两种方式均可以调用AM中的自定义方法。</p>
+]]></content>
+  </entry>
+  
+</feed>

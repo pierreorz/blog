@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: contextual event | 邓德昭的技术博客]]></title>
+  <link href="http://www.dengdezhao.cn/tags/contextual-event/atom.xml" rel="self"/>
+  <link href="http://www.dengdezhao.cn/"/>
+  <updated>2014-05-09T23:06:22+08:00</updated>
+  <id>http://www.dengdezhao.cn/</id>
+  <author>
+    <name><![CDATA[pierreorz]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[利用contextual event刷新Region]]></title>
+    <link href="http://www.dengdezhao.cn/blog/2013-06-01/li-yong-contextual-eventshua-xin-region/"/>
+    <updated>2013-06-01T21:20:00+08:00</updated>
+    <id>http://www.dengdezhao.cn/blog/2013-06-01/li-yong-contextual-eventshua-xin-region</id>
+    <content type="html"><![CDATA[<hr />
+
+<p>平台： Jdev 11.1.1.7.0</p>
+
+<h2>需求：两个region，其中一个region对数据进行修改后，需要刷新另外一个region显示   </h2>
+
+<hr />
+
+<h4>创建bound taskflow: btf_form</h4>
+
+<p><img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130601204146.jpg" alt="../../../wp-content/uploads/QQ截图20130601204146.jpg" /></p>
+
+<p>taskflow只包括一个页面碎片empForm.jsff，拖入employeeVO生成af:Form。  <br/>
+<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130601210114.jpg" alt="../../../wp-content/uploads/QQ截图20130601210114.jpg" /></p>
+
+<h3>创建bound taskflow: btf_table</h3>
+
+<p>同上，只有一个页面碎片empTable.jsff，拖入employeeVO生成af:table。   <br/>
+<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130601210258.jpg" alt="../../../wp-content/uploads/QQ截图20130601210258.jpg" /></p>
+
+<p>以上两个taskflow皆使用No Controller Transaction.</p>
+
+<h4>添加contextual event</h4>
+
+<p>需要在empTable.jsff页面中修改数据，单击commit按钮时，让empForm.jsff页面中的数据即时更新。因此，给commitbutton添加contextual event: saveEvent。  <br/>
+<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130601210725.jpg" alt="../../../wp-content/uploads/QQ截图20130601210725.jpg" /></p>
+
+<h4>创建mainPG页面引入以上taskflow生成region</h4>
+
+<p>创建一个两栏jspx页面mainPG.jspx， 分别拖入以上两taskflow生成region。  <br/>
+给contextual event 绑定consumer。</p>
+
+<p>切换到mainPG.jspx页面的pagedef页面，从structure窗口中执行以下操作；  <br/>
+<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130601211338.jpg" alt="../../../wp-content/uploads/QQ截图20130601211338.jpg" /></p>
+
+<p><img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130601211438.jpg" alt="../../../wp-content/uploads/QQ截图20130601211438.jpg" /></p>
+
+<p>producer即为contextual event的事件源，由btf_table中的commitbutton产生，consumer即为btf_form中的execute消耗，即btf_table中每commit一次，btf_form即执行一次execute操作刷新页面。</p>
+
+<p>以上只是简单了解下contextual event的工作原理，contextual event还可以带参在region之间传值等。</p>
+]]></content>
+  </entry>
+  
+</feed>

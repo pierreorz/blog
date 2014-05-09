@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: OAF | 邓德昭的技术博客]]></title>
-  <link href="http://dengdezhao.cn/blog/categories/oaf/atom.xml" rel="self"/>
-  <link href="http://dengdezhao.cn/"/>
-  <updated>2013-05-09T15:25:51+08:00</updated>
-  <id>http://dengdezhao.cn/</id>
+  <link href="http://www.dengdezhao.cn/blog/categories/oaf/atom.xml" rel="self"/>
+  <link href="http://www.dengdezhao.cn/"/>
+  <updated>2014-05-09T23:06:22+08:00</updated>
+  <id>http://www.dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
     
@@ -14,10 +14,171 @@
 
   
   <entry>
+    <title type="html"><![CDATA[OAF单选删除行功能]]></title>
+    <link href="http://www.dengdezhao.cn/blog/2013-06-24/oafdan-xuan-shan-chu-xing-gong-neng/"/>
+    <updated>2013-06-24T11:15:00+08:00</updated>
+    <id>http://www.dengdezhao.cn/blog/2013-06-24/oafdan-xuan-shan-chu-xing-gong-neng</id>
+    <content type="html"><![CDATA[<hr />
+
+<p>平台：Jdeveloper 9i</p>
+
+<hr />
+
+<p><strong>一般实现步骤：</strong></p>
+
+<ol>
+<li>在VO中添加新transient属性selector，updatable设置为always。</li>
+<li>在PG中给table添加singleSelection方法，并绑定view Instance为VO的instance，View Attribute为刚刚新建的transient属性seletor。</li>
+<li>这样当用户勾选checkbox时，会给transient属性变量赋值为Y，因此，在删除逻辑中循环判断VO中的transient属性，当其为Y时执行remove该行即可实现选择删除功能。  <br/>
+<strong>相关代码如下：</strong></li>
+</ol>
+
+
+<p><strong>CO中processFormRequest里添加代码如下：</strong></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="c1">//当单击deleteBtn按钮时执行AM中的deleteAutoSequenceVO方法    </span>
+</span><span class='line'><span class="k">if</span> <span class="o">(</span><span class="n">pageContext</span><span class="o">.</span><span class="na">getParameter</span><span class="o">(</span><span class="s">&quot;deleteBtn&quot;</span><span class="o">)!=</span><span class="kc">null</span><span class="o">)</span>
+</span><span class='line'><span class="o">{</span>
+</span><span class='line'>  <span class="n">am</span><span class="o">.</span><span class="na">invokeMethod</span><span class="o">(</span><span class="s">&quot;deleteAutoSequenceVO&quot;</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><strong>AM中代码如下：</strong></p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kd">public</span> <span class="kt">void</span> <span class="n">deleteAutoSequenceVO</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">OAViewObject</span> <span class="n">vo</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">getChAutoSequenceVO1</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">RowSetIterator</span> <span class="n">iter</span> <span class="o">=</span> <span class="n">vo</span><span class="o">.</span><span class="na">createRowSetIterator</span><span class="o">(</span><span class="s">&quot;delete&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">vo</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="kt">int</span> <span class="n">num</span> <span class="o">=</span> <span class="n">vo</span><span class="o">.</span><span class="na">getRowCount</span><span class="o">();</span>
+</span><span class='line'>        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span> <span class="n">num</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">Row</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">iter</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+</span><span class='line'>            <span class="k">if</span> <span class="o">(</span><span class="s">&quot;Y&quot;</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">temp</span><span class="o">.</span><span class="na">getAttribute</span><span class="o">(</span><span class="s">&quot;selector&quot;</span><span class="o">)))</span> <span class="o">{</span>
+</span><span class='line'>                <span class="n">vo</span><span class="o">.</span><span class="na">setCurrentRow</span><span class="o">(</span><span class="n">temp</span><span class="o">);</span>
+</span><span class='line'>                <span class="n">vo</span><span class="o">.</span><span class="na">removeCurrentRow</span><span class="o">();</span>
+</span><span class='line'>                <span class="k">break</span><span class="o">;</span>
+</span><span class='line'>            <span class="o">}</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="n">iter</span><span class="o">.</span><span class="na">closeRowSetIterator</span><span class="o">();</span>
+</span><span class='line'>    <span class="k">throw</span> <span class="k">new</span> <span class="nf">OAException</span><span class="o">(</span><span class="s">&quot;删除成功,请点击[保存]按钮生效到数据库.&quot;</span><span class="o">,</span>
+</span><span class='line'>                          <span class="n">OAException</span><span class="o">.</span><span class="na">INFORMATION</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>但是在实际开发中，出现一个很诡异的现象，其它页面单选删除功能都正常，某一页面单选之后却无法赋值Y给VO中的transient变量，推测可能是VO用的是复合主键或者其它框架BUG导致，无奈给单选再添加手工赋值功能。</p>
+
+<p>选择单选控件，将其Client Action中的Action Type设置为firePartialAction Submit设置为false。准备在用户单选时调用自定义方法，给变量赋值。</p>
+
+<p><strong>CO中processFormRequest里添加如下方法</strong>
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span>    <span class="k">if</span> <span class="o">(</span><span class="s">&quot;update&quot;</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">pageContext</span><span class="o">.</span><span class="na">getParameter</span><span class="o">(</span><span class="n">OAWebBeanConstants</span><span class="o">.</span><span class="na">EVENT_PARAM</span><span class="o">)))</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">String</span> <span class="n">rowRef</span> <span class="o">=</span>
+</span><span class='line'>            <span class="n">pageContext</span><span class="o">.</span><span class="na">getParameter</span><span class="o">(</span><span class="n">OAWebBeanConstants</span><span class="o">.</span><span class="na">EVENT_SOURCE_ROW_REFERENCE</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">Row</span> <span class="n">currentRow</span> <span class="o">=</span> <span class="n">am</span><span class="o">.</span><span class="na">findRowByRef</span><span class="o">(</span><span class="n">rowRef</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">currentRow</span><span class="o">.</span><span class="na">setAttribute</span><span class="o">(</span><span class="s">&quot;selector&quot;</span><span class="o">,</span> <span class="s">&quot;Y&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>这样便实现了单选删除功能。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Attribute set for xxxAttribute in view object xxxVO failed问题解决]]></title>
+    <link href="http://www.dengdezhao.cn/blog/2013-06-19/attribute-set-for-xxxattribute-in-view-object-xxxvo-failedwen-ti-jie-jue/"/>
+    <updated>2013-06-19T15:50:00+08:00</updated>
+    <id>http://www.dengdezhao.cn/blog/2013-06-19/attribute-set-for-xxxattribute-in-view-object-xxxvo-failedwen-ti-jie-jue</id>
+    <content type="html"><![CDATA[<hr />
+
+<h2>平台：Jdeveloper 9i </h2>
+
+<p>异常描述：</p>
+
+<p>在表增加单选checkbox时，在VO中创建transient属性selector,最终在页面中无法勾选checkbox，发现值没法保存到VO中，页面抛出该异常：<br/>
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'> <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
+</span><span class='line'><span class="kc">null</span> <span class="o">-</span> <span class="n">Attribute</span> <span class="n">set</span> <span class="k">for</span> <span class="n">Selector</span> <span class="n">in</span> <span class="n">view</span> <span class="n">object</span> <span class="n">employeeVO1</span> <span class="n">failed</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>解决方案：</p>
+
+<ol>
+<li>检查VO中的transient属性selector是否设置为updatable</li>
+<li>如果是在开发模式下，清空所有classes文件，重新编译；如果是在正式环境，删除该路径下的VO对象，可使用以下命令。  <br/>
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">exec</span> <span class="n">jdr_utils</span><span class="o">.</span><span class="na">deletedocument</span><span class="o">(</span><span class="err">&#39;</span><span class="o">/</span><span class="n">oracle</span><span class="o">/</span><span class="n">apps</span><span class="o">/</span><span class="n">dengdezhao</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">server</span><span class="o">/</span><span class="n">employeeVO</span><span class="err">&#39;</span><span class="o">);</span>  <span class="o">&lt;</span><span class="n">br</span><span class="o">/&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></li>
+</ol>
+
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[OAF中创建LOV]]></title>
-    <link href="http://dengdezhao.cn/blog/2013-04-18/oafzhong-chuang-jian-lov/"/>
+    <link href="http://www.dengdezhao.cn/blog/2013-04-18/oafzhong-chuang-jian-lov/"/>
     <updated>2013-04-18T12:54:00+08:00</updated>
-    <id>http://dengdezhao.cn/blog/2013-04-18/oafzhong-chuang-jian-lov</id>
+    <id>http://www.dengdezhao.cn/blog/2013-04-18/oafzhong-chuang-jian-lov</id>
     <content type="html"><![CDATA[<p>环境：Oracle9i Jdeveloper+R11i</p>
 
 <h4>首先创建AM</h4>
@@ -38,16 +199,16 @@
 <h4>创建RN</h4>
 
 <p>右键工程，创建一个RN，Scope设置为public.  <br/>
-<img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130418113938.jpg" alt="" /></p>
+<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130418113938.jpg" alt="" /></p>
 
 <p>选中创建好的LovRN.xml，在structure Window窗口中选中LovRN右建New Region Using Wizard.找到之前创建的LovVO.</p>
 
-<p><img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130418114930.jpg" alt="" /></p>
+<p><img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130418114930.jpg" alt="" /></p>
 
 <p>修改字段属性如下：   <br/>
 Search Allowed : true   <br/>
 Selective Search Criteria : true  <br/>
-<img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130418115100.jpg" alt="" /></p>
+<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130418115100.jpg" alt="" /></p>
 
 <h4>创建PG页面引用LOV</h4>
 
@@ -59,28 +220,28 @@ prompt改为：物料LOV  <br/>
 lovMap1中，设置Lov Region Item 为InventoryItemId;     Return Item为item1;Criteria Item为item1;  <br/>
 运行该lovPG.xml，即可看到效果如下图：</p>
 
-<p><img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130418124811.jpg" alt="" />  <br/>
-<img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130418125343.jpg" alt="" /></p>
+<p><img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130418124811.jpg" alt="" />  <br/>
+<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130418125343.jpg" alt="" /></p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[配置OAF开发环境]]></title>
-    <link href="http://dengdezhao.cn/blog/2013-04-17/pei-zhi-oafkai-fa-huan-jing/"/>
+    <link href="http://www.dengdezhao.cn/blog/2013-04-17/pei-zhi-oafkai-fa-huan-jing/"/>
     <updated>2013-04-17T15:01:00+08:00</updated>
-    <id>http://dengdezhao.cn/blog/2013-04-17/pei-zhi-oafkai-fa-huan-jing</id>
+    <id>http://www.dengdezhao.cn/blog/2013-04-17/pei-zhi-oafkai-fa-huan-jing</id>
     <content type="html"><![CDATA[<h4>查看EBS系统OA版本信息</h4>
 
 <p>方法一：使用OPERATIONS用户登陆EBS系统，选择“Diagnostics”后，在页下脚选择“About this Page”后选择“Technology Components”标签可查看相应版本信息。</p>
 
-<p>方法二：访问URI：  <br/>
+<p>方法二：访问URI：<em>R12不可用</em>  <br/>
 <div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nl">http:</span><span class="c1">//&lt;HOST&gt;:&lt;PORT&gt;/OA_HTML/OAInfo.jsp  &lt;br/&gt;</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <h4>查看OAF版本下载相应JDEV开发工具</h4>
 
-<p>metalink document id: 787209.1</p>
+<p>metalink document id: 787209.1 &amp; 416708.1</p>
 
 <p>例如：p4141787_11i_GENERIC.zip</p>
 
@@ -112,21 +273,21 @@ $APPL_TOP/admin/[SID]<em>[host].xml
 <h4>配置JDEV工程属性</h4>
 
 <p>以上准备工作都完成之后，配置JDEV的Preferences中编码为UTF-8  <br/>
-<img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130417144216.jpg" alt="" /></p>
+<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130417144216.jpg" alt="" /></p>
 
 <p>配置project setting中编译器编码  <br/>
-<img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130417144309.jpg" alt="" /></p>
+<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130417144309.jpg" alt="" /></p>
 
 <p>然后配置DBC文件路径，测试EBS账户名及密码，所属职责等信息如下图所示：  <br/>
-<img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130417144424.jpg" alt="" /></p>
+<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130417144424.jpg" alt="" /></p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[OAF上传大批量EXCEL文件]]></title>
-    <link href="http://dengdezhao.cn/blog/2013-04-09/oafshang-chuan-da-pi-liang-excelwen-jian/"/>
+    <link href="http://www.dengdezhao.cn/blog/2013-04-09/oafshang-chuan-da-pi-liang-excelwen-jian/"/>
     <updated>2013-04-09T10:46:00+08:00</updated>
-    <id>http://dengdezhao.cn/blog/2013-04-09/oafshang-chuan-da-pi-liang-excelwen-jian</id>
+    <id>http://www.dengdezhao.cn/blog/2013-04-09/oafshang-chuan-da-pi-liang-excelwen-jian</id>
     <content type="html"><![CDATA[<p>客户有个需求：大量数据通过EXCEL导入系统表，并能提供效验及去重功能。</p>
 
 <h4>设计思路</h4>
@@ -555,110 +716,6 @@ $APPL_TOP/admin/[SID]<em>[host].xml
 在程序中对比的话效率很低，所以采用在数据库中通过语句  <br/>
 <code>select count(vin) from (table union temp_table) group by vin</code>  <br/>
 来判断，count数量大于1表示有重复。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Use Javascript In Oaf]]></title>
-    <link href="http://dengdezhao.cn/blog/2013-03-19/use-javascript-in-oaf/"/>
-    <updated>2013-03-19T22:27:00+08:00</updated>
-    <id>http://dengdezhao.cn/blog/2013-03-19/use-javascript-in-oaf</id>
-    <content type="html"><![CDATA[<h2>Use Javascript in OAF</h2>
-
-<h4>使用Js脚本库</h4>
-
-<p>在CO的<em>processRequest</em>中引入JS库<br/>
-编写JS库:Calendar2013.js
-<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">pageContext</span><span class="o">.</span><span class="na">putJavaScriptLibrary</span><span class="o">(</span><span class="s">&quot;Calendar&quot;</span><span class="o">,</span><span class="s">&quot;Calendar2013.js&quot;</span><span class="o">);</span>
-</span><span class='line'><span class="o">((</span><span class="n">OAMessageTextInputBean</span><span class="o">)</span><span class="n">webBean</span>
-</span><span class='line'><span class="o">.</span><span class="na">findChildRecursive</span><span class="o">(</span><span class="s">&quot;inputDate&quot;</span><span class="o">))</span>
-</span><span class='line'><span class="o">.</span><span class="na">setOnClick</span><span class="o">(</span><span class="s">&quot;setday(this)&quot;</span><span class="o">);</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>需要把Calendar2013.js放置在$<strong>COMMON_TOP</strong>/html下。</p>
-
-<h4>直接引用javaScript</h4>
-
-<p>编写<em>JavaScript</em>:
-<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">String</span> <span class="n">javaScript</span><span class="o">=</span><span class="s">&quot;JAVASCRIPT:function setday(){...}&quot;</span><span class="o">;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>在<strong>CO</strong>的<em>processRequest</em>中加载<em>javascript</em></p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">pageContext</span><span class="o">.</span><span class="na">putJavaScriptFunction</span><span class="o">(</span><span class="s">&quot;sayday()&quot;</span><span class="o">,</span><span class="n">javaScript</span><span class="o">);</span>
-</span><span class='line'><span class="o">((</span><span class="n">OAMessageTextInputBean</span><span class="o">)</span><span class="n">webBean</span><span class="o">.</span><span class="na">findChildRecursive</span><span class="o">(</span><span class="s">&quot;inputDate&quot;</span><span class="o">))&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;.</span><span class="na">setOnClick</span><span class="o">(</span><span class="s">&quot;javascript:setday()&quot;</span><span class="o">);</span>
-</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[OAF开发通过EXCEL导入数据时，用户需要将可能存在重复的主键信息提示出来]]></title>
-    <link href="http://dengdezhao.cn/blog/2013-01-10/oaf%E5%BC%80%E5%8F%91%E9%80%9A%E8%BF%87excel%E5%AF%BC%E5%85%A5%E6%95%B0%E6%8D%AE%E6%97%B6%EF%BC%8C%E7%94%A8%E6%88%B7%E9%9C%80%E8%A6%81%E5%B0%86%E5%8F%AF%E8%83%BD%E5%AD%98%E5%9C%A8%E9%87%8D%E5%A4%8D/"/>
-    <updated>2013-01-10T00:00:00+08:00</updated>
-    <id>http://dengdezhao.cn/blog/2013-01-10/oaf开发通过excel导入数据时，用户需要将可能存在重复</id>
-    <content type="html"><![CDATA[<p>OAF开发通过EXCEL导入数据时，用户需要将可能存在重复的主键信息提示出来.</p>
-
-
-
-
-<p>有以下两种主键冲突情况：</p>
-
-
-
-
-<p>1, 表中不存在重复数据，即将导入的数据中存在重复数据。比如表中记录为空，导入的EXCEL中存在记录ID007,ID008,ID009,ID007，此时OAF页面需要将ID007提示出来；</p>
-
-
-
-
-<p>2,表中存在重复数据。即表中原来已经存在一条记录ID007，此时导入的数据中也存在ID007，需要将ID007提示出来。</p>
-
-
-
-
-<p>解决方案：</p>
-
-
-
-
-<p>原本想通过查询数据库中ID007的记录是否存在再抛出OAException的做法来实现此需求，后来一想感觉好麻烦；便换种思路决定通过异常来判断。</p>
-
-
-
-
-<p>情况1，在ViewObject对象CreateRow()之后，给创建的新Row.setAttribute("id",007)时，如果VO中存在两个007的新ROW，会抛出TooManyObjectsException,此时捕获该异常并返回此ID值。</p>
-
-
-
-
-<p>情况2，难点也在这里，调用commit保存数据时，主键约束异常才会抛出来而且还不知道重复的ID值是多少。重写EO的doDML方法，在此方法中捕获DMLException异常，并且可以得到重复的ID值；
-<pre class="brush:java">  public void doDML(int i,TransactionEvent e)
-  {
-    try{
-    super.doDML(i,e);
-    }catch(oracle.jbo.DMLException ex)
-    {
-        throw new OAException("ERROR:数据库中存在相同的VIN码["+this.getVin()+"],请检查上传文件",OAException.ERROR);
-    }
-  }</pre></p>
-
 ]]></content>
   </entry>
   

@@ -9,7 +9,9 @@
   <meta name="author" content="pierreorz">
 
   
-  <meta name="description" content="使用ADF框架开发WEB应用时，其中令人苦恼的一个需求就是：在两个页面同时展示一个数据源时，如果其中一个页面对数据源作了变更操作，另外一个页面没办法自动获得变更后的数据，需要手工刷新页面才能得到变更后的新数据源。 其实ADF自带的&lt;af:poll/&gt;组件即可实现此需求。 例子： &hellip;">
+  <meta name="description" content="环境：此前安装过soa1.6，最近重新安装soa1.7时遇到的问题
+安装Rcu1.7时，发现无法运行./rcu,错误提示如下： 1
+rcuHome/jdk/jre/bin/java: cannot execute binary file. 查看操作系统发现是32bit,而rcu只有64bit的 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +20,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://dengdezhao.cn">
+  <link rel="canonical" href="http://www.dengdezhao.cn">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="邓德昭的技术博客" type="application/atom+xml">
@@ -50,7 +52,7 @@
   
 <form action="http://google.com/search" method="get">
   <fieldset role="search">
-    <input type="hidden" name="q" value="site:dengdezhao.cn" />
+    <input type="hidden" name="q" value="site:www.dengdezhao.cn" />
     <input class="search" type="text" name="q" results="0" placeholder="Search"/>
   </fieldset>
 </form>
@@ -73,7 +75,7 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2013-04-24/adflei-si-xin-tiao-cheng-xu-shi-xian/">ADF类似心跳程序实现</a></h1>
+      <h1 class="entry-title"><a href="/blog/2014-04-18/an-zhuang-rcu1-dot-7yu-dao-de-xiao-wen-ti/">安装RCU1.7遇到的小问题</a></h1>
     
     
       <p class="meta">
@@ -89,65 +91,44 @@
   
 
 
-<time datetime="2013-04-24T16:19:00+08:00" pubdate data-updated="true">Apr 24<span>th</span>, 2013</time>
+<time datetime="2014-04-18T20:24:00+08:00" pubdate data-updated="true">Apr 18<span>th</span>, 2014</time>
         
-         | <a href="/blog/2013-04-24/adflei-si-xin-tiao-cheng-xu-shi-xian/#disqus_thread">Comments</a>
+         | <a href="/blog/2014-04-18/an-zhuang-rcu1-dot-7yu-dao-de-xiao-wen-ti/#disqus_thread">Comments</a>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>使用ADF框架开发WEB应用时，其中令人苦恼的一个需求就是：在两个页面同时展示一个数据源时，如果其中一个页面对数据源作了变更操作，另外一个页面没办法自动获得变更后的数据，需要手工刷新页面才能得到变更后的新数据源。</p>
-
-<p>其实ADF自带的<code>&lt;af:poll/&gt;</code>组件即可实现此需求。</p>
-
-<p>例子：</p>
-
-<ul>
-<li>创建一个可更新的af:table 基于HR的Department表</li>
-</ul>
-
-
-<p>页面如下： <br/>
-<img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130424160613.jpg" alt="" />  <br/>
-可以更改表数据并提交，用多浏览器窗口打开该页面来模拟多用户操作。</p>
-
-<p>将<code>&lt;af:poll/&gt;</code>控件拖入到页面中，控件属性设置如下：</p>
-
-<p><img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130424161027.jpg" alt="" />  <br/>
-设置间隔为1分钟，并绑定PollListener</p>
-
-<ul>
-<li>给该页面绑定ManagedBean，并添加PollListener，方法内容如下：</li>
+  <div class="entry-content"><ul>
+<li>环境：此前安装过soa1.6，最近重新安装soa1.7时遇到的问题</li>
+<li>安装Rcu1.7时，发现无法运行./rcu,错误提示如下：</li>
 </ul>
 
 
 <figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">heartBeat</span><span class="o">(</span><span class="n">PollEvent</span> <span class="n">pollEvent</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;start poll...&quot;</span><span class="o">);</span>
-</span><span class='line'>        <span class="n">DCIteratorBinding</span> <span class="n">it</span> <span class="o">=</span> <span class="n">ADFUtils</span><span class="o">.</span><span class="na">findIterator</span><span class="o">(</span><span class="s">&quot;Departments1Iterator&quot;</span><span class="o">);</span>
-</span><span class='line'>        <span class="n">ViewObject</span> <span class="n">vo</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="na">getViewObject</span><span class="o">();</span>
-</span><span class='line'>        <span class="n">vo</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">();</span>
-</span><span class='line'>        <span class="n">AdfFacesContext</span><span class="o">.</span><span class="na">getCurrentInstance</span><span class="o">().</span><span class="na">addPartialTarget</span><span class="o">(</span><span class="n">JSFUtils</span><span class="o">.</span><span class="na">findComponentInRoot</span><span class="o">(</span><span class="s">&quot;t1&quot;</span><span class="o">));</span>
-</span><span class='line'>       <span class="o">}</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">rcuHome</span><span class="o">/</span><span class="n">jdk</span><span class="o">/</span><span class="n">jre</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="nl">java:</span> <span class="n">cannot</span> <span class="n">execute</span> <span class="n">binary</span> <span class="n">file</span><span class="o">.</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>每隔1分钟自动查询一次VO，并将更新后的内容返回到页面；</p>
+<p>查看操作系统发现是32bit,而rcu只有64bit的。</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">$getconf</span> <span class="n">LONG_BIT</span>
+</span><span class='line'><span class="mi">32</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在32bit系统上安装64bit软件向下兼容应该是可以安装的，因此怀疑是jdk的问题。</p>
+
+<p>修改rcu文件最后几行的jre_home 为中间件文件夹中的JDK：/home/pierre/Oracle/Middleware/jdk160_24/bin/java 后，重新运行即可解决该问题。</p>
 
 <ul>
-<li>这样打开两个页面之后，在其中一个页面更改内容并提交后，也会即时更新另外一个页面（另外一个客户端）；</li>
+<li><p>成功运行rcu之后，进入配置oracle数据库信息页，一直报 invalid service 错误, 原来是service name 要加上机器名后缀 orcl.localdomain即正常。</p></li>
+<li><p>因为之前安装过rcu1.6，所以需要将此前的mds删除掉，不然在创建soa domain的时候会出现错误。</p></li>
 </ul>
 
-
-<p>PS：此例子频繁地查询VO，在实际项目中会对服务器造成很大的压力，只为展示<code>&lt;af:poll&gt;</code>控件作用，不建议使用此方案。</p>
 </div>
   
   
@@ -160,7 +141,7 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2013-04-19/adfxue-xi-zong-jie-%5B%3F%5D/">ADF学习总结(一)</a></h1>
+      <h1 class="entry-title"><a href="/blog/2014-02-07/%E5%AE%9A%E5%88%B6EL/">定制EL Function</a></h1>
     
     
       <p class="meta">
@@ -176,393 +157,29 @@
   
 
 
-<time datetime="2013-04-19T14:15:00+08:00" pubdate data-updated="true">Apr 19<span>th</span>, 2013</time>
+<time datetime="2014-02-07T19:24:00+08:00" pubdate data-updated="true">Feb 7<span>th</span>, 2014</time>
         
-         | <a href="/blog/2013-04-19/adfxue-xi-zong-jie-%5B%3F%5D/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h4>改变VO查询条件</h4>
-
-<ul>
-<li>使用WhereClause改变查询条件</li>
-<li>使用Criteria改变查询条件</li>
-<li>使用Bind Variables改变查询条件</li>
-</ul>
-
-
-<h4>使用WhereClause改变查询条件</h4>
-
-<ul>
-<li><strong>setWhereClause</strong></li>
-</ul>
-
-
-<p>通过VO对象的setWhereClause方法改变查询条件</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">DCIteratorBinding</span> <span class="n">dc</span> <span class="o">=</span> <span class="n">ADFUtils</span><span class="o">.</span><span class="na">findIterator</span><span class="o">(</span><span class="s">&quot;DepartmentsView1Iterator&quot;</span><span class="o">);</span>
-</span><span class='line'><span class="n">ViewObject</span> <span class="n">vo</span> <span class="o">=</span> <span class="n">dc</span><span class="o">.</span><span class="na">getViewObject</span><span class="o">();</span>
-</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">setWhereClause</span><span class="o">(</span><span class="s">&quot; 1=1 &quot;</span><span class="o">);</span>
-</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">();</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li><strong>addWhereClause</strong></li>
-</ul>
-
-
-<p>addWhereClause是在原有whereClause基础上添加新的查询条件；  <br/>
-跟setWhereClause替换原有whereClaue不同；</p>
-
-<h4>使用ViewCriteria改变查询条件</h4>
-
-<ul>
-<li><strong>使用定义好的ViewCriteria</strong></li>
-</ul>
-
-
-<p>事先在创建VO的时候，定义好几种Criteria：DepartmentsViewCriteria  <br/>
-<img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130419134617.jpg" alt="" /></p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">DCIteratorBinding</span> <span class="n">dc</span> <span class="o">=</span> <span class="n">ADFUtils</span><span class="o">.</span><span class="na">findIterator</span><span class="o">(</span><span class="s">&quot;DepartmentsView1Iterator&quot;</span><span class="o">);</span>
-</span><span class='line'><span class="n">ViewObject</span> <span class="n">vo</span> <span class="o">=</span> <span class="n">dc</span><span class="o">.</span><span class="na">getViewObject</span><span class="o">();</span>
-</span><span class='line'><span class="n">ViewCriteriaManager</span> <span class="n">vcm</span><span class="o">=</span><span class="n">vo</span><span class="o">.</span><span class="na">getViewCriteriaManager</span><span class="o">();</span>
-</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">applyViewCriteria</span><span class="o">(</span><span class="n">vcm</span><span class="o">.</span><span class="na">getViewCriteria</span><span class="o">(</span><span class="s">&quot;DepartmentsViewCriteria&quot;</span><span class="o">));</span>
-</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">();</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li><strong>动态创建ViewCriteria</strong></li>
-</ul>
-
-
-<p>如果事先没有在VO中定义好ViewCriteria，也可以在MB代码中动态创建</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">DCIteratorBinding</span> <span class="n">dc</span> <span class="o">=</span> <span class="n">ADFUtils</span><span class="o">.</span><span class="na">findIterator</span><span class="o">(</span><span class="s">&quot;DepartmentsView1Iterator&quot;</span><span class="o">);</span>
-</span><span class='line'><span class="n">ViewObject</span> <span class="n">vo</span> <span class="o">=</span> <span class="n">dc</span><span class="o">.</span><span class="na">getViewObject</span><span class="o">();</span>
-</span><span class='line'><span class="n">ViewCriteria</span> <span class="n">vc</span> <span class="o">=</span> <span class="n">vo</span><span class="o">.</span><span class="na">createViewCriteria</span><span class="o">();</span>
-</span><span class='line'><span class="n">ViewCriteriaRow</span> <span class="n">vcr</span> <span class="o">=</span> <span class="n">vc</span><span class="o">.</span><span class="na">createViewCriteriaRow</span><span class="o">();</span>
-</span><span class='line'><span class="n">vcr</span><span class="o">.</span><span class="na">setConjunction</span><span class="o">(</span><span class="n">ViewCriteriaRow</span><span class="o">.</span><span class="na">VC_CONJ_AND</span><span class="o">);</span>
-</span><span class='line'><span class="n">vcr</span><span class="o">.</span><span class="na">setAttribute</span><span class="o">(</span><span class="s">&quot;DepartmentId&quot;</span><span class="o">,</span> <span class="s">&quot;20&quot;</span><span class="o">);</span>
-</span><span class='line'><span class="n">vc</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">vcr</span><span class="o">);</span>
-</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">applyViewCriteria</span><span class="o">(</span><span class="n">vc</span><span class="o">);</span>
-</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">();</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>使用Bind Variables改变查询条件</h4>
-
-<ul>
-<li><strong>使用Bind Variables结合ViewCriteria</strong></li>
-</ul>
-
-
-<p>参照以上定义ViewCriteria时，使用Bind Variables。</p>
-
-<ul>
-<li><strong>使用Bind Variables结合SQL</strong></li>
-</ul>
-
-
-<p>在VO的SQL中使用Bind Variables；</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">SELECT</span> <span class="n">Departments</span><span class="p">.</span><span class="n">DEPARTMENT_ID</span><span class="p">,</span>
-</span><span class='line'>       <span class="n">Departments</span><span class="p">.</span><span class="n">DEPARTMENT_NAME</span><span class="p">,</span>
-</span><span class='line'>       <span class="n">Departments</span><span class="p">.</span><span class="n">MANAGER_ID</span><span class="p">,</span>
-</span><span class='line'>       <span class="n">Departments</span><span class="p">.</span><span class="n">LOCATION_ID</span>
-</span><span class='line'><span class="k">FROM</span> <span class="n">DEPARTMENTS</span> <span class="n">Departments</span>
-</span><span class='line'><span class="k">WHERE</span> <span class="n">Departments</span><span class="p">.</span><span class="n">DEPARTMENT_ID</span> <span class="o">=</span> <span class="p">:</span><span class="n">varDeptId</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>创建Bind Variables：varDeptId  <br/>
-<img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130419140752.jpg" alt="" /></p>
-
-<p>在查询VO时，通过如下代码控制即可实现：</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">DCIteratorBinding</span> <span class="n">dc</span> <span class="o">=</span> <span class="n">ADFUtils</span><span class="o">.</span><span class="na">findIterator</span><span class="o">(</span><span class="s">&quot;DepartmentsView1Iterator&quot;</span><span class="o">);</span>
-</span><span class='line'><span class="n">ViewObject</span> <span class="n">vo</span> <span class="o">=</span> <span class="n">dc</span><span class="o">.</span><span class="na">getViewObject</span><span class="o">();</span>
-</span><span class='line'><span class="n">ViewCriteria</span> <span class="n">vc</span> <span class="o">=</span> <span class="n">vo</span><span class="o">.</span><span class="na">createViewCriteria</span><span class="o">();</span>
-</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">setNamedWhereClauseParam</span><span class="o">(</span><span class="s">&quot;varDeptId&quot;</span><span class="o">,</span> <span class="mi">20</span><span class="o">);</span>
-</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">();</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>以上几种方法均可实现改变VO查询条件进行动态查询，各有灵活度，目前没有比较三种方式带来的性能影响，可以根据个人习惯采用。</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013-04-18/oafzhong-chuang-jian-lov/">OAF中创建LOV</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-04-18T12:54:00+08:00" pubdate data-updated="true">Apr 18<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013-04-18/oafzhong-chuang-jian-lov/#disqus_thread">Comments</a>
+         | <a href="/blog/2014-02-07/%E5%AE%9A%E5%88%B6EL/#disqus_thread">Comments</a>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>环境：Oracle9i Jdeveloper+R11i</p>
+  <div class="entry-content"><ul>
+<li><p>平台: Jdeveloper 12c</p></li>
+<li><p>有时需要对字符串进行一些后再显示出来，可以写一个简单的taglib来实现，以下Demo是处理一个以冒号分隔的字符串，返回其中的第三个值。比如输入“aaa:bbb:ccc:ddd&#8221;，输出&#8221;ccc&#8221;。</p></li>
+</ul>
 
-<h4>首先创建AM</h4>
 
-<p>创建一个LovAM，默认配置即可。</p>
+<h4>实现方法</h4>
 
-<h4>创建VO</h4>
+<p>创建一个空的java Project：Taglib</p>
 
-<p>创建LovVO，不需要基于EO，输入查询SQL如下：</p>
+<ul>
+<li>创建Java类：SplitString.java</li>
+</ul>
 
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="k">distinct</span> <span class="n">INVENTORY_ITEM_ID</span><span class="p">,</span><span class="n">concatenated_segments</span>
-</span><span class='line'><span class="k">from</span> <span class="n">MTL_SYSTEM_ITEMS_KFV</span> <span class="k">where</span> <span class="n">organization_id</span><span class="o">=</span><span class="mi">85</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>将创建好的VO添加到AM的data module中</p>
-
-<h4>创建RN</h4>
-
-<p>右键工程，创建一个RN，Scope设置为public.  <br/>
-<img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130418113938.jpg" alt="" /></p>
-
-<p>选中创建好的LovRN.xml，在structure Window窗口中选中LovRN右建New Region Using Wizard.找到之前创建的LovVO.</p>
-
-<p><img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130418114930.jpg" alt="" /></p>
-
-<p>修改字段属性如下：   <br/>
-Search Allowed : true   <br/>
-Selective Search Criteria : true  <br/>
-<img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130418115100.jpg" alt="" /></p>
-
-<h4>创建PG页面引用LOV</h4>
-
-<p>创建一个PG页面LovPG.xml，AM Definition设置为之前创建的LovAM路径;  <br/>
-Windows title &amp; tile 随意设置；  <br/>
-在LovPG页面中创建一个Region改名为mainRN，Region Style为messageComponentLayout;  <br/>
-在mainRN中创建一个MessageLovInput控件item1，    修改item1的属性External LOV值为此前步骤中创建好的LovRN路径；
-prompt改为：物料LOV  <br/>
-lovMap1中，设置Lov Region Item 为InventoryItemId;     Return Item为item1;Criteria Item为item1;  <br/>
-运行该lovPG.xml，即可看到效果如下图：</p>
-
-<p><img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130418124811.jpg" alt="" />  <br/>
-<img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130418125343.jpg" alt="" /></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013-04-17/pei-zhi-oafkai-fa-huan-jing/">配置OAF开发环境</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-04-17T15:01:00+08:00" pubdate data-updated="true">Apr 17<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013-04-17/pei-zhi-oafkai-fa-huan-jing/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h4>查看EBS系统OA版本信息</h4>
-
-<p>方法一：使用OPERATIONS用户登陆EBS系统，选择“Diagnostics”后，在页下脚选择“About this Page”后选择“Technology Components”标签可查看相应版本信息。</p>
-
-<p>方法二：访问URI：</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nl">http:</span><span class="c1">//&lt;HOST&gt;:&lt;PORT&gt;/OA_HTML/OAInfo.jsp    </span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>查看OAF版本下载相应JDEV开发工具</h4>
-
-<p>metalink document id: 787209.1</p>
-
-<p>例如：p4141787_11i_GENERIC.zip</p>
-
-<p>解压缩后把“/jdevhome/jdev”路径加到系统变量中，变量名：      JDEV_USER_HOME=F:\p4141787_11i_GENERIC\jdevhome\jdev</p>
-
-<h4>配置DBC文件</h4>
-
-<p>确认当前EBS系统使用的dbc文件.</p>
-
-<p>连接EBS数据库，执行以下SQL查询：</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="n">host_name</span><span class="o">||</span><span class="s1">&#39;_&#39;</span><span class="o">||</span><span class="n">instance_name</span> <span class="k">from</span> <span class="n">v</span><span class="err">$</span><span class="n">instance</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>telnet到EBS系统，查找dbc文件的的位置并拷贝下来放在jdevhome\jdev\dbc_files\secure目录下:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">ls</span> <span class="err">–</span><span class="n">a</span><span class="o">|</span><span class="n">$FND_SECURE</span><span class="o">/*.</span><span class="na">dbc</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>检验DBC文件是否EBS系统正在使用的DBC可用以下命令：</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">java</span> <span class="n">oracle</span><span class="o">.</span><span class="na">apps</span><span class="o">.</span><span class="na">fnd</span><span class="o">.</span><span class="na">security</span><span class="o">.</span><span class="na">AdminAppServer</span> <span class="n">apps</span><span class="o">/</span><span class="n">apps</span> <span class="n">STATUS</span> <span class="n">DBC</span><span class="o">=/</span><span class="n">u01</span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">devappl</span><span class="o">/</span><span class="n">fnd</span><span class="o">/</span><span class="mf">11.5</span><span class="o">.</span><span class="mi">0</span><span class="o">/</span><span class="n">secure</span><span class="o">/</span><span class="n">SIT</span><span class="o">.</span><span class="na">dbc</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>确认系统是否使用这个dbc文件可以在路径
-$APPL_TOP/admin/[SID]<em>[host].xml
-查找</em>dbc_file_name，跟上面说的dbc文件一致即可</p>
-
-<h4>配置JDEV工程属性</h4>
-
-<p>以上准备工作都完成之后，配置JDEV的Preferences中编码为UTF-8  <br/>
-<img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130417144216.jpg" alt="" /></p>
-
-<p>配置project setting中编译器编码  <br/>
-<img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130417144309.jpg" alt="" /></p>
-
-<p>然后配置DBC文件路径，测试EBS账户名及密码，所属职责等信息如下图所示：  <br/>
-<img src="http://www.dengdezhao.cn/wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130417144424.jpg" alt="" /></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013-04-16/getrowatrangeindex-int-fang-fa-de-ju-xian-xing/">getRowAtRangeIndex(int)方法的局限性</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-04-16T14:42:00+08:00" pubdate data-updated="true">Apr 16<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013-04-16/getrowatrangeindex-int-fang-fa-de-ju-xian-xing/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>导出VO中的数据到EXCEL中时，循环VO中的Row，写入HSSFRow，是通过getRowAtRangeIndex(int)方法循环取Row，代码如下：</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'> <span class="n">ViewObject</span> <span class="n">vo8</span><span class="o">=</span><span class="n">am</span><span class="o">.</span><span class="na">findViewObject</span><span class="o">(</span><span class="s">&quot;ChReport1VO1&quot;</span><span class="o">);</span>
-</span><span class='line'> <span class="k">if</span><span class="o">(</span><span class="n">vo8</span><span class="o">!=</span><span class="kc">null</span><span class="o">)</span>
-</span><span class='line'> <span class="o">{</span>
-</span><span class='line'>      <span class="kt">int</span> <span class="n">rowcount8</span><span class="o">=</span><span class="n">vo8</span><span class="o">.</span><span class="na">getRowCount</span><span class="o">();</span>
-</span><span class='line'>      <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">rowcount8</span><span class="o">;</span><span class="n">i</span><span class="o">++)</span>
-</span><span class='line'>      <span class="o">{</span>
-</span><span class='line'>           <span class="n">Row</span> <span class="n">vo_row8</span><span class="o">=</span><span class="n">vo8</span><span class="o">.</span><span class="na">getRowAtRangeIndex</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
-</span><span class='line'>         <span class="c1">//...TODO</span>
-</span><span class='line'>      <span class="o">}</span>
-</span><span class='line'> <span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>这样如果VO里有300条数据，但是pageRange设置为100，这里其实只能取到第一页的100条数据，想要导出所有300条数据则需要一页一页导出，很麻烦。于是考虑不用getRowAtRangeIndex方法取ROW数据,改用RowSetIterator。</p>
 
 <figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -576,22 +193,120 @@ $APPL_TOP/admin/[SID]<em>[host].xml
 <span class='line-number'>10</span>
 <span class='line-number'>11</span>
 <span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">ViewObject</span> <span class="n">vo8</span><span class="o">=</span><span class="n">am</span><span class="o">.</span><span class="na">findViewObject</span><span class="o">(</span><span class="s">&quot;ChReport1VO1&quot;</span><span class="o">);</span>
-</span><span class='line'><span class="k">if</span><span class="o">(</span><span class="n">vo8</span><span class="o">!=</span><span class="kc">null</span><span class="o">)</span>
-</span><span class='line'><span class="o">{</span>
-</span><span class='line'>     <span class="kt">int</span> <span class="n">rowcount8</span><span class="o">=</span><span class="n">vo8</span><span class="o">.</span><span class="na">getRowCount</span><span class="o">();</span>
-</span><span class='line'>     <span class="n">RowSetIterator</span> <span class="n">rowSetIter</span><span class="o">=</span><span class="n">vo8</span><span class="o">.</span><span class="na">createRowSetIterator</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">package</span> <span class="n">cn</span><span class="o">.</span><span class="na">dengdezhao</span><span class="o">.</span><span class="na">taglib</span><span class="o">;</span>
 </span><span class='line'>
-</span><span class='line'>     <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">rowcount8</span><span class="o">;</span><span class="n">i</span><span class="o">++)</span>
-</span><span class='line'>     <span class="o">{</span>
-</span><span class='line'>           <span class="n">Row</span> <span class="n">vo_row8</span><span class="o">=</span><span class="n">rowSetIter</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
-</span><span class='line'>         <span class="c1">//...TODO</span>
-</span><span class='line'>     <span class="o">}</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SplitString</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="n">String</span> <span class="nf">getString</span><span class="o">(</span><span class="n">String</span> <span class="n">string</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">String</span><span class="o">[]</span> <span class="n">strings</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="na">split</span><span class="o">(</span><span class="s">&quot;:&quot;</span><span class="o">,</span> <span class="mi">3</span><span class="o">);</span>
+</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">strings</span><span class="o">.</span><span class="na">length</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="n">strings</span><span class="o">[</span><span class="mi">2</span><span class="o">];</span>
+</span><span class='line'>        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="s">&quot;&quot;</span><span class="o">;</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
 </span><span class='line'><span class="o">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>getRowAtRangeIndex方法只能通过index取出Range中的数据,但是RowSetIterator则是对VO中所有RowSet遍历。</p>
+<ul>
+<li>创建taglib描述文件splitString.tld</li>
+</ul>
+
+
+<p>New -> From Gallery -> Web Tier -> JSP -> JSP Tag Library</p>
+
+<p>类型为Deployable 文件内容如下：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="cp">&lt;?xml version = &#39;1.0&#39; encoding = &#39;UTF-8&#39;?&gt;</span>
+</span><span class='line'><span class="nt">&lt;taglib</span> <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>
+</span><span class='line'>        <span class="na">xsi:schemaLocation=</span><span class="s">&quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd&quot;</span>
+</span><span class='line'>        <span class="na">version=</span><span class="s">&quot;2.1&quot;</span> <span class="na">xmlns=</span><span class="s">&quot;http://java.sun.com/xml/ns/javaee&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;description&gt;</span>split String<span class="nt">&lt;/description&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;display-name&gt;</span>splitString<span class="nt">&lt;/display-name&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;tlib-version&gt;</span>1.0<span class="nt">&lt;/tlib-version&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;short-name&gt;</span>splitString<span class="nt">&lt;/short-name&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;uri&gt;</span>http://www.dengdezhao.cn/string<span class="nt">&lt;/uri&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;function&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;display-name&gt;</span>getString<span class="nt">&lt;/display-name&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;name&gt;</span>getString<span class="nt">&lt;/name&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;function-class&gt;</span>cn.dengdezhao.taglib.SplitString<span class="nt">&lt;/function-class&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;function-signature&gt;</span>java.lang.String getString(java.lang.String)<span class="nt">&lt;/function-signature&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/function&gt;</span>
+</span><span class='line'><span class="nt">&lt;/taglib&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>将该工程发布为jar包。即完成taglib的开发工作。</li>
+</ul>
+
+
+<h4>在工程中应用该taglib</h4>
+
+<ul>
+<li>创建测试工程ViewController</li>
+</ul>
+
+
+<p>右键工程属性 -> JSP Tag Libraries -> Add</p>
+
+<p>将之前发布的Jar包添加进来。</p>
+
+<ul>
+<li>创建测试页面testTaglib.jspx</li>
+</ul>
+
+
+<p>内容如下 ：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='jsp'><span class='line'><span class="cp">&lt;?xml version=&#39;1.0&#39; encoding=&#39;UTF-8&#39;?&gt;</span>
+</span><span class='line'><span class="nt">&lt;jsp:root</span> <span class="na">xmlns:jsp=</span><span class="s">&quot;http://java.sun.com/JSP/Page&quot;</span> <span class="na">version=</span><span class="s">&quot;2.1&quot;</span> <span class="na">xmlns:f=</span><span class="s">&quot;http://java.sun.com/jsf/core&quot;</span> <span class="na">xmlns:myTag=</span><span class="s">&quot;http://www.dengdezhao.cn/string&quot;</span>
+</span><span class='line'>          <span class="na">xmlns:af=</span><span class="s">&quot;http://xmlns.oracle.com/adf/faces/rich&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;jsp:directive.page</span> <span class="na">contentType=</span><span class="s">&quot;text/html;charset=UTF-8&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;f:view&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;af:document</span> <span class="na">title=</span><span class="s">&quot;testTaglib.jspx&quot;</span> <span class="na">id=</span><span class="s">&quot;d1&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;af:form</span> <span class="na">id=</span><span class="s">&quot;f1&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;af:outputText</span> <span class="na">id=</span><span class="s">&quot;ot1&quot;</span> <span class="na">value=</span><span class="s">&quot;#{myTag:getString(&#39;aaa:ddd:ccc&#39;)}&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>            <span class="nt">&lt;/af:form&gt;</span>
+</span><span class='line'>        <span class="nt">&lt;/af:document&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;/f:view&gt;</span>
+</span><span class='line'><span class="nt">&lt;/jsp:root&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
 </div>
   
   
@@ -604,7 +319,7 @@ $APPL_TOP/admin/[SID]<em>[host].xml
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2013-04-09/oafshang-chuan-da-pi-liang-excelwen-jian/">OAF上传大批量EXCEL文件</a></h1>
+      <h1 class="entry-title"><a href="/blog/2013-11-09/you-yi-wai-duan-dian-dao-zhi-oracle11gqi-dong-bu-qi-lai-de-wen-ti-jie-jue/">由意外断电导致oracle11g启动不起来的问题解决</a></h1>
     
     
       <p class="meta">
@@ -620,29 +335,121 @@ $APPL_TOP/admin/[SID]<em>[host].xml
   
 
 
-<time datetime="2013-04-09T10:46:00+08:00" pubdate data-updated="true">Apr 9<span>th</span>, 2013</time>
+<time datetime="2013-11-09T19:24:00+08:00" pubdate data-updated="true">Nov 9<span>th</span>, 2013</time>
         
-         | <a href="/blog/2013-04-09/oafshang-chuan-da-pi-liang-excelwen-jian/#disqus_thread">Comments</a>
+         | <a href="/blog/2013-11-09/you-yi-wai-duan-dian-dao-zhi-oracle11gqi-dong-bu-qi-lai-de-wen-ti-jie-jue/#disqus_thread">Comments</a>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>客户有个需求：大量数据通过EXCEL导入系统表，并能提供效验及去重功能。</p>
-
-<h4>设计思路</h4>
-
-<ul>
-<li>采用POI解析EXCEL文件；</li>
-<li>bulk insert 插入数据到临时表</li>
-<li>临时表结合正式表去除重复</li>
+  <div class="entry-content"><ul>
+<li><p>平台: linux + oracle 11g</p></li>
+<li><p>故障: 意外断电之后，监听启动不了</p></li>
 </ul>
 
 
-<h4>POI解析EXCEL</h4>
+<h4>解决方法</h4>
 
-<p>在CO的<code>processFormRequest</code>方法中添加如下:</p>
+<p>执行<code>lsnrctrl start</code>命令时报错误代码如下：</p>
+
+<p><code>TNS-12537</code>  <br/>
+<code>TNS-12560</code>  <br/>
+<code>TNS-00507</code>  <br/>
+<code>Linux Error:29</code></p>
+
+<ul>
+<li><p>检查/etc/hosts文件，没有发现异常。</p></li>
+<li><p>因为未改动任何配置文件，所以基本可以确定是断电造成文件损坏而引起。于是使用<code>relink all</code>看看能否解决该问题。</p></li>
+</ul>
+
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'> <span class="err">#</span> <span class="n">cd</span> <span class="n">$ORACLE_HOME</span><span class="o">/</span><span class="n">bin</span>
+</span><span class='line'> <span class="err">#</span> <span class="n">relink</span> <span class="n">all</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>执行<code>relink all</code>命令之后，再执行<code>lsnrctrl start</code>时，发现不报之前的错误了，出现了新的错误：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'> <span class="n">symbol</span> <span class="n">lookup</span> <span class="nl">error:</span> <span class="n">$ORACLE_HOME</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">libclntsh</span><span class="o">.</span><span class="na">so</span><span class="o">.</span><span class="mf">11.1</span>
+</span><span class='line'><span class="o">:</span> <span class="n">undefined</span> <span class="nl">symbol:</span> <span class="n">nnftboot</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><p>看来是这个libclntsh.so.11.1出了问题，于是尝试去下载该文件替换掉。</p></li>
+<li><p>从RPM search网站上下载到oracle-instance-client的RPM文件到本地。</p></li>
+<li><p>使用rpm2cpio命令抽取出里面的libclntsh.so.11.1</p></li>
+</ul>
+
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'>
+</span><span class='line'><span class="err">#</span><span class="n">rpm2cpio</span> <span class="n">oracle</span><span class="o">-</span><span class="n">instance</span><span class="o">-</span><span class="n">client</span><span class="o">-</span><span class="n">xxx</span><span class="o">.</span><span class="na">rpm</span> <span class="o">|</span> <span class="n">cpio</span> <span class="o">-</span><span class="n">div</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>将得到的libclntsh.so.11.1文件替换掉$ORACLE_HOME/lib下的重名文件即可。</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013-09-23/ru-he-zai-ye-mian-sui-pian-jia-zai-qian-diao-yong-luo-ji/">如何在页面碎片加载前调用逻辑</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-23T18:32:00+08:00" pubdate data-updated="true">Sep 23<span>rd</span>, 2013</time>
+        
+         | <a href="/blog/2013-09-23/ru-he-zai-ye-mian-sui-pian-jia-zai-qian-diao-yong-luo-ji/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
+<li><p>平台:Jdeveloper 12c</p></li>
+<li><p>需求：在JSPX页面加载前如果需要调用逻辑可以通过重写PhaseListener实现，如果在JSFF页面碎片加载前（也即是region加载前）调用应该如何实现？</p></li>
+</ul>
+
+
+<p><strong>实现方法</strong></p>
+
+<p>重写RegionController方法可以达到以上需求。</p>
+
+<ul>
+<li>重写 RegionController类，在refreshRegion方法中加入需要调用的逻辑即可在页面碎片加载之前调用。</li>
+</ul>
+
 
 <figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -674,40 +481,151 @@ $APPL_TOP/admin/[SID]<em>[host].xml
 <span class='line-number'>28</span>
 <span class='line-number'>29</span>
 <span class='line-number'>30</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'>  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">processFormRequest</span><span class="o">(</span><span class="n">OAPageContext</span> <span class="n">pageContext</span><span class="o">,</span> <span class="n">OAWebBean</span> <span class="n">webBean</span><span class="o">)</span>
-</span><span class='line'>  <span class="o">{</span>
-</span><span class='line'>    <span class="kd">super</span><span class="o">.</span><span class="na">processFormRequest</span><span class="o">(</span><span class="n">pageContext</span><span class="o">,</span> <span class="n">webBean</span><span class="o">);</span>
-</span><span class='line'>    <span class="n">OAApplicationModule</span> <span class="n">am</span> <span class="o">=</span> <span class="n">pageContext</span><span class="o">.</span><span class="na">getApplicationModule</span><span class="o">(</span><span class="n">webBean</span><span class="o">);</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">pageContext</span><span class="o">.</span><span class="na">getParameter</span><span class="o">(</span><span class="s">&quot;uploadBtn&quot;</span><span class="o">)</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span>
-</span><span class='line'>    <span class="o">{</span>
-</span><span class='line'>      <span class="n">DataObject</span> <span class="n">fileUploadData</span> <span class="o">=</span> <span class="o">(</span><span class="n">DataObject</span><span class="o">)</span><span class="n">pageContext</span><span class="o">.</span><span class="na">getNamedDataObject</span><span class="o">(</span><span class="s">&quot;uploadFile&quot;</span><span class="o">);</span>
-</span><span class='line'>      <span class="n">String</span> <span class="n">fileName</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
-</span><span class='line'>      <span class="k">try</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">fileName</span> <span class="o">=</span> <span class="o">(</span><span class="n">String</span><span class="o">)</span><span class="n">fileUploadData</span><span class="o">.</span><span class="na">selectValue</span><span class="o">(</span><span class="kc">null</span><span class="o">,</span> <span class="s">&quot;UPLOAD_FILE_NAME&quot;</span><span class="o">);</span>
-</span><span class='line'>      <span class="o">}</span> <span class="k">catch</span><span class="o">(</span><span class="n">NullPointerException</span> <span class="n">ex</span><span class="o">)</span>
-</span><span class='line'>      <span class="o">{</span>
-</span><span class='line'>        <span class="k">throw</span> <span class="k">new</span> <span class="nf">OAException</span><span class="o">(</span><span class="s">&quot;请先选择需要上传的文件&quot;</span><span class="o">,</span> <span class="n">OAException</span><span class="o">.</span><span class="na">INFORMATION</span><span class="o">);</span>
-</span><span class='line'>      <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="k">if</span><span class="o">(</span><span class="n">fileName</span><span class="o">.</span><span class="na">endsWith</span><span class="o">(</span><span class="s">&quot;.xlsx&quot;</span><span class="o">))</span>
-</span><span class='line'>      <span class="o">{</span>
-</span><span class='line'>                <span class="k">throw</span> <span class="k">new</span> <span class="nf">OAException</span><span class="o">(</span><span class="s">&quot;不支持高版本EXCEL文件,请转换成2003版本的EXCEL再上传&quot;</span><span class="o">,</span><span class="n">OAException</span><span class="o">.</span><span class="na">WARNING</span><span class="o">);</span>
-</span><span class='line'>      <span class="o">}</span><span class="k">else</span> <span class="k">if</span><span class="o">(!</span><span class="n">fileName</span><span class="o">.</span><span class="na">endsWith</span><span class="o">(</span><span class="s">&quot;.xls&quot;</span><span class="o">))</span>
-</span><span class='line'>      <span class="o">{</span>
-</span><span class='line'>                <span class="k">throw</span> <span class="k">new</span> <span class="nf">OAException</span><span class="o">(</span><span class="s">&quot;请上传EXCEL类型文件&quot;</span><span class="o">,</span><span class="n">OAException</span><span class="o">.</span><span class="na">ERROR</span><span class="o">);</span>
-</span><span class='line'>      <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="n">BlobDomain</span> <span class="n">uploadedByteStream</span> <span class="o">=</span> <span class="o">(</span><span class="n">BlobDomain</span><span class="o">)</span><span class="n">fileUploadData</span><span class="o">.</span><span class="na">selectValue</span><span class="o">(</span><span class="kc">null</span><span class="o">,</span> <span class="n">fileName</span><span class="o">);</span>
-</span><span class='line'>      <span class="n">Serializable</span> <span class="n">aserializable2</span><span class="o">[]</span> <span class="o">=</span> <span class="o">{</span><span class="n">uploadedByteStream</span><span class="o">};</span>
-</span><span class='line'>      <span class="n">Class</span> <span class="n">aclass2</span><span class="o">[]</span> <span class="o">=</span> <span class="o">{</span><span class="n">BlobDomain</span><span class="o">.</span><span class="na">class</span> <span class="o">};</span>
-</span><span class='line'>      <span class="n">am</span><span class="o">.</span><span class="na">invokeMethod</span><span class="o">(</span><span class="s">&quot;importFile&quot;</span><span class="o">,</span> <span class="n">aserializable2</span><span class="o">,</span><span class="n">aclass2</span><span class="o">);</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">package</span> <span class="n">cn</span><span class="o">.</span><span class="na">dengdezhao</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">oracle.adf.model.RegionContext</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">oracle.adf.model.RegionController</span><span class="o">;</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">myController</span> <span class="kd">implements</span> <span class="n">RegionController</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="nf">myController</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="kd">super</span><span class="o">();</span>
 </span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>    <span class="nd">@Override</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">refreshRegion</span><span class="o">(</span><span class="n">RegionContext</span> <span class="n">regionContext</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="c1">// TODO Implement this method</span>
+</span><span class='line'>        <span class="kt">int</span> <span class="n">flag</span><span class="o">=</span><span class="n">regionContext</span><span class="o">.</span><span class="na">getRefreshFlag</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;refreshRegion...&quot;</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="nd">@Override</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">validateRegion</span><span class="o">(</span><span class="n">RegionContext</span> <span class="n">regionContext</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="c1">// TODO Implement this method</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="nd">@Override</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isRegionViewable</span><span class="o">(</span><span class="n">RegionContext</span> <span class="n">regionContext</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="c1">// TODO Implement this method</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="nd">@Override</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getName</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="c1">// TODO Implement this method</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<h4>在AM中编写importFile方法</h4>
+<ul>
+<li>配置页面碎片pagedef页</li>
+</ul>
+
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;</span>
+</span><span class='line'><span class="nt">&lt;pageDefinition</span> <span class="na">xmlns=</span><span class="s">&quot;http://xmlns.oracle.com/adfm/uimodel&quot;</span> <span class="na">version=</span><span class="s">&quot;12.1.2.66.68&quot;</span> <span class="na">id=</span><span class="s">&quot;iteratorInputPageDef&quot;</span>
+</span><span class='line'>                <span class="na">ControllerClass=</span><span class="s">&quot;cn.dengdezhao.myController&quot;</span>
+</span><span class='line'>                <span class="na">Package=</span><span class="s">&quot;cn.dengdezhao.pageDefs&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;parameters/&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;executables&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;variableIterator</span> <span class="na">id=</span><span class="s">&quot;variables&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/executables&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;bindings/&gt;</span>
+</span><span class='line'><span class="nt">&lt;/pageDefinition&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>结论</strong></p>
+
+<p>通过重写regionController类可以实现在页面碎片加载前调用POPUP提示等之类的需求。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013-09-23/kong-jian-af-iteratoryi-ji-af-foreachde-dui-bi/">控件af:iterator以及af:forEach的对比</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-23T18:13:00+08:00" pubdate data-updated="true">Sep 23<span>rd</span>, 2013</time>
+        
+         | <a href="/blog/2013-09-23/kong-jian-af-iteratoryi-ji-af-foreachde-dui-bi/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
+<li><p>平台:Jdeveloper 12c</p></li>
+<li><p>需求：对Collection类型遍历。MB中定义两个List，如何利用iterator&amp;foreach控件将List内容显示到页面。</p></li>
+</ul>
+
+
+<p><strong>页面如下</strong></p>
+
+<p>分别绑定iterBean中的两个集合类型变量，将其中的值取出来。</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;</span><span class="nl">af:</span><span class="n">iterator</span> <span class="n">id</span><span class="o">=</span><span class="s">&quot;i1&quot;</span> <span class="n">var</span><span class="o">=</span><span class="s">&quot;each&quot;</span> <span class="n">value</span><span class="o">=</span><span class="s">&quot;#{iterBean.list}&quot;</span> <span class="n">varStatus</span><span class="o">=</span><span class="s">&quot;row&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="nl">af:</span><span class="n">panelBox</span> <span class="n">text</span><span class="o">=</span><span class="s">&quot;#{each}&quot;</span> <span class="n">id</span><span class="o">=</span><span class="s">&quot;pb1&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>        <span class="o">&lt;</span><span class="nl">f:</span><span class="n">facet</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;toolbar&quot;</span><span class="o">/&gt;</span>
+</span><span class='line'>        <span class="o">&lt;</span><span class="nl">af:</span><span class="n">inputText</span> <span class="n">label</span><span class="o">=</span><span class="s">&quot;Values&quot;</span> <span class="n">id</span><span class="o">=</span><span class="s">&quot;it1&quot;</span> <span class="n">value</span><span class="o">=</span><span class="s">&quot;#{iterBean.values[row.index]}&quot;</span><span class="o">/&gt;</span>
+</span><span class='line'>    <span class="o">&lt;/</span><span class="nl">af:</span><span class="n">panelBox</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nl">af:</span><span class="n">iterator</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="nl">af:</span><span class="n">forEach</span> <span class="n">items</span><span class="o">=</span><span class="s">&quot;#{iterBean.testList}&quot;</span>  <span class="n">var</span><span class="o">=</span><span class="s">&quot;each&quot;</span> <span class="n">varStatus</span><span class="o">=</span><span class="s">&quot;row&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="nl">af:</span><span class="n">panelBox</span> <span class="n">text</span><span class="o">=</span><span class="s">&quot;#{each.title}&quot;</span> <span class="n">id</span><span class="o">=</span><span class="s">&quot;pb2&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="o">&lt;</span><span class="nl">af:</span><span class="n">outputText</span> <span class="n">value</span><span class="o">=</span><span class="s">&quot;#{row.index} #{each.title}&quot;</span> <span class="n">id</span><span class="o">=</span><span class="s">&quot;ot1&quot;</span><span class="o">/&gt;</span>
+</span><span class='line'>    <span class="o">&lt;/</span><span class="nl">af:</span><span class="n">panelBox</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="nl">af:</span><span class="n">forEach</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>BackingBean内容如下：</strong></p>
 
 <figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -769,106 +687,353 @@ $APPL_TOP/admin/[SID]<em>[host].xml
 <span class='line-number'>58</span>
 <span class='line-number'>59</span>
 <span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-<span class='line-number'>70</span>
-<span class='line-number'>71</span>
-<span class='line-number'>72</span>
-<span class='line-number'>73</span>
-<span class='line-number'>74</span>
-<span class='line-number'>75</span>
-<span class='line-number'>76</span>
-<span class='line-number'>77</span>
-<span class='line-number'>78</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'>  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">importFile</span><span class="o">(</span><span class="n">BlobDomain</span> <span class="n">fileData</span><span class="o">)</span>
-</span><span class='line'>  <span class="o">{</span>
-</span><span class='line'>  <span class="n">InputStream</span> <span class="n">inStr</span> <span class="o">=</span> <span class="n">fileData</span><span class="o">.</span><span class="na">getInputStream</span><span class="o">();</span>
-</span><span class='line'>    <span class="n">HSSFWorkbook</span> <span class="n">workbook</span><span class="o">=</span><span class="kc">null</span><span class="o">;</span>
-</span><span class='line'>    <span class="k">try</span><span class="o">{</span>
-</span><span class='line'>     <span class="n">workbook</span><span class="o">=</span> <span class="k">new</span> <span class="n">HSSFWorkbook</span><span class="o">(</span><span class="n">inStr</span><span class="o">);</span>
-</span><span class='line'>    <span class="o">}</span><span class="k">catch</span><span class="o">(</span><span class="n">java</span><span class="o">.</span><span class="na">io</span><span class="o">.</span><span class="na">IOException</span> <span class="n">e</span><span class="o">)</span>
-</span><span class='line'>    <span class="o">{</span>
-</span><span class='line'>      <span class="k">throw</span> <span class="k">new</span> <span class="nf">OAException</span><span class="o">(</span><span class="s">&quot;读取上传的文件出错,请检查上传的文件是否为97-2003版本的EXCEL可读文件.&quot;</span><span class="o">,</span><span class="n">OAException</span><span class="o">.</span><span class="na">ERROR</span><span class="o">);</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">package</span> <span class="n">cn</span><span class="o">.</span><span class="na">dengdezhao</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">java.util.ArrayList</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">IteratorBean</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">List</span> <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">();</span>
+</span><span class='line'>    <span class="n">String</span><span class="o">[]</span> <span class="n">values</span><span class="o">=</span><span class="k">new</span> <span class="n">String</span><span class="o">[]{</span><span class="s">&quot;1&quot;</span><span class="o">,</span><span class="s">&quot;2&quot;</span><span class="o">,</span><span class="s">&quot;3&quot;</span><span class="o">};</span>
+</span><span class='line'>    <span class="n">List</span><span class="o">&lt;</span><span class="n">contentList</span><span class="o">&gt;</span> <span class="n">testList</span><span class="o">=</span><span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">contentList</span><span class="o">&gt;();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setTestList</span><span class="o">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">contentList</span><span class="o">&gt;</span> <span class="n">testList</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;setTestList...&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">testList</span> <span class="o">=</span> <span class="n">testList</span><span class="o">;</span>
 </span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>    <span class="c1">//信号1</span>
-</span><span class='line'>    <span class="k">if</span><span class="o">(</span><span class="n">workbook</span><span class="o">==</span><span class="kc">null</span><span class="o">)</span>
-</span><span class='line'>    <span class="o">{</span>
-</span><span class='line'>      <span class="k">throw</span> <span class="k">new</span> <span class="nf">OAException</span><span class="o">(</span><span class="s">&quot;ERROR001:workbook为空,请重新上传文件.&quot;</span><span class="o">,</span><span class="n">OAException</span><span class="o">.</span><span class="na">ERROR</span><span class="o">);</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">contentList</span><span class="o">&gt;</span> <span class="nf">getTestList</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;getTestList...&quot;</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="n">testList</span><span class="o">;</span>
 </span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>    <span class="n">HSSFSheet</span> <span class="n">sheet1</span> <span class="o">=</span> <span class="n">workbook</span><span class="o">.</span><span class="na">getSheet</span><span class="o">(</span><span class="s">&quot;1&quot;</span><span class="o">);</span>
-</span><span class='line'>    <span class="k">if</span><span class="o">(</span><span class="n">sheet1</span><span class="o">==</span><span class="kc">null</span><span class="o">)</span>
-</span><span class='line'>    <span class="o">{</span>
-</span><span class='line'>      <span class="k">throw</span> <span class="k">new</span> <span class="nf">OAException</span><span class="o">(</span><span class="s">&quot;ERROR002:sheet1为空,上传文件中找不到名字为&#39;1&#39;的工作表,请检查工作表命名是否符合规则.&quot;</span><span class="o">,</span><span class="n">OAException</span><span class="o">.</span><span class="na">ERROR</span><span class="o">);</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setValues</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">values</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">values</span> <span class="o">=</span> <span class="n">values</span><span class="o">;</span>
 </span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>    <span class="kt">int</span> <span class="n">rowCount1</span> <span class="o">=</span> <span class="n">sheet1</span><span class="o">.</span><span class="na">getLastRowNum</span><span class="o">();</span>
-</span><span class='line'>    <span class="kt">int</span> <span class="n">realCount1</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="n">String</span><span class="o">[]</span> <span class="nf">getValues</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">values</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="nf">IteratorBean</span><span class="o">(){</span>
+</span><span class='line'>        <span class="n">list</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">&quot;A&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">list</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">&quot;B&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">list</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="s">&quot;C&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">contentList</span> <span class="n">a</span><span class="o">=</span><span class="k">new</span> <span class="n">contentList</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">a</span><span class="o">.</span><span class="na">setTitle</span><span class="o">(</span><span class="s">&quot;aaa&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">testList</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">a</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">contentList</span> <span class="n">b</span><span class="o">=</span><span class="k">new</span> <span class="n">contentList</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">b</span><span class="o">.</span><span class="na">setTitle</span><span class="o">(</span><span class="s">&quot;bbb&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">testList</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">b</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">contentList</span> <span class="n">c</span><span class="o">=</span><span class="k">new</span> <span class="n">contentList</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">c</span><span class="o">.</span><span class="na">setTitle</span><span class="o">(</span><span class="s">&quot;ccc&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">testList</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">c</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;init...&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setList</span><span class="o">(</span><span class="n">List</span> <span class="n">list</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;setList ...&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">list</span> <span class="o">=</span> <span class="n">list</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="n">List</span> <span class="nf">getList</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;getList...&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">list</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="n">Object</span><span class="o">[]</span> <span class="n">o_vin1</span><span class="o">=</span><span class="k">new</span> <span class="n">Object</span><span class="o">[</span><span class="n">rowCount1</span><span class="o">],</span>
-</span><span class='line'>    <span class="n">o_type1</span><span class="o">=</span><span class="k">new</span> <span class="n">Object</span><span class="o">[</span><span class="n">rowCount1</span><span class="o">],</span>
-</span><span class='line'>    <span class="n">o_color1</span><span class="o">=</span><span class="k">new</span> <span class="n">Object</span><span class="o">[</span><span class="n">rowCount1</span><span class="o">],</span>
-</span><span class='line'>    <span class="n">o_date1</span><span class="o">=</span><span class="k">new</span> <span class="n">Object</span><span class="o">[</span><span class="n">rowCount1</span><span class="o">],</span>
-</span><span class='line'>    <span class="n">o_des1</span><span class="o">=</span><span class="k">new</span> <span class="n">Object</span><span class="o">[</span><span class="n">rowCount1</span><span class="o">];</span>
-</span><span class='line'>    <span class="n">String</span> <span class="n">vin1</span><span class="o">=</span><span class="kc">null</span><span class="o">,</span><span class="n">type1</span><span class="o">=</span><span class="kc">null</span><span class="o">,</span><span class="n">color1</span><span class="o">=</span><span class="kc">null</span><span class="o">;</span>
-</span><span class='line'>    <span class="n">java</span><span class="o">.</span><span class="na">util</span><span class="o">.</span><span class="na">Date</span> <span class="n">vdate1</span><span class="o">=</span><span class="kc">null</span><span class="o">;</span>
-</span><span class='line'>    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">r1</span><span class="o">=</span><span class="mi">1</span><span class="o">;</span> <span class="n">r1</span> <span class="o">&lt;=</span> <span class="n">rowCount1</span><span class="o">;</span> <span class="n">r1</span><span class="o">++)</span>
-</span><span class='line'>    <span class="o">{</span>
-</span><span class='line'>      <span class="n">HSSFRow</span> <span class="n">tempRow1</span><span class="o">=</span><span class="n">sheet1</span><span class="o">.</span><span class="na">getRow</span><span class="o">(</span><span class="n">r1</span><span class="o">);</span>
-</span><span class='line'>      <span class="k">if</span><span class="o">(</span><span class="n">tempRow1</span><span class="o">==</span><span class="kc">null</span><span class="o">)</span>
-</span><span class='line'>      <span class="o">{</span>
-</span><span class='line'>        <span class="k">throw</span> <span class="k">new</span> <span class="nf">OAException</span><span class="o">(</span><span class="s">&quot;INFO:sheet[1]中第&quot;</span><span class="o">+(</span><span class="n">r1</span><span class="o">+</span><span class="mi">1</span><span class="o">)+</span><span class="s">&quot;行数据异常,请检查上传文件&quot;</span><span class="o">,</span><span class="n">OAException</span><span class="o">.</span><span class="na">INFORMATION</span><span class="o">);</span>
-</span><span class='line'>      <span class="o">}</span>
-</span><span class='line'>      <span class="k">if</span><span class="o">(</span><span class="n">tempRow1</span><span class="o">.</span><span class="na">getCell</span><span class="o">((</span><span class="kt">short</span><span class="o">)</span><span class="mi">0</span><span class="o">)==</span><span class="kc">null</span><span class="o">||</span><span class="n">tempRow1</span><span class="o">.</span><span class="na">getCell</span><span class="o">((</span><span class="kt">short</span><span class="o">)</span><span class="mi">0</span><span class="o">).</span><span class="na">getStringCellValue</span><span class="o">()==</span><span class="kc">null</span><span class="o">||</span><span class="s">&quot;&quot;</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">tempRow1</span><span class="o">.</span><span class="na">getCell</span><span class="o">((</span><span class="kt">short</span><span class="o">)</span><span class="mi">0</span><span class="o">).</span><span class="na">getStringCellValue</span><span class="o">().</span><span class="na">trim</span><span class="o">()))</span>
-</span><span class='line'>      <span class="o">{</span>
-</span><span class='line'>        <span class="k">throw</span> <span class="k">new</span> <span class="nf">OAException</span><span class="o">(</span><span class="s">&quot;INFO:sheet[1]中第&quot;</span><span class="o">+(</span><span class="n">r1</span><span class="o">+</span><span class="mi">1</span><span class="o">)+</span><span class="s">&quot;行第1列数据异常,请检查上传文件&quot;</span><span class="o">,</span><span class="n">OAException</span><span class="o">.</span><span class="na">INFORMATION</span><span class="o">);</span>
-</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">contentList</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">String</span> <span class="n">title</span><span class="o">;</span>
 </span><span class='line'>
-</span><span class='line'>      <span class="k">if</span><span class="o">(</span><span class="n">tempRow1</span><span class="o">.</span><span class="na">getCell</span><span class="o">((</span><span class="kt">short</span><span class="o">)</span><span class="mi">1</span><span class="o">)==</span><span class="kc">null</span><span class="o">||</span><span class="n">tempRow1</span><span class="o">.</span><span class="na">getCell</span><span class="o">((</span><span class="kt">short</span><span class="o">)</span><span class="mi">1</span><span class="o">).</span><span class="na">getStringCellValue</span><span class="o">()==</span><span class="kc">null</span><span class="o">)</span>
-</span><span class='line'>      <span class="o">{</span>
-</span><span class='line'>        <span class="k">throw</span> <span class="k">new</span> <span class="nf">OAException</span><span class="o">(</span><span class="s">&quot;INFO:sheet[1]中第&quot;</span><span class="o">+(</span><span class="n">r1</span><span class="o">+</span><span class="mi">1</span><span class="o">)+</span><span class="s">&quot;行第2列数据异常,请检查上传文件&quot;</span><span class="o">,</span><span class="n">OAException</span><span class="o">.</span><span class="na">INFORMATION</span><span class="o">);</span>
-</span><span class='line'>      <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="k">if</span><span class="o">(</span><span class="n">tempRow1</span><span class="o">.</span><span class="na">getCell</span><span class="o">((</span><span class="kt">short</span><span class="o">)</span><span class="mi">2</span><span class="o">)==</span><span class="kc">null</span><span class="o">||</span><span class="n">tempRow1</span><span class="o">.</span><span class="na">getCell</span><span class="o">((</span><span class="kt">short</span><span class="o">)</span><span class="mi">2</span><span class="o">).</span><span class="na">getStringCellValue</span><span class="o">()==</span><span class="kc">null</span><span class="o">)</span>
-</span><span class='line'>      <span class="o">{</span>
-</span><span class='line'>        <span class="k">throw</span> <span class="k">new</span> <span class="nf">OAException</span><span class="o">(</span><span class="s">&quot;INFO:sheet[1]中第&quot;</span><span class="o">+(</span><span class="n">r1</span><span class="o">+</span><span class="mi">1</span><span class="o">)+</span><span class="s">&quot;行第3列数据异常,请检查上传文件&quot;</span><span class="o">,</span><span class="n">OAException</span><span class="o">.</span><span class="na">INFORMATION</span><span class="o">);</span>
-</span><span class='line'>      <span class="o">}</span>
-</span><span class='line'>      <span class="k">if</span><span class="o">(</span><span class="n">tempRow1</span><span class="o">.</span><span class="na">getCell</span><span class="o">((</span><span class="kt">short</span><span class="o">)</span><span class="mi">3</span><span class="o">)==</span><span class="kc">null</span><span class="o">||</span><span class="n">tempRow1</span><span class="o">.</span><span class="na">getCell</span><span class="o">((</span><span class="kt">short</span><span class="o">)</span><span class="mi">3</span><span class="o">).</span><span class="na">getDateCellValue</span><span class="o">()==</span><span class="kc">null</span><span class="o">)</span>
-</span><span class='line'>      <span class="o">{</span>
-</span><span class='line'>        <span class="k">throw</span> <span class="k">new</span> <span class="nf">OAException</span><span class="o">(</span><span class="s">&quot;INFO:sheet[1]中第&quot;</span><span class="o">+(</span><span class="n">r1</span><span class="o">+</span><span class="mi">1</span><span class="o">)+</span><span class="s">&quot;行第4列数据异常,请检查上传文件&quot;</span><span class="o">,</span><span class="n">OAException</span><span class="o">.</span><span class="na">INFORMATION</span><span class="o">);</span>
-</span><span class='line'>      <span class="o">}</span>
-</span><span class='line'>      <span class="n">vin1</span><span class="o">=</span><span class="n">tempRow1</span><span class="o">.</span><span class="na">getCell</span><span class="o">((</span><span class="kt">short</span><span class="o">)</span><span class="mi">0</span><span class="o">).</span><span class="na">getStringCellValue</span><span class="o">().</span><span class="na">trim</span><span class="o">();</span>
-</span><span class='line'>      <span class="n">type1</span><span class="o">=</span><span class="n">tempRow1</span><span class="o">.</span><span class="na">getCell</span><span class="o">((</span><span class="kt">short</span><span class="o">)</span><span class="mi">1</span><span class="o">).</span><span class="na">getStringCellValue</span><span class="o">().</span><span class="na">trim</span><span class="o">();</span>
-</span><span class='line'>      <span class="n">color1</span><span class="o">=</span><span class="n">tempRow1</span><span class="o">.</span><span class="na">getCell</span><span class="o">((</span><span class="kt">short</span><span class="o">)</span><span class="mi">2</span><span class="o">).</span><span class="na">getStringCellValue</span><span class="o">().</span><span class="na">trim</span><span class="o">();</span>
-</span><span class='line'>      <span class="n">vdate1</span><span class="o">=</span><span class="n">tempRow1</span><span class="o">.</span><span class="na">getCell</span><span class="o">((</span><span class="kt">short</span><span class="o">)</span><span class="mi">3</span><span class="o">).</span><span class="na">getDateCellValue</span><span class="o">();</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="n">o_vin1</span><span class="o">[</span><span class="n">r1</span><span class="o">-</span><span class="mi">1</span><span class="o">]=</span><span class="n">vin1</span><span class="o">;</span>
-</span><span class='line'>      <span class="n">o_type1</span><span class="o">[</span><span class="n">r1</span><span class="o">-</span><span class="mi">1</span><span class="o">]=</span><span class="n">type1</span><span class="o">;</span>
-</span><span class='line'>      <span class="n">o_color1</span><span class="o">[</span><span class="n">r1</span><span class="o">-</span><span class="mi">1</span><span class="o">]=</span><span class="n">color1</span><span class="o">;</span>
-</span><span class='line'>      <span class="n">o_date1</span><span class="o">[</span><span class="n">r1</span><span class="o">-</span><span class="mi">1</span><span class="o">]=</span><span class="k">new</span> <span class="n">oracle</span><span class="o">.</span><span class="na">jbo</span><span class="o">.</span><span class="na">domain</span><span class="o">.</span><span class="na">Date</span><span class="o">(</span><span class="k">new</span> <span class="n">java</span><span class="o">.</span><span class="na">sql</span><span class="o">.</span><span class="na">Date</span><span class="o">(</span><span class="n">vdate1</span><span class="o">.</span><span class="na">getTime</span><span class="o">()));</span>
-</span><span class='line'>      <span class="n">o_des1</span><span class="o">[</span><span class="n">r1</span><span class="o">-</span><span class="mi">1</span><span class="o">]=</span><span class="kc">null</span><span class="o">;</span>
-</span><span class='line'>      <span class="n">realCount1</span><span class="o">++;</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setTitle</span><span class="o">(</span><span class="n">String</span> <span class="n">title</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">this</span><span class="o">.</span><span class="na">title</span> <span class="o">=</span> <span class="n">title</span><span class="o">;</span>
 </span><span class='line'>    <span class="o">}</span>
 </span><span class='line'>
-</span><span class='line'>    <span class="n">List</span> <span class="n">exceptions</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">();</span>
-</span><span class='line'>    <span class="n">exceptions</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">OAException</span><span class="o">(</span><span class="s">&quot;解析出上传EXCEL文件中信号1表&quot;</span><span class="o">+</span><span class="n">realCount1</span><span class="o">+</span><span class="s">&quot;条记录&quot;</span><span class="o">,</span><span class="n">OAException</span><span class="o">.</span><span class="na">INFORMATION</span> <span class="o">));</span>
-</span><span class='line'>    <span class="c1">//bulkinsert...</span>
-</span><span class='line'>    <span class="n">exceptions</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">OAException</span><span class="o">(</span><span class="s">&quot;开始插入信号1临时表&quot;</span><span class="o">,</span><span class="n">OAException</span><span class="o">.</span><span class="na">INFORMATION</span> <span class="o">));</span>
-</span><span class='line'>    <span class="n">String</span> <span class="n">result</span><span class="o">=</span><span class="k">this</span><span class="o">.</span><span class="na">bulkInsert1</span><span class="o">(</span><span class="n">o_vin1</span><span class="o">,</span><span class="n">o_type1</span><span class="o">,</span><span class="n">o_color1</span><span class="o">,</span><span class="n">o_date1</span><span class="o">,</span><span class="n">o_des1</span><span class="o">);</span>
-</span><span class='line'>    <span class="n">exceptions</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">OAException</span><span class="o">(</span><span class="s">&quot;结果:&quot;</span><span class="o">+</span><span class="n">result</span><span class="o">,</span><span class="n">OAException</span><span class="o">.</span><span class="na">INFORMATION</span> <span class="o">));</span>
-</span><span class='line'>    <span class="n">exceptions</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">OAException</span><span class="o">(</span><span class="s">&quot;结束插入信号1临时表&quot;</span><span class="o">,</span><span class="n">OAException</span><span class="o">.</span><span class="na">INFORMATION</span> <span class="o">));</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getTitle</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">title</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
 </span><span class='line'>
-</span><span class='line'>  <span class="n">OAException</span><span class="o">.</span><span class="na">raiseBundledOAException</span><span class="o">(</span><span class="n">exceptions</span><span class="o">);</span>
 </span><span class='line'><span class="o">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<h4>OAF调用bulk insert插入大批量数据</h4>
+<p><strong>测试结果</strong></p>
+
+<p>&lt;af:iterator>只调用了一次get方法；
+&lt;af:forEach>却调用了9次get方法（根据容器中数量递增）；</p>
+
+<p><strong>结论</strong></p>
+
+<p>&lt;af:iterator>跟&lt;af:forEach>控件都可以对容器类型遍历，只不过iterator是一次性取出容器内容，而forEach是多次取出。两控件都支持下标定位。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013-09-04/ru-he-huo-qu-web-dot-xmlzhong-de-context-paramcan-shu/">如何获取web.xml中的context-param参数</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-04T19:30:00+08:00" pubdate data-updated="true">Sep 4<span>th</span>, 2013</time>
+        
+         | <a href="/blog/2013-09-04/ru-he-huo-qu-web-dot-xmlzhong-de-context-paramcan-shu/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><strong>通过EL表达试获取</strong></p>
+
+<p>以web.xml中的<context-param>参数：javax.faces.FACELETS_VIEW_MAPPINGS为例,
+可通过以下EL获取。</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'>
+</span><span class='line'><span class="n">$</span><span class="o">{</span><span class="n">initParam</span><span class="o">[</span><span class="err">&#39;</span><span class="n">javax</span><span class="o">.</span><span class="na">faces</span><span class="o">.</span><span class="na">FACELETS_VIEW_MAPPINGS</span><span class="err">&#39;</span><span class="o">]}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果参数名称很简单，比如：testParameter，EL表达式也可以写成以下方式：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'>
+</span><span class='line'><span class="n">$</span><span class="o">{</span><span class="n">initParam</span><span class="o">.</span><span class="na">testParameter</span><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>通过JAVA代码获取</strong></p>
+
+<p>如果需要在MB方法中获取该参数值，可以参照以下代码：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="n">String</span> <span class="nf">action</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">FacesContext</span> <span class="n">fctx</span><span class="o">=</span><span class="n">FacesContext</span><span class="o">.</span><span class="na">getCurrentInstance</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">ExternalContext</span> <span class="n">ec</span><span class="o">=</span><span class="n">fctx</span><span class="o">.</span><span class="na">getExternalContext</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">ServletContext</span> <span class="n">servletContext</span><span class="o">=(</span><span class="n">ServletContext</span><span class="o">)</span><span class="n">ec</span><span class="o">.</span><span class="na">getContext</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">String</span> <span class="n">value</span><span class="o">=</span><span class="n">servletContext</span><span class="o">.</span><span class="na">getInitParameter</span><span class="o">(</span><span class="s">&quot;javax.faces.FACELETS_VIEW_MAPPINGS&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">value</span><span class="o">);</span>
+</span><span class='line'>        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013-06-25/centosxia-an-zhuang-mysql5-dot-6hou-wang-ji-rootmi-ma-%2Czhong-zhi-mi-ma/">Centos下安装mysql5.6后忘记ROOT密码，重置密码</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-25T16:01:00+08:00" pubdate data-updated="true">Jun 25<span>th</span>, 2013</time>
+        
+         | <a href="/blog/2013-06-25/centosxia-an-zhuang-mysql5-dot-6hou-wang-ji-rootmi-ma-%2Czhong-zhi-mi-ma/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><strong>安装</strong></p>
+
+<p>去<a href="https://edelivery.oracle.com/EPD/Search/handle_go">oracle官网</a>下载mysql5.6 for linux安装介质V38444-01.zip。  <br/>
+解压缩之后</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">MySQL</span><span class="o">-</span><span class="n">client</span><span class="o">-</span><span class="n">advanced</span><span class="o">-</span><span class="mf">5.6</span><span class="o">.</span><span class="mi">12</span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="na">el6</span><span class="o">.</span><span class="na">i686</span><span class="o">.</span><span class="na">rpm</span>
+</span><span class='line'><span class="n">MySQL</span><span class="o">-</span><span class="n">devel</span><span class="o">-</span><span class="n">advanced</span><span class="o">-</span><span class="mf">5.6</span><span class="o">.</span><span class="mi">12</span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="na">el6</span><span class="o">.</span><span class="na">i686</span><span class="o">.</span><span class="na">rpm</span>
+</span><span class='line'><span class="n">MySQL</span><span class="o">-</span><span class="n">embedded</span><span class="o">-</span><span class="n">advanced</span><span class="o">-</span><span class="mf">5.6</span><span class="o">.</span><span class="mi">12</span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="na">el6</span><span class="o">.</span><span class="na">i686</span><span class="o">.</span><span class="na">rpm</span>
+</span><span class='line'><span class="n">MySQL</span><span class="o">-</span><span class="n">server</span><span class="o">-</span><span class="n">advanced</span><span class="o">-</span><span class="mf">5.6</span><span class="o">.</span><span class="mi">12</span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="na">el6</span><span class="o">.</span><span class="na">i686</span><span class="o">.</span><span class="na">rpm</span>
+</span><span class='line'><span class="n">MySQL</span><span class="o">-</span><span class="n">shared</span><span class="o">-</span><span class="n">advanced</span><span class="o">-</span><span class="mf">5.6</span><span class="o">.</span><span class="mi">12</span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="na">el6</span><span class="o">.</span><span class="na">i686</span><span class="o">.</span><span class="na">rpm</span>
+</span><span class='line'><span class="n">MySQL</span><span class="o">-</span><span class="n">shared</span><span class="o">-</span><span class="n">compat</span><span class="o">-</span><span class="n">advanced</span><span class="o">-</span><span class="mf">5.6</span><span class="o">.</span><span class="mi">12</span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="na">el6</span><span class="o">.</span><span class="na">i686</span><span class="o">.</span><span class="na">rpm</span>
+</span><span class='line'><span class="n">MySQL</span><span class="o">-</span><span class="n">test</span><span class="o">-</span><span class="n">advanced</span><span class="o">-</span><span class="mf">5.6</span><span class="o">.</span><span class="mi">12</span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="na">el6</span><span class="o">.</span><span class="na">i686</span><span class="o">.</span><span class="na">rpm</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>开始安装</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">rpm</span> <span class="o">-</span><span class="n">ivh</span> <span class="n">MySQL</span><span class="o">-*</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Mysql5.6的安全机制加强了，默认安装时会随机给ROOT用户生成一个密码保存在安装用户目录下/root/.mysql_secret中。由于没认真看英文文档，我直接安装完就把这个文件里的随机密码给改掉了，就无法得知ROOT初始密码，也无法登录进数据库了，囧。</p>
+
+<p><strong>重置Mysql初始密码</strong></p>
+
+<p>用ROOT用户登录，STOP数据库</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">init</span><span class="o">.</span><span class="na">d</span><span class="o">/</span><span class="n">mysql</span> <span class="n">stop</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>跳过授权表启动Mysql服务器</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">mysqld_safe</span> <span class="o">--</span><span class="n">skip</span><span class="o">-</span><span class="n">grant</span><span class="o">-</span><span class="n">tables</span><span class="o">&amp;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>输入CTRL+C中断进程后应该可以看到mysqld已经在运行了</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">mysql</span> <span class="o">--</span><span class="n">user</span><span class="o">=</span><span class="n">root</span> <span class="n">mysql</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">update</span> <span class="n">user</span> <span class="n">set</span> <span class="n">Password</span><span class="o">=</span><span class="n">PASSWORD</span><span class="o">(</span><span class="err">&#39;</span><span class="k">new</span><span class="o">-</span><span class="n">password</span><span class="err">&#39;</span><span class="o">);</span>
+</span><span class='line'><span class="n">flush</span> <span class="n">privileges</span><span class="o">;</span>
+</span><span class='line'><span class="n">exit</span><span class="o">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>操作完以上变更密码的命令后，可以重启mysqld了。</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">killall</span> <span class="n">mysqld_safe</span><span class="o">&amp;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>按CTRL+C退出，接着正常启动mysql</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">init</span><span class="o">.</span><span class="na">d</span><span class="o">/</span><span class="n">mysql</span> <span class="n">start</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>用刚刚修改的新密码登录mysql即可</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">mysql</span> <span class="o">-</span><span class="n">uroot</span> <span class="o">-</span><span class="n">p</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013-06-24/oafdan-xuan-shan-chu-xing-gong-neng/">OAF单选删除行功能</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-24T11:15:00+08:00" pubdate data-updated="true">Jun 24<span>th</span>, 2013</time>
+        
+         | <a href="/blog/2013-06-24/oafdan-xuan-shan-chu-xing-gong-neng/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><hr />
+
+<p>平台：Jdeveloper 9i</p>
+
+<hr />
+
+<p><strong>一般实现步骤：</strong></p>
+
+<ol>
+<li>在VO中添加新transient属性selector，updatable设置为always。</li>
+<li>在PG中给table添加singleSelection方法，并绑定view Instance为VO的instance，View Attribute为刚刚新建的transient属性seletor。</li>
+<li>这样当用户勾选checkbox时，会给transient属性变量赋值为Y，因此，在删除逻辑中循环判断VO中的transient属性，当其为Y时执行remove该行即可实现选择删除功能。  <br/>
+<strong>相关代码如下：</strong></li>
+</ol>
+
+
+<p><strong>CO中processFormRequest里添加代码如下：</strong></p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'> <span class="c1">//当单击deleteBtn按钮时执行AM中的deleteAutoSequenceVO方法    </span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">pageContext</span><span class="o">.</span><span class="na">getParameter</span><span class="o">(</span><span class="s">&quot;deleteBtn&quot;</span><span class="o">)!=</span><span class="kc">null</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">{</span>
+</span><span class='line'>      <span class="n">am</span><span class="o">.</span><span class="na">invokeMethod</span><span class="o">(</span><span class="s">&quot;deleteAutoSequenceVO&quot;</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>AM中代码如下：</strong></p>
 
 <figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -888,76 +1053,155 @@ $APPL_TOP/admin/[SID]<em>[host].xml
 <span class='line-number'>16</span>
 <span class='line-number'>17</span>
 <span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'> <span class="kd">public</span> <span class="n">String</span> <span class="nf">bulkInsert1</span><span class="o">(</span><span class="n">Object</span><span class="o">[]</span> <span class="n">vin</span><span class="o">,</span><span class="n">Object</span><span class="o">[]</span> <span class="n">type</span><span class="o">,</span><span class="n">Object</span><span class="o">[]</span> <span class="n">color</span><span class="o">,</span><span class="n">Object</span><span class="o">[]</span> <span class="n">vdate</span><span class="o">,</span> <span class="n">Object</span><span class="o">[]</span> <span class="n">des</span><span class="o">)</span>
-</span><span class='line'>    <span class="o">{</span>
-</span><span class='line'>        <span class="n">CallableStatement</span> <span class="n">st</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
-</span><span class='line'>        <span class="n">String</span> <span class="n">result</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="o">;</span>
-</span><span class='line'>        <span class="n">String</span> <span class="n">stmt</span> <span class="o">=</span> <span class="s">&quot;{ call ch_report_pkg.INSERTREPORT1(?,?,?,?,?,?) }&quot;</span><span class="o">;</span>
-</span><span class='line'>        <span class="k">try</span> <span class="o">{</span>
-</span><span class='line'>            <span class="n">st</span><span class="o">=</span><span class="k">this</span><span class="o">.</span><span class="na">getDBTransaction</span><span class="o">().</span><span class="na">createCallableStatement</span><span class="o">(</span><span class="n">stmt</span><span class="o">,</span><span class="mi">0</span><span class="o">);</span>
-</span><span class='line'>            <span class="n">ArrayDescriptor</span> <span class="n">T_VARCHAR30</span><span class="o">=</span><span class="kc">null</span><span class="o">,</span>
-</span><span class='line'>             <span class="n">T_VARCHAR10</span><span class="o">=</span><span class="kc">null</span><span class="o">,</span>
-</span><span class='line'>             <span class="n">T_VARCHAR200</span><span class="o">=</span><span class="kc">null</span><span class="o">,</span>
-</span><span class='line'>             <span class="n">T_DATE</span><span class="o">=</span><span class="kc">null</span><span class="o">;</span>
-</span><span class='line'>            <span class="n">ARRAY</span> <span class="n">a_vin</span><span class="o">=</span><span class="kc">null</span><span class="o">,</span><span class="n">a_type</span><span class="o">=</span><span class="kc">null</span><span class="o">,</span><span class="n">a_color</span><span class="o">=</span><span class="kc">null</span><span class="o">,</span><span class="n">a_vdate</span><span class="o">=</span><span class="kc">null</span><span class="o">,</span><span class="n">a_des</span><span class="o">=</span><span class="kc">null</span><span class="o">;</span>
-</span><span class='line'>            <span class="n">T_VARCHAR30</span><span class="o">=</span><span class="n">oracle</span><span class="o">.</span><span class="na">sql</span><span class="o">.</span><span class="na">ArrayDescriptor</span><span class="o">.</span><span class="na">createDescriptor</span><span class="o">(</span><span class="s">&quot;T_VARCHAR30&quot;</span><span class="o">,</span><span class="n">st</span><span class="o">.</span><span class="na">getConnection</span><span class="o">());</span>
-</span><span class='line'>            <span class="n">T_VARCHAR10</span><span class="o">=</span><span class="n">oracle</span><span class="o">.</span><span class="na">sql</span><span class="o">.</span><span class="na">ArrayDescriptor</span><span class="o">.</span><span class="na">createDescriptor</span><span class="o">(</span><span class="s">&quot;T_VARCHAR10&quot;</span><span class="o">,</span><span class="n">st</span><span class="o">.</span><span class="na">getConnection</span><span class="o">());</span>
-</span><span class='line'>            <span class="n">T_VARCHAR200</span><span class="o">=</span><span class="n">oracle</span><span class="o">.</span><span class="na">sql</span><span class="o">.</span><span class="na">ArrayDescriptor</span><span class="o">.</span><span class="na">createDescriptor</span><span class="o">(</span><span class="s">&quot;T_VARCHAR200&quot;</span><span class="o">,</span><span class="n">st</span><span class="o">.</span><span class="na">getConnection</span><span class="o">());</span>
-</span><span class='line'>            <span class="n">T_DATE</span><span class="o">=</span><span class="n">oracle</span><span class="o">.</span><span class="na">sql</span><span class="o">.</span><span class="na">ArrayDescriptor</span><span class="o">.</span><span class="na">createDescriptor</span><span class="o">(</span><span class="s">&quot;T_DATE&quot;</span><span class="o">,</span><span class="n">st</span><span class="o">.</span><span class="na">getConnection</span><span class="o">());</span>
-</span><span class='line'>            <span class="n">a_vin</span><span class="o">=</span><span class="k">new</span> <span class="n">ARRAY</span><span class="o">(</span><span class="n">T_VARCHAR30</span><span class="o">,</span><span class="n">st</span><span class="o">.</span><span class="na">getConnection</span><span class="o">(),</span><span class="n">vin</span><span class="o">);</span>
-</span><span class='line'>            <span class="n">a_type</span><span class="o">=</span><span class="k">new</span> <span class="n">ARRAY</span><span class="o">(</span><span class="n">T_VARCHAR30</span><span class="o">,</span><span class="n">st</span><span class="o">.</span><span class="na">getConnection</span><span class="o">(),</span><span class="n">type</span><span class="o">);</span>
-</span><span class='line'>            <span class="n">a_color</span><span class="o">=</span><span class="k">new</span> <span class="n">ARRAY</span><span class="o">(</span><span class="n">T_VARCHAR10</span><span class="o">,</span><span class="n">st</span><span class="o">.</span><span class="na">getConnection</span><span class="o">(),</span><span class="n">color</span><span class="o">);</span>
-</span><span class='line'>            <span class="n">a_vdate</span><span class="o">=</span><span class="k">new</span> <span class="n">ARRAY</span><span class="o">(</span><span class="n">T_DATE</span><span class="o">,</span><span class="n">st</span><span class="o">.</span><span class="na">getConnection</span><span class="o">(),</span><span class="n">vdate</span><span class="o">);</span>
-</span><span class='line'>            <span class="n">a_des</span><span class="o">=</span><span class="k">new</span> <span class="n">ARRAY</span><span class="o">(</span><span class="n">T_VARCHAR200</span><span class="o">,</span><span class="n">st</span><span class="o">.</span><span class="na">getConnection</span><span class="o">(),</span><span class="n">des</span><span class="o">);</span>
-</span><span class='line'>            <span class="n">st</span><span class="o">.</span><span class="na">setArray</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="n">a_vin</span><span class="o">);</span>
-</span><span class='line'>            <span class="n">st</span><span class="o">.</span><span class="na">setArray</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span><span class="n">a_type</span><span class="o">);</span>
-</span><span class='line'>            <span class="n">st</span><span class="o">.</span><span class="na">setArray</span><span class="o">(</span><span class="mi">3</span><span class="o">,</span><span class="n">a_color</span><span class="o">);</span>
-</span><span class='line'>            <span class="n">st</span><span class="o">.</span><span class="na">setArray</span><span class="o">(</span><span class="mi">4</span><span class="o">,</span><span class="n">a_vdate</span><span class="o">);</span>
-</span><span class='line'>            <span class="n">st</span><span class="o">.</span><span class="na">setArray</span><span class="o">(</span><span class="mi">5</span><span class="o">,</span><span class="n">a_des</span><span class="o">);</span>
-</span><span class='line'>            <span class="n">st</span><span class="o">.</span><span class="na">registerOutParameter</span><span class="o">(</span><span class="mi">6</span><span class="o">,</span> <span class="n">OracleTypes</span><span class="o">.</span><span class="na">VARCHAR</span><span class="o">);</span>
-</span><span class='line'>            <span class="n">st</span><span class="o">.</span><span class="na">execute</span><span class="o">();</span>
-</span><span class='line'>            <span class="n">result</span><span class="o">=</span><span class="n">st</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="mi">6</span><span class="o">);</span>
-</span><span class='line'>            <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
-</span><span class='line'>        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>            <span class="k">throw</span> <span class="k">new</span> <span class="nf">JboException</span><span class="o">(</span><span class="n">e</span><span class="o">);</span>
-</span><span class='line'>        <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
-</span><span class='line'>            <span class="k">if</span> <span class="o">(</span><span class="n">st</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>                <span class="k">try</span> <span class="o">{</span>
-</span><span class='line'>                    <span class="n">st</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
-</span><span class='line'>                <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">SQLException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>                    <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">deleteAutoSequenceVO</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">OAViewObject</span> <span class="n">vo</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">getChAutoSequenceVO1</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">RowSetIterator</span> <span class="n">iter</span> <span class="o">=</span> <span class="n">vo</span><span class="o">.</span><span class="na">createRowSetIterator</span><span class="o">(</span><span class="s">&quot;delete&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">vo</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="kt">int</span> <span class="n">num</span> <span class="o">=</span> <span class="n">vo</span><span class="o">.</span><span class="na">getRowCount</span><span class="o">();</span>
+</span><span class='line'>            <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class='line'>                <span class="n">Row</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">iter</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+</span><span class='line'>                <span class="k">if</span> <span class="o">(</span><span class="s">&quot;Y&quot;</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">temp</span><span class="o">.</span><span class="na">getAttribute</span><span class="o">(</span><span class="s">&quot;selector&quot;</span><span class="o">)))</span> <span class="o">{</span>
+</span><span class='line'>                    <span class="n">vo</span><span class="o">.</span><span class="na">setCurrentRow</span><span class="o">(</span><span class="n">temp</span><span class="o">);</span>
+</span><span class='line'>                    <span class="n">vo</span><span class="o">.</span><span class="na">removeCurrentRow</span><span class="o">();</span>
+</span><span class='line'>                    <span class="k">break</span><span class="o">;</span>
 </span><span class='line'>                <span class="o">}</span>
 </span><span class='line'>            <span class="o">}</span>
 </span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>        <span class="n">iter</span><span class="o">.</span><span class="na">closeRowSetIterator</span><span class="o">();</span>
+</span><span class='line'>        <span class="k">throw</span> <span class="k">new</span> <span class="nf">OAException</span><span class="o">(</span><span class="s">&quot;删除成功,请点击[保存]按钮生效到数据库.&quot;</span><span class="o">,</span>
+</span><span class='line'>                              <span class="n">OAException</span><span class="o">.</span><span class="na">INFORMATION</span><span class="o">);</span>
 </span><span class='line'>    <span class="o">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>将POI解析出来的数据，包装成Object对象作为参数传递给数据库ch_report_pkg包中的INSERTREPORT1方法，bulk insert到数据库，极大地提高了插入数据效率。</p>
+<p>但是在实际开发中，出现一个很诡异的现象，其它页面单选删除功能都正常，某一页面单选之后却无法赋值Y给VO中的transient变量，推测可能是VO用的是复合主键或者其它框架BUG导致，无奈给单选再添加手工赋值功能。</p>
+
+<p>选择单选控件，将其Client Action中的Action Type设置为firePartialAction Submit设置为false。准备在用户单选时调用自定义方法，给变量赋值。</p>
+
+<p><strong>CO中processFormRequest里添加如下方法</strong></p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="s">&quot;update&quot;</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">pageContext</span><span class="o">.</span><span class="na">getParameter</span><span class="o">(</span><span class="n">OAWebBeanConstants</span><span class="o">.</span><span class="na">EVENT_PARAM</span><span class="o">)))</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">String</span> <span class="n">rowRef</span> <span class="o">=</span>
+</span><span class='line'>                <span class="n">pageContext</span><span class="o">.</span><span class="na">getParameter</span><span class="o">(</span><span class="n">OAWebBeanConstants</span><span class="o">.</span><span class="na">EVENT_SOURCE_ROW_REFERENCE</span><span class="o">);</span>
+</span><span class='line'>            <span class="n">Row</span> <span class="n">currentRow</span> <span class="o">=</span> <span class="n">am</span><span class="o">.</span><span class="na">findRowByRef</span><span class="o">(</span><span class="n">rowRef</span><span class="o">);</span>
+</span><span class='line'>            <span class="n">currentRow</span><span class="o">.</span><span class="na">setAttribute</span><span class="o">(</span><span class="s">&quot;selector&quot;</span><span class="o">,</span> <span class="s">&quot;Y&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这样便实现了单选删除功能。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013-06-19/attribute-set-for-xxxattribute-in-view-object-xxxvo-failedwen-ti-jie-jue/">Attribute Set for xxxAttribute in View Object xxxVO Failed问题解决</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-19T15:50:00+08:00" pubdate data-updated="true">Jun 19<span>th</span>, 2013</time>
+        
+         | <a href="/blog/2013-06-19/attribute-set-for-xxxattribute-in-view-object-xxxvo-failedwen-ti-jie-jue/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><hr />
+
+<h2>平台：Jdeveloper 9i </h2>
+
+<p>异常描述：</p>
+
+<p>在表增加单选checkbox时，在VO中创建transient属性selector,最终在页面中无法勾选checkbox，发现值没法保存到VO中，页面抛出该异常：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'> 
+</span><span class='line'><span class="kc">null</span> <span class="o">-</span> <span class="n">Attribute</span> <span class="n">set</span> <span class="k">for</span> <span class="n">Selector</span> <span class="n">in</span> <span class="n">view</span> <span class="n">object</span> <span class="n">employeeVO1</span> <span class="n">failed</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>解决方案：</p>
+
+<ol>
+<li>检查VO中的transient属性selector是否设置为updatable</li>
+<li>如果是在开发模式下，清空所有classes文件，重新编译；如果是在正式环境，删除该路径下的VO对象，可使用以下命令。</li>
+</ol>
+
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">exec</span> <span class="n">jdr_utils</span><span class="o">.</span><span class="na">deletedocument</span><span class="o">(</span><span class="err">&#39;</span><span class="o">/</span><span class="n">oracle</span><span class="o">/</span><span class="n">apps</span><span class="o">/</span><span class="n">dengdezhao</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">server</span><span class="o">/</span><span class="n">employeeVO</span><span class="err">&#39;</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013-06-08/cong-backingbeanzhong-diao-yong-bu-dai-fragmentsde-taskflow/">从BackingBean中调用不带fragments的taskflow</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-08T16:11:00+08:00" pubdate data-updated="true">Jun 8<span>th</span>, 2013</time>
+        
+         | <a href="/blog/2013-06-08/cong-backingbeanzhong-diao-yong-bu-dai-fragmentsde-taskflow/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>有时候需要在backingBean中调用某一taskflow, 可以使用以下代码调用。不过只适用于可单独运行的taskflow，含有page fragments的taskflow不在此范围。</p>
+
+<p>代码如下：</p>
 
 <figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -975,469 +1219,22 @@ $APPL_TOP/admin/[SID]<em>[host].xml
 <span class='line-number'>14</span>
 <span class='line-number'>15</span>
 <span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">PROCEDURE</span> <span class="n">INSERTREPORT1</span><span class="p">(</span><span class="n">I_VIN</span>      <span class="k">IN</span> <span class="n">T_VARCHAR30</span><span class="p">,</span>
-</span><span class='line'>                          <span class="n">I_CAR_TYPE</span> <span class="k">IN</span> <span class="n">T_VARCHAR30</span><span class="p">,</span>
-</span><span class='line'>                          <span class="n">I_COLOR</span>    <span class="k">IN</span> <span class="n">T_VARCHAR10</span><span class="p">,</span>
-</span><span class='line'>                          <span class="n">I_VDATE</span>    <span class="k">IN</span> <span class="n">T_DATE</span><span class="p">,</span>
-</span><span class='line'>                          <span class="n">I_DES</span>      <span class="k">IN</span> <span class="n">T_VARCHAR200</span><span class="p">,</span>
-</span><span class='line'>                          <span class="n">MESSAGE</span>    <span class="k">OUT</span> <span class="n">VARCHAR2</span><span class="p">)</span> <span class="k">IS</span>
-</span><span class='line'>    <span class="n">I</span> <span class="nb">INTEGER</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">BEGIN</span>
-</span><span class='line'>    <span class="k">DELETE</span> <span class="k">FROM</span> <span class="n">CH_REPORT_1_TEMP</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">COMMIT</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">FORALL</span> <span class="n">I</span> <span class="k">IN</span> <span class="mi">1</span> <span class="p">..</span> <span class="n">I_VIN</span><span class="p">.</span><span class="k">COUNT</span>
-</span><span class='line'>      <span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">CH_REPORT_1_TEMP</span>
-</span><span class='line'>        <span class="p">(</span><span class="n">VIN</span><span class="p">,</span> <span class="n">CAR_TYPE</span><span class="p">,</span> <span class="n">COLOR</span><span class="p">,</span> <span class="n">VDATE</span><span class="p">,</span> <span class="n">DESCRIPTION</span><span class="p">)</span>
-</span><span class='line'>      <span class="k">VALUES</span>
-</span><span class='line'>        <span class="p">(</span><span class="n">I_VIN</span><span class="p">(</span><span class="n">I</span><span class="p">),</span> <span class="n">I_CAR_TYPE</span><span class="p">(</span><span class="n">I</span><span class="p">),</span> <span class="n">I_COLOR</span><span class="p">(</span><span class="n">I</span><span class="p">),</span> <span class="n">I_VDATE</span><span class="p">(</span><span class="n">I</span><span class="p">),</span> <span class="n">I_DES</span><span class="p">(</span><span class="n">I</span><span class="p">));</span>
-</span><span class='line'>    <span class="n">MESSAGE</span> <span class="p">:</span><span class="o">=</span> <span class="n">I_VIN</span><span class="p">.</span><span class="k">COUNT</span> <span class="o">||</span> <span class="s1">&#39;条数据正常插入!&#39;</span><span class="p">;</span>
-</span><span class='line'>    <span class="k">COMMIT</span><span class="p">;</span>
-</span><span class='line'>  <span class="n">EXCEPTION</span>
-</span><span class='line'>    <span class="k">WHEN</span> <span class="n">OTHERS</span> <span class="k">THEN</span>
-</span><span class='line'>      <span class="n">MESSAGE</span> <span class="p">:</span><span class="o">=</span> <span class="s1">&#39;出现异常，错误代码如下：&#39;</span> <span class="o">||</span> <span class="n">SQLERRM</span><span class="p">;</span>
-</span><span class='line'>      <span class="k">ROLLBACK</span><span class="p">;</span>
-</span><span class='line'>  <span class="k">END</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>此外，需要先根据表结构定义出字段类型如下：</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">create</span> <span class="k">or</span> <span class="k">replace</span> <span class="k">TYPE</span> <span class="n">T_VARCHAR30</span> <span class="k">IS</span> <span class="k">TABLE</span> <span class="k">OF</span> <span class="n">VARCHAR2</span><span class="p">(</span><span class="mi">30</span><span class="p">);</span>
-</span><span class='line'><span class="k">create</span> <span class="k">or</span> <span class="k">replace</span> <span class="k">TYPE</span> <span class="n">T_VARCHAR10</span> <span class="k">IS</span> <span class="k">TABLE</span> <span class="k">OF</span> <span class="n">VARCHAR2</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
-</span><span class='line'><span class="k">create</span> <span class="k">or</span> <span class="k">replace</span> <span class="k">TYPE</span> <span class="n">T_VARCHAR200</span> <span class="k">IS</span> <span class="k">TABLE</span> <span class="k">OF</span> <span class="n">VARCHAR2</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
-</span><span class='line'><span class="k">create</span> <span class="k">or</span> <span class="k">replace</span> <span class="k">TYPE</span> <span class="n">T_DATE</span> <span class="k">IS</span> <span class="k">TABLE</span> <span class="k">OF</span> <span class="nb">DATE</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>那么数据就顺利批量插入到临时表中了。</p>
-
-<h4>数据去除重复</h4>
-
-<p>需要根据插入数据的主键VIN判断是否跟数据库中存在的数据重复，  <br/>
-在程序中对比的话效率很低，所以采用在数据库中通过语句  <br/>
-<code>select count(vin) from (table union temp_table) group by vin</code>  <br/>
-来判断，count数量大于1表示有重复。</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013-04-04/jdeveloperyun-xing-su-du-you-hua/">Jdeveloper运行速度优化</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-04-04T17:41:00+08:00" pubdate data-updated="true">Apr 4<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013-04-04/jdeveloperyun-xing-su-du-you-hua/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h4><em>本文适合木有高配机却不得不在JDEV下开发的屌丝程序员</em></h4>
-
-<h4>先来了解下Jdev的两个配置文件</h4>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nl">E:</span><span class="err">\</span><span class="n">Oracle</span><span class="err">\</span><span class="n">Middleware11</span><span class="o">.</span><span class="mf">1.2</span><span class="o">.</span><span class="mf">3.0</span><span class="err">\</span><span class="n">jdeveloper</span><span class="err">\</span><span class="n">ide</span><span class="err">\</span><span class="n">bin</span><span class="err">\</span><span class="n">ide</span><span class="o">.</span><span class="na">conf</span>
-</span><span class='line'><span class="nl">E:</span><span class="err">\</span><span class="n">Oracle</span><span class="err">\</span><span class="n">Middleware11</span><span class="o">.</span><span class="mf">1.2</span><span class="o">.</span><span class="mf">3.0</span><span class="err">\</span><span class="n">jdeveloper</span><span class="err">\</span><span class="n">jdev</span><span class="err">\</span><span class="n">bin</span><span class="err">\</span><span class="n">jdev</span><span class="o">.</span><span class="na">conf</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>几个关键参数：</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">AddVMOption</span>  <span class="o">-</span><span class="n">Xmx</span>        <span class="c1">//堆大小的最大值，在机器物理内存允许的基础上该值越大越好</span>
-</span><span class='line'><span class="n">AddVMOption</span>  <span class="o">-</span><span class="n">Xms</span>        <span class="c1">//堆大小的初始值（默认给个128差不多）</span>
-</span><span class='line'><span class="n">AddVMOption</span>  <span class="o">-</span><span class="nl">XX:</span><span class="n">MaxPermSize</span> <span class="c1">//PermGen大小，太小会报OutOfMemoryError错误  </span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>这几个参数设置得不合适的话JDEV会无法启动并报以下错误：</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">Unable</span> <span class="n">to</span> <span class="n">create</span> <span class="n">an</span> <span class="n">instance</span> <span class="n">of</span> <span class="n">the</span> <span class="n">Java</span> <span class="n">Virtual</span> <span class="n">Machine</span> <span class="n">Located</span> <span class="n">at</span> <span class="nl">path:</span>
-</span><span class='line'><span class="nl">E:</span><span class="err">\</span><span class="n">Oracle</span><span class="err">\</span><span class="n">Middleware11</span><span class="o">.</span><span class="mf">1.2</span><span class="o">.</span><span class="mf">3.0</span><span class="err">\</span><span class="n">jdk160_24</span><span class="err">\</span><span class="n">jre</span><span class="err">\</span><span class="n">bin</span><span class="err">\</span><span class="n">client</span><span class="err">\</span><span class="n">jvm</span><span class="o">.</span><span class="na">dll</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>好了~，我们现在需要做的就是将这几个参数的值设置得适合它的大小，以便JDEV运行得到最佳性能</p>
-
-<p>因为我的机器是32位系统WIN2003 6G内存，系统吃掉2G左右，可用内存不到4G
-而32位的JDK最大好像也只能申请1.5G左右,所以在我这机器中Jdev能分配到1G内存就差不多了</p>
-
-<p>先随意设置以上三个参数值，将JDEV能够运行起来，然后使用JDK自带的工具来监控下内存情况
-E:\Oracle\Middleware11.1.2.3.0\jdk160_24\bin\jvisualvm.exe
-<img src="http://www.dengdezhao.cn/wp-content/uploads/20130404.jpg" alt="" /></p>
-
-<p>根据图中<strong>堆</strong>及<strong>PermGen</strong>中显示使用大小调整三个参数值。
-发现在不断操作JDev时PermGen始终维持在128左右不到256的样子，
-所以设置  <br/>
--XX:MaxPermSize值为<code>AddVMOption  -XX:MaxPermSize=256M</code>  <br/>
--Xms值为<code>AddVMOption  -Xms128M</code>  <br/>
-通过不断测试最终调整-Xmx值为<code>AddVMOption  -Xmx896M</code></p>
-
-<p>若在运行中出现OutOfMemoryError错误再根据信息慢慢调整。当然最好还是升级机器配置换成64位的系统及JDK就没有内存限制啦！~</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013-03-20/javamailfa-song-you-jian-zhong-wen-luan-ma/">JavaMail发送邮件中文乱码</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-03-20T16:21:00+08:00" pubdate data-updated="true">Mar 20<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013-03-20/javamailfa-song-you-jian-zhong-wen-luan-ma/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>使用JavaMail发送邮件时，邮件主题以及发件人中有中文字符时出现乱码</p>
-
-<p>邮件正文正常。</p>
-
-<p>尝试对中文字符串进行转码：</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'>    <span class="kd">public</span> <span class="n">String</span> <span class="nf">encode</span><span class="o">(</span><span class="n">String</span> <span class="n">str</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">sun</span><span class="o">.</span><span class="na">misc</span><span class="o">.</span><span class="na">BASE64Encoder</span> <span class="n">enc</span> <span class="o">=</span> <span class="k">new</span> <span class="n">sun</span><span class="o">.</span><span class="na">misc</span><span class="o">.</span><span class="na">BASE64Encoder</span><span class="o">();</span>
-</span><span class='line'>        <span class="k">try</span> <span class="o">{</span>
-</span><span class='line'>            <span class="k">return</span> <span class="s">&quot;=?UTF-8?B?&quot;</span> <span class="o">+</span> <span class="n">enc</span><span class="o">.</span><span class="na">encode</span><span class="o">(</span><span class="n">str</span><span class="o">.</span><span class="na">getBytes</span><span class="o">(</span><span class="s">&quot;UTF-8&quot;</span><span class="o">))</span> <span class="o">+</span> <span class="s">&quot;?=&quot;</span><span class="o">;</span>
-</span><span class='line'>        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">UnsupportedEncodingException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>            <span class="k">return</span> <span class="s">&quot;UnsupportedEncodingException&quot;</span><span class="o">;</span>
-</span><span class='line'>        <span class="o">}</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'>    <span class="kd">public</span> <span class="n">String</span> <span class="nf">callTaskFlow</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">FacesContext</span> <span class="n">fctx</span> <span class="o">=</span> <span class="n">FacesContext</span><span class="o">.</span><span class="na">getCurrentInstance</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">ControllerContext</span> <span class="n">cc</span> <span class="o">=</span> <span class="n">ControllerContext</span><span class="o">.</span><span class="na">getInstance</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">String</span> <span class="n">taskflowId</span> <span class="o">=</span> <span class="s">&quot;btf_task&quot;</span><span class="o">;</span>
+</span><span class='line'>        <span class="n">String</span> <span class="n">taskflowDocument</span> <span class="o">=</span> <span class="s">&quot;/WEB-INF/btf_task.xml&quot;</span><span class="o">;</span>
+</span><span class='line'>        <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="n">params</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Object</span><span class="o">&gt;();</span>
+</span><span class='line'>        <span class="n">TaskFlowId</span> <span class="n">tid</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TaskFlowId</span><span class="o">(</span><span class="n">taskflowDocument</span><span class="o">,</span> <span class="n">taskflowId</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">String</span> <span class="n">taskflowURL</span> <span class="o">=</span> <span class="n">cc</span><span class="o">.</span><span class="na">getTaskFlowURL</span><span class="o">(</span><span class="kc">false</span><span class="o">,</span> <span class="n">tid</span><span class="o">,</span> <span class="n">params</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">ExtendedRenderKitService</span> <span class="n">erks</span> <span class="o">=</span>
+</span><span class='line'>            <span class="n">Service</span><span class="o">.</span><span class="na">getRenderKitService</span><span class="o">(</span><span class="n">fctx</span><span class="o">,</span> <span class="n">ExtendedRenderKitService</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">StringBuilder</span> <span class="n">sb</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuilder</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">&quot;window.open(\&quot;&quot;</span> <span class="o">+</span> <span class="n">taskflowURL</span> <span class="o">+</span>
+</span><span class='line'>                  <span class="s">&quot;\&quot;&quot;</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="s">&quot;,\&quot;_self\&quot;);&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">erks</span><span class="o">.</span><span class="na">addScript</span><span class="o">(</span><span class="n">FacesContext</span><span class="o">.</span><span class="na">getCurrentInstance</span><span class="o">(),</span> <span class="n">sb</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
+</span><span class='line'>        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
 </span><span class='line'>    <span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>测试发送之后返回<code>邮件主题</code>内容仍然是乱码</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">=?</span><span class="n">UTF</span><span class="o">-</span><span class="mi">8</span><span class="o">?</span><span class="n">B</span><span class="o">?</span><span class="n">WzIwMTMtMDMtMTld5pyq5qOA5pyq5Lqk5pWw5o2uLOaAu</span><span class="o">+</span><span class="n">ijhei9pumXtOaVhemanOi9puWBnOi9</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>通过返回字符串<code>=?UTF-8?B?</code>得知已经转码成功，但为啥邮件主题仍然乱码？百思不得其解。然后突然发现之前另外一个邮件发送功能调用相同的代码显示是正常的，推测乱码可能跟主题字符串的内容有关。</p>
-
-<p>经过反复测试，终于找到乱码原因，结果令人大跌眼镜~！</p>
-
-<p><strong>原来这个版本的JavaMail对邮件主题有长度限制，超过大约15个中文字符就会显示乱码！</strong></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013-03-19/qian-yi-wordpressbo-ke-zhi-octopress/">迁移WordPress博客至Octopress</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-03-19T22:32:00+08:00" pubdate data-updated="true">Mar 19<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013-03-19/qian-yi-wordpressbo-ke-zhi-octopress/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h4>安装GIT</h4>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">yum</span> <span class="o">-</span><span class="n">y</span> <span class="n">install</span> <span class="n">git</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>安装RVM需要的包</h4>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">sudo</span> <span class="n">yum</span> <span class="n">install</span> <span class="n">bash</span> <span class="n">curl</span> <span class="n">patch</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>安装RVM</h4>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">curl</span> <span class="o">-</span><span class="n">L</span> <span class="nl">https:</span><span class="c1">//get.rvm.io | bash -s stable --ruby</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>安装Ruby需要的包</h4>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">sudo</span> <span class="n">yum</span> <span class="n">install</span> <span class="n">gcc</span><span class="o">-</span><span class="n">c</span><span class="o">++</span> <span class="n">patch</span> <span class="n">readline</span> <span class="n">readline</span><span class="o">-</span><span class="n">devel</span> <span class="n">zlib</span> <span class="n">zlib</span><span class="o">-</span><span class="n">devel</span> <span class="n">libyaml</span><span class="o">-</span><span class="n">devel</span> <span class="n">libffi</span><span class="o">-</span><span class="n">devel</span> <span class="n">openssl</span><span class="o">-</span><span class="n">devel</span> <span class="n">make</span> <span class="n">bzip2</span> <span class="n">autoconf</span> <span class="n">automake</span> <span class="n">libtool</span> <span class="n">bison</span> <span class="n">iconv</span><span class="o">-</span><span class="n">devel</span> <span class="n">java</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>安装Ruby 1.9.3</h4>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">rvm</span> <span class="n">install</span> <span class="mf">1.9</span><span class="o">.</span><span class="mi">3</span>
-</span><span class='line'><span class="n">rvm</span> <span class="n">use</span> <span class="mf">1.9</span><span class="o">.</span><span class="mi">3</span>
-</span><span class='line'><span class="n">rvm</span> <span class="n">rubygems</span> <span class="n">latest</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>下载octopress</h4>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">git</span> <span class="n">clone</span> <span class="nl">git:</span><span class="c1">//github.com/imathis/octopress.git dengdezhao</span>
-</span><span class='line'><span class="n">cd</span> <span class="n">dengdezhao</span>
-</span><span class='line'><span class="n">ruby</span> <span class="o">--</span><span class="n">version</span>   <span class="o">*</span><span class="err">#应该显示</span><span class="mf">1.9</span><span class="o">.</span><span class="mi">3</span><span class="o">*</span>
-</span><span class='line'><span class="n">gem</span> <span class="n">install</span> <span class="n">bundler</span>
-</span><span class='line'><span class="n">bundle</span> <span class="n">install</span>
-</span><span class='line'><span class="n">rake</span> <span class="n">install</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>出现Warning:Insecure world writable dir</h4>
-
-<p>这个一般是由于权限的问题，我出现这个问题是因为是用ROOT安装的RVM，然后用其它用户访问，为了方便我直接把/usr/local目录权限设置为777，然后就弹出这个警告了，/usr/local目录很重要，不允许非owner访问，所以设置为755即可解决该问题。</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">sudo</span> <span class="n">chmod</span> <span class="o">-</span><span class="n">R</span> <span class="mi">755</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>将Wordpress数据导出为XML文件</h4>
-
-<p>进入Wordpress后台，将全站数据保存为XML文件，放在Octopress根目录下</p>
-
-<h4>下载迁移工具</h4>
-
-<p>https://gist.github.com/chitsaou/1394128  <br/>
-下载<strong>wordpressdotcom.rb</strong>放到Utils目录中，执行命令</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">ruby</span> <span class="o">-</span><span class="n">r</span> <span class="s">&quot;./utils/wordpressdotcom.rb&quot;</span> <span class="o">-</span><span class="n">e</span> <span class="s">&quot;Jekyll::WordpressDotCom.process&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>运行出错，需要安装hpricot</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">gem</span> <span class="n">install</span> <span class="n">hpricot</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>安装成功之后再执行上面的迁移命令，即可把wordpress中的文章导入到octopress的source/_posts中了</p>
-
-<h4>修改文章图片链接</h4>
-
-<p>迁移过来的文章中图片链接可能不大对，需要修改才能让图片显示正常，把原来wp-contents目录下uploads文件夹拷到相应路径下，替换掉文件中的静态地址为图片地址即可避免点击图片时出现404错误。</p>
-
-<h4>修改页面名字及新增[标签云]&amp;[关于]页面</h4>
-
-<p>修改navigation.html</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">vi</span> <span class="n">source</span><span class="o">/</span><span class="n">_includes</span><span class="o">/</span><span class="n">custom</span><span class="o">/</span><span class="n">navigation</span><span class="o">.</span><span class="na">html</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>给各页面修改个性化名字，并新增两个页面</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="n">ul</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;main-navigation&quot;</span><span class="o">&gt;</span>
-</span><span class='line'>  <span class="o">&lt;</span><span class="n">li</span><span class="o">&gt;&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;/&quot;</span><span class="o">&gt;</span><span class="err">博客主页</span><span class="o">&lt;</span><span class="sr">/a&gt;&lt;/</span><span class="n">li</span><span class="o">&gt;</span>
-</span><span class='line'>  <span class="o">&lt;</span><span class="n">li</span><span class="o">&gt;&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;/blog/archives&quot;</span><span class="o">&gt;</span><span class="err">文章列表</span><span class="o">&lt;</span><span class="sr">/a&gt;&lt;/</span><span class="n">li</span><span class="o">&gt;</span>
-</span><span class='line'>  <span class="o">&lt;</span><span class="n">li</span><span class="o">&gt;&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;/tag&quot;</span><span class="o">&gt;</span><span class="err">标签云</span><span class="o">&lt;</span><span class="sr">/a&gt;&lt;/</span><span class="n">li</span><span class="o">&gt;</span>
-</span><span class='line'>  <span class="o">&lt;</span><span class="n">li</span><span class="o">&gt;&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;/about&quot;</span><span class="o">&gt;</span><span class="err">关于</span><span class="o">&lt;</span><span class="sr">/a&gt;&lt;/</span><span class="n">li</span><span class="o">&gt;</span>
-</span><span class='line'><span class="o">&lt;</span><span class="sr">/ul&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>创建tag&amp;about页</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">rake</span> <span class="n">new_page</span><span class="o">[</span><span class="n">tag</span><span class="o">]</span>
-</span><span class='line'><span class="n">rake</span> <span class="n">new_page</span><span class="o">[</span><span class="n">about</span><span class="o">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>编辑页面内容，并下载配置标签云插件</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">git</span> <span class="nb">clone</span> <span class="ss">https</span><span class="p">:</span><span class="sr">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">robbyedwards</span><span class="o">/</span><span class="n">octopress</span><span class="o">-</span><span class="n">tag</span><span class="o">-</span><span class="n">pages</span><span class="o">.</span><span class="n">git</span>
-</span><span class='line'><span class="n">git</span> <span class="nb">clone</span> <span class="ss">https</span><span class="p">:</span><span class="sr">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">robbyedwards</span><span class="o">/</span><span class="n">octopress</span><span class="o">-</span><span class="n">tag</span><span class="o">-</span><span class="n">cloud</span><span class="o">.</span><span class="n">git</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>将下载的文件拷贝至相应目录，并在_config.yml中增加一行  <code>tag_dir: tags</code></p>
-
-<h4>生成静态页面及预览</h4>
-
-<p>以上操作完成之后，执行<code>rake generate</code>命令生成静态页面，然后<code>rake preview</code>，在浏览器中输入http://localhost:4000即可预览站点。</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013-03-19/use-javascript-in-oaf/">Use Javascript in Oaf</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-03-19T22:27:00+08:00" pubdate data-updated="true">Mar 19<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013-03-19/use-javascript-in-oaf/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>Use Javascript in OAF</h2>
-
-<h4>使用Js脚本库</h4>
-
-<p>在CO的<em>processRequest</em>中引入JS库<br/>
-编写JS库:Calendar2013.js</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">pageContext</span><span class="o">.</span><span class="na">putJavaScriptLibrary</span><span class="o">(</span><span class="s">&quot;Calendar&quot;</span><span class="o">,</span><span class="s">&quot;Calendar2013.js&quot;</span><span class="o">);</span>
-</span><span class='line'><span class="o">((</span><span class="n">OAMessageTextInputBean</span><span class="o">)</span><span class="n">webBean</span>
-</span><span class='line'><span class="o">.</span><span class="na">findChildRecursive</span><span class="o">(</span><span class="s">&quot;inputDate&quot;</span><span class="o">))</span>
-</span><span class='line'><span class="o">.</span><span class="na">setOnClick</span><span class="o">(</span><span class="s">&quot;setday(this)&quot;</span><span class="o">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>需要把Calendar2013.js放置在$<strong>COMMON_TOP</strong>/html下。</p>
-
-<h4>直接引用javaScript</h4>
-
-<p>编写<em>JavaScript</em>:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">String</span> <span class="n">javaScript</span><span class="o">=</span><span class="s">&quot;JAVASCRIPT:function setday(){...}&quot;</span><span class="o">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>在<strong>CO</strong>的<em>processRequest</em>中加载<em>javascript</em></p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">pageContext</span><span class="o">.</span><span class="na">putJavaScriptFunction</span><span class="o">(</span><span class="s">&quot;sayday()&quot;</span><span class="o">,</span><span class="n">javaScript</span><span class="o">);</span>
-</span><span class='line'><span class="o">((</span><span class="n">OAMessageTextInputBean</span><span class="o">)</span><span class="n">webBean</span><span class="o">.</span><span class="na">findChildRecursive</span><span class="o">(</span><span class="s">&quot;inputDate&quot;</span><span class="o">))</span>
-</span><span class='line'>    <span class="o">.</span><span class="na">setOnClick</span><span class="o">(</span><span class="s">&quot;javascript:setday()&quot;</span><span class="o">);</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -1460,18 +1257,25 @@ E:\Oracle\Middleware11.1.2.3.0\jdk160_24\bin\jvisualvm.exe
 <aside class="sidebar">
   
     <section>
+
+  <ul>
+  <li><a href="https://me.alipay.com/dengdezhao"><img src="../../../wp-content/uploads/donate.jpg"/></a></li>
+  </ul>
+</section>
+<section>
   <h1>分类目录</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/adf/'>ADF (21)</a></li>
+    <li class='category'><a href='/blog/categories/adf/'>ADF (33)</a></li>
 <li class='category'><a href='/blog/categories/ebs/'>EBS (2)</a></li>
-<li class='category'><a href='/blog/categories/oaf/'>OAF (6)</a></li>
-<li class='category'><a href='/blog/categories/oracle/'>Oracle (7)</a></li>
-<li class='category'><a href='/blog/categories/soa/'>SOA (2)</a></li>
+<li class='category'><a href='/blog/categories/oaf/'>OAF (8)</a></li>
+<li class='category'><a href='/blog/categories/oracle/'>Oracle (8)</a></li>
+<li class='category'><a href='/blog/categories/soa/'>SOA (3)</a></li>
 <li class='category'><a href='/blog/categories/sinaappengine/'>SinaAppEngine (1)</a></li>
 <li class='category'><a href='/blog/categories/forms/'>forms (1)</a></li>
 <li class='category'><a href='/blog/categories/java/'>java (2)</a></li>
 <li class='category'><a href='/blog/categories/jdeveloper/'>jdeveloper (1)</a></li>
 <li class='category'><a href='/blog/categories/linux/'>linux (2)</a></li>
+<li class='category'><a href='/blog/categories/mysql/'>mysql (1)</a></li>
 <li class='category'><a href='/blog/categories/octopress/'>octopress (1)</a></li>
 <li class='category'><a href='/blog/categories/others/'>others (1)</a></li>
 <li class='category'><a href='/blog/categories/weblogic/'>weblogic (1)</a></li>
@@ -1484,23 +1288,23 @@ E:\Oracle\Middleware11.1.2.3.0\jdk160_24\bin\jvisualvm.exe
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2013-04-24/adflei-si-xin-tiao-cheng-xu-shi-xian/">ADF类似心跳程序实现</a>
+        <a href="/blog/2014-04-18/an-zhuang-rcu1-dot-7yu-dao-de-xiao-wen-ti/">安装RCU1.7遇到的小问题</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2013-04-19/adfxue-xi-zong-jie-%5B%3F%5D/">ADF学习总结(一)</a>
+        <a href="/blog/2014-02-07/%E5%AE%9A%E5%88%B6EL/">定制EL function</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2013-04-18/oafzhong-chuang-jian-lov/">OAF中创建LOV</a>
+        <a href="/blog/2013-11-09/you-yi-wai-duan-dian-dao-zhi-oracle11gqi-dong-bu-qi-lai-de-wen-ti-jie-jue/">由意外断电导致oracle11g启动不起来的问题解决</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2013-04-17/pei-zhi-oafkai-fa-huan-jing/">配置OAF开发环境</a>
+        <a href="/blog/2013-09-23/ru-he-zai-ye-mian-sui-pian-jia-zai-qian-diao-yong-luo-ji/">如何在页面碎片加载前调用逻辑</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2013-04-16/getrowatrangeindex-int-fang-fa-de-ju-xian-xing/">getRowAtRangeIndex(int)方法的局限性</a>
+        <a href="/blog/2013-09-23/kong-jian-af-iteratoryi-ji-af-foreachde-dui-bi/">控件af:iterator以及af:forEach的对比</a>
       </li>
     
   </ul>
@@ -1512,9 +1316,12 @@ E:\Oracle\Middleware11.1.2.3.0\jdk160_24\bin\jvisualvm.exe
 <section>
   <h1>友情链接</h1>
   <ul>
-  	<li><a href="http://www.liqifa.cn">[小分号]</a></li>
+  	<li><a href="http://www.liqifa.com">[小分号]</a></li>
  	<li><a href="http://www.fmw007.com">[梦想左岸]</a></li>
  	<li><a href="http://ericchan.cn">[小骚骚的技术博客]</a></li>
+ 	<li><a href="http://oraclefmw.blog.163.com/">[追梦]</a></li>
+ 	<li><a href="http://blog.csdn.net/ygj26">[小尹妹纸]</a></li>
+ 	<li><a href="http://oracleseeker.com/">[OracleSeeker，Oracle探索者]</a></li>
   </ul>
 </section>
 
@@ -1541,12 +1348,17 @@ src="http://widget.weibo.com/weiboshow/index.php?width=0&height=550&ptype=1&spee
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2013 - pierreorz -
+  Copyright &copy; 2014 - pierreorz -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 <a rel="license" href="http://creativecommons.org/licenses/by/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/88x31.png" /></a>
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F2c50098a945120bddaa5f082c4e56cea' type='text/javascript'%3E%3C/script%3E"));
+</script>
 <a title="Web Analytics" href="http://clicky.com/100592601">.</a>
 <script src="//static.getclicky.com/js" type="text/javascript"></script>
 <script type="text/javascript">try{ clicky.init(100592601); }catch(e){}</script>
+
 </p>
 
 </footer>

@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: forms | 邓德昭的技术博客]]></title>
-  <link href="http://dengdezhao.cn/blog/categories/forms/atom.xml" rel="self"/>
-  <link href="http://dengdezhao.cn/"/>
-  <updated>2013-05-09T15:25:51+08:00</updated>
-  <id>http://dengdezhao.cn/</id>
+  <link href="http://www.dengdezhao.cn/blog/categories/forms/atom.xml" rel="self"/>
+  <link href="http://www.dengdezhao.cn/"/>
+  <updated>2014-05-09T23:06:22+08:00</updated>
+  <id>http://www.dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[通过代码设置ITEM属性变黄]]></title>
-    <link href="http://dengdezhao.cn/blog/2012-07-06/%E9%80%9A%E8%BF%87%E4%BB%A3%E7%A0%81%E8%AE%BE%E7%BD%AEitem%E5%B1%9E%E6%80%A7%E5%8F%98%E9%BB%84/"/>
+    <link href="http://www.dengdezhao.cn/blog/2012-07-06/%E9%80%9A%E8%BF%87%E4%BB%A3%E7%A0%81%E8%AE%BE%E7%BD%AEitem%E5%B1%9E%E6%80%A7%E5%8F%98%E9%BB%84/"/>
     <updated>2012-07-06T00:00:00+08:00</updated>
-    <id>http://dengdezhao.cn/blog/2012-07-06/通过代码设置item属性变黄</id>
+    <id>http://www.dengdezhao.cn/blog/2012-07-06/通过代码设置item属性变黄</id>
     <content type="html"><![CDATA[<p>需求：需要设置ITEM背景变黄，类似required时的效果；</p>
 
 
