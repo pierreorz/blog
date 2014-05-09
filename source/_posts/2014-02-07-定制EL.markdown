@@ -1,0 +1,110 @@
+---
+layout: post
+title: "定制EL function"
+date: 2014-02-07 19:24
+comments: true
+categories: ADF
+tags: 
+- EL function
+- taglib
+- ADF
+---
+
+- 平台: Jdeveloper 12c
+
+- 有时需要对字符串进行一些后再显示出来，可以写一个简单的taglib来实现，以下Demo是处理一个以冒号分隔的字符串，返回其中的第三个值。比如输入“aaa:bbb:ccc:ddd"，输出"ccc"。
+
+####实现方法####
+
+创建一个空的java Project：Taglib
+
+- 创建Java类：SplitString.java    
+
+{% codeblock lang:java %}
+
+package cn.dengdezhao.taglib;
+
+public class SplitString {
+
+    public static String getString(String string) {
+        String[] strings = string.split(":", 3);
+        if (strings.length > 2) {
+            return strings[2];
+        } else {
+            return "";
+        }
+    }
+
+}
+
+{% endcodeblock %}
+
+- 创建taglib描述文件splitString.tld    
+  
+New -> From Gallery -> Web Tier -> JSP -> JSP Tag Library
+
+类型为Deployable 文件内容如下：
+
+{% codeblock lang:xml %}
+
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<taglib xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
+        version="2.1" xmlns="http://java.sun.com/xml/ns/javaee">
+  <description>split String</description>
+  <display-name>splitString</display-name>
+  <tlib-version>1.0</tlib-version>
+  <short-name>splitString</short-name>
+  <uri>http://www.dengdezhao.cn/string</uri>
+  <function>
+    <display-name>getString</display-name>
+    <name>getString</name>
+    <function-class>cn.dengdezhao.taglib.SplitString</function-class>
+    <function-signature>java.lang.String getString(java.lang.String)</function-signature>
+  </function>
+</taglib>
+
+{% endcodeblock %}
+ 
+- 将该工程发布为jar包。即完成taglib的开发工作。
+
+####在工程中应用该taglib####
+
+- 创建测试工程ViewController
+
+右键工程属性 -> JSP Tag Libraries -> Add
+
+将之前发布的Jar包添加进来。
+
+- 创建测试页面testTaglib.jspx
+
+内容如下 ：
+
+{% codeblock lang:jsp %}
+
+<?xml version='1.0' encoding='UTF-8'?>
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" version="2.1" xmlns:f="http://java.sun.com/jsf/core" xmlns:myTag="http://www.dengdezhao.cn/string" 
+          xmlns:af="http://xmlns.oracle.com/adf/faces/rich">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <f:view>
+        <af:document title="testTaglib.jspx" id="d1">
+            <af:form id="f1">
+            <af:outputText id="ot1" value="#{myTag:getString('aaa:ddd:ccc')}"/>
+            </af:form>
+        </af:document>
+    </f:view>
+</jsp:root>
+
+{% endcodeblock %}
+
+
+
+
+
+
+
+
+
+
+
+
