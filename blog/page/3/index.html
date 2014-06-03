@@ -9,16 +9,8 @@
   <meta name="author" content="pierreorz">
 
   
-  <meta name="description" content="导出VO中的数据到EXCEL中时，循环VO中的Row，写入HSSFRow，是通过getRowAtRangeIndex(int)方法循环取Row，代码如下： 1
-2
-3
-4
-5
-6
-7
-8
-9
-10 ViewObject vo8=am.findViewObject(&quot; &hellip;">
+  <meta name="description" content="查看EBS系统OA版本信息 方法一：使用OPERATIONS用户登陆EBS系统，选择“Diagnostics”后，在页下脚选择“About this Page”后选择“Technology Components”标签可查看相应版本信息。 方法二：访问URI：R12不可用 1
+http://&lt; &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -76,6 +68,101 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013-04-17/pei-zhi-oafkai-fa-huan-jing/">配置OAF开发环境</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-17T15:01:00+08:00" pubdate data-updated="true">Apr 17<span>th</span>, 2013</time>
+        
+         | <a href="/blog/2013-04-17/pei-zhi-oafkai-fa-huan-jing/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4>查看EBS系统OA版本信息</h4>
+
+<p>方法一：使用OPERATIONS用户登陆EBS系统，选择“Diagnostics”后，在页下脚选择“About this Page”后选择“Technology Components”标签可查看相应版本信息。</p>
+
+<p>方法二：访问URI：<em>R12不可用</em></p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nl">http:</span><span class="c1">//&lt;HOST&gt;:&lt;PORT&gt;/OA_HTML/OAInfo.jsp    </span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>查看OAF版本下载相应JDEV开发工具</h4>
+
+<p>metalink document id: 787209.1 &amp; 416708.1</p>
+
+<p>例如：p4141787_11i_GENERIC.zip</p>
+
+<p>解压缩后把“/jdevhome/jdev”路径加到系统变量中，变量名：      JDEV_USER_HOME=F:\p4141787_11i_GENERIC\jdevhome\jdev</p>
+
+<h4>配置DBC文件</h4>
+
+<p>确认当前EBS系统使用的dbc文件.</p>
+
+<p>连接EBS数据库，执行以下SQL查询：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="n">host_name</span><span class="o">||</span><span class="s1">&#39;_&#39;</span><span class="o">||</span><span class="n">instance_name</span> <span class="k">from</span> <span class="n">v</span><span class="err">$</span><span class="n">instance</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>telnet到EBS系统，查找dbc文件的的位置并拷贝下来放在jdevhome\jdev\dbc_files\secure目录下:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">ls</span> <span class="err">–</span><span class="n">a</span><span class="o">|</span><span class="n">$FND_SECURE</span><span class="o">/*.</span><span class="na">dbc</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>检验DBC文件是否EBS系统正在使用的DBC可用以下命令：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">java</span> <span class="n">oracle</span><span class="o">.</span><span class="na">apps</span><span class="o">.</span><span class="na">fnd</span><span class="o">.</span><span class="na">security</span><span class="o">.</span><span class="na">AdminAppServer</span> <span class="n">apps</span><span class="o">/</span><span class="n">apps</span> <span class="n">STATUS</span> <span class="n">DBC</span><span class="o">=/</span><span class="n">u01</span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">devappl</span><span class="o">/</span><span class="n">fnd</span><span class="o">/</span><span class="mf">11.5</span><span class="o">.</span><span class="mi">0</span><span class="o">/</span><span class="n">secure</span><span class="o">/</span><span class="n">SIT</span><span class="o">.</span><span class="na">dbc</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>确认系统是否使用这个dbc文件可以在路径
+$APPL_TOP/admin/[SID]<em>[host].xml
+查找</em>dbc_file_name，跟上面说的dbc文件一致即可</p>
+
+<h4>配置JDEV工程属性</h4>
+
+<p>以上准备工作都完成之后，配置JDEV的Preferences中编码为UTF-8  <br/>
+<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130417144216.jpg" alt="" /></p>
+
+<p>配置project setting中编译器编码  <br/>
+<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130417144309.jpg" alt="" /></p>
+
+<p>然后配置DBC文件路径，测试EBS账户名及密码，所属职责等信息如下图所示：  <br/>
+<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130417144424.jpg" alt="" /></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1424,46 +1511,6 @@ $cp .bash_profile .app</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013-01-12/%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85ebs-r12%E6%97%B6%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AFrw-50004-%E8%A7%A3%E5%86%B3/">虚拟机安装EBS R12时出现错误RW-50004 解决</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-12T00:00:00+08:00" pubdate data-updated="true">Jan 12<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013-01-12/%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%AE%89%E8%A3%85ebs-r12%E6%97%B6%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AFrw-50004-%E8%A7%A3%E5%86%B3/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>一般出现这个错误多半应该是库文件导致的，查看日志得知是 需要的 unzip 版本过高，RHEL上安装的是6.0的，而R12.1.1.1只支持unzip 5.X 的，很坑爹，yum erase unzip 然后重新安装unzip 5.X rpm即可解决~~</p>
-
-<p>&nbsp;</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -1481,7 +1528,7 @@ $cp .bash_profile .app</p>
   <ul id="categories">
     <li class='category'><a href='/blog/categories/adf/'>ADF (33)</a></li>
 <li class='category'><a href='/blog/categories/ebs/'>EBS (2)</a></li>
-<li class='category'><a href='/blog/categories/oaf/'>OAF (8)</a></li>
+<li class='category'><a href='/blog/categories/oaf/'>OAF (9)</a></li>
 <li class='category'><a href='/blog/categories/oracle/'>Oracle (8)</a></li>
 <li class='category'><a href='/blog/categories/soa/'>SOA (3)</a></li>
 <li class='category'><a href='/blog/categories/sinaappengine/'>SinaAppEngine (1)</a></li>
@@ -1502,6 +1549,10 @@ $cp .bash_profile .app</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014-06-03/oafge-xing-hua-buttonhuo-qu-ye-mian-can-shu/">OAF个性化Button获取页面参数</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014-04-18/an-zhuang-rcu1-dot-7yu-dao-de-xiao-wen-ti/">安装RCU1.7遇到的小问题</a>
       </li>
     
@@ -1515,10 +1566,6 @@ $cp .bash_profile .app</p>
     
       <li class="post">
         <a href="/blog/2013-09-23/ru-he-zai-ye-mian-sui-pian-jia-zai-qian-diao-yong-luo-ji/">如何在页面碎片加载前调用逻辑</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013-09-23/kong-jian-af-iteratoryi-ji-af-foreachde-dui-bi/">控件af:iterator以及af:forEach的对比</a>
       </li>
     
   </ul>

@@ -9,8 +9,22 @@
   <meta name="author" content="pierreorz">
 
   
-  <meta name="description" content="平台：Jdeveloper 11.1.1.7.0 BUG描述 如上图所示，“页”字前后出现三个问号。 原因分析 查看LOG文件 1
-&lt;RenderingContext&gt; &lt;getTranslatedString&gt; 无法从外观 mySkin.desktop 获取资源关键字 &hellip;">
+  <meta name="description" content="有时候需要在backingBean中调用某一taskflow, 可以使用以下代码调用。不过只适用于可单独运行的taskflow，含有page fragments的taskflow不在此范围。 代码如下： 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16 public &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -68,6 +82,83 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013-06-08/cong-backingbeanzhong-diao-yong-bu-dai-fragmentsde-taskflow/">从BackingBean中调用不带fragments的taskflow</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-08T16:11:00+08:00" pubdate data-updated="true">Jun 8<span>th</span>, 2013</time>
+        
+         | <a href="/blog/2013-06-08/cong-backingbeanzhong-diao-yong-bu-dai-fragmentsde-taskflow/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>有时候需要在backingBean中调用某一taskflow, 可以使用以下代码调用。不过只适用于可单独运行的taskflow，含有page fragments的taskflow不在此范围。</p>
+
+<p>代码如下：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'>    <span class="kd">public</span> <span class="n">String</span> <span class="nf">callTaskFlow</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">FacesContext</span> <span class="n">fctx</span> <span class="o">=</span> <span class="n">FacesContext</span><span class="o">.</span><span class="na">getCurrentInstance</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">ControllerContext</span> <span class="n">cc</span> <span class="o">=</span> <span class="n">ControllerContext</span><span class="o">.</span><span class="na">getInstance</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">String</span> <span class="n">taskflowId</span> <span class="o">=</span> <span class="s">&quot;btf_task&quot;</span><span class="o">;</span>
+</span><span class='line'>        <span class="n">String</span> <span class="n">taskflowDocument</span> <span class="o">=</span> <span class="s">&quot;/WEB-INF/btf_task.xml&quot;</span><span class="o">;</span>
+</span><span class='line'>        <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="n">params</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Object</span><span class="o">&gt;();</span>
+</span><span class='line'>        <span class="n">TaskFlowId</span> <span class="n">tid</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TaskFlowId</span><span class="o">(</span><span class="n">taskflowDocument</span><span class="o">,</span> <span class="n">taskflowId</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">String</span> <span class="n">taskflowURL</span> <span class="o">=</span> <span class="n">cc</span><span class="o">.</span><span class="na">getTaskFlowURL</span><span class="o">(</span><span class="kc">false</span><span class="o">,</span> <span class="n">tid</span><span class="o">,</span> <span class="n">params</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">ExtendedRenderKitService</span> <span class="n">erks</span> <span class="o">=</span>
+</span><span class='line'>            <span class="n">Service</span><span class="o">.</span><span class="na">getRenderKitService</span><span class="o">(</span><span class="n">fctx</span><span class="o">,</span> <span class="n">ExtendedRenderKitService</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">StringBuilder</span> <span class="n">sb</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuilder</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">&quot;window.open(\&quot;&quot;</span> <span class="o">+</span> <span class="n">taskflowURL</span> <span class="o">+</span>
+</span><span class='line'>                  <span class="s">&quot;\&quot;&quot;</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="s">&quot;,\&quot;_self\&quot;);&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">erks</span><span class="o">.</span><span class="na">addScript</span><span class="o">(</span><span class="n">FacesContext</span><span class="o">.</span><span class="na">getCurrentInstance</span><span class="o">(),</span> <span class="n">sb</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
+</span><span class='line'>        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1072,101 +1163,6 @@ lovMap1中，设置Lov Region Item 为InventoryItemId;     Return Item为item1;C
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013-04-17/pei-zhi-oafkai-fa-huan-jing/">配置OAF开发环境</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-04-17T15:01:00+08:00" pubdate data-updated="true">Apr 17<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013-04-17/pei-zhi-oafkai-fa-huan-jing/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h4>查看EBS系统OA版本信息</h4>
-
-<p>方法一：使用OPERATIONS用户登陆EBS系统，选择“Diagnostics”后，在页下脚选择“About this Page”后选择“Technology Components”标签可查看相应版本信息。</p>
-
-<p>方法二：访问URI：<em>R12不可用</em></p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nl">http:</span><span class="c1">//&lt;HOST&gt;:&lt;PORT&gt;/OA_HTML/OAInfo.jsp    </span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>查看OAF版本下载相应JDEV开发工具</h4>
-
-<p>metalink document id: 787209.1 &amp; 416708.1</p>
-
-<p>例如：p4141787_11i_GENERIC.zip</p>
-
-<p>解压缩后把“/jdevhome/jdev”路径加到系统变量中，变量名：      JDEV_USER_HOME=F:\p4141787_11i_GENERIC\jdevhome\jdev</p>
-
-<h4>配置DBC文件</h4>
-
-<p>确认当前EBS系统使用的dbc文件.</p>
-
-<p>连接EBS数据库，执行以下SQL查询：</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="n">host_name</span><span class="o">||</span><span class="s1">&#39;_&#39;</span><span class="o">||</span><span class="n">instance_name</span> <span class="k">from</span> <span class="n">v</span><span class="err">$</span><span class="n">instance</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>telnet到EBS系统，查找dbc文件的的位置并拷贝下来放在jdevhome\jdev\dbc_files\secure目录下:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">ls</span> <span class="err">–</span><span class="n">a</span><span class="o">|</span><span class="n">$FND_SECURE</span><span class="o">/*.</span><span class="na">dbc</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>检验DBC文件是否EBS系统正在使用的DBC可用以下命令：</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">java</span> <span class="n">oracle</span><span class="o">.</span><span class="na">apps</span><span class="o">.</span><span class="na">fnd</span><span class="o">.</span><span class="na">security</span><span class="o">.</span><span class="na">AdminAppServer</span> <span class="n">apps</span><span class="o">/</span><span class="n">apps</span> <span class="n">STATUS</span> <span class="n">DBC</span><span class="o">=/</span><span class="n">u01</span><span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">devappl</span><span class="o">/</span><span class="n">fnd</span><span class="o">/</span><span class="mf">11.5</span><span class="o">.</span><span class="mi">0</span><span class="o">/</span><span class="n">secure</span><span class="o">/</span><span class="n">SIT</span><span class="o">.</span><span class="na">dbc</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>确认系统是否使用这个dbc文件可以在路径
-$APPL_TOP/admin/[SID]<em>[host].xml
-查找</em>dbc_file_name，跟上面说的dbc文件一致即可</p>
-
-<h4>配置JDEV工程属性</h4>
-
-<p>以上准备工作都完成之后，配置JDEV的Preferences中编码为UTF-8  <br/>
-<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130417144216.jpg" alt="" /></p>
-
-<p>配置project setting中编译器编码  <br/>
-<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130417144309.jpg" alt="" /></p>
-
-<p>然后配置DBC文件路径，测试EBS账户名及密码，所属职责等信息如下图所示：  <br/>
-<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130417144424.jpg" alt="" /></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -1184,7 +1180,7 @@ $APPL_TOP/admin/[SID]<em>[host].xml
   <ul id="categories">
     <li class='category'><a href='/blog/categories/adf/'>ADF (33)</a></li>
 <li class='category'><a href='/blog/categories/ebs/'>EBS (2)</a></li>
-<li class='category'><a href='/blog/categories/oaf/'>OAF (8)</a></li>
+<li class='category'><a href='/blog/categories/oaf/'>OAF (9)</a></li>
 <li class='category'><a href='/blog/categories/oracle/'>Oracle (8)</a></li>
 <li class='category'><a href='/blog/categories/soa/'>SOA (3)</a></li>
 <li class='category'><a href='/blog/categories/sinaappengine/'>SinaAppEngine (1)</a></li>
@@ -1205,6 +1201,10 @@ $APPL_TOP/admin/[SID]<em>[host].xml
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014-06-03/oafge-xing-hua-buttonhuo-qu-ye-mian-can-shu/">OAF个性化Button获取页面参数</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014-04-18/an-zhuang-rcu1-dot-7yu-dao-de-xiao-wen-ti/">安装RCU1.7遇到的小问题</a>
       </li>
     
@@ -1218,10 +1218,6 @@ $APPL_TOP/admin/[SID]<em>[host].xml
     
       <li class="post">
         <a href="/blog/2013-09-23/ru-he-zai-ye-mian-sui-pian-jia-zai-qian-diao-yong-luo-ji/">如何在页面碎片加载前调用逻辑</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013-09-23/kong-jian-af-iteratoryi-ji-af-foreachde-dui-bi/">控件af:iterator以及af:forEach的对比</a>
       </li>
     
   </ul>

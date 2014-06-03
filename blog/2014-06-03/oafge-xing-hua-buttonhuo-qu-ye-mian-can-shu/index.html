@@ -5,14 +5,13 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Jdeveloper运行速度优化 - 邓德昭的技术博客</title>
+  <title>OAF个性化Button获取页面参数 - 邓德昭的技术博客</title>
   <meta name="author" content="pierreorz">
 
   
-  <meta name="description" content="本文适合木有高配机却不得不在JDEV下开发的屌丝程序员 先来了解下Jdev的两个配置文件 1
-2
-E:\Oracle\Middleware11.1.2.3.0\jdeveloper\ide\bin\ide.conf
-E:\Oracle\Middleware11.1.2.3.0\jdeveloper &hellip;">
+  <meta name="description" content="平台: R12
+需求: 需要个性化一个button的Destination URI属性，并添附上一个参数。 实现方法： 本来重写CO便很容易实现该需求，但是涉及到修改代码以及各个环境更新就很麻烦了，所以如果个性化button的URL是最方便了。
+个性化又涉及到如何在URL里传递参数的问题。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -21,7 +20,7 @@ E:\Oracle\Middleware11.1.2.3.0\jdeveloper &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://dengdezhao.cn/blog/2013-04-04/jdeveloperyun-xing-su-du-you-hua">
+  <link rel="canonical" href="http://dengdezhao.cn/blog/2014-06-03/oafge-xing-hua-buttonhuo-qu-ye-mian-can-shu">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="邓德昭的技术博客" type="application/atom+xml">
@@ -73,7 +72,7 @@ E:\Oracle\Middleware11.1.2.3.0\jdeveloper &hellip;">
   
   <header>
     
-      <h1 class="entry-title">Jdeveloper运行速度优化</h1>
+      <h1 class="entry-title">OAF个性化Button获取页面参数</h1>
     
     
       <p class="meta">
@@ -89,7 +88,7 @@ E:\Oracle\Middleware11.1.2.3.0\jdeveloper &hellip;">
   
 
 
-<time datetime="2013-04-04T17:41:00+08:00" pubdate data-updated="true">Apr 4<span>th</span>, 2013</time>
+<time datetime="2014-06-03T11:19:00+08:00" pubdate data-updated="true">Jun 3<span>rd</span>, 2014</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -98,54 +97,51 @@ E:\Oracle\Middleware11.1.2.3.0\jdeveloper &hellip;">
   </header>
 
 
-<div class="entry-content"><h4><em>本文适合木有高配机却不得不在JDEV下开发的屌丝程序员</em></h4>
-
-<h4>先来了解下Jdev的两个配置文件</h4>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nl">E:</span><span class="err">\</span><span class="n">Oracle</span><span class="err">\</span><span class="n">Middleware11</span><span class="o">.</span><span class="mf">1.2</span><span class="o">.</span><span class="mf">3.0</span><span class="err">\</span><span class="n">jdeveloper</span><span class="err">\</span><span class="n">ide</span><span class="err">\</span><span class="n">bin</span><span class="err">\</span><span class="n">ide</span><span class="o">.</span><span class="na">conf</span>
-</span><span class='line'><span class="nl">E:</span><span class="err">\</span><span class="n">Oracle</span><span class="err">\</span><span class="n">Middleware11</span><span class="o">.</span><span class="mf">1.2</span><span class="o">.</span><span class="mf">3.0</span><span class="err">\</span><span class="n">jdeveloper</span><span class="err">\</span><span class="n">jdev</span><span class="err">\</span><span class="n">bin</span><span class="err">\</span><span class="n">jdev</span><span class="o">.</span><span class="na">conf</span>
-</span></code></pre></td></tr></table></div></figure>
+<div class="entry-content"><ul>
+<li>平台: R12</li>
+<li>需求: 需要个性化一个button的Destination URI属性，并添附上一个参数。</li>
+</ul>
 
 
-<p>几个关键参数：</p>
+<p>实现方法：</p>
+
+<ol>
+<li><p>本来重写CO便很容易实现该需求，但是涉及到修改代码以及各个环境更新就很麻烦了，所以如果个性化button的URL是最方便了。</p></li>
+<li><p>个性化又涉及到如何在URL里传递参数的问题。</p></li>
+</ol>
+
+
+<p>右键当前页面，查看源代码如下：</p>
 
 <figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">AddVMOption</span>  <span class="o">-</span><span class="n">Xmx</span>        <span class="c1">//堆大小的最大值，在机器物理内存允许的基础上该值越大越好</span>
-</span><span class='line'><span class="n">AddVMOption</span>  <span class="o">-</span><span class="n">Xms</span>        <span class="c1">//堆大小的初始值（默认给个128差不多）</span>
-</span><span class='line'><span class="n">AddVMOption</span>  <span class="o">-</span><span class="nl">XX:</span><span class="n">MaxPermSize</span> <span class="c1">//PermGen大小，太小会报OutOfMemoryError错误  </span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'>...
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;form</span> <span class="na">id=</span><span class="s">&quot;DefaultFormName&quot;</span> <span class="na">name=</span><span class="s">&quot;DefaultFormName&quot;</span> <span class="na">style=</span><span class="s">&quot;margin:0px&quot;</span> <span class="na">method=</span><span class="s">&quot;POST&quot;</span> <span class="na">action=</span><span class="s">&quot;/OA_HTML/OA.jsp?page=/oracle/apps/pa/deliverable/webui/CrUpDeliverablePG&amp;paCallingPage=DLVLIST&amp;paCallingMode=VIEW&amp;paProjectId=106691&amp;paDeliverableId=113287&amp;paDlvrItemId=106962&amp;&amp;addBreadCrumb=RP&amp;_ti=1696581738&amp;PersonalizationParam=PersonalizationParamAdmin&amp;retainAM=Y&amp;oapc=28&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>
+</span><span class='line'>...
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>这几个参数设置得不合适的话JDEV会无法启动并报以下错误：</p>
+<p>需要将当前页面中form标签的action属性中的paDlvrItemId参数的值获取过来。拼接成形如:http://dengdezhao.cn?erpid={:paDlvrItemId}形式的URL赋给button的destinationURI属性。</p>
+
+<ol>
+<li>使用{@itemName}这种方式只能在table控件中才行，在此处不适用。因此考虑使用JS查找当前页面获取到参数然后拼接形成URL。</li>
+</ol>
+
 
 <figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">Unable</span> <span class="n">to</span> <span class="n">create</span> <span class="n">an</span> <span class="n">instance</span> <span class="n">of</span> <span class="n">the</span> <span class="n">Java</span> <span class="n">Virtual</span> <span class="n">Machine</span> <span class="n">Located</span> <span class="n">at</span> <span class="nl">path:</span>
-</span><span class='line'><span class="nl">E:</span><span class="err">\</span><span class="n">Oracle</span><span class="err">\</span><span class="n">Middleware11</span><span class="o">.</span><span class="mf">1.2</span><span class="o">.</span><span class="mf">3.0</span><span class="err">\</span><span class="n">jdk160_24</span><span class="err">\</span><span class="n">jre</span><span class="err">\</span><span class="n">bin</span><span class="err">\</span><span class="n">client</span><span class="err">\</span><span class="n">jvm</span><span class="o">.</span><span class="na">dll</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'>http://192.168.15.141/login/LoginSSO.jsp?flowCode=AM02<span class="err">&amp;</span>erpid=&#39;+unescape(document.DefaultFormName.action.match(new RegExp(&quot;(^|<span class="err">&amp;</span>)&quot; + &#39;paDlvrItemId&#39; + &quot;=([^<span class="err">&amp;</span>]*)(<span class="err">&amp;</span>|$)&quot;, &quot;i&quot;))[2])+&#39;<span class="err">&amp;</span>workcode=&#39; + document.getElementById(&#39;AdditionalInfo&#39;).rows[4].cells[1].innerText + &#39;
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>好了~，我们现在需要做的就是将这几个参数的值设置得适合它的大小，以便JDEV运行得到最佳性能</p>
+<ol>
+<li>将以上URL个性化赋值给button即可满足需求。</li>
+</ol>
 
-<p>因为我的机器是32位系统WIN2003 6G内存，系统吃掉2G左右，可用内存不到4G
-而32位的JDK最大好像也只能申请1.5G左右,所以在我这机器中Jdev能分配到1G内存就差不多了</p>
-
-<p>先随意设置以上三个参数值，将JDEV能够运行起来，然后使用JDK自带的工具来监控下内存情况
-E:\Oracle\Middleware11.1.2.3.0\jdk160_24\bin\jvisualvm.exe
-<img src="../../../wp-content/uploads/20130404.jpg" alt="" /></p>
-
-<p>根据图中<strong>堆</strong>及<strong>PermGen</strong>中显示使用大小调整三个参数值。
-发现在不断操作JDev时PermGen始终维持在128左右不到256的样子，
-所以设置  <br/>
--XX:MaxPermSize值为<code>AddVMOption  -XX:MaxPermSize=256M</code>  <br/>
--Xms值为<code>AddVMOption  -Xms128M</code>  <br/>
-通过不断测试最终调整-Xmx值为<code>AddVMOption  -Xmx896M</code></p>
-
-<p>若在运行中出现OutOfMemoryError错误再根据信息慢慢调整。当然最好还是升级机器配置换成64位的系统及JDK就没有内存限制啦！~</p>
 </div>
 
 
@@ -168,12 +164,12 @@ E:\Oracle\Middleware11.1.2.3.0\jdk160_24\bin\jvisualvm.exe
   
 
 
-<time datetime="2013-04-04T17:41:00+08:00" pubdate data-updated="true">Apr 4<span>th</span>, 2013</time>
+<time datetime="2014-06-03T11:19:00+08:00" pubdate data-updated="true">Jun 3<span>rd</span>, 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/jdeveloper/'>jdeveloper</a>
+    <a class='category' href='/blog/categories/oaf/'>OAF</a>
   
 </span>
 
@@ -182,7 +178,7 @@ E:\Oracle\Middleware11.1.2.3.0\jdk160_24\bin\jvisualvm.exe
 
 <span class="tags">
   
-    <a class='tag' href='/tags/addvmoption/'>AddVMOption</a>, <a class='tag' href='/tags/jdeveloper/'>jdeveloper</a>
+    <a class='tag' href='/tags/oaf/'>OAF</a>
   
 </span>
 
@@ -191,7 +187,7 @@ E:\Oracle\Middleware11.1.2.3.0\jdk160_24\bin\jvisualvm.exe
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://dengdezhao.cn/blog/2013-04-04/jdeveloperyun-xing-su-du-you-hua/" data-via="" data-counturl="http://dengdezhao.cn/blog/2013-04-04/jdeveloperyun-xing-su-du-you-hua/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://dengdezhao.cn/blog/2014-06-03/oafge-xing-hua-buttonhuo-qu-ye-mian-can-shu/" data-via="" data-counturl="http://dengdezhao.cn/blog/2014-06-03/oafge-xing-hua-buttonhuo-qu-ye-mian-can-shu/" >Tweet</a>
   
   
   
@@ -200,10 +196,8 @@ E:\Oracle\Middleware11.1.2.3.0\jdk160_24\bin\jvisualvm.exe
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013-03-20/javamailfa-song-you-jian-zhong-wen-luan-ma/" title="Previous Post: JavaMail发送邮件中文乱码">&laquo; JavaMail发送邮件中文乱码</a>
+        <a class="basic-alignment left" href="/blog/2014-04-18/an-zhuang-rcu1-dot-7yu-dao-de-xiao-wen-ti/" title="Previous Post: 安装RCU1.7遇到的小问题">&laquo; 安装RCU1.7遇到的小问题</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013-04-09/oafshang-chuan-da-pi-liang-excelwen-jian/" title="Next Post: OAF上传大批量EXCEL文件">OAF上传大批量EXCEL文件 &raquo;</a>
       
     </p>
   </footer>
@@ -327,8 +321,8 @@ document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://dengdezhao.cn/blog/2013-04-04/jdeveloperyun-xing-su-du-you-hua/';
-        var disqus_url = 'http://dengdezhao.cn/blog/2013-04-04/jdeveloperyun-xing-su-du-you-hua/';
+        var disqus_identifier = 'http://dengdezhao.cn/blog/2014-06-03/oafge-xing-hua-buttonhuo-qu-ye-mian-can-shu/';
+        var disqus_url = 'http://dengdezhao.cn/blog/2014-06-03/oafge-xing-hua-buttonhuo-qu-ye-mian-can-shu/';
         var disqus_script = 'embed.js';
       
     (function () {

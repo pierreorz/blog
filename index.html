@@ -9,9 +9,9 @@
   <meta name="author" content="pierreorz">
 
   
-  <meta name="description" content="环境：此前安装过soa1.6，最近重新安装soa1.7时遇到的问题
-安装Rcu1.7时，发现无法运行./rcu,错误提示如下： 1
-rcuHome/jdk/jre/bin/java: cannot execute binary file. 查看操作系统发现是32bit,而rcu只有64bit的 &hellip;">
+  <meta name="description" content="平台: R12
+需求: 需要个性化一个button的Destination URI属性，并添附上一个参数。 实现方法： 本来重写CO便很容易实现该需求，但是涉及到修改代码以及各个环境更新就很麻烦了，所以如果个性化button的URL是最方便了。
+个性化又涉及到如何在URL里传递参数的问题。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -69,6 +69,88 @@ rcuHome/jdk/jre/bin/java: cannot execute binary file. 查看操作系统发现�
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014-06-03/oafge-xing-hua-buttonhuo-qu-ye-mian-can-shu/">OAF个性化Button获取页面参数</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-03T11:19:00+08:00" pubdate data-updated="true">Jun 3<span>rd</span>, 2014</time>
+        
+         | <a href="/blog/2014-06-03/oafge-xing-hua-buttonhuo-qu-ye-mian-can-shu/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
+<li>平台: R12</li>
+<li>需求: 需要个性化一个button的Destination URI属性，并添附上一个参数。</li>
+</ul>
+
+
+<p>实现方法：</p>
+
+<ol>
+<li><p>本来重写CO便很容易实现该需求，但是涉及到修改代码以及各个环境更新就很麻烦了，所以如果个性化button的URL是最方便了。</p></li>
+<li><p>个性化又涉及到如何在URL里传递参数的问题。</p></li>
+</ol>
+
+
+<p>右键当前页面，查看源代码如下：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'>...
+</span><span class='line'>
+</span><span class='line'><span class="nt">&lt;form</span> <span class="na">id=</span><span class="s">&quot;DefaultFormName&quot;</span> <span class="na">name=</span><span class="s">&quot;DefaultFormName&quot;</span> <span class="na">style=</span><span class="s">&quot;margin:0px&quot;</span> <span class="na">method=</span><span class="s">&quot;POST&quot;</span> <span class="na">action=</span><span class="s">&quot;/OA_HTML/OA.jsp?page=/oracle/apps/pa/deliverable/webui/CrUpDeliverablePG&amp;paCallingPage=DLVLIST&amp;paCallingMode=VIEW&amp;paProjectId=106691&amp;paDeliverableId=113287&amp;paDlvrItemId=106962&amp;&amp;addBreadCrumb=RP&amp;_ti=1696581738&amp;PersonalizationParam=PersonalizationParamAdmin&amp;retainAM=Y&amp;oapc=28&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>需要将当前页面中form标签的action属性中的paDlvrItemId参数的值获取过来。拼接成形如:http://dengdezhao.cn?erpid={:paDlvrItemId}形式的URL赋给button的destinationURI属性。</p>
+
+<ol>
+<li>使用{@itemName}这种方式只能在table控件中才行，在此处不适用。因此考虑使用JS查找当前页面获取到参数然后拼接形成URL。</li>
+</ol>
+
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'>http://192.168.15.141/login/LoginSSO.jsp?flowCode=AM02<span class="err">&amp;</span>erpid=&#39;+unescape(document.DefaultFormName.action.match(new RegExp(&quot;(^|<span class="err">&amp;</span>)&quot; + &#39;paDlvrItemId&#39; + &quot;=([^<span class="err">&amp;</span>]*)(<span class="err">&amp;</span>|$)&quot;, &quot;i&quot;))[2])+&#39;<span class="err">&amp;</span>workcode=&#39; + document.getElementById(&#39;AdditionalInfo&#39;).rows[4].cells[1].innerText + &#39;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li>将以上URL个性化赋值给button即可满足需求。</li>
+</ol>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1169,83 +1251,6 @@ rcuHome/jdk/jre/bin/java: cannot execute binary file. 查看操作系统发现�
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013-06-08/cong-backingbeanzhong-diao-yong-bu-dai-fragmentsde-taskflow/">从BackingBean中调用不带fragments的taskflow</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-06-08T16:11:00+08:00" pubdate data-updated="true">Jun 8<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013-06-08/cong-backingbeanzhong-diao-yong-bu-dai-fragmentsde-taskflow/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>有时候需要在backingBean中调用某一taskflow, 可以使用以下代码调用。不过只适用于可单独运行的taskflow，含有page fragments的taskflow不在此范围。</p>
-
-<p>代码如下：</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'>    <span class="kd">public</span> <span class="n">String</span> <span class="nf">callTaskFlow</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">FacesContext</span> <span class="n">fctx</span> <span class="o">=</span> <span class="n">FacesContext</span><span class="o">.</span><span class="na">getCurrentInstance</span><span class="o">();</span>
-</span><span class='line'>        <span class="n">ControllerContext</span> <span class="n">cc</span> <span class="o">=</span> <span class="n">ControllerContext</span><span class="o">.</span><span class="na">getInstance</span><span class="o">();</span>
-</span><span class='line'>        <span class="n">String</span> <span class="n">taskflowId</span> <span class="o">=</span> <span class="s">&quot;btf_task&quot;</span><span class="o">;</span>
-</span><span class='line'>        <span class="n">String</span> <span class="n">taskflowDocument</span> <span class="o">=</span> <span class="s">&quot;/WEB-INF/btf_task.xml&quot;</span><span class="o">;</span>
-</span><span class='line'>        <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="n">params</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Object</span><span class="o">&gt;();</span>
-</span><span class='line'>        <span class="n">TaskFlowId</span> <span class="n">tid</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TaskFlowId</span><span class="o">(</span><span class="n">taskflowDocument</span><span class="o">,</span> <span class="n">taskflowId</span><span class="o">);</span>
-</span><span class='line'>        <span class="n">String</span> <span class="n">taskflowURL</span> <span class="o">=</span> <span class="n">cc</span><span class="o">.</span><span class="na">getTaskFlowURL</span><span class="o">(</span><span class="kc">false</span><span class="o">,</span> <span class="n">tid</span><span class="o">,</span> <span class="n">params</span><span class="o">);</span>
-</span><span class='line'>        <span class="n">ExtendedRenderKitService</span> <span class="n">erks</span> <span class="o">=</span>
-</span><span class='line'>            <span class="n">Service</span><span class="o">.</span><span class="na">getRenderKitService</span><span class="o">(</span><span class="n">fctx</span><span class="o">,</span> <span class="n">ExtendedRenderKitService</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-</span><span class='line'>        <span class="n">StringBuilder</span> <span class="n">sb</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuilder</span><span class="o">();</span>
-</span><span class='line'>        <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">&quot;window.open(\&quot;&quot;</span> <span class="o">+</span> <span class="n">taskflowURL</span> <span class="o">+</span>
-</span><span class='line'>                  <span class="s">&quot;\&quot;&quot;</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="s">&quot;,\&quot;_self\&quot;);&quot;</span><span class="o">);</span>
-</span><span class='line'>        <span class="n">erks</span><span class="o">.</span><span class="na">addScript</span><span class="o">(</span><span class="n">FacesContext</span><span class="o">.</span><span class="na">getCurrentInstance</span><span class="o">(),</span> <span class="n">sb</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
-</span><span class='line'>        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
-</span><span class='line'>    <span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1261,7 +1266,7 @@ rcuHome/jdk/jre/bin/java: cannot execute binary file. 查看操作系统发现�
   <ul id="categories">
     <li class='category'><a href='/blog/categories/adf/'>ADF (33)</a></li>
 <li class='category'><a href='/blog/categories/ebs/'>EBS (2)</a></li>
-<li class='category'><a href='/blog/categories/oaf/'>OAF (8)</a></li>
+<li class='category'><a href='/blog/categories/oaf/'>OAF (9)</a></li>
 <li class='category'><a href='/blog/categories/oracle/'>Oracle (8)</a></li>
 <li class='category'><a href='/blog/categories/soa/'>SOA (3)</a></li>
 <li class='category'><a href='/blog/categories/sinaappengine/'>SinaAppEngine (1)</a></li>
@@ -1282,6 +1287,10 @@ rcuHome/jdk/jre/bin/java: cannot execute binary file. 查看操作系统发现�
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014-06-03/oafge-xing-hua-buttonhuo-qu-ye-mian-can-shu/">OAF个性化Button获取页面参数</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014-04-18/an-zhuang-rcu1-dot-7yu-dao-de-xiao-wen-ti/">安装RCU1.7遇到的小问题</a>
       </li>
     
@@ -1295,10 +1304,6 @@ rcuHome/jdk/jre/bin/java: cannot execute binary file. 查看操作系统发现�
     
       <li class="post">
         <a href="/blog/2013-09-23/ru-he-zai-ye-mian-sui-pian-jia-zai-qian-diao-yong-luo-ji/">如何在页面碎片加载前调用逻辑</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013-09-23/kong-jian-af-iteratoryi-ji-af-foreachde-dui-bi/">控件af:iterator以及af:forEach的对比</a>
       </li>
     
   </ul>

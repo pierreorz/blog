@@ -9,8 +9,10 @@
   <meta name="author" content="pierreorz">
 
   
-  <meta name="description" content="Step.1 新建测试工程 Fusion Web Application(ADF)。 Step.2 创建resource Bundle 文件，如下所示，我创建了三个语言版本的文件。
-ScreenConfig_en_US.properties ScreenConfig_zh_CN. &hellip;">
+  <meta name="description" content="在局域网内一台机器上安装完oracle11g之后，本地测试OK 可以访问orcl。用局域网内另一台机器连接的时候不行。
+两台机器可以PING通。
+修改tnsname.ora 把默认的localhost 都改成了本机IP 试试还是不行。
+然后改了下计算机名，各种测试，打开EM还是只看到实例正常， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -68,6 +70,55 @@ ScreenConfig_en_US.properties ScreenConfig_zh_CN. &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011-07-15/oracle-11g-%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%89%E8%A3%85%E5%90%8E%E6%94%B9%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%90%8D%E5%87%BA%E7%8E%B0%E6%97%A0%E6%B3%95%E8%BF%9E%E6%8E%A5%E7%9A%84%E9%97%AE%E9%A2%98%E8%A7%A3/">Oracle 11g 数据库安装后改计算机名出现无法连接的问题解决</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-07-15T00:00:00+08:00" pubdate data-updated="true">Jul 15<span>th</span>, 2011</time>
+        
+         | <a href="/blog/2011-07-15/oracle-11g-%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%89%E8%A3%85%E5%90%8E%E6%94%B9%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%90%8D%E5%87%BA%E7%8E%B0%E6%97%A0%E6%B3%95%E8%BF%9E%E6%8E%A5%E7%9A%84%E9%97%AE%E9%A2%98%E8%A7%A3/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>在局域网内一台机器上安装完oracle11g之后，本地测试OK 可以访问orcl。用局域网内另一台机器连接的时候不行。<br />
+两台机器可以PING通。<br />
+修改tnsname.ora  把默认的localhost 都改成了本机IP 试试还是不行。<br />
+然后改了下计算机名，各种测试，打开EM还是只看到实例正常，监听程序为状态为不可用，实例的代理连接状态为不可用。<br />
+很是蛋疼，手贱不应该改计算机名啊。。。<br />
+想想多有可能要改的都改好了。。。怎么还是连不上？<br />
+是不是刚改好的还没有生效？<br />
+lsnrctl stop<br />
+lsnrctl start<br />
+各种重启服务之后，终于见到了全绿~~~</p>
+
+<p><a rel="attachment wp-att-36" href="../../../wp-content/uploads/2011/07/q-300x139.jpg"><img class="alignnone size-medium wp-image-36" title="q" src="../../../wp-content/uploads/2011/07/q-300x139.jpg" alt="" width="300" height="139" /></a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -504,7 +555,7 @@ Step.4 修改<span style="color: #0000ff;">web.xml</span>
   <ul id="categories">
     <li class='category'><a href='/blog/categories/adf/'>ADF (33)</a></li>
 <li class='category'><a href='/blog/categories/ebs/'>EBS (2)</a></li>
-<li class='category'><a href='/blog/categories/oaf/'>OAF (8)</a></li>
+<li class='category'><a href='/blog/categories/oaf/'>OAF (9)</a></li>
 <li class='category'><a href='/blog/categories/oracle/'>Oracle (8)</a></li>
 <li class='category'><a href='/blog/categories/soa/'>SOA (3)</a></li>
 <li class='category'><a href='/blog/categories/sinaappengine/'>SinaAppEngine (1)</a></li>
@@ -525,6 +576,10 @@ Step.4 修改<span style="color: #0000ff;">web.xml</span>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014-06-03/oafge-xing-hua-buttonhuo-qu-ye-mian-can-shu/">OAF个性化Button获取页面参数</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014-04-18/an-zhuang-rcu1-dot-7yu-dao-de-xiao-wen-ti/">安装RCU1.7遇到的小问题</a>
       </li>
     
@@ -538,10 +593,6 @@ Step.4 修改<span style="color: #0000ff;">web.xml</span>
     
       <li class="post">
         <a href="/blog/2013-09-23/ru-he-zai-ye-mian-sui-pian-jia-zai-qian-diao-yong-luo-ji/">如何在页面碎片加载前调用逻辑</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013-09-23/kong-jian-af-iteratoryi-ji-af-foreachde-dui-bi/">控件af:iterator以及af:forEach的对比</a>
       </li>
     
   </ul>
