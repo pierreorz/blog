@@ -9,9 +9,9 @@ footer: true
 
 **NickName：pierreorz or 49**
 
-目前就职于深圳一家IT企业，技术顾问。
+目前就职于上海一家服务咨询企业，高级顾问。
 
-专注于oracle相关应用开发，很高兴跟大家一起交流学习。
+专注于oracle中间件领域相关应用开发，很高兴跟大家一起交流学习。
 
 你可以联系我：
 
@@ -36,6 +36,8 @@ X+++ R+ tv b+ DI- D-- G++ e++ h+ r y+
 
 #关于本博#
 
+>2014-04-25 因政策原因*stdyun.com*迁至国外，重新托管于*github.com*
+>
 >2013-04-15 托管服务器从*github.com*迁至*stdyun.com*
 >
 >2013-03-12 绑定域名*dengdezhao.cn*
