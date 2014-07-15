@@ -9,7 +9,9 @@
   <meta name="author" content="pierreorz">
 
   
-  <meta name="description" content="Create a document Switch to another document Hello, I am your first Markdown document within StackEdit[stackedit]. Don&#8217;t delete me, I can be &hellip;">
+  <meta name="description" content="平台: R12
+需求: 需要个性化一个button的Destination URI属性，并添附上一个参数。 实现方法： 本来重写CO便很容易实现该需求，但是涉及到修改代码以及各个环境更新就很麻烦了，所以如果个性化button的URL是最方便了。
+个性化又涉及到如何在URL里传递参数的问题。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -28,7 +30,6 @@
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="/stylesheets/google-fonts.css" rel="stylesheet" type="text/css">
-<link href="/stylesheets/default.css" rel="stylesheet" type="text/css">
 
   
 
@@ -67,48 +68,6 @@
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014-07-11/test/">Test</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-07-11T17:19:00+08:00" pubdate data-updated="true">Jul 11<span>th</span>, 2014</time>
-        
-         | <a href="/blog/2014-07-11/test/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h4><i class="icon-file"></i> Create a document</h4>
-
-<h4><i class="icon-folder-open"></i> Switch to another document</h4>
-
-<p>Hello, I am your first Markdown document within <strong>StackEdit</strong>[<sup>stackedit].</sup> Don&#8217;t delete me, I can be helpful. I can be recovered anyway in the <code>Utils</code> tab of the <i class="icon-cog"></i> <code>Settings</code> dialog.</p>
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -1225,6 +1184,72 @@
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013-06-19/attribute-set-for-xxxattribute-in-view-object-xxxvo-failedwen-ti-jie-jue/">Attribute Set for xxxAttribute in View Object xxxVO Failed问题解决</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-19T15:50:00+08:00" pubdate data-updated="true">Jun 19<span>th</span>, 2013</time>
+        
+         | <a href="/blog/2013-06-19/attribute-set-for-xxxattribute-in-view-object-xxxvo-failedwen-ti-jie-jue/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><hr />
+
+<h2>平台：Jdeveloper 9i </h2>
+
+<p>异常描述：</p>
+
+<p>在表增加单选checkbox时，在VO中创建transient属性selector,最终在页面中无法勾选checkbox，发现值没法保存到VO中，页面抛出该异常：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'> 
+</span><span class='line'><span class="kc">null</span> <span class="o">-</span> <span class="n">Attribute</span> <span class="n">set</span> <span class="k">for</span> <span class="n">Selector</span> <span class="n">in</span> <span class="n">view</span> <span class="n">object</span> <span class="n">employeeVO1</span> <span class="n">failed</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>解决方案：</p>
+
+<ol>
+<li>检查VO中的transient属性selector是否设置为updatable</li>
+<li>如果是在开发模式下，清空所有classes文件，重新编译；如果是在正式环境，删除该路径下的VO对象，可使用以下命令。</li>
+</ol>
+
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">exec</span> <span class="n">jdr_utils</span><span class="o">.</span><span class="na">deletedocument</span><span class="o">(</span><span class="err">&#39;</span><span class="o">/</span><span class="n">oracle</span><span class="o">/</span><span class="n">apps</span><span class="o">/</span><span class="n">dengdezhao</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">server</span><span class="o">/</span><span class="n">employeeVO</span><span class="err">&#39;</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1261,10 +1286,6 @@
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2014-07-11/test/">test</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/2014-06-03/oafge-xing-hua-buttonhuo-qu-ye-mian-can-shu/">OAF个性化Button获取页面参数</a>
       </li>
     
@@ -1278,6 +1299,10 @@
     
       <li class="post">
         <a href="/blog/2013-11-09/you-yi-wai-duan-dian-dao-zhi-oracle11gqi-dong-bu-qi-lai-de-wen-ti-jie-jue/">由意外断电导致oracle11g启动不起来的问题解决</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-09-23/ru-he-zai-ye-mian-sui-pian-jia-zai-qian-diao-yong-luo-ji/">如何在页面碎片加载前调用逻辑</a>
       </li>
     
   </ul>

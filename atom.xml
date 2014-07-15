@@ -4,7 +4,7 @@
   <title><![CDATA[邓德昭的技术博客]]></title>
   <link href="http://dengdezhao.cn/atom.xml" rel="self"/>
   <link href="http://dengdezhao.cn/"/>
-  <updated>2014-07-11T17:20:59+08:00</updated>
+  <updated>2014-07-15T11:15:45+08:00</updated>
   <id>http://dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
@@ -12,19 +12,6 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
-  
-  <entry>
-    <title type="html"><![CDATA[test]]></title>
-    <link href="http://dengdezhao.cn/blog/2014-07-11/test/"/>
-    <updated>2014-07-11T17:19:00+08:00</updated>
-    <id>http://dengdezhao.cn/blog/2014-07-11/test</id>
-    <content type="html"><![CDATA[<h4><i class="icon-file"></i> Create a document</h4>
-
-<h4><i class="icon-folder-open"></i> Switch to another document</h4>
-
-<p>Hello, I am your first Markdown document within <strong>StackEdit</strong>[<sup>stackedit].</sup> Don&#8217;t delete me, I can be helpful. I can be recovered anyway in the <code>Utils</code> tab of the <i class="icon-cog"></i> <code>Settings</code> dialog.</p>
-]]></content>
-  </entry>
   
   <entry>
     <title type="html"><![CDATA[OAF个性化Button获取页面参数]]></title>
@@ -1651,6 +1638,59 @@
 
 
 <p>以上几种方法均可实现改变VO查询条件进行动态查询，各有灵活度，目前没有比较三种方式带来的性能影响，可以根据个人习惯采用。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[OAF中创建LOV]]></title>
+    <link href="http://dengdezhao.cn/blog/2013-04-18/oafzhong-chuang-jian-lov/"/>
+    <updated>2013-04-18T12:54:00+08:00</updated>
+    <id>http://dengdezhao.cn/blog/2013-04-18/oafzhong-chuang-jian-lov</id>
+    <content type="html"><![CDATA[<p>环境：Oracle9i Jdeveloper+R11i</p>
+
+<h4>首先创建AM</h4>
+
+<p>创建一个LovAM，默认配置即可。</p>
+
+<h4>创建VO</h4>
+
+<p>创建LovVO，不需要基于EO，输入查询SQL如下：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="k">distinct</span> <span class="n">INVENTORY_ITEM_ID</span><span class="p">,</span><span class="n">concatenated_segments</span>
+</span><span class='line'><span class="k">from</span> <span class="n">MTL_SYSTEM_ITEMS_KFV</span> <span class="k">where</span> <span class="n">organization_id</span><span class="o">=</span><span class="mi">85</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>将创建好的VO添加到AM的data module中</p>
+
+<h4>创建RN</h4>
+
+<p>右键工程，创建一个RN，Scope设置为public.  <br/>
+<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130418113938.jpg" alt="" /></p>
+
+<p>选中创建好的LovRN.xml，在structure Window窗口中选中LovRN右建New Region Using Wizard.找到之前创建的LovVO.</p>
+
+<p><img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130418114930.jpg" alt="" /></p>
+
+<p>修改字段属性如下：   <br/>
+Search Allowed : true   <br/>
+Selective Search Criteria : true  <br/>
+<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130418115100.jpg" alt="" /></p>
+
+<h4>创建PG页面引用LOV</h4>
+
+<p>创建一个PG页面LovPG.xml，AM Definition设置为之前创建的LovAM路径;  <br/>
+Windows title &amp; tile 随意设置；  <br/>
+在LovPG页面中创建一个Region改名为mainRN，Region Style为messageComponentLayout;  <br/>
+在mainRN中创建一个MessageLovInput控件item1，    修改item1的属性External LOV值为此前步骤中创建好的LovRN路径；
+prompt改为：物料LOV  <br/>
+lovMap1中，设置Lov Region Item 为InventoryItemId;     Return Item为item1;Criteria Item为item1;  <br/>
+运行该lovPG.xml，即可看到效果如下图：</p>
+
+<p><img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130418124811.jpg" alt="" />  <br/>
+<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130418125343.jpg" alt="" /></p>
 ]]></content>
   </entry>
   

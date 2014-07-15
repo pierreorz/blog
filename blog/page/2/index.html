@@ -9,8 +9,22 @@
   <meta name="author" content="pierreorz">
 
   
-  <meta name="description" content="平台：Jdeveloper 9i 异常描述： 在表增加单选checkbox时，在VO中创建transient属性selector,最终在页面中无法勾选checkbox，发现值没法保存到VO中，页面抛出该异常： 1
-2 null - Attribute set for Selector in &hellip;">
+  <meta name="description" content="有时候需要在backingBean中调用某一taskflow, 可以使用以下代码调用。不过只适用于可单独运行的taskflow，含有page fragments的taskflow不在此范围。 代码如下： 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16 public &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -29,7 +43,6 @@
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="/stylesheets/google-fonts.css" rel="stylesheet" type="text/css">
-<link href="/stylesheets/default.css" rel="stylesheet" type="text/css">
 
   
 
@@ -68,72 +81,6 @@
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013-06-19/attribute-set-for-xxxattribute-in-view-object-xxxvo-failedwen-ti-jie-jue/">Attribute Set for xxxAttribute in View Object xxxVO Failed问题解决</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-06-19T15:50:00+08:00" pubdate data-updated="true">Jun 19<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013-06-19/attribute-set-for-xxxattribute-in-view-object-xxxvo-failedwen-ti-jie-jue/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><hr />
-
-<h2>平台：Jdeveloper 9i </h2>
-
-<p>异常描述：</p>
-
-<p>在表增加单选checkbox时，在VO中创建transient属性selector,最终在页面中无法勾选checkbox，发现值没法保存到VO中，页面抛出该异常：</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'> 
-</span><span class='line'><span class="kc">null</span> <span class="o">-</span> <span class="n">Attribute</span> <span class="n">set</span> <span class="k">for</span> <span class="n">Selector</span> <span class="n">in</span> <span class="n">view</span> <span class="n">object</span> <span class="n">employeeVO1</span> <span class="n">failed</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>解决方案：</p>
-
-<ol>
-<li>检查VO中的transient属性selector是否设置为updatable</li>
-<li>如果是在开发模式下，清空所有classes文件，重新编译；如果是在正式环境，删除该路径下的VO对象，可使用以下命令。</li>
-</ol>
-
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">exec</span> <span class="n">jdr_utils</span><span class="o">.</span><span class="na">deletedocument</span><span class="o">(</span><span class="err">&#39;</span><span class="o">/</span><span class="n">oracle</span><span class="o">/</span><span class="n">apps</span><span class="o">/</span><span class="n">dengdezhao</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="n">server</span><span class="o">/</span><span class="n">employeeVO</span><span class="err">&#39;</span><span class="o">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -1133,6 +1080,88 @@
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013-04-18/oafzhong-chuang-jian-lov/">OAF中创建LOV</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-18T12:54:00+08:00" pubdate data-updated="true">Apr 18<span>th</span>, 2013</time>
+        
+         | <a href="/blog/2013-04-18/oafzhong-chuang-jian-lov/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>环境：Oracle9i Jdeveloper+R11i</p>
+
+<h4>首先创建AM</h4>
+
+<p>创建一个LovAM，默认配置即可。</p>
+
+<h4>创建VO</h4>
+
+<p>创建LovVO，不需要基于EO，输入查询SQL如下：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">select</span> <span class="k">distinct</span> <span class="n">INVENTORY_ITEM_ID</span><span class="p">,</span><span class="n">concatenated_segments</span>
+</span><span class='line'><span class="k">from</span> <span class="n">MTL_SYSTEM_ITEMS_KFV</span> <span class="k">where</span> <span class="n">organization_id</span><span class="o">=</span><span class="mi">85</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>将创建好的VO添加到AM的data module中</p>
+
+<h4>创建RN</h4>
+
+<p>右键工程，创建一个RN，Scope设置为public.  <br/>
+<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130418113938.jpg" alt="" /></p>
+
+<p>选中创建好的LovRN.xml，在structure Window窗口中选中LovRN右建New Region Using Wizard.找到之前创建的LovVO.</p>
+
+<p><img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130418114930.jpg" alt="" /></p>
+
+<p>修改字段属性如下：   <br/>
+Search Allowed : true   <br/>
+Selective Search Criteria : true  <br/>
+<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130418115100.jpg" alt="" /></p>
+
+<h4>创建PG页面引用LOV</h4>
+
+<p>创建一个PG页面LovPG.xml，AM Definition设置为之前创建的LovAM路径;  <br/>
+Windows title &amp; tile 随意设置；  <br/>
+在LovPG页面中创建一个Region改名为mainRN，Region Style为messageComponentLayout;  <br/>
+在mainRN中创建一个MessageLovInput控件item1，    修改item1的属性External LOV值为此前步骤中创建好的LovRN路径；
+prompt改为：物料LOV  <br/>
+lovMap1中，设置Lov Region Item 为InventoryItemId;     Return Item为item1;Criteria Item为item1;  <br/>
+运行该lovPG.xml，即可看到效果如下图：</p>
+
+<p><img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130418124811.jpg" alt="" />  <br/>
+<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130418125343.jpg" alt="" /></p>
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -1171,10 +1200,6 @@
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2014-07-11/test/">test</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/2014-06-03/oafge-xing-hua-buttonhuo-qu-ye-mian-can-shu/">OAF个性化Button获取页面参数</a>
       </li>
     
@@ -1188,6 +1213,10 @@
     
       <li class="post">
         <a href="/blog/2013-11-09/you-yi-wai-duan-dian-dao-zhi-oracle11gqi-dong-bu-qi-lai-de-wen-ti-jie-jue/">由意外断电导致oracle11g启动不起来的问题解决</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-09-23/ru-he-zai-ye-mian-sui-pian-jia-zai-qian-diao-yong-luo-ji/">如何在页面碎片加载前调用逻辑</a>
       </li>
     
   </ul>
