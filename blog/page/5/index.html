@@ -9,7 +9,7 @@
   <meta name="author" content="pierreorz">
 
   
-  <meta name="description" content="EBS并发请求调用procedure时，直接在被调用的procedure中使用fnd_file.put_line即可达到要求； 如果并发请求调用的是oracle reports时，写入日志文件需要使用reports的方法。 在Before/After report Trigger中使用SRW. &hellip;">
+  <meta name="description" content="需求：需要设置ITEM背景变黄，类似required时的效果； 创建visual Attributes 属性：COLOR_YELLOW 代码如下： Go_Item('HDPI_FL_CON_TRANSPORT_V.STATION_LEAVE_MEAN'); &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,52 +67,6 @@
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012-09-11/ebs%E5%B9%B6%E5%8F%91%E8%AF%B7%E6%B1%82%E8%B0%83%E7%94%A8oracle-reports%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E5%86%99%E5%85%A5%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6/">EBS并发请求调用Oracle Reports时，如何写入日志文件</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-09-11T00:00:00+08:00" pubdate data-updated="true">Sep 11<span>th</span>, 2012</time>
-        
-         | <a href="/blog/2012-09-11/ebs%E5%B9%B6%E5%8F%91%E8%AF%B7%E6%B1%82%E8%B0%83%E7%94%A8oracle-reports%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E5%86%99%E5%85%A5%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>EBS并发请求调用procedure时，直接在被调用的procedure中使用fnd_file.put_line即可达到要求；</p>
-
-<p>如果并发请求调用的是oracle reports时，写入日志文件需要使用reports的方法。</p>
-
-<p>在Before/After report Trigger中使用SRW.message(0,&#8217;Message&#8217;);</p>
-
-<p>中断报表执行使用SRW.break;</p>
-
-<p>&nbsp;</p>
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -679,6 +633,58 @@ VO里 这个属性DeleteParticipant 立功了。 DeleteParticipant就是控制�
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012-06-26/%E5%85%B3%E4%BA%8Eselectbooleancheckbox-%E7%9A%84%E9%97%AE%E9%A2%98/">关于selectBooleanCheckbox 的问题</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
+        
+         | <a href="/blog/2012-06-26/%E5%85%B3%E4%BA%8Eselectbooleancheckbox-%E7%9A%84%E9%97%AE%E9%A2%98/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>页面的 selectBooleanCheckbox 选择后，总提示 不是数字（组件value是 true 或 false,数据库存的是Number），怎么解决</p>
+
+<p>方案有三个<br />
+1。如果是基于表的Number字段(假设字段名是Flag，值是1或者0），想生成selectBooleanCheckbox ，可以重写这个VO的的 setFlag()跟getFlag()方法如下：<br />
+public void setFlag(Boolean value){<br />
+this.flag=value==true?1:0;<br />
+}
+public Boolean getFlag(){<br />
+return this.flag==0?false:true;<br />
+}</p>
+
+<p>2。设置valueChangeListener.<br />
+在valueChange方法里捕获当前selectBooleanCheckbox 的值，然后转化成Number类型的传给VO</p>
+
+<p>3。如果是只读的表，可以在UI上通过EL表达式处理。</p>
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/6/">&larr; Older</a>
@@ -717,10 +723,6 @@ VO里 这个属性DeleteParticipant 立功了。 DeleteParticipant就是控制�
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2014-07-15/test/">test</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/2014-06-03/oafge-xing-hua-buttonhuo-qu-ye-mian-can-shu/">OAF个性化Button获取页面参数</a>
       </li>
     
@@ -734,6 +736,10 @@ VO里 这个属性DeleteParticipant 立功了。 DeleteParticipant就是控制�
     
       <li class="post">
         <a href="/blog/2013-11-09/you-yi-wai-duan-dian-dao-zhi-oracle11gqi-dong-bu-qi-lai-de-wen-ti-jie-jue/">由意外断电导致oracle11g启动不起来的问题解决</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-09-23/ru-he-zai-ye-mian-sui-pian-jia-zai-qian-diao-yong-luo-ji/">如何在页面碎片加载前调用逻辑</a>
       </li>
     
   </ul>
