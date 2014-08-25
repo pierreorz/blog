@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: content repository | 邓德昭的技术博客]]></title>
+  <link href="http://dengdezhao.cn/tags/content-repository/atom.xml" rel="self"/>
+  <link href="http://dengdezhao.cn/"/>
+  <updated>2014-08-25T18:04:28+08:00</updated>
+  <id>http://dengdezhao.cn/</id>
+  <author>
+    <name><![CDATA[pierreorz]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[创建Content Repository时出现错误]]></title>
+    <link href="http://dengdezhao.cn/blog/2014-08-25/chuang-jian-content-repositoryshi-chu-xian-cuo-wu/"/>
+    <updated>2014-08-25T18:02:00+08:00</updated>
+    <id>http://dengdezhao.cn/blog/2014-08-25/chuang-jian-content-repositoryshi-chu-xian-cuo-wu</id>
+    <content type="html"><![CDATA[<h1>创建Content Repository问题小记</h1>
+
+<h4><i class="icon-file"></i><strong>创建Content Repository时出现错误：</strong></h4>
+
+<blockquote><p><strong>NOTE:</strong></p>
+
+<ul>
+<li>Unable to load content server metadata model using GET_DOC_METADATA_INFO.</li>
+<li>Permission denied. Address 'XX.XX.XX.XX' is not an allowable remote socket address</li>
+</ul>
+</blockquote>
+
+<h4><i class="icon-file"></i> <strong>解决方法:</strong></h4>
+
+<blockquote><ul>
+<li><p><i class="icon-pencil"></i> 找到config.cfg   <br/>
+<code>/u02/app/oraucm/fmw_home/user_projects/domains/ecm_domain/ucm/cs/config/config.cfg</code></p></li>
+<li><p><i class="icon-pencil"></i>在SocketHostAddressSecurityFilter值加上<code>|*.*.*.*</code>
+SocketHostAddressSecurityFilter=127.0.0.1|192.168.15.163|<code>*.*.*.*</code>即可</p></li>
+</ul>
+</blockquote>
+]]></content>
+  </entry>
+  
+</feed>
