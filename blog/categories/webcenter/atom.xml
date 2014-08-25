@@ -4,7 +4,7 @@
   <title><![CDATA[Category: webcenter | 邓德昭的技术博客]]></title>
   <link href="http://dengdezhao.cn/blog/categories/webcenter/atom.xml" rel="self"/>
   <link href="http://dengdezhao.cn/"/>
-  <updated>2014-08-25T18:04:28+08:00</updated>
+  <updated>2014-08-25T20:28:00+08:00</updated>
   <id>http://dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
@@ -18,9 +18,7 @@
     <link href="http://dengdezhao.cn/blog/2014-08-25/chuang-jian-content-repositoryshi-chu-xian-cuo-wu/"/>
     <updated>2014-08-25T18:02:00+08:00</updated>
     <id>http://dengdezhao.cn/blog/2014-08-25/chuang-jian-content-repositoryshi-chu-xian-cuo-wu</id>
-    <content type="html"><![CDATA[<h1>创建Content Repository问题小记</h1>
-
-<h4><i class="icon-file"></i><strong>创建Content Repository时出现错误：</strong></h4>
+    <content type="html"><![CDATA[<h4><i class="icon-file"></i><strong>创建Content Repository时出现错误：</strong></h4>
 
 <blockquote><p><strong>NOTE:</strong></p>
 
