@@ -1,32 +1,24 @@
-Welcome to StackEdit!	{#welcome}
+创建Content Repository问题小记
 =====================
 
 
-Hello, I am your first Markdown document within **StackEdit**[^stackedit]. Don't delete me, I can be helpful. I can be recovered anyway in the `Utils` tab of the **strong text**<i class="icon-cog"></i> `Settings` dialog.
-
-----------
-
-
-Documents
----------
-
-**StackEdit** stores your documents in your browser, which means all your documents are automatically saved locally and are accessible **offline!**
+#### <i class="icon-file"></i>**创建Content Repository时出现错误：**
 
 > **NOTE:**
 > 
-> - StackEdit is accessible offline after the application has been loaded for the first time.
-> - Your local documents are not shared between different browsers or computers.
-> - Clearing your browser's data may **delete all your local documents!** Make sure your documents are backed up using **Google Drive** or **Dropbox** synchronization (see [<i class="icon-share"></i> Synchronization](#synchronization) section).
+> - Unable to load content server metadata model using GET_DOC_METADATA_INFO.
+> - Permission denied. Address 'XX.XX.XX.XX' is not an allowable remote socket address
 
-#### <i class="icon-file"></i> Create a document
 
-You can create a new document by clicking the <i class="icon-file"></i> button in the navigation bar. It will switch from the current document to the new one.
+#### <i class="icon-file"></i> **解决方法:**
 
-#### <i class="icon-folder-open"></i> Switch to another document
 
-You can list all your local documents and switch from one to another by clicking the <i class="icon-folder-open"></i> button in the navigation bar.
 
-#### <i class="icon-pencil"></i> Rename a document
+> -  <i class="icon-pencil"></i> 找到config.cfg     
+`/u02/app/oraucm/fmw_home/user_projects/domains/ecm_domain/ucm/cs/config/config.cfg`
+
+> - <i class="icon-pencil"></i>在SocketHostAddressSecurityFilter值加上`|*.*.*.*`
+SocketHostAddressSecurityFilter=127.0.0.1|192.168.15.163|`*.*.*.*`即可
 
 You can rename the current document by clicking the document title in the navigation bar.
 
