@@ -9,10 +9,12 @@
   <meta name="author" content="pierreorz">
 
   
-  <meta name="description" content="环境：Oracle9i Jdeveloper+R11i 首先创建AM 创建一个LovAM，默认配置即可。 创建VO 创建LovVO，不需要基于EO，输入查询SQL如下： 1
+  <meta name="description" content="改变VO查询条件 使用WhereClause改变查询条件
+使用Criteria改变查询条件
+使用Bind Variables改变查询条件 使用WhereClause改变查询条件 setWhereClause 通过VO对象的setWhereClause方法改变查询条件 1
 2
-select distinct INVENTORY_ITEM_ID,concatenated_segments
-from &hellip;">
+3
+4 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -70,6 +72,181 @@ from &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013-04-19/adfxue-xi-zong-jie-%5B%3F%5D/">ADF学习总结(一)</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-19T14:15:00+08:00" pubdate data-updated="true">Apr 19<span>th</span>, 2013</time>
+        
+         | <a href="/blog/2013-04-19/adfxue-xi-zong-jie-%5B%3F%5D/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4>改变VO查询条件</h4>
+
+<ul>
+<li>使用WhereClause改变查询条件</li>
+<li>使用Criteria改变查询条件</li>
+<li>使用Bind Variables改变查询条件</li>
+</ul>
+
+
+<h4>使用WhereClause改变查询条件</h4>
+
+<ul>
+<li><strong>setWhereClause</strong></li>
+</ul>
+
+
+<p>通过VO对象的setWhereClause方法改变查询条件</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">DCIteratorBinding</span> <span class="n">dc</span> <span class="o">=</span> <span class="n">ADFUtils</span><span class="o">.</span><span class="na">findIterator</span><span class="o">(</span><span class="s">&quot;DepartmentsView1Iterator&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="n">ViewObject</span> <span class="n">vo</span> <span class="o">=</span> <span class="n">dc</span><span class="o">.</span><span class="na">getViewObject</span><span class="o">();</span>
+</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">setWhereClause</span><span class="o">(</span><span class="s">&quot; 1=1 &quot;</span><span class="o">);</span>
+</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><strong>addWhereClause</strong></li>
+</ul>
+
+
+<p>addWhereClause是在原有whereClause基础上添加新的查询条件；  <br/>
+跟setWhereClause替换原有whereClaue不同；</p>
+
+<h4>使用ViewCriteria改变查询条件</h4>
+
+<ul>
+<li><strong>使用定义好的ViewCriteria</strong></li>
+</ul>
+
+
+<p>事先在创建VO的时候，定义好几种Criteria：DepartmentsViewCriteria  <br/>
+<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130419134617.jpg" alt="" /></p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">DCIteratorBinding</span> <span class="n">dc</span> <span class="o">=</span> <span class="n">ADFUtils</span><span class="o">.</span><span class="na">findIterator</span><span class="o">(</span><span class="s">&quot;DepartmentsView1Iterator&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="n">ViewObject</span> <span class="n">vo</span> <span class="o">=</span> <span class="n">dc</span><span class="o">.</span><span class="na">getViewObject</span><span class="o">();</span>
+</span><span class='line'><span class="n">ViewCriteriaManager</span> <span class="n">vcm</span><span class="o">=</span><span class="n">vo</span><span class="o">.</span><span class="na">getViewCriteriaManager</span><span class="o">();</span>
+</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">applyViewCriteria</span><span class="o">(</span><span class="n">vcm</span><span class="o">.</span><span class="na">getViewCriteria</span><span class="o">(</span><span class="s">&quot;DepartmentsViewCriteria&quot;</span><span class="o">));</span>
+</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><strong>动态创建ViewCriteria</strong></li>
+</ul>
+
+
+<p>如果事先没有在VO中定义好ViewCriteria，也可以在MB代码中动态创建</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">DCIteratorBinding</span> <span class="n">dc</span> <span class="o">=</span> <span class="n">ADFUtils</span><span class="o">.</span><span class="na">findIterator</span><span class="o">(</span><span class="s">&quot;DepartmentsView1Iterator&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="n">ViewObject</span> <span class="n">vo</span> <span class="o">=</span> <span class="n">dc</span><span class="o">.</span><span class="na">getViewObject</span><span class="o">();</span>
+</span><span class='line'><span class="n">ViewCriteria</span> <span class="n">vc</span> <span class="o">=</span> <span class="n">vo</span><span class="o">.</span><span class="na">createViewCriteria</span><span class="o">();</span>
+</span><span class='line'><span class="n">ViewCriteriaRow</span> <span class="n">vcr</span> <span class="o">=</span> <span class="n">vc</span><span class="o">.</span><span class="na">createViewCriteriaRow</span><span class="o">();</span>
+</span><span class='line'><span class="n">vcr</span><span class="o">.</span><span class="na">setConjunction</span><span class="o">(</span><span class="n">ViewCriteriaRow</span><span class="o">.</span><span class="na">VC_CONJ_AND</span><span class="o">);</span>
+</span><span class='line'><span class="n">vcr</span><span class="o">.</span><span class="na">setAttribute</span><span class="o">(</span><span class="s">&quot;DepartmentId&quot;</span><span class="o">,</span> <span class="s">&quot;20&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="n">vc</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">vcr</span><span class="o">);</span>
+</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">applyViewCriteria</span><span class="o">(</span><span class="n">vc</span><span class="o">);</span>
+</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>使用Bind Variables改变查询条件</h4>
+
+<ul>
+<li><strong>使用Bind Variables结合ViewCriteria</strong></li>
+</ul>
+
+
+<p>参照以上定义ViewCriteria时，使用Bind Variables。</p>
+
+<ul>
+<li><strong>使用Bind Variables结合SQL</strong></li>
+</ul>
+
+
+<p>在VO的SQL中使用Bind Variables；</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">SELECT</span> <span class="n">Departments</span><span class="p">.</span><span class="n">DEPARTMENT_ID</span><span class="p">,</span>
+</span><span class='line'>       <span class="n">Departments</span><span class="p">.</span><span class="n">DEPARTMENT_NAME</span><span class="p">,</span>
+</span><span class='line'>       <span class="n">Departments</span><span class="p">.</span><span class="n">MANAGER_ID</span><span class="p">,</span>
+</span><span class='line'>       <span class="n">Departments</span><span class="p">.</span><span class="n">LOCATION_ID</span>
+</span><span class='line'><span class="k">FROM</span> <span class="n">DEPARTMENTS</span> <span class="n">Departments</span>
+</span><span class='line'><span class="k">WHERE</span> <span class="n">Departments</span><span class="p">.</span><span class="n">DEPARTMENT_ID</span> <span class="o">=</span> <span class="p">:</span><span class="n">varDeptId</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>创建Bind Variables：varDeptId  <br/>
+<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130419140752.jpg" alt="" /></p>
+
+<p>在查询VO时，通过如下代码控制即可实现：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">DCIteratorBinding</span> <span class="n">dc</span> <span class="o">=</span> <span class="n">ADFUtils</span><span class="o">.</span><span class="na">findIterator</span><span class="o">(</span><span class="s">&quot;DepartmentsView1Iterator&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="n">ViewObject</span> <span class="n">vo</span> <span class="o">=</span> <span class="n">dc</span><span class="o">.</span><span class="na">getViewObject</span><span class="o">();</span>
+</span><span class='line'><span class="n">ViewCriteria</span> <span class="n">vc</span> <span class="o">=</span> <span class="n">vo</span><span class="o">.</span><span class="na">createViewCriteria</span><span class="o">();</span>
+</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">setNamedWhereClauseParam</span><span class="o">(</span><span class="s">&quot;varDeptId&quot;</span><span class="o">,</span> <span class="mi">20</span><span class="o">);</span>
+</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>以上几种方法均可实现改变VO查询条件进行动态查询，各有灵活度，目前没有比较三种方式带来的性能影响，可以根据个人习惯采用。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1235,61 +1412,6 @@ E:\Oracle\Middleware11.1.2.3.0\jdk160_24\bin\jvisualvm.exe
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013-01-30/firefox%E5%8D%87%E7%BA%A718%E4%B9%8B%E5%90%8Eautoproxy%E5%A4%B1%E6%95%88goagent%E6%97%A0%E6%B3%95%E4%BD%BF%E7%94%A8%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/">Firefox升级18之后,autoproxy失效,goagent无法使用问题解决</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-30T00:00:00+08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013-01-30/firefox%E5%8D%87%E7%BA%A718%E4%B9%8B%E5%90%8Eautoproxy%E5%A4%B1%E6%95%88goagent%E6%97%A0%E6%B3%95%E4%BD%BF%E7%94%A8%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>之前使用的是17版本的firefox，配置好了autoproxy使用goagent能够正常代理，之后升级firefox18之后，却代理不了了。重装过firefox,重装过goagent，重装过autoproxy都无效。</p>
-
-<p>试过使用IE，设置代理127.0.0.1:8087+goagent可以正常代理，因此排除goagent问题。</p>
-
-<p>后来查看firefox18的版本说明，才发现由于安全性禁用了部分功能猜测可能由此导致无法代理</p>
-
-<p>firefox说明：
-<blockquote>禁用不安全内容：Firefox 可以禁用HTTPS安全网页中的不安全内容，来维护用户在互联网通信中的隐私。目前可以在about:config中启用这个特性。</blockquote>
-打开about:config，过滤栏输入：proxy  修改如下选项</p>
-
-<p>extensions.autoproxy.proxyMode   <strong>auto</strong>
-network.proxy.type               <strong>1</strong>
-signon.autologin.proxy           <strong>true</strong>
-即可解决问题。</p>
-
-<p>&nbsp;</p>
-
-<p>&nbsp;</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -1318,7 +1440,7 @@ signon.autologin.proxy           <strong>true</strong>
 <li class='category'><a href='/blog/categories/mysql/'>mysql (1)</a></li>
 <li class='category'><a href='/blog/categories/octopress/'>octopress (1)</a></li>
 <li class='category'><a href='/blog/categories/others/'>others (1)</a></li>
-<li class='category'><a href='/blog/categories/webcenter/'>webcenter (1)</a></li>
+<li class='category'><a href='/blog/categories/webcenter/'>webcenter (2)</a></li>
 <li class='category'><a href='/blog/categories/weblogic/'>weblogic (1)</a></li>
 <li class='category'><a href='/blog/categories/wordpress/'>wordpress (1)</a></li>
 
@@ -1327,6 +1449,10 @@ signon.autologin.proxy           <strong>true</strong>
 <section>
   <h1>最新发表</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014-08-26/webcenter-portaldiao-yong-document-service/">webcenter portal调用document service</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014-08-25/chuang-jian-content-repositoryshi-chu-xian-cuo-wu/">创建Content Repository时出现错误</a>
@@ -1342,10 +1468,6 @@ signon.autologin.proxy           <strong>true</strong>
     
       <li class="post">
         <a href="/blog/2014-02-07/%E5%AE%9A%E5%88%B6EL/">定制EL function</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013-11-09/you-yi-wai-duan-dian-dao-zhi-oracle11gqi-dong-bu-qi-lai-de-wen-ti-jie-jue/">由意外断电导致oracle11g启动不起来的问题解决</a>
       </li>
     
   </ul>

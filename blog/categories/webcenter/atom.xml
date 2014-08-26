@@ -4,7 +4,7 @@
   <title><![CDATA[Category: webcenter | 邓德昭的技术博客]]></title>
   <link href="http://dengdezhao.cn/blog/categories/webcenter/atom.xml" rel="self"/>
   <link href="http://dengdezhao.cn/"/>
-  <updated>2014-08-25T20:28:00+08:00</updated>
+  <updated>2014-08-26T18:47:56+08:00</updated>
   <id>http://dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
@@ -12,6 +12,40 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[webcenter portal调用document service]]></title>
+    <link href="http://dengdezhao.cn/blog/2014-08-26/webcenter-portaldiao-yong-document-service/"/>
+    <updated>2014-08-26T18:46:00+08:00</updated>
+    <id>http://dengdezhao.cn/blog/2014-08-26/webcenter-portaldiao-yong-document-service</id>
+    <content type="html"><![CDATA[<p><strong>平台:</strong> webcenter 1.8</p>
+
+<h4><i class="icon-file"></i> Webcenter Contents端配置</h4>
+
+<blockquote><p><strong>步骤:</strong></p>
+
+<ul>
+<li>进入webcenter contents http://192.168.15.251:16210/cs/idcplg</li>
+<li>展开administration目录</li>
+<li>Admin Server节点</li>
+<li>Component Manager 里</li>
+<li>开启以下特性<code>FrameworkFolders</code>(原<code>Floder_g</code>，已被<code>FrameworkFolders</code>替代)，<code>WebCenterConfigure</code>, <code>DynamicConverter</code></li>
+<li>重启UCM</li>
+</ul>
+</blockquote>
+
+<h4><i class="icon-file"></i>  Webcenter Portal端配置</h4>
+
+<blockquote><p><strong>进入Portal管理界面:</strong></p>
+
+<ul>
+<li>切换到Portals标签</li>
+<li>Tools and Services菜单里</li>
+<li>设置Documents服务为enabled即可</li>
+</ul>
+</blockquote>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[创建Content Repository时出现错误]]></title>

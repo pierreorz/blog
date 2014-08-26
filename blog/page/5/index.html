@@ -9,7 +9,8 @@
   <meta name="author" content="pierreorz">
 
   
-  <meta name="description" content="EBS并发请求调用procedure时，直接在被调用的procedure中使用fnd_file.put_line即可达到要求； 如果并发请求调用的是oracle reports时，写入日志文件需要使用reports的方法。 在Before/After report Trigger中使用SRW. &hellip;">
+  <meta name="description" content="执行请求时抛出错误Ora-20100：xxxxx. Ora-06512:xxxxx错误，清空临时文件目录$APPLPTMP即可 &nbsp;
+">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,6 +68,46 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012-09-12/ebs%E8%AF%B7%E6%B1%82%E6%89%A7%E8%A1%8C%E6%97%B6%E6%8A%9B%E5%87%BA%E9%94%99%E8%AF%AFora-20100%E5%92%8Cora-06512-%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/">EBS请求执行时抛出错误Ora-20100和Ora-06512 问题解决</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-12T00:00:00+08:00" pubdate data-updated="true">Sep 12<span>th</span>, 2012</time>
+        
+         | <a href="/blog/2012-09-12/ebs%E8%AF%B7%E6%B1%82%E6%89%A7%E8%A1%8C%E6%97%B6%E6%8A%9B%E5%87%BA%E9%94%99%E8%AF%AFora-20100%E5%92%8Cora-06512-%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>执行请求时抛出错误Ora-20100：xxxxx. Ora-06512:xxxxx错误，清空临时文件目录$APPLPTMP即可</p>
+
+<p>&nbsp;</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -630,55 +671,6 @@ id=&#8221;id2&#8221;&gt;<br />
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012-06-26/%E5%85%B3%E4%BA%8Evo%E7%9A%84%E5%8F%AA%E8%AF%BB%E5%8F%AF%E5%86%99%E7%AD%89%E5%B1%9E%E6%80%A7%E8%AE%BE%E7%BD%AE/">关于VO的只读可写等属性设置</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
-        
-         | <a href="/blog/2012-06-26/%E5%85%B3%E4%BA%8Evo%E7%9A%84%E5%8F%AA%E8%AF%BB%E5%8F%AF%E5%86%99%E7%AD%89%E5%B1%9E%E6%80%A7%E8%AE%BE%E7%BD%AE/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>如果生成ViewObject 的时候选择的是只读的VO的话，会发现VO的source里有ReadOnly=&#8221;true&#8221;。<br />
-需求1：在MB中我通过代码拿到这个VO的实例，我想通过以下代码添加Row
-<div>
-<blockquote>Row newRow=Vo.createRow();<br />
-newRow.setAttribute(&#8220;attribute1&#8221;,&#8221;value1&#8221;);<br />
-newRow.setAttribute(&#8220;attribute2&#8221;,&#8221;value2&#8221;);<br />
-newRow.setAttribute(&#8220;attribute3&#8221;,&#8221;value3&#8221;);<br />
-Vo.insertRow(newRow);</blockquote>
-</div>
-最终发现，只读VO无法插入数据。怎么办？将ReadOnly改成&#8221;false&#8221;之后测试，发现满足需求~！<br />
-需求2：满足需求1之后发现，Vo里的确插入数据了。如果页面上有保存按钮，也会将这个数据更改到数据库，而这个数据只是需要在MB中起过渡作用，不必将newRow的数据postChange到DB，怎么办？<br />
-VO里 这个属性DeleteParticipant 立功了。 DeleteParticipant就是控制数据是否保存到DB的。设置 DeleteParticipant=&#8221;false&#8221;发现满足了需求！</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/6/">&larr; Older</a>
@@ -707,7 +699,7 @@ VO里 这个属性DeleteParticipant 立功了。 DeleteParticipant就是控制�
 <li class='category'><a href='/blog/categories/mysql/'>mysql (1)</a></li>
 <li class='category'><a href='/blog/categories/octopress/'>octopress (1)</a></li>
 <li class='category'><a href='/blog/categories/others/'>others (1)</a></li>
-<li class='category'><a href='/blog/categories/webcenter/'>webcenter (1)</a></li>
+<li class='category'><a href='/blog/categories/webcenter/'>webcenter (2)</a></li>
 <li class='category'><a href='/blog/categories/weblogic/'>weblogic (1)</a></li>
 <li class='category'><a href='/blog/categories/wordpress/'>wordpress (1)</a></li>
 
@@ -716,6 +708,10 @@ VO里 这个属性DeleteParticipant 立功了。 DeleteParticipant就是控制�
 <section>
   <h1>最新发表</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014-08-26/webcenter-portaldiao-yong-document-service/">webcenter portal调用document service</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014-08-25/chuang-jian-content-repositoryshi-chu-xian-cuo-wu/">创建Content Repository时出现错误</a>
@@ -731,10 +727,6 @@ VO里 这个属性DeleteParticipant 立功了。 DeleteParticipant就是控制�
     
       <li class="post">
         <a href="/blog/2014-02-07/%E5%AE%9A%E5%88%B6EL/">定制EL function</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013-11-09/you-yi-wai-duan-dian-dao-zhi-oracle11gqi-dong-bu-qi-lai-de-wen-ti-jie-jue/">由意外断电导致oracle11g启动不起来的问题解决</a>
       </li>
     
   </ul>

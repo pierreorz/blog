@@ -4,7 +4,7 @@
   <title><![CDATA[邓德昭的技术博客]]></title>
   <link href="http://dengdezhao.cn/atom.xml" rel="self"/>
   <link href="http://dengdezhao.cn/"/>
-  <updated>2014-08-25T20:28:00+08:00</updated>
+  <updated>2014-08-26T18:47:56+08:00</updated>
   <id>http://dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
@@ -12,6 +12,40 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[webcenter portal调用document service]]></title>
+    <link href="http://dengdezhao.cn/blog/2014-08-26/webcenter-portaldiao-yong-document-service/"/>
+    <updated>2014-08-26T18:46:00+08:00</updated>
+    <id>http://dengdezhao.cn/blog/2014-08-26/webcenter-portaldiao-yong-document-service</id>
+    <content type="html"><![CDATA[<p><strong>平台:</strong> webcenter 1.8</p>
+
+<h4><i class="icon-file"></i> Webcenter Contents端配置</h4>
+
+<blockquote><p><strong>步骤:</strong></p>
+
+<ul>
+<li>进入webcenter contents http://192.168.15.251:16210/cs/idcplg</li>
+<li>展开administration目录</li>
+<li>Admin Server节点</li>
+<li>Component Manager 里</li>
+<li>开启以下特性<code>FrameworkFolders</code>(原<code>Floder_g</code>，已被<code>FrameworkFolders</code>替代)，<code>WebCenterConfigure</code>, <code>DynamicConverter</code></li>
+<li>重启UCM</li>
+</ul>
+</blockquote>
+
+<h4><i class="icon-file"></i>  Webcenter Portal端配置</h4>
+
+<blockquote><p><strong>进入Portal管理界面:</strong></p>
+
+<ul>
+<li>切换到Portals标签</li>
+<li>Tools and Services菜单里</li>
+<li>设置Documents服务为enabled即可</li>
+</ul>
+</blockquote>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[创建Content Repository时出现错误]]></title>
@@ -1519,152 +1553,6 @@ SocketHostAddressSecurityFilter=127.0.0.1|192.168.15.163|<code>*.*.*.*</code>即
 
 
 <p>PS：此例子频繁地查询VO，在实际项目中会对服务器造成很大的压力，只为展示<code>&lt;af:poll&gt;</code>控件作用，不建议使用此方案。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[ADF学习总结(一)]]></title>
-    <link href="http://dengdezhao.cn/blog/2013-04-19/adfxue-xi-zong-jie-%5B%3F%5D/"/>
-    <updated>2013-04-19T14:15:00+08:00</updated>
-    <id>http://dengdezhao.cn/blog/2013-04-19/adfxue-xi-zong-jie-[?]</id>
-    <content type="html"><![CDATA[<h4>改变VO查询条件</h4>
-
-<ul>
-<li>使用WhereClause改变查询条件</li>
-<li>使用Criteria改变查询条件</li>
-<li>使用Bind Variables改变查询条件</li>
-</ul>
-
-
-<h4>使用WhereClause改变查询条件</h4>
-
-<ul>
-<li><strong>setWhereClause</strong></li>
-</ul>
-
-
-<p>通过VO对象的setWhereClause方法改变查询条件</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">DCIteratorBinding</span> <span class="n">dc</span> <span class="o">=</span> <span class="n">ADFUtils</span><span class="o">.</span><span class="na">findIterator</span><span class="o">(</span><span class="s">&quot;DepartmentsView1Iterator&quot;</span><span class="o">);</span>
-</span><span class='line'><span class="n">ViewObject</span> <span class="n">vo</span> <span class="o">=</span> <span class="n">dc</span><span class="o">.</span><span class="na">getViewObject</span><span class="o">();</span>
-</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">setWhereClause</span><span class="o">(</span><span class="s">&quot; 1=1 &quot;</span><span class="o">);</span>
-</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">();</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li><strong>addWhereClause</strong></li>
-</ul>
-
-
-<p>addWhereClause是在原有whereClause基础上添加新的查询条件；  <br/>
-跟setWhereClause替换原有whereClaue不同；</p>
-
-<h4>使用ViewCriteria改变查询条件</h4>
-
-<ul>
-<li><strong>使用定义好的ViewCriteria</strong></li>
-</ul>
-
-
-<p>事先在创建VO的时候，定义好几种Criteria：DepartmentsViewCriteria  <br/>
-<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130419134617.jpg" alt="" /></p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">DCIteratorBinding</span> <span class="n">dc</span> <span class="o">=</span> <span class="n">ADFUtils</span><span class="o">.</span><span class="na">findIterator</span><span class="o">(</span><span class="s">&quot;DepartmentsView1Iterator&quot;</span><span class="o">);</span>
-</span><span class='line'><span class="n">ViewObject</span> <span class="n">vo</span> <span class="o">=</span> <span class="n">dc</span><span class="o">.</span><span class="na">getViewObject</span><span class="o">();</span>
-</span><span class='line'><span class="n">ViewCriteriaManager</span> <span class="n">vcm</span><span class="o">=</span><span class="n">vo</span><span class="o">.</span><span class="na">getViewCriteriaManager</span><span class="o">();</span>
-</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">applyViewCriteria</span><span class="o">(</span><span class="n">vcm</span><span class="o">.</span><span class="na">getViewCriteria</span><span class="o">(</span><span class="s">&quot;DepartmentsViewCriteria&quot;</span><span class="o">));</span>
-</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">();</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li><strong>动态创建ViewCriteria</strong></li>
-</ul>
-
-
-<p>如果事先没有在VO中定义好ViewCriteria，也可以在MB代码中动态创建</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">DCIteratorBinding</span> <span class="n">dc</span> <span class="o">=</span> <span class="n">ADFUtils</span><span class="o">.</span><span class="na">findIterator</span><span class="o">(</span><span class="s">&quot;DepartmentsView1Iterator&quot;</span><span class="o">);</span>
-</span><span class='line'><span class="n">ViewObject</span> <span class="n">vo</span> <span class="o">=</span> <span class="n">dc</span><span class="o">.</span><span class="na">getViewObject</span><span class="o">();</span>
-</span><span class='line'><span class="n">ViewCriteria</span> <span class="n">vc</span> <span class="o">=</span> <span class="n">vo</span><span class="o">.</span><span class="na">createViewCriteria</span><span class="o">();</span>
-</span><span class='line'><span class="n">ViewCriteriaRow</span> <span class="n">vcr</span> <span class="o">=</span> <span class="n">vc</span><span class="o">.</span><span class="na">createViewCriteriaRow</span><span class="o">();</span>
-</span><span class='line'><span class="n">vcr</span><span class="o">.</span><span class="na">setConjunction</span><span class="o">(</span><span class="n">ViewCriteriaRow</span><span class="o">.</span><span class="na">VC_CONJ_AND</span><span class="o">);</span>
-</span><span class='line'><span class="n">vcr</span><span class="o">.</span><span class="na">setAttribute</span><span class="o">(</span><span class="s">&quot;DepartmentId&quot;</span><span class="o">,</span> <span class="s">&quot;20&quot;</span><span class="o">);</span>
-</span><span class='line'><span class="n">vc</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">vcr</span><span class="o">);</span>
-</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">applyViewCriteria</span><span class="o">(</span><span class="n">vc</span><span class="o">);</span>
-</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">();</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>使用Bind Variables改变查询条件</h4>
-
-<ul>
-<li><strong>使用Bind Variables结合ViewCriteria</strong></li>
-</ul>
-
-
-<p>参照以上定义ViewCriteria时，使用Bind Variables。</p>
-
-<ul>
-<li><strong>使用Bind Variables结合SQL</strong></li>
-</ul>
-
-
-<p>在VO的SQL中使用Bind Variables；</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">SELECT</span> <span class="n">Departments</span><span class="p">.</span><span class="n">DEPARTMENT_ID</span><span class="p">,</span>
-</span><span class='line'>       <span class="n">Departments</span><span class="p">.</span><span class="n">DEPARTMENT_NAME</span><span class="p">,</span>
-</span><span class='line'>       <span class="n">Departments</span><span class="p">.</span><span class="n">MANAGER_ID</span><span class="p">,</span>
-</span><span class='line'>       <span class="n">Departments</span><span class="p">.</span><span class="n">LOCATION_ID</span>
-</span><span class='line'><span class="k">FROM</span> <span class="n">DEPARTMENTS</span> <span class="n">Departments</span>
-</span><span class='line'><span class="k">WHERE</span> <span class="n">Departments</span><span class="p">.</span><span class="n">DEPARTMENT_ID</span> <span class="o">=</span> <span class="p">:</span><span class="n">varDeptId</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>创建Bind Variables：varDeptId  <br/>
-<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130419140752.jpg" alt="" /></p>
-
-<p>在查询VO时，通过如下代码控制即可实现：</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">DCIteratorBinding</span> <span class="n">dc</span> <span class="o">=</span> <span class="n">ADFUtils</span><span class="o">.</span><span class="na">findIterator</span><span class="o">(</span><span class="s">&quot;DepartmentsView1Iterator&quot;</span><span class="o">);</span>
-</span><span class='line'><span class="n">ViewObject</span> <span class="n">vo</span> <span class="o">=</span> <span class="n">dc</span><span class="o">.</span><span class="na">getViewObject</span><span class="o">();</span>
-</span><span class='line'><span class="n">ViewCriteria</span> <span class="n">vc</span> <span class="o">=</span> <span class="n">vo</span><span class="o">.</span><span class="na">createViewCriteria</span><span class="o">();</span>
-</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">setNamedWhereClauseParam</span><span class="o">(</span><span class="s">&quot;varDeptId&quot;</span><span class="o">,</span> <span class="mi">20</span><span class="o">);</span>
-</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">();</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>以上几种方法均可实现改变VO查询条件进行动态查询，各有灵活度，目前没有比较三种方式带来的性能影响，可以根据个人习惯采用。</p>
 ]]></content>
   </entry>
   

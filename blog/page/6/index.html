@@ -9,8 +9,9 @@
   <meta name="author" content="pierreorz">
 
   
-  <meta name="description" content="页面的 selectBooleanCheckbox 选择后，总提示 不是数字（组件value是 true 或 false,数据库存的是Number），怎么解决 方案有三个
-1。如果是基于表的Number字段(假设字段名是Flag，值是1或者0），想生成selectBooleanCheckbox ， &hellip;">
+  <meta name="description" content="如果生成ViewObject 的时候选择的是只读的VO的话，会发现VO的source里有ReadOnly=&#8221;true&#8221;。
+需求1：在MB中我通过代码拿到这个VO的实例，我想通过以下代码添加Row Row newRow=Vo.createRow();
+newRow. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -68,6 +69,55 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012-06-26/%E5%85%B3%E4%BA%8Evo%E7%9A%84%E5%8F%AA%E8%AF%BB%E5%8F%AF%E5%86%99%E7%AD%89%E5%B1%9E%E6%80%A7%E8%AE%BE%E7%BD%AE/">关于VO的只读可写等属性设置</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
+        
+         | <a href="/blog/2012-06-26/%E5%85%B3%E4%BA%8Evo%E7%9A%84%E5%8F%AA%E8%AF%BB%E5%8F%AF%E5%86%99%E7%AD%89%E5%B1%9E%E6%80%A7%E8%AE%BE%E7%BD%AE/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>如果生成ViewObject 的时候选择的是只读的VO的话，会发现VO的source里有ReadOnly=&#8221;true&#8221;。<br />
+需求1：在MB中我通过代码拿到这个VO的实例，我想通过以下代码添加Row
+<div>
+<blockquote>Row newRow=Vo.createRow();<br />
+newRow.setAttribute(&#8220;attribute1&#8221;,&#8221;value1&#8221;);<br />
+newRow.setAttribute(&#8220;attribute2&#8221;,&#8221;value2&#8221;);<br />
+newRow.setAttribute(&#8220;attribute3&#8221;,&#8221;value3&#8221;);<br />
+Vo.insertRow(newRow);</blockquote>
+</div>
+最终发现，只读VO无法插入数据。怎么办？将ReadOnly改成&#8221;false&#8221;之后测试，发现满足需求~！<br />
+需求2：满足需求1之后发现，Vo里的确插入数据了。如果页面上有保存按钮，也会将这个数据更改到数据库，而这个数据只是需要在MB中起过渡作用，不必将newRow的数据postChange到DB，怎么办？<br />
+VO里 这个属性DeleteParticipant 立功了。 DeleteParticipant就是控制数据是否保存到DB的。设置 DeleteParticipant=&#8221;false&#8221;发现满足了需求！</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -689,66 +739,6 @@ vo2.executeQuery();</blockquote>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2011-07-20/%E5%A6%82%E4%BD%95%E8%AE%A9%EF%BC%88lov%EF%BC%89%E7%9A%84%E5%88%9D%E5%A7%8B%E5%80%BC%E6%98%BE%E7%A4%BA%E4%B8%BAblank%E8%80%8C%E4%B8%8D%E6%98%AF%E9%BB%98%E8%AE%A4%E7%9A%84vo%E7%9A%84first-row/">如何让af:inputListOfValues（LOV）的初始值显示为Blank而不是默认的VO的First Row</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-07-20T00:00:00+08:00" pubdate data-updated="true">Jul 20<span>th</span>, 2011</time>
-        
-         | <a href="/blog/2011-07-20/%E5%A6%82%E4%BD%95%E8%AE%A9%EF%BC%88lov%EF%BC%89%E7%9A%84%E5%88%9D%E5%A7%8B%E5%80%BC%E6%98%BE%E7%A4%BA%E4%B8%BAblank%E8%80%8C%E4%B8%8D%E6%98%AF%E9%BB%98%E8%AE%A4%E7%9A%84vo%E7%9A%84first-row/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>目前LOV控件在页面初始化时默认显示的是第一条记录，如果想让LOV初始化的时候不显示记录应该如何设置呢？</p>
-
-<p>方法一. 通过在BackingBean的构造函数里设置LOV的值为空字符串这种做法基本可以达到需求。但总感觉这种方法很别扭，走了弯路。</p>
-
-<p>本文介绍另外一种更为简单的方法。通过EL表达式实现需求。
-<pre class="brush:java">           &lt;af:inputListOfValues id="ilov1"
-                                    popupTitle="Search and Select: #{bindings.CodeType.hints.label}"
-                                    value="#{adfFacesContext.postback == false ? bindings.CodeType.nullValueString : bindings.CodeType.inputValue}"
-                                    label="#{bindings.CodeType.hints.label}"
-                                    model="#{bindings.CodeType.listOfValuesModel}"
-                                    required="#{bindings.CodeType.hints.mandatory}"
-                                    columns="#{bindings.CodeType.hints.displayWidth}"
-                                    shortDesc="#{bindings.CodeType.hints.tooltip}"
-                                    binding="#{backing_pages_frs001.ilov1}"
-                                    valueChangeListener="#{backing_pages_frs001.valueChange}"
-                                    &gt;</pre>
-看这段代码：
-<blockquote>
-<pre>value="#{<span style="color: #ff0000;">adfFacesContext.postback == false ? bindings.CodeType.nullValueString : </span>bindings.CodeType.inputValue}"</pre>
-</blockquote>
-当页面没有postback的时候，给LOV字段的值设为<strong>nullValueString</strong>，即可。</p>
-
-<p>今天太困了。。。先睡了。。。不贴图了~</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/7/">&larr; Older</a>
@@ -777,7 +767,7 @@ vo2.executeQuery();</blockquote>
 <li class='category'><a href='/blog/categories/mysql/'>mysql (1)</a></li>
 <li class='category'><a href='/blog/categories/octopress/'>octopress (1)</a></li>
 <li class='category'><a href='/blog/categories/others/'>others (1)</a></li>
-<li class='category'><a href='/blog/categories/webcenter/'>webcenter (1)</a></li>
+<li class='category'><a href='/blog/categories/webcenter/'>webcenter (2)</a></li>
 <li class='category'><a href='/blog/categories/weblogic/'>weblogic (1)</a></li>
 <li class='category'><a href='/blog/categories/wordpress/'>wordpress (1)</a></li>
 
@@ -786,6 +776,10 @@ vo2.executeQuery();</blockquote>
 <section>
   <h1>最新发表</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014-08-26/webcenter-portaldiao-yong-document-service/">webcenter portal调用document service</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014-08-25/chuang-jian-content-repositoryshi-chu-xian-cuo-wu/">创建Content Repository时出现错误</a>
@@ -801,10 +795,6 @@ vo2.executeQuery();</blockquote>
     
       <li class="post">
         <a href="/blog/2014-02-07/%E5%AE%9A%E5%88%B6EL/">定制EL function</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013-11-09/you-yi-wai-duan-dian-dao-zhi-oracle11gqi-dong-bu-qi-lai-de-wen-ti-jie-jue/">由意外断电导致oracle11g启动不起来的问题解决</a>
       </li>
     
   </ul>

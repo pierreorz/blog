@@ -9,8 +9,8 @@
   <meta name="author" content="pierreorz">
 
   
-  <meta name="description" content="平台：Jdeveloper 9i 异常描述： 在表增加单选checkbox时，在VO中创建transient属性selector,最终在页面中无法勾选checkbox，发现值没法保存到VO中，页面抛出该异常： 1
-2 null - Attribute set for Selector in &hellip;">
+  <meta name="description" content="平台：Jdeveloper 9i 一般实现步骤： 在VO中添加新transient属性selector，updatable设置为always。
+在PG中给table添加singleSelection方法，并绑定view Instance为VO的instance，View &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -68,6 +68,139 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013-06-24/oafdan-xuan-shan-chu-xing-gong-neng/">OAF单选删除行功能</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-24T11:15:00+08:00" pubdate data-updated="true">Jun 24<span>th</span>, 2013</time>
+        
+         | <a href="/blog/2013-06-24/oafdan-xuan-shan-chu-xing-gong-neng/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><hr />
+
+<p>平台：Jdeveloper 9i</p>
+
+<hr />
+
+<p><strong>一般实现步骤：</strong></p>
+
+<ol>
+<li>在VO中添加新transient属性selector，updatable设置为always。</li>
+<li>在PG中给table添加singleSelection方法，并绑定view Instance为VO的instance，View Attribute为刚刚新建的transient属性seletor。</li>
+<li>这样当用户勾选checkbox时，会给transient属性变量赋值为Y，因此，在删除逻辑中循环判断VO中的transient属性，当其为Y时执行remove该行即可实现选择删除功能。  <br/>
+<strong>相关代码如下：</strong></li>
+</ol>
+
+
+<p><strong>CO中processFormRequest里添加代码如下：</strong></p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'> <span class="c1">//当单击deleteBtn按钮时执行AM中的deleteAutoSequenceVO方法    </span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">pageContext</span><span class="o">.</span><span class="na">getParameter</span><span class="o">(</span><span class="s">&quot;deleteBtn&quot;</span><span class="o">)!=</span><span class="kc">null</span><span class="o">)</span>
+</span><span class='line'>    <span class="o">{</span>
+</span><span class='line'>      <span class="n">am</span><span class="o">.</span><span class="na">invokeMethod</span><span class="o">(</span><span class="s">&quot;deleteAutoSequenceVO&quot;</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>AM中代码如下：</strong></p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">deleteAutoSequenceVO</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">OAViewObject</span> <span class="n">vo</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">getChAutoSequenceVO1</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">RowSetIterator</span> <span class="n">iter</span> <span class="o">=</span> <span class="n">vo</span><span class="o">.</span><span class="na">createRowSetIterator</span><span class="o">(</span><span class="s">&quot;delete&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">vo</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="kt">int</span> <span class="n">num</span> <span class="o">=</span> <span class="n">vo</span><span class="o">.</span><span class="na">getRowCount</span><span class="o">();</span>
+</span><span class='line'>            <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class='line'>                <span class="n">Row</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">iter</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+</span><span class='line'>                <span class="k">if</span> <span class="o">(</span><span class="s">&quot;Y&quot;</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">temp</span><span class="o">.</span><span class="na">getAttribute</span><span class="o">(</span><span class="s">&quot;selector&quot;</span><span class="o">)))</span> <span class="o">{</span>
+</span><span class='line'>                    <span class="n">vo</span><span class="o">.</span><span class="na">setCurrentRow</span><span class="o">(</span><span class="n">temp</span><span class="o">);</span>
+</span><span class='line'>                    <span class="n">vo</span><span class="o">.</span><span class="na">removeCurrentRow</span><span class="o">();</span>
+</span><span class='line'>                    <span class="k">break</span><span class="o">;</span>
+</span><span class='line'>                <span class="o">}</span>
+</span><span class='line'>            <span class="o">}</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>        <span class="n">iter</span><span class="o">.</span><span class="na">closeRowSetIterator</span><span class="o">();</span>
+</span><span class='line'>        <span class="k">throw</span> <span class="k">new</span> <span class="nf">OAException</span><span class="o">(</span><span class="s">&quot;删除成功,请点击[保存]按钮生效到数据库.&quot;</span><span class="o">,</span>
+</span><span class='line'>                              <span class="n">OAException</span><span class="o">.</span><span class="na">INFORMATION</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>但是在实际开发中，出现一个很诡异的现象，其它页面单选删除功能都正常，某一页面单选之后却无法赋值Y给VO中的transient变量，推测可能是VO用的是复合主键或者其它框架BUG导致，无奈给单选再添加手工赋值功能。</p>
+
+<p>选择单选控件，将其Client Action中的Action Type设置为firePartialAction Submit设置为false。准备在用户单选时调用自定义方法，给变量赋值。</p>
+
+<p><strong>CO中processFormRequest里添加如下方法</strong></p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="s">&quot;update&quot;</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">pageContext</span><span class="o">.</span><span class="na">getParameter</span><span class="o">(</span><span class="n">OAWebBeanConstants</span><span class="o">.</span><span class="na">EVENT_PARAM</span><span class="o">)))</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">String</span> <span class="n">rowRef</span> <span class="o">=</span>
+</span><span class='line'>                <span class="n">pageContext</span><span class="o">.</span><span class="na">getParameter</span><span class="o">(</span><span class="n">OAWebBeanConstants</span><span class="o">.</span><span class="na">EVENT_SOURCE_ROW_REFERENCE</span><span class="o">);</span>
+</span><span class='line'>            <span class="n">Row</span> <span class="n">currentRow</span> <span class="o">=</span> <span class="n">am</span><span class="o">.</span><span class="na">findRowByRef</span><span class="o">(</span><span class="n">rowRef</span><span class="o">);</span>
+</span><span class='line'>            <span class="n">currentRow</span><span class="o">.</span><span class="na">setAttribute</span><span class="o">(</span><span class="s">&quot;selector&quot;</span><span class="o">,</span> <span class="s">&quot;Y&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这样便实现了单选删除功能。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -958,181 +1091,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013-04-19/adfxue-xi-zong-jie-%5B%3F%5D/">ADF学习总结(一)</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-04-19T14:15:00+08:00" pubdate data-updated="true">Apr 19<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013-04-19/adfxue-xi-zong-jie-%5B%3F%5D/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h4>改变VO查询条件</h4>
-
-<ul>
-<li>使用WhereClause改变查询条件</li>
-<li>使用Criteria改变查询条件</li>
-<li>使用Bind Variables改变查询条件</li>
-</ul>
-
-
-<h4>使用WhereClause改变查询条件</h4>
-
-<ul>
-<li><strong>setWhereClause</strong></li>
-</ul>
-
-
-<p>通过VO对象的setWhereClause方法改变查询条件</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">DCIteratorBinding</span> <span class="n">dc</span> <span class="o">=</span> <span class="n">ADFUtils</span><span class="o">.</span><span class="na">findIterator</span><span class="o">(</span><span class="s">&quot;DepartmentsView1Iterator&quot;</span><span class="o">);</span>
-</span><span class='line'><span class="n">ViewObject</span> <span class="n">vo</span> <span class="o">=</span> <span class="n">dc</span><span class="o">.</span><span class="na">getViewObject</span><span class="o">();</span>
-</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">setWhereClause</span><span class="o">(</span><span class="s">&quot; 1=1 &quot;</span><span class="o">);</span>
-</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">();</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li><strong>addWhereClause</strong></li>
-</ul>
-
-
-<p>addWhereClause是在原有whereClause基础上添加新的查询条件；  <br/>
-跟setWhereClause替换原有whereClaue不同；</p>
-
-<h4>使用ViewCriteria改变查询条件</h4>
-
-<ul>
-<li><strong>使用定义好的ViewCriteria</strong></li>
-</ul>
-
-
-<p>事先在创建VO的时候，定义好几种Criteria：DepartmentsViewCriteria  <br/>
-<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130419134617.jpg" alt="" /></p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">DCIteratorBinding</span> <span class="n">dc</span> <span class="o">=</span> <span class="n">ADFUtils</span><span class="o">.</span><span class="na">findIterator</span><span class="o">(</span><span class="s">&quot;DepartmentsView1Iterator&quot;</span><span class="o">);</span>
-</span><span class='line'><span class="n">ViewObject</span> <span class="n">vo</span> <span class="o">=</span> <span class="n">dc</span><span class="o">.</span><span class="na">getViewObject</span><span class="o">();</span>
-</span><span class='line'><span class="n">ViewCriteriaManager</span> <span class="n">vcm</span><span class="o">=</span><span class="n">vo</span><span class="o">.</span><span class="na">getViewCriteriaManager</span><span class="o">();</span>
-</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">applyViewCriteria</span><span class="o">(</span><span class="n">vcm</span><span class="o">.</span><span class="na">getViewCriteria</span><span class="o">(</span><span class="s">&quot;DepartmentsViewCriteria&quot;</span><span class="o">));</span>
-</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">();</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li><strong>动态创建ViewCriteria</strong></li>
-</ul>
-
-
-<p>如果事先没有在VO中定义好ViewCriteria，也可以在MB代码中动态创建</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">DCIteratorBinding</span> <span class="n">dc</span> <span class="o">=</span> <span class="n">ADFUtils</span><span class="o">.</span><span class="na">findIterator</span><span class="o">(</span><span class="s">&quot;DepartmentsView1Iterator&quot;</span><span class="o">);</span>
-</span><span class='line'><span class="n">ViewObject</span> <span class="n">vo</span> <span class="o">=</span> <span class="n">dc</span><span class="o">.</span><span class="na">getViewObject</span><span class="o">();</span>
-</span><span class='line'><span class="n">ViewCriteria</span> <span class="n">vc</span> <span class="o">=</span> <span class="n">vo</span><span class="o">.</span><span class="na">createViewCriteria</span><span class="o">();</span>
-</span><span class='line'><span class="n">ViewCriteriaRow</span> <span class="n">vcr</span> <span class="o">=</span> <span class="n">vc</span><span class="o">.</span><span class="na">createViewCriteriaRow</span><span class="o">();</span>
-</span><span class='line'><span class="n">vcr</span><span class="o">.</span><span class="na">setConjunction</span><span class="o">(</span><span class="n">ViewCriteriaRow</span><span class="o">.</span><span class="na">VC_CONJ_AND</span><span class="o">);</span>
-</span><span class='line'><span class="n">vcr</span><span class="o">.</span><span class="na">setAttribute</span><span class="o">(</span><span class="s">&quot;DepartmentId&quot;</span><span class="o">,</span> <span class="s">&quot;20&quot;</span><span class="o">);</span>
-</span><span class='line'><span class="n">vc</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">vcr</span><span class="o">);</span>
-</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">applyViewCriteria</span><span class="o">(</span><span class="n">vc</span><span class="o">);</span>
-</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">();</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>使用Bind Variables改变查询条件</h4>
-
-<ul>
-<li><strong>使用Bind Variables结合ViewCriteria</strong></li>
-</ul>
-
-
-<p>参照以上定义ViewCriteria时，使用Bind Variables。</p>
-
-<ul>
-<li><strong>使用Bind Variables结合SQL</strong></li>
-</ul>
-
-
-<p>在VO的SQL中使用Bind Variables；</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="k">SELECT</span> <span class="n">Departments</span><span class="p">.</span><span class="n">DEPARTMENT_ID</span><span class="p">,</span>
-</span><span class='line'>       <span class="n">Departments</span><span class="p">.</span><span class="n">DEPARTMENT_NAME</span><span class="p">,</span>
-</span><span class='line'>       <span class="n">Departments</span><span class="p">.</span><span class="n">MANAGER_ID</span><span class="p">,</span>
-</span><span class='line'>       <span class="n">Departments</span><span class="p">.</span><span class="n">LOCATION_ID</span>
-</span><span class='line'><span class="k">FROM</span> <span class="n">DEPARTMENTS</span> <span class="n">Departments</span>
-</span><span class='line'><span class="k">WHERE</span> <span class="n">Departments</span><span class="p">.</span><span class="n">DEPARTMENT_ID</span> <span class="o">=</span> <span class="p">:</span><span class="n">varDeptId</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>创建Bind Variables：varDeptId  <br/>
-<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130419140752.jpg" alt="" /></p>
-
-<p>在查询VO时，通过如下代码控制即可实现：</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">DCIteratorBinding</span> <span class="n">dc</span> <span class="o">=</span> <span class="n">ADFUtils</span><span class="o">.</span><span class="na">findIterator</span><span class="o">(</span><span class="s">&quot;DepartmentsView1Iterator&quot;</span><span class="o">);</span>
-</span><span class='line'><span class="n">ViewObject</span> <span class="n">vo</span> <span class="o">=</span> <span class="n">dc</span><span class="o">.</span><span class="na">getViewObject</span><span class="o">();</span>
-</span><span class='line'><span class="n">ViewCriteria</span> <span class="n">vc</span> <span class="o">=</span> <span class="n">vo</span><span class="o">.</span><span class="na">createViewCriteria</span><span class="o">();</span>
-</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">setNamedWhereClauseParam</span><span class="o">(</span><span class="s">&quot;varDeptId&quot;</span><span class="o">,</span> <span class="mi">20</span><span class="o">);</span>
-</span><span class='line'><span class="n">vo</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">();</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>以上几种方法均可实现改变VO查询条件进行动态查询，各有灵活度，目前没有比较三种方式带来的性能影响，可以根据个人习惯采用。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -1161,7 +1119,7 @@
 <li class='category'><a href='/blog/categories/mysql/'>mysql (1)</a></li>
 <li class='category'><a href='/blog/categories/octopress/'>octopress (1)</a></li>
 <li class='category'><a href='/blog/categories/others/'>others (1)</a></li>
-<li class='category'><a href='/blog/categories/webcenter/'>webcenter (1)</a></li>
+<li class='category'><a href='/blog/categories/webcenter/'>webcenter (2)</a></li>
 <li class='category'><a href='/blog/categories/weblogic/'>weblogic (1)</a></li>
 <li class='category'><a href='/blog/categories/wordpress/'>wordpress (1)</a></li>
 
@@ -1170,6 +1128,10 @@
 <section>
   <h1>最新发表</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014-08-26/webcenter-portaldiao-yong-document-service/">webcenter portal调用document service</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014-08-25/chuang-jian-content-repositoryshi-chu-xian-cuo-wu/">创建Content Repository时出现错误</a>
@@ -1185,10 +1147,6 @@
     
       <li class="post">
         <a href="/blog/2014-02-07/%E5%AE%9A%E5%88%B6EL/">定制EL function</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013-11-09/you-yi-wai-duan-dian-dao-zhi-oracle11gqi-dong-bu-qi-lai-de-wen-ti-jie-jue/">由意外断电导致oracle11g启动不起来的问题解决</a>
       </li>
     
   </ul>

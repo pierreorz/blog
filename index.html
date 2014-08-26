@@ -9,8 +9,10 @@
   <meta name="author" content="pierreorz">
 
   
-  <meta name="description" content="创建Content Repository时出现错误： NOTE: Unable to load content server metadata model using GET_DOC_METADATA_INFO.
-Permission denied. Address &#8216;XX.XX.XX &hellip;">
+  <meta name="description" content="平台: webcenter 1.8 Webcenter Contents端配置 步骤: 进入webcenter contents http://192.168.15.251:16210/cs/idcplg
+展开administration目录
+Admin Server节点
+Component &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -68,6 +70,69 @@ Permission denied. Address &#8216;XX.XX.XX &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014-08-26/webcenter-portaldiao-yong-document-service/">Webcenter Portal调用document Service</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-26T18:46:00+08:00" pubdate data-updated="true">Aug 26<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014-08-26/webcenter-portaldiao-yong-document-service/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><strong>平台:</strong> webcenter 1.8</p>
+
+<h4><i class="icon-file"></i> Webcenter Contents端配置</h4>
+
+<blockquote><p><strong>步骤:</strong></p>
+
+<ul>
+<li>进入webcenter contents http://192.168.15.251:16210/cs/idcplg</li>
+<li>展开administration目录</li>
+<li>Admin Server节点</li>
+<li>Component Manager 里</li>
+<li>开启以下特性<code>FrameworkFolders</code>(原<code>Floder_g</code>，已被<code>FrameworkFolders</code>替代)，<code>WebCenterConfigure</code>, <code>DynamicConverter</code></li>
+<li>重启UCM</li>
+</ul>
+</blockquote>
+
+<h4><i class="icon-file"></i>  Webcenter Portal端配置</h4>
+
+<blockquote><p><strong>进入Portal管理界面:</strong></p>
+
+<ul>
+<li>切换到Portals标签</li>
+<li>Tools and Services菜单里</li>
+<li>设置Documents服务为enabled即可</li>
+</ul>
+</blockquote>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1107,139 +1172,6 @@ SocketHostAddressSecurityFilter=127.0.0.1|192.168.15.163|<code>*.*.*.*</code>即
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013-06-24/oafdan-xuan-shan-chu-xing-gong-neng/">OAF单选删除行功能</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-06-24T11:15:00+08:00" pubdate data-updated="true">Jun 24<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013-06-24/oafdan-xuan-shan-chu-xing-gong-neng/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><hr />
-
-<p>平台：Jdeveloper 9i</p>
-
-<hr />
-
-<p><strong>一般实现步骤：</strong></p>
-
-<ol>
-<li>在VO中添加新transient属性selector，updatable设置为always。</li>
-<li>在PG中给table添加singleSelection方法，并绑定view Instance为VO的instance，View Attribute为刚刚新建的transient属性seletor。</li>
-<li>这样当用户勾选checkbox时，会给transient属性变量赋值为Y，因此，在删除逻辑中循环判断VO中的transient属性，当其为Y时执行remove该行即可实现选择删除功能。  <br/>
-<strong>相关代码如下：</strong></li>
-</ol>
-
-
-<p><strong>CO中processFormRequest里添加代码如下：</strong></p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'> <span class="c1">//当单击deleteBtn按钮时执行AM中的deleteAutoSequenceVO方法    </span>
-</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">pageContext</span><span class="o">.</span><span class="na">getParameter</span><span class="o">(</span><span class="s">&quot;deleteBtn&quot;</span><span class="o">)!=</span><span class="kc">null</span><span class="o">)</span>
-</span><span class='line'>    <span class="o">{</span>
-</span><span class='line'>      <span class="n">am</span><span class="o">.</span><span class="na">invokeMethod</span><span class="o">(</span><span class="s">&quot;deleteAutoSequenceVO&quot;</span><span class="o">);</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><strong>AM中代码如下：</strong></p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">deleteAutoSequenceVO</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">OAViewObject</span> <span class="n">vo</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">getChAutoSequenceVO1</span><span class="o">();</span>
-</span><span class='line'>        <span class="n">RowSetIterator</span> <span class="n">iter</span> <span class="o">=</span> <span class="n">vo</span><span class="o">.</span><span class="na">createRowSetIterator</span><span class="o">(</span><span class="s">&quot;delete&quot;</span><span class="o">);</span>
-</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">vo</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>            <span class="kt">int</span> <span class="n">num</span> <span class="o">=</span> <span class="n">vo</span><span class="o">.</span><span class="na">getRowCount</span><span class="o">();</span>
-</span><span class='line'>            <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
-</span><span class='line'>                <span class="n">Row</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">iter</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
-</span><span class='line'>                <span class="k">if</span> <span class="o">(</span><span class="s">&quot;Y&quot;</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">temp</span><span class="o">.</span><span class="na">getAttribute</span><span class="o">(</span><span class="s">&quot;selector&quot;</span><span class="o">)))</span> <span class="o">{</span>
-</span><span class='line'>                    <span class="n">vo</span><span class="o">.</span><span class="na">setCurrentRow</span><span class="o">(</span><span class="n">temp</span><span class="o">);</span>
-</span><span class='line'>                    <span class="n">vo</span><span class="o">.</span><span class="na">removeCurrentRow</span><span class="o">();</span>
-</span><span class='line'>                    <span class="k">break</span><span class="o">;</span>
-</span><span class='line'>                <span class="o">}</span>
-</span><span class='line'>            <span class="o">}</span>
-</span><span class='line'>        <span class="o">}</span>
-</span><span class='line'>        <span class="n">iter</span><span class="o">.</span><span class="na">closeRowSetIterator</span><span class="o">();</span>
-</span><span class='line'>        <span class="k">throw</span> <span class="k">new</span> <span class="nf">OAException</span><span class="o">(</span><span class="s">&quot;删除成功,请点击[保存]按钮生效到数据库.&quot;</span><span class="o">,</span>
-</span><span class='line'>                              <span class="n">OAException</span><span class="o">.</span><span class="na">INFORMATION</span><span class="o">);</span>
-</span><span class='line'>    <span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>但是在实际开发中，出现一个很诡异的现象，其它页面单选删除功能都正常，某一页面单选之后却无法赋值Y给VO中的transient变量，推测可能是VO用的是复合主键或者其它框架BUG导致，无奈给单选再添加手工赋值功能。</p>
-
-<p>选择单选控件，将其Client Action中的Action Type设置为firePartialAction Submit设置为false。准备在用户单选时调用自定义方法，给变量赋值。</p>
-
-<p><strong>CO中processFormRequest里添加如下方法</strong></p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="s">&quot;update&quot;</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">pageContext</span><span class="o">.</span><span class="na">getParameter</span><span class="o">(</span><span class="n">OAWebBeanConstants</span><span class="o">.</span><span class="na">EVENT_PARAM</span><span class="o">)))</span> <span class="o">{</span>
-</span><span class='line'>            <span class="n">String</span> <span class="n">rowRef</span> <span class="o">=</span>
-</span><span class='line'>                <span class="n">pageContext</span><span class="o">.</span><span class="na">getParameter</span><span class="o">(</span><span class="n">OAWebBeanConstants</span><span class="o">.</span><span class="na">EVENT_SOURCE_ROW_REFERENCE</span><span class="o">);</span>
-</span><span class='line'>            <span class="n">Row</span> <span class="n">currentRow</span> <span class="o">=</span> <span class="n">am</span><span class="o">.</span><span class="na">findRowByRef</span><span class="o">(</span><span class="n">rowRef</span><span class="o">);</span>
-</span><span class='line'>            <span class="n">currentRow</span><span class="o">.</span><span class="na">setAttribute</span><span class="o">(</span><span class="s">&quot;selector&quot;</span><span class="o">,</span> <span class="s">&quot;Y&quot;</span><span class="o">);</span>
-</span><span class='line'>        <span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>这样便实现了单选删除功能。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1266,7 +1198,7 @@ SocketHostAddressSecurityFilter=127.0.0.1|192.168.15.163|<code>*.*.*.*</code>即
 <li class='category'><a href='/blog/categories/mysql/'>mysql (1)</a></li>
 <li class='category'><a href='/blog/categories/octopress/'>octopress (1)</a></li>
 <li class='category'><a href='/blog/categories/others/'>others (1)</a></li>
-<li class='category'><a href='/blog/categories/webcenter/'>webcenter (1)</a></li>
+<li class='category'><a href='/blog/categories/webcenter/'>webcenter (2)</a></li>
 <li class='category'><a href='/blog/categories/weblogic/'>weblogic (1)</a></li>
 <li class='category'><a href='/blog/categories/wordpress/'>wordpress (1)</a></li>
 
@@ -1275,6 +1207,10 @@ SocketHostAddressSecurityFilter=127.0.0.1|192.168.15.163|<code>*.*.*.*</code>即
 <section>
   <h1>最新发表</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014-08-26/webcenter-portaldiao-yong-document-service/">webcenter portal调用document service</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014-08-25/chuang-jian-content-repositoryshi-chu-xian-cuo-wu/">创建Content Repository时出现错误</a>
@@ -1290,10 +1226,6 @@ SocketHostAddressSecurityFilter=127.0.0.1|192.168.15.163|<code>*.*.*.*</code>即
     
       <li class="post">
         <a href="/blog/2014-02-07/%E5%AE%9A%E5%88%B6EL/">定制EL function</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013-11-09/you-yi-wai-duan-dian-dao-zhi-oracle11gqi-dong-bu-qi-lai-de-wen-ti-jie-jue/">由意外断电导致oracle11g启动不起来的问题解决</a>
       </li>
     
   </ul>

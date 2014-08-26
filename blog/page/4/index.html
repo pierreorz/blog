@@ -9,7 +9,7 @@
   <meta name="author" content="pierreorz">
 
   
-  <meta name="description" content="一直想自己搭建个R12的环境学习学习，于是买了块500G的移动硬盘，想把R12安装在移动硬盘中。 准备工作： 先安装好虚拟机VMware Workstation。创建一个RHEL6.3的虚拟机，硬盘300G,足够R12的FRESH安装了。（如果想DEMO安装，建议还是再大点，以免出现空间不足） &hellip;">
+  <meta name="description" content="之前使用的是17版本的firefox，配置好了autoproxy使用goagent能够正常代理，之后升级firefox18之后，却代理不了了。重装过firefox,重装过goagent，重装过autoproxy都无效。 试过使用IE，设置代理127.0.0.1:8087+goagent可以正常代理 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,6 +67,61 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013-01-30/firefox%E5%8D%87%E7%BA%A718%E4%B9%8B%E5%90%8Eautoproxy%E5%A4%B1%E6%95%88goagent%E6%97%A0%E6%B3%95%E4%BD%BF%E7%94%A8%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/">Firefox升级18之后,autoproxy失效,goagent无法使用问题解决</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-30T00:00:00+08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2013</time>
+        
+         | <a href="/blog/2013-01-30/firefox%E5%8D%87%E7%BA%A718%E4%B9%8B%E5%90%8Eautoproxy%E5%A4%B1%E6%95%88goagent%E6%97%A0%E6%B3%95%E4%BD%BF%E7%94%A8%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>之前使用的是17版本的firefox，配置好了autoproxy使用goagent能够正常代理，之后升级firefox18之后，却代理不了了。重装过firefox,重装过goagent，重装过autoproxy都无效。</p>
+
+<p>试过使用IE，设置代理127.0.0.1:8087+goagent可以正常代理，因此排除goagent问题。</p>
+
+<p>后来查看firefox18的版本说明，才发现由于安全性禁用了部分功能猜测可能由此导致无法代理</p>
+
+<p>firefox说明：
+<blockquote>禁用不安全内容：Firefox 可以禁用HTTPS安全网页中的不安全内容，来维护用户在互联网通信中的隐私。目前可以在about:config中启用这个特性。</blockquote>
+打开about:config，过滤栏输入：proxy  修改如下选项</p>
+
+<p>extensions.autoproxy.proxyMode   <strong>auto</strong>
+network.proxy.type               <strong>1</strong>
+signon.autologin.proxy           <strong>true</strong>
+即可解决问题。</p>
+
+<p>&nbsp;</p>
+
+<p>&nbsp;</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -857,46 +912,6 @@ cron:
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012-09-12/ebs%E8%AF%B7%E6%B1%82%E6%89%A7%E8%A1%8C%E6%97%B6%E6%8A%9B%E5%87%BA%E9%94%99%E8%AF%AFora-20100%E5%92%8Cora-06512-%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/">EBS请求执行时抛出错误Ora-20100和Ora-06512 问题解决</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-09-12T00:00:00+08:00" pubdate data-updated="true">Sep 12<span>th</span>, 2012</time>
-        
-         | <a href="/blog/2012-09-12/ebs%E8%AF%B7%E6%B1%82%E6%89%A7%E8%A1%8C%E6%97%B6%E6%8A%9B%E5%87%BA%E9%94%99%E8%AF%AFora-20100%E5%92%8Cora-06512-%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>执行请求时抛出错误Ora-20100：xxxxx. Ora-06512:xxxxx错误，清空临时文件目录$APPLPTMP即可</p>
-
-<p>&nbsp;</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/5/">&larr; Older</a>
@@ -925,7 +940,7 @@ cron:
 <li class='category'><a href='/blog/categories/mysql/'>mysql (1)</a></li>
 <li class='category'><a href='/blog/categories/octopress/'>octopress (1)</a></li>
 <li class='category'><a href='/blog/categories/others/'>others (1)</a></li>
-<li class='category'><a href='/blog/categories/webcenter/'>webcenter (1)</a></li>
+<li class='category'><a href='/blog/categories/webcenter/'>webcenter (2)</a></li>
 <li class='category'><a href='/blog/categories/weblogic/'>weblogic (1)</a></li>
 <li class='category'><a href='/blog/categories/wordpress/'>wordpress (1)</a></li>
 
@@ -934,6 +949,10 @@ cron:
 <section>
   <h1>最新发表</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014-08-26/webcenter-portaldiao-yong-document-service/">webcenter portal调用document service</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014-08-25/chuang-jian-content-repositoryshi-chu-xian-cuo-wu/">创建Content Repository时出现错误</a>
@@ -949,10 +968,6 @@ cron:
     
       <li class="post">
         <a href="/blog/2014-02-07/%E5%AE%9A%E5%88%B6EL/">定制EL function</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013-11-09/you-yi-wai-duan-dian-dao-zhi-oracle11gqi-dong-bu-qi-lai-de-wen-ti-jie-jue/">由意外断电导致oracle11g启动不起来的问题解决</a>
       </li>
     
   </ul>
