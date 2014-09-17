@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ADF | 邓德昭的技术博客]]></title>
   <link href="http://dengdezhao.cn/blog/categories/adf/atom.xml" rel="self"/>
   <link href="http://dengdezhao.cn/"/>
-  <updated>2014-09-17T18:06:36+08:00</updated>
+  <updated>2014-09-17T18:10:56+08:00</updated>
   <id>http://dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
@@ -81,12 +81,18 @@
 <h4><i class="icon-pencil"></i> 设置View Accessors</h4>
 
 <ul>
-<li><p>创建LOV
-<img src="../../../wp-content/uploads/QQ20140916174007.png" alt="" /></p></li>
-<li><p>设置View Accessors
-<img src="../../../wp-content/uploads/QQ20140916174112.png" alt="" /></p></li>
+<li>创建LOV</li>
 </ul>
 
+
+<p><img src="../../../wp-content/uploads/QQ20140916174007.png" alt="" /></p>
+
+<ul>
+<li>设置View Accessors</li>
+</ul>
+
+
+<p><img src="../../../wp-content/uploads/QQ20140916174112.png" alt="" /></p>
 
 <p>这样就可以实现动态切换LOV的基础数据源了。</p>
 ]]></content>
