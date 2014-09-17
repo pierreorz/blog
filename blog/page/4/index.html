@@ -9,7 +9,9 @@
   <meta name="author" content="pierreorz">
 
   
-  <meta name="description" content="之前使用的是17版本的firefox，配置好了autoproxy使用goagent能够正常代理，之后升级firefox18之后，却代理不了了。重装过firefox,重装过goagent，重装过autoproxy都无效。 试过使用IE，设置代理127.0.0.1:8087+goagent可以正常代理 &hellip;">
+  <meta name="description" content="虚拟机安装solaris 11的时候弹出
+Long mode not supported, rebooting Press any key to reboot&#8230;&#8230;..
+原因是solaris11只支持64位，需要把BIOS的CPU选项里Inter Virtualization &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,6 +69,51 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013-01-31/solvedlong-mode-not-supported-rebooting-press-any-key-to-reboot/">[SOLVED]Long Mode Not Supported, Rebooting Press Any Key to Reboot</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-31T00:00:00+08:00" pubdate data-updated="true">Jan 31<span>st</span>, 2013</time>
+        
+         | <a href="/blog/2013-01-31/solvedlong-mode-not-supported-rebooting-press-any-key-to-reboot/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>虚拟机安装solaris 11的时候弹出
+<blockquote>Long mode not supported, rebooting Press any key to reboot&#8230;&#8230;..</blockquote>
+原因是solaris11只支持64位，需要把BIOS的CPU选项里Inter Virtualization Technology和Inter VT均设置为ENABLE，</p>
+
+<p>然后将虚拟机的设置如下：
+<blockquote>Virtual Machine Setting-&gt;Processors-&gt;Virtualizatoin engine-&gt;Preferred mode=Intel VT-x/EPT or AMD-v/RVI</blockquote></p>
+
+<p><a rel="attachment wp-att-248" href="../../../wp-content/uploads/2013/01/pg-300x260.jpg"><img title="pg" src="../../../wp-content/uploads/2013/01/pg-300x260.jpg" alt="" width="300" height="260" /></a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -860,58 +907,6 @@ cron:
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012-09-20/ebs-%E5%B9%B6%E5%8F%91%E8%AF%B7%E6%B1%82%E8%B0%83%E7%94%A8sql%E6%97%B6%EF%BC%8C%E6%97%A5%E5%BF%97%E8%B7%9F%E8%BE%93%E5%87%BA%E4%B8%AD%E6%96%87%E5%87%BA%E7%8E%B0%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98/">EBS 并发请求调用SQL时，日志跟输出中文出现乱码问题</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-09-20T00:00:00+08:00" pubdate data-updated="true">Sep 20<span>th</span>, 2012</time>
-        
-         | <a href="/blog/2012-09-20/ebs-%E5%B9%B6%E5%8F%91%E8%AF%B7%E6%B1%82%E8%B0%83%E7%94%A8sql%E6%97%B6%EF%BC%8C%E6%97%A5%E5%BF%97%E8%B7%9F%E8%BE%93%E5%87%BA%E4%B8%AD%E6%96%87%E5%87%BA%E7%8E%B0%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>已知数据库，数据库所在服务器字符集都是UTF8，在并发请求调用的SQL里，fnd_file.put_line(fnd_file.log,&#8217;中文&#8217;)语句输出时，在EBS界面查看就是乱码。</p>
-
-<p>出现乱码的问题思路：</p>
-
-<p>1.查看客户端系统字符集是否支持中文。确认本机支持，并且NLS_LANG跟数据库都保持一致，可以排除此因素。</p>
-
-<p>2.查看数据库端字符集编码是否支持中文，得知是UTF8编码。</p>
-
-<p>3.查看服务器端是否支持中文编码</p>
-
-<p>发现以上三个因素都可以排除，EBS请求会在服务器端生成log文件，因此telnet到服务器直接查看生成的log文件看是否出现乱码</p>
-
-<p>cd $APPLPTMP</p>
-
-<p>发现生成的文件也是乱码，基本可以确定在数据库端生成文件即出现乱码，需要对中文字符进行转码输出。 exec find_file.put_file(fnd_file.log,convert(&#8216;中文&#8217;,&#8217;UTF8&#8217;,&#8217;ZHS16GBK&#8217;))；</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/5/">&larr; Older</a>
@@ -927,7 +922,7 @@ cron:
     <section>
   <h1>分类目录</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/adf/'>ADF (33)</a></li>
+    <li class='category'><a href='/blog/categories/adf/'>ADF (34)</a></li>
 <li class='category'><a href='/blog/categories/ebs/'>EBS (2)</a></li>
 <li class='category'><a href='/blog/categories/oaf/'>OAF (9)</a></li>
 <li class='category'><a href='/blog/categories/oracle/'>Oracle (8)</a></li>
@@ -951,6 +946,10 @@ cron:
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014-09-17/dong-tai-gai-bian-lovde-zhi-ji/">动态改变LOV的值集</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014-08-26/webcenter-portaldiao-yong-document-service/">webcenter portal调用document service</a>
       </li>
     
@@ -964,10 +963,6 @@ cron:
     
       <li class="post">
         <a href="/blog/2014-04-18/an-zhuang-rcu1-dot-7yu-dao-de-xiao-wen-ti/">安装RCU1.7遇到的小问题</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014-02-07/%E5%AE%9A%E5%88%B6EL/">定制EL function</a>
       </li>
     
   </ul>

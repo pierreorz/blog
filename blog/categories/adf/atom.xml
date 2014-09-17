@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ADF | 邓德昭的技术博客]]></title>
   <link href="http://dengdezhao.cn/blog/categories/adf/atom.xml" rel="self"/>
   <link href="http://dengdezhao.cn/"/>
-  <updated>2014-08-26T18:47:56+08:00</updated>
+  <updated>2014-09-17T18:02:25+08:00</updated>
   <id>http://dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
@@ -12,6 +12,60 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[动态改变LOV的值集]]></title>
+    <link href="http://dengdezhao.cn/blog/2014-09-17/dong-tai-gai-bian-lovde-zhi-ji/"/>
+    <updated>2014-09-17T18:01:00+08:00</updated>
+    <id>http://dengdezhao.cn/blog/2014-09-17/dong-tai-gai-bian-lovde-zhi-ji</id>
+    <content type="html"><![CDATA[<h4><i class="icon-file"></i>   需求：</h4>
+
+<p>LOV的值集需要根据传入的用户角色类型(A,B,C)动态改变，A时查询所有，B时过滤字段1，C时过滤字段2.</p>
+
+<blockquote><p><strong>基础VO的SQL如下:</strong>
+SELECT DISTINCT U.USER_ID, U.USER_NAME, F.FULL_NAME AS DESCRIPTION
+  FROM FND_USER U, PO_HEADERS_ALL P, PO_VENDORS V, PER_PEOPLE_F F
+ WHERE U.EMPLOYEE_ID = P.AGENT_ID
+   AND P.VENDOR_ID = V.VENDOR_ID
+   AND F.PERSON_ID(+) = U.EMPLOYEE_ID
+   AND P.APPROVED_FLAG = 'Y'
+   AND ((P.VENDOR_ID = :VARVENDORID AND :VARUSERTYPE = 'B') OR</p>
+
+<pre><code>   (:VARUSERTYPE = 'A') OR
+   (:VARUSERTYPE = 'C' AND U.USER_ID = :VARUSERID))
+</code></pre></blockquote>
+
+<p>创建VARUSERTYPE VARUSERID VARVENDORID 三个绑定变量。</p>
+
+<h4><i class="icon-folder-open"></i> 创建LOV VO</h4>
+
+<blockquote><p><strong>LVO的SQL如下:</strong>
+SELECT NULL         AS USER_ID,</p>
+
+<pre><code>   NULL         AS USER_NAME,
+   NULL         AS DESCRIPTION,
+   :VARTYPE     AS USERTYPE,  
+   :VARVENDORID AS VENDORID,
+   :VARUSERID   AS CURRENTUSERID
+</code></pre>
+
+<p>  FROM DUAL</p></blockquote>
+
+<p>技巧在这里，LVO同样创建三个绑定变量，并把绑定变量作为VO的attribute暴露出来，然后通过view Accessors传递给基础VO</p>
+
+<h4><i class="icon-pencil"></i> 设置View Accessors</h4>
+
+<ul>
+<li><p>创建LOV
+<img src="../../../wp-content/uploads/QQ20140916174007.png" alt="创建LOV" /></p></li>
+<li><p>设置View Accessors
+<img src="../../../wp-content/uploads/QQ20140916174112.png" alt="设置View Accessors" /></p></li>
+</ul>
+
+
+<p>这样就可以实现动态切换LOV的基础数据源了。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[定制EL function]]></title>
@@ -584,60 +638,6 @@
 </span><span class='line'>    <span class="n">ServletContext</span> <span class="n">servletContext</span><span class="o">=(</span><span class="n">ServletContext</span><span class="o">)</span><span class="n">ec</span><span class="o">.</span><span class="na">getContext</span><span class="o">();</span>
 </span><span class='line'>    <span class="n">String</span> <span class="n">value</span><span class="o">=</span><span class="n">servletContext</span><span class="o">.</span><span class="na">getInitParameter</span><span class="o">(</span><span class="s">&quot;javax.faces.FACELETS_VIEW_MAPPINGS&quot;</span><span class="o">);</span>
 </span><span class='line'>    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">value</span><span class="o">);</span>
-</span><span class='line'>    <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[从BackingBean中调用不带fragments的taskflow]]></title>
-    <link href="http://dengdezhao.cn/blog/2013-06-08/cong-backingbeanzhong-diao-yong-bu-dai-fragmentsde-taskflow/"/>
-    <updated>2013-06-08T16:11:00+08:00</updated>
-    <id>http://dengdezhao.cn/blog/2013-06-08/cong-backingbeanzhong-diao-yong-bu-dai-fragmentsde-taskflow</id>
-    <content type="html"><![CDATA[<p>有时候需要在backingBean中调用某一taskflow, 可以使用以下代码调用。不过只适用于可单独运行的taskflow，含有page fragments的taskflow不在此范围。</p>
-
-<p>代码如下：  <br/>
-<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kd">public</span> <span class="n">String</span> <span class="n">callTaskFlow</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>    <span class="n">FacesContext</span> <span class="n">fctx</span> <span class="o">=</span> <span class="n">FacesContext</span><span class="o">.</span><span class="na">getCurrentInstance</span><span class="o">();</span>
-</span><span class='line'>    <span class="n">ControllerContext</span> <span class="n">cc</span> <span class="o">=</span> <span class="n">ControllerContext</span><span class="o">.</span><span class="na">getInstance</span><span class="o">();</span>
-</span><span class='line'>    <span class="n">String</span> <span class="n">taskflowId</span> <span class="o">=</span> <span class="s">&quot;btf_task&quot;</span><span class="o">;</span>
-</span><span class='line'>    <span class="n">String</span> <span class="n">taskflowDocument</span> <span class="o">=</span> <span class="s">&quot;/WEB-INF/btf_task.xml&quot;</span><span class="o">;</span>
-</span><span class='line'>    <span class="n">Map</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">String</span><span class="o">,</span> <span class="n">Object</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">params</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">String</span><span class="o">,</span> <span class="n">Object</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;();</span>
-</span><span class='line'>    <span class="n">TaskFlowId</span> <span class="n">tid</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TaskFlowId</span><span class="o">(</span><span class="n">taskflowDocument</span><span class="o">,</span> <span class="n">taskflowId</span><span class="o">);</span>
-</span><span class='line'>    <span class="n">String</span> <span class="n">taskflowURL</span> <span class="o">=</span> <span class="n">cc</span><span class="o">.</span><span class="na">getTaskFlowURL</span><span class="o">(</span><span class="kc">false</span><span class="o">,</span> <span class="n">tid</span><span class="o">,</span> <span class="n">params</span><span class="o">);</span>
-</span><span class='line'>    <span class="n">ExtendedRenderKitService</span> <span class="n">erks</span> <span class="o">=</span>
-</span><span class='line'>        <span class="n">Service</span><span class="o">.</span><span class="na">getRenderKitService</span><span class="o">(</span><span class="n">fctx</span><span class="o">,</span> <span class="n">ExtendedRenderKitService</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-</span><span class='line'>    <span class="n">StringBuilder</span> <span class="n">sb</span> <span class="o">=</span> <span class="k">new</span> <span class="n">StringBuilder</span><span class="o">();</span>
-</span><span class='line'>    <span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="s">&quot;window.open(\&quot;&quot;</span> <span class="o">+</span> <span class="n">taskflowURL</span> <span class="o">+</span>
-</span><span class='line'>              <span class="s">&quot;\&quot;&quot;</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="s">&quot;,\&quot;_self\&quot;);&quot;</span><span class="o">);</span>
-</span><span class='line'>    <span class="n">erks</span><span class="o">.</span><span class="na">addScript</span><span class="o">(</span><span class="n">FacesContext</span><span class="o">.</span><span class="na">getCurrentInstance</span><span class="o">(),</span> <span class="n">sb</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
 </span><span class='line'>    <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
 </span><span class='line'><span class="o">}</span>
 </span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>

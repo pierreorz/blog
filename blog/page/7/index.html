@@ -9,7 +9,9 @@
   <meta name="author" content="pierreorz">
 
   
-  <meta name="description" content="目前LOV控件在页面初始化时默认显示的是第一条记录，如果想让LOV初始化的时候不显示记录应该如何设置呢？ 方法一. 通过在BackingBean的构造函数里设置LOV的值为空字符串这种做法基本可以达到需求。但总感觉这种方法很别扭，走了弯路。 本文介绍另外一种更为简单的方法。通过EL表达式实现需求 &hellip;">
+  <meta name="description" content="ADF表想要加个checkbox的全选功能，需要定制。
+Step1先在ADF表基于的VO上加一个Transient属性Checked Step2 页面中，在ADF表中手工添加一个column如下图所示 Step3 MB中加上如下valueChangeEvent监听方法，取得VO，
+遍历所有ROW， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,6 +69,55 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012-06-26/adf-table%E7%9A%84%E5%85%A8%E9%80%89%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0/">ADF Table的全选功能实现</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
+        
+         | <a href="/blog/2012-06-26/adf-table%E7%9A%84%E5%85%A8%E9%80%89%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>ADF表想要加个checkbox的全选功能，需要定制。
+<strong>Step1</strong>先在ADF表基于的VO上加一个Transient属性<strong>Checked</strong></p>
+
+<p><strong><a rel="attachment wp-att-101" href="../../../wp-content/uploads/2012/06/22362218zcamfkt8c4qua8-300x186.jpg"><img class="alignnone size-medium wp-image-101" title="22362218zcamfkt8c4qua8" src="../../../wp-content/uploads/2012/06/22362218zcamfkt8c4qua8-300x186.jpg" alt="" width="300" height="186" /></a></strong>
+
+<strong>Step2</strong> 页面中，在ADF表中手工添加一个column如下图所示
+<a rel="attachment wp-att-102" href="../../../wp-content/uploads/2012/06/223624reclell7lhrk3hgg-300x83.jpg"><img class="alignnone size-medium wp-image-102" title="223624reclell7lhrk3hgg" src="../../../wp-content/uploads/2012/06/223624reclell7lhrk3hgg-300x83.jpg" alt="" width="300" height="83" /></a></p>
+
+<p><strong>Step3</strong> MB中加上如下valueChangeEvent监听方法，取得VO，<br />
+遍历所有ROW，将Checked属性赋值，最后刷新表显示</p>
+
+<p><a rel="attachment wp-att-103" href="../../../wp-content/uploads/2012/06/22362612igg9lrm21lubb6-300x209.jpg"><img class="alignnone size-medium wp-image-103" title="22362612igg9lrm21lubb6" src="../../../wp-content/uploads/2012/06/22362612igg9lrm21lubb6-300x209.jpg" alt="" width="300" height="209" /></a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -677,7 +728,7 @@ Step.4 修改<span style="color: #0000ff;">web.xml</span>
     <section>
   <h1>分类目录</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/adf/'>ADF (33)</a></li>
+    <li class='category'><a href='/blog/categories/adf/'>ADF (34)</a></li>
 <li class='category'><a href='/blog/categories/ebs/'>EBS (2)</a></li>
 <li class='category'><a href='/blog/categories/oaf/'>OAF (9)</a></li>
 <li class='category'><a href='/blog/categories/oracle/'>Oracle (8)</a></li>
@@ -701,6 +752,10 @@ Step.4 修改<span style="color: #0000ff;">web.xml</span>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014-09-17/dong-tai-gai-bian-lovde-zhi-ji/">动态改变LOV的值集</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014-08-26/webcenter-portaldiao-yong-document-service/">webcenter portal调用document service</a>
       </li>
     
@@ -714,10 +769,6 @@ Step.4 修改<span style="color: #0000ff;">web.xml</span>
     
       <li class="post">
         <a href="/blog/2014-04-18/an-zhuang-rcu1-dot-7yu-dao-de-xiao-wen-ti/">安装RCU1.7遇到的小问题</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014-02-07/%E5%AE%9A%E5%88%B6EL/">定制EL function</a>
       </li>
     
   </ul>

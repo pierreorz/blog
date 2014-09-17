@@ -9,17 +9,7 @@
   <meta name="author" content="pierreorz">
 
   
-  <meta name="description" content="如图效果: 解决方案： VO里新建Transient属性Checked(Boolean) 表内添加一个column如下： 1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-&lt;af:column id=&quot;c10&quot; headerText=&quot;选择&quot; width=& &hellip;">
+  <meta name="description" content="如图效果: 解决方案： VO里新建Transient属性Checked(Boolean), 表内添加一个column如下： &lt;af:column id=&#8221;c10&#8221; headerText=&#8221;选择&#8221; width=&#8221;30&#8221; &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -105,87 +95,52 @@
   </header>
 
 
-<div class="entry-content"><p>如图效果:</p>
+<div class="entry-content">如图效果:    
+<a rel="attachment wp-att-107" href="../../../wp-content/uploads/2012/06/T1.jpg"><img class="alignnone size-full wp-image-107" title="T1" src="../../../wp-content/uploads/2012/06/T1.jpg" alt="" width="213" height="286" /></a>
 
-<p><img src="../../../wp-content/uploads/T1.jpg" alt="" /></p>
+解决方案：    
 
-<p>解决方案：</p>
+<p>VO里新建Transient属性Checked(Boolean),</p>
 
-<p>VO里新建Transient属性Checked(Boolean)</p>
+<p><a rel="attachment wp-att-108" href="../../../wp-content/uploads/2012/06/T2-300x11.jpg"><img class="alignnone size-medium wp-image-108" title="T2" src="../../../wp-content/uploads/2012/06/T2-300x11.jpg" alt="" width="300" height="11" /></a></p>
 
-<p><img src="../../../wp-content/uploads/T2-300x11.jpg" alt="" /></p>
+<p>表内添加一个column如下：
+<div>
+<blockquote>&lt;af:column id=&#8221;c10&#8221; headerText=&#8221;选择&#8221; width=&#8221;30&#8221; align=&#8221;center&#8221; noWrap=&#8221;true&#8221;&gt;<br />
+&lt;f:facet name=&#8221;header&#8221;&gt;<br />
+&lt;af:selectBooleanCheckbox valueChangeListener=&#8221;#{backingBean.selectAll}&#8221;<br />
+autoSubmit=&#8221;true&#8221; id=&#8221;selectAll&#8221;<br />
+label=&#8221;&#8221; value=&#8221;&#8220;/&gt;<br />
+&lt;/f:facet&gt;<br />
+&lt;af:selectBooleanCheckbox label=&#8221;选中/非选中&#8221; id=&#8221;sbc1&#8221;  autoSubmit=&#8221;true&#8221; immediate=&#8221;true&#8221;<br />
+value=&#8221;#{row.bindings.Checked.inputValue}&#8221;/&gt;</blockquote></div></p>
 
-<p>表内添加一个column如下：</p>
+<p>&lt;/af:column&gt;
 
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;</span><span class="nl">af:</span><span class="n">column</span> <span class="n">id</span><span class="o">=</span><span class="s">&quot;c10&quot;</span> <span class="n">headerText</span><span class="o">=</span><span class="s">&quot;选择&quot;</span> <span class="n">width</span><span class="o">=</span><span class="s">&quot;30&quot;</span> <span class="n">align</span><span class="o">=</span><span class="s">&quot;center&quot;</span> <span class="n">noWrap</span><span class="o">=</span><span class="s">&quot;true&quot;</span><span class="o">&gt;</span>
-</span><span class='line'><span class="o">&lt;</span><span class="nl">f:</span><span class="n">facet</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;header&quot;</span> <span class="o">&gt;</span>
-</span><span class='line'><span class="o">&lt;</span><span class="nl">af:</span><span class="n">selectBooleanCheckbox</span> <span class="n">valueChangeListener</span><span class="o">=</span><span class="s">&quot;#{backingBean.selectAll}&quot;</span>
-</span><span class='line'><span class="n">autoSubmit</span><span class="o">=</span><span class="s">&quot;true&quot;</span> <span class="n">id</span><span class="o">=</span><span class="s">&quot;selectAll&quot;</span>
-</span><span class='line'><span class="n">label</span><span class="o">=</span><span class="s">&quot;&quot;</span> <span class="n">value</span><span class="o">=</span><span class="s">&quot;&quot;</span>
-</span><span class='line'><span class="o">&lt;/</span><span class="nl">f:</span><span class="n">facet</span><span class="o">&gt;</span>
-</span><span class='line'><span class="o">&lt;</span><span class="nl">af:</span><span class="n">selectBooleanCheckbox</span> <span class="n">label</span><span class="o">=</span><span class="s">&quot;选中/非选中&quot;</span> <span class="n">id</span><span class="o">=</span><span class="s">&quot;sbc1&quot;</span><span class="err">  </span><span class="n">autoSubmit</span><span class="o">=</span><span class="s">&quot;true&quot;</span> <span class="n">immediate</span><span class="o">=</span><span class="s">&quot;true&quot;</span>
-</span><span class='line'><span class="n">value</span><span class="o">=</span><span class="s">&quot;#{row.bindings.Checked.inputValue}&quot;</span><span class="o">/&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">&lt;/</span><span class="nl">af:</span><span class="n">column</span><span class="o">&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
+ 
+<div>
+<blockquote>public void selectAll(ValueChangeEvent valueChangeEvent) {<br />
+DCIteratorBinding it = ADFUtils.findIterator(REIM_HEADER_ITER);<br />
+ViewObject vo = it.getViewObject();</blockquote></div></p>
 
+<p>if (valueChangeEvent.getNewValue() != null) {<br />
+Boolean selectAll =<br />
+Boolean.parseBoolean(valueChangeEvent.getNewValue().toString());<br />
+if (!selectAll) {<br />
+for (Row temp : vo.getAllRowsInRange()) {<br />
+temp.setAttribute(&#8220;Checked&#8221;, false);<br />
+}
+} else {<br />
+for (Row temp : vo.getAllRowsInRange()) {<br />
+temp.setAttribute(&#8220;Checked&#8221;, true);<br />
+}
+}<br />
+RichTable table = (RichTable)JSFUtils.findComponentInRoot(&#8220;t1&#8221;);<br />
+AdfFacesContext.getCurrentInstance().addPartialTarget(table);<br />
+}
+}
 
-
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">pupblic</span> <span class="kt">void</span> <span class="nf">selectAll</span><span class="o">(</span><span class="n">ValueChangeEvent</span> <span class="n">valueChangeEvent</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'><span class="n">CIteratorBinding</span> <span class="n">it</span> <span class="o">=</span> <span class="n">ADFUtils</span><span class="o">.</span><span class="na">findIterator</span><span class="o">(</span><span class="n">REIM_HEADER_ITER</span><span class="o">);</span>
-</span><span class='line'><span class="n">ViewObject</span> <span class="n">vo</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="na">getViewObject</span><span class="o">();</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">if</span> <span class="o">(</span><span class="n">valueChangeEvent</span><span class="o">.</span><span class="na">getNewValue</span><span class="o">()</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'><span class="n">Boolean</span> <span class="n">selectAll</span> <span class="o">=</span>
-</span><span class='line'><span class="n">Boolean</span><span class="o">.</span><span class="na">parseBoolean</span><span class="o">(</span><span class="n">valueChangeEvent</span><span class="o">.</span><span class="na">getNewValue</span><span class="o">().</span><span class="na">toString</span><span class="o">());</span>
-</span><span class='line'><span class="k">if</span> <span class="o">(!</span><span class="n">selectAll</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'><span class="k">for</span> <span class="o">(</span><span class="n">Row</span> <span class="n">temp</span> <span class="o">:</span> <span class="n">vo</span><span class="o">.</span><span class="na">getAllRowsInRange</span><span class="o">())</span> <span class="o">{</span>
-</span><span class='line'><span class="n">temp</span><span class="o">.</span><span class="na">setAttribute</span><span class="o">(</span><span class="s">&quot;Checked&quot;</span><span class="o">,</span> <span class="kc">false</span><span class="o">);</span>
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'><span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
-</span><span class='line'><span class="k">for</span> <span class="o">(</span><span class="n">Row</span> <span class="n">temp</span> <span class="o">:</span> <span class="n">vo</span><span class="o">.</span><span class="na">getAllRowsInRange</span><span class="o">())</span> <span class="o">{</span>
-</span><span class='line'><span class="n">temp</span><span class="o">.</span><span class="na">setAttribute</span><span class="o">(</span><span class="s">&quot;Checked&quot;</span><span class="o">,</span> <span class="kc">true</span><span class="o">);</span>
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'><span class="n">RichTable</span> <span class="n">table</span> <span class="o">=</span> <span class="o">(</span><span class="n">RichTable</span><span class="o">)</span><span class="n">JSFUtils</span><span class="o">.</span><span class="na">findComponentInRoot</span><span class="o">(</span><span class="s">&quot;t1&quot;</span><span class="o">);</span>
-</span><span class='line'><span class="n">AdfFacesContext</span><span class="o">.</span><span class="na">getCurrentInstance</span><span class="o">().</span><span class="na">addPartialTarget</span><span class="o">(</span><span class="n">table</span><span class="o">);</span>
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>以上即可实现此需求.</p>
+以上即可实现此需求。</p>
 </div>
 
 
@@ -254,7 +209,7 @@
     <section>
   <h1>分类目录</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/adf/'>ADF (33)</a></li>
+    <li class='category'><a href='/blog/categories/adf/'>ADF (34)</a></li>
 <li class='category'><a href='/blog/categories/ebs/'>EBS (2)</a></li>
 <li class='category'><a href='/blog/categories/oaf/'>OAF (9)</a></li>
 <li class='category'><a href='/blog/categories/oracle/'>Oracle (8)</a></li>
@@ -278,6 +233,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014-09-17/dong-tai-gai-bian-lovde-zhi-ji/">动态改变LOV的值集</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014-08-26/webcenter-portaldiao-yong-document-service/">webcenter portal调用document service</a>
       </li>
     
@@ -291,10 +250,6 @@
     
       <li class="post">
         <a href="/blog/2014-04-18/an-zhuang-rcu1-dot-7yu-dao-de-xiao-wen-ti/">安装RCU1.7遇到的小问题</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014-02-07/%E5%AE%9A%E5%88%B6EL/">定制EL function</a>
       </li>
     
   </ul>

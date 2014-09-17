@@ -9,12 +9,7 @@
   <meta name="author" content="pierreorz">
 
   
-  <meta name="description" content="改变VO查询条件 使用WhereClause改变查询条件
-使用Criteria改变查询条件
-使用Bind Variables改变查询条件 使用WhereClause改变查询条件 setWhereClause 通过VO对象的setWhereClause方法改变查询条件 1
-2
-3
-4 &hellip;">
+  <meta name="description" content="使用ADF框架开发WEB应用时，其中令人苦恼的一个需求就是：在两个页面同时展示一个数据源时，如果其中一个页面对数据源作了变更操作，另外一个页面没办法自动获得变更后的数据，需要手工刷新页面才能得到变更后的新数据源。 其实ADF自带的&lt;af:poll/&gt;组件即可实现此需求。 例子： &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -72,6 +67,93 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013-04-24/adflei-si-xin-tiao-cheng-xu-shi-xian/">ADF类似心跳程序实现</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-24T16:19:00+08:00" pubdate data-updated="true">Apr 24<span>th</span>, 2013</time>
+        
+         | <a href="/blog/2013-04-24/adflei-si-xin-tiao-cheng-xu-shi-xian/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>使用ADF框架开发WEB应用时，其中令人苦恼的一个需求就是：在两个页面同时展示一个数据源时，如果其中一个页面对数据源作了变更操作，另外一个页面没办法自动获得变更后的数据，需要手工刷新页面才能得到变更后的新数据源。</p>
+
+<p>其实ADF自带的<code>&lt;af:poll/&gt;</code>组件即可实现此需求。</p>
+
+<p>例子：</p>
+
+<ul>
+<li>创建一个可更新的af:table 基于HR的Department表</li>
+</ul>
+
+
+<p>页面如下： <br/>
+<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130424160613.jpg" alt="" />  <br/>
+可以更改表数据并提交，用多浏览器窗口打开该页面来模拟多用户操作。</p>
+
+<p>将<code>&lt;af:poll/&gt;</code>控件拖入到页面中，控件属性设置如下：</p>
+
+<p><img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130424161027.jpg" alt="" />  <br/>
+设置间隔为1分钟，并绑定PollListener</p>
+
+<ul>
+<li>给该页面绑定ManagedBean，并添加PollListener，方法内容如下：</li>
+</ul>
+
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">heartBeat</span><span class="o">(</span><span class="n">PollEvent</span> <span class="n">pollEvent</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;start poll...&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">DCIteratorBinding</span> <span class="n">it</span> <span class="o">=</span> <span class="n">ADFUtils</span><span class="o">.</span><span class="na">findIterator</span><span class="o">(</span><span class="s">&quot;Departments1Iterator&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">ViewObject</span> <span class="n">vo</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="na">getViewObject</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">vo</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">AdfFacesContext</span><span class="o">.</span><span class="na">getCurrentInstance</span><span class="o">().</span><span class="na">addPartialTarget</span><span class="o">(</span><span class="n">JSFUtils</span><span class="o">.</span><span class="na">findComponentInRoot</span><span class="o">(</span><span class="s">&quot;t1&quot;</span><span class="o">));</span>
+</span><span class='line'>       <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>每隔1分钟自动查询一次VO，并将更新后的内容返回到页面；</p>
+
+<ul>
+<li>这样打开两个页面之后，在其中一个页面更改内容并提交后，也会即时更新另外一个页面（另外一个客户端）；</li>
+</ul>
+
+
+<p>PS：此例子频繁地查询VO，在实际项目中会对服务器造成很大的压力，只为展示<code>&lt;af:poll&gt;</code>控件作用，不建议使用此方案。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1367,51 +1449,6 @@ E:\Oracle\Middleware11.1.2.3.0\jdk160_24\bin\jvisualvm.exe
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013-01-31/solvedlong-mode-not-supported-rebooting-press-any-key-to-reboot/">[SOLVED]Long Mode Not Supported, Rebooting Press Any Key to Reboot</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-31T00:00:00+08:00" pubdate data-updated="true">Jan 31<span>st</span>, 2013</time>
-        
-         | <a href="/blog/2013-01-31/solvedlong-mode-not-supported-rebooting-press-any-key-to-reboot/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>虚拟机安装solaris 11的时候弹出
-<blockquote>Long mode not supported, rebooting Press any key to reboot&#8230;&#8230;..</blockquote>
-原因是solaris11只支持64位，需要把BIOS的CPU选项里Inter Virtualization Technology和Inter VT均设置为ENABLE，</p>
-
-<p>然后将虚拟机的设置如下：
-<blockquote>Virtual Machine Setting-&gt;Processors-&gt;Virtualizatoin engine-&gt;Preferred mode=Intel VT-x/EPT or AMD-v/RVI</blockquote></p>
-
-<p><a rel="attachment wp-att-248" href="../../../wp-content/uploads/2013/01/pg-300x260.jpg"><img title="pg" src="../../../wp-content/uploads/2013/01/pg-300x260.jpg" alt="" width="300" height="260" /></a></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -1427,7 +1464,7 @@ E:\Oracle\Middleware11.1.2.3.0\jdk160_24\bin\jvisualvm.exe
     <section>
   <h1>分类目录</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/adf/'>ADF (33)</a></li>
+    <li class='category'><a href='/blog/categories/adf/'>ADF (34)</a></li>
 <li class='category'><a href='/blog/categories/ebs/'>EBS (2)</a></li>
 <li class='category'><a href='/blog/categories/oaf/'>OAF (9)</a></li>
 <li class='category'><a href='/blog/categories/oracle/'>Oracle (8)</a></li>
@@ -1451,6 +1488,10 @@ E:\Oracle\Middleware11.1.2.3.0\jdk160_24\bin\jvisualvm.exe
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014-09-17/dong-tai-gai-bian-lovde-zhi-ji/">动态改变LOV的值集</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014-08-26/webcenter-portaldiao-yong-document-service/">webcenter portal调用document service</a>
       </li>
     
@@ -1464,10 +1505,6 @@ E:\Oracle\Middleware11.1.2.3.0\jdk160_24\bin\jvisualvm.exe
     
       <li class="post">
         <a href="/blog/2014-04-18/an-zhuang-rcu1-dot-7yu-dao-de-xiao-wen-ti/">安装RCU1.7遇到的小问题</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014-02-07/%E5%AE%9A%E5%88%B6EL/">定制EL function</a>
       </li>
     
   </ul>

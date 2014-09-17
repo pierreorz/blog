@@ -9,10 +9,8 @@
   <meta name="author" content="pierreorz">
 
   
-  <meta name="description" content="平台: webcenter 1.8 Webcenter Contents端配置 步骤: 进入webcenter contents http://192.168.15.251:16210/cs/idcplg
-展开administration目录
-Admin Server节点
-Component &hellip;">
+  <meta name="description" content="需求： LOV的值集需要根据传入的用户角色类型(A,B,C)动态改变，A时查询所有，B时过滤字段1，C时过滤字段2. 基础VO的SQL如下:
+SELECT DISTINCT U.USER_ID, U.USER_NAME, F.FULL_NAME AS DESCRIPTION FROM &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -70,6 +68,89 @@ Component &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014-09-17/dong-tai-gai-bian-lovde-zhi-ji/">动态改变LOV的值集</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-09-17T18:01:00+08:00" pubdate data-updated="true">Sep 17<span>th</span>, 2014</time>
+        
+         | <a href="/blog/2014-09-17/dong-tai-gai-bian-lovde-zhi-ji/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4><i class="icon-file"></i>   需求：</h4>
+
+<p>LOV的值集需要根据传入的用户角色类型(A,B,C)动态改变，A时查询所有，B时过滤字段1，C时过滤字段2.</p>
+
+<blockquote><p><strong>基础VO的SQL如下:</strong>
+SELECT DISTINCT U.USER_ID, U.USER_NAME, F.FULL_NAME AS DESCRIPTION
+  FROM FND_USER U, PO_HEADERS_ALL P, PO_VENDORS V, PER_PEOPLE_F F
+ WHERE U.EMPLOYEE_ID = P.AGENT_ID
+   AND P.VENDOR_ID = V.VENDOR_ID
+   AND F.PERSON_ID(+) = U.EMPLOYEE_ID
+   AND P.APPROVED_FLAG = &#8216;Y&#8217;
+   AND ((P.VENDOR_ID = :VARVENDORID AND :VARUSERTYPE = &#8216;B&#8217;) OR</p>
+
+<pre><code>   (:VARUSERTYPE = 'A') OR
+   (:VARUSERTYPE = 'C' AND U.USER_ID = :VARUSERID))
+</code></pre></blockquote>
+
+<p>创建VARUSERTYPE VARUSERID VARVENDORID 三个绑定变量。</p>
+
+<h4><i class="icon-folder-open"></i> 创建LOV VO</h4>
+
+<blockquote><p><strong>LVO的SQL如下:</strong>
+SELECT NULL         AS USER_ID,</p>
+
+<pre><code>   NULL         AS USER_NAME,
+   NULL         AS DESCRIPTION,
+   :VARTYPE     AS USERTYPE,  
+   :VARVENDORID AS VENDORID,
+   :VARUSERID   AS CURRENTUSERID
+</code></pre>
+
+<p>  FROM DUAL</p></blockquote>
+
+<p>技巧在这里，LVO同样创建三个绑定变量，并把绑定变量作为VO的attribute暴露出来，然后通过view Accessors传递给基础VO</p>
+
+<h4><i class="icon-pencil"></i> 设置View Accessors</h4>
+
+<ul>
+<li><p>创建LOV
+<img src="../../../wp-content/uploads/QQ20140916174007.png" alt="创建LOV" /></p></li>
+<li><p>设置View Accessors
+<img src="../../../wp-content/uploads/QQ20140916174112.png" alt="设置View Accessors" /></p></li>
+</ul>
+
+
+<p>这样就可以实现动态切换LOV的基础数据源了。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1051,127 +1132,6 @@ SocketHostAddressSecurityFilter=127.0.0.1|192.168.15.163|<code>*.*.*.*</code>即
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013-06-25/centosxia-an-zhuang-mysql5-dot-6hou-wang-ji-rootmi-ma-%2Czhong-zhi-mi-ma/">Centos下安装mysql5.6后忘记ROOT密码，重置密码</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-06-25T16:01:00+08:00" pubdate data-updated="true">Jun 25<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013-06-25/centosxia-an-zhuang-mysql5-dot-6hou-wang-ji-rootmi-ma-%2Czhong-zhi-mi-ma/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><strong>安装</strong></p>
-
-<p>去<a href="https://edelivery.oracle.com/EPD/Search/handle_go">oracle官网</a>下载mysql5.6 for linux安装介质V38444-01.zip。  <br/>
-解压缩之后</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">MySQL</span><span class="o">-</span><span class="n">client</span><span class="o">-</span><span class="n">advanced</span><span class="o">-</span><span class="mf">5.6</span><span class="o">.</span><span class="mi">12</span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="na">el6</span><span class="o">.</span><span class="na">i686</span><span class="o">.</span><span class="na">rpm</span>
-</span><span class='line'><span class="n">MySQL</span><span class="o">-</span><span class="n">devel</span><span class="o">-</span><span class="n">advanced</span><span class="o">-</span><span class="mf">5.6</span><span class="o">.</span><span class="mi">12</span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="na">el6</span><span class="o">.</span><span class="na">i686</span><span class="o">.</span><span class="na">rpm</span>
-</span><span class='line'><span class="n">MySQL</span><span class="o">-</span><span class="n">embedded</span><span class="o">-</span><span class="n">advanced</span><span class="o">-</span><span class="mf">5.6</span><span class="o">.</span><span class="mi">12</span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="na">el6</span><span class="o">.</span><span class="na">i686</span><span class="o">.</span><span class="na">rpm</span>
-</span><span class='line'><span class="n">MySQL</span><span class="o">-</span><span class="n">server</span><span class="o">-</span><span class="n">advanced</span><span class="o">-</span><span class="mf">5.6</span><span class="o">.</span><span class="mi">12</span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="na">el6</span><span class="o">.</span><span class="na">i686</span><span class="o">.</span><span class="na">rpm</span>
-</span><span class='line'><span class="n">MySQL</span><span class="o">-</span><span class="n">shared</span><span class="o">-</span><span class="n">advanced</span><span class="o">-</span><span class="mf">5.6</span><span class="o">.</span><span class="mi">12</span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="na">el6</span><span class="o">.</span><span class="na">i686</span><span class="o">.</span><span class="na">rpm</span>
-</span><span class='line'><span class="n">MySQL</span><span class="o">-</span><span class="n">shared</span><span class="o">-</span><span class="n">compat</span><span class="o">-</span><span class="n">advanced</span><span class="o">-</span><span class="mf">5.6</span><span class="o">.</span><span class="mi">12</span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="na">el6</span><span class="o">.</span><span class="na">i686</span><span class="o">.</span><span class="na">rpm</span>
-</span><span class='line'><span class="n">MySQL</span><span class="o">-</span><span class="n">test</span><span class="o">-</span><span class="n">advanced</span><span class="o">-</span><span class="mf">5.6</span><span class="o">.</span><span class="mi">12</span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="na">el6</span><span class="o">.</span><span class="na">i686</span><span class="o">.</span><span class="na">rpm</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>开始安装</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">rpm</span> <span class="o">-</span><span class="n">ivh</span> <span class="n">MySQL</span><span class="o">-*</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Mysql5.6的安全机制加强了，默认安装时会随机给ROOT用户生成一个密码保存在安装用户目录下/root/.mysql_secret中。由于没认真看英文文档，我直接安装完就把这个文件里的随机密码给改掉了，就无法得知ROOT初始密码，也无法登录进数据库了，囧。</p>
-
-<p><strong>重置Mysql初始密码</strong></p>
-
-<p>用ROOT用户登录，STOP数据库</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">init</span><span class="o">.</span><span class="na">d</span><span class="o">/</span><span class="n">mysql</span> <span class="n">stop</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>跳过授权表启动Mysql服务器</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">mysqld_safe</span> <span class="o">--</span><span class="n">skip</span><span class="o">-</span><span class="n">grant</span><span class="o">-</span><span class="n">tables</span><span class="o">&amp;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>输入CTRL+C中断进程后应该可以看到mysqld已经在运行了</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">mysql</span> <span class="o">--</span><span class="n">user</span><span class="o">=</span><span class="n">root</span> <span class="n">mysql</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">update</span> <span class="n">user</span> <span class="n">set</span> <span class="n">Password</span><span class="o">=</span><span class="n">PASSWORD</span><span class="o">(</span><span class="err">&#39;</span><span class="k">new</span><span class="o">-</span><span class="n">password</span><span class="err">&#39;</span><span class="o">);</span>
-</span><span class='line'><span class="n">flush</span> <span class="n">privileges</span><span class="o">;</span>
-</span><span class='line'><span class="n">exit</span><span class="o">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>操作完以上变更密码的命令后，可以重启mysqld了。</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">killall</span> <span class="n">mysqld_safe</span><span class="o">&amp;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>按CTRL+C退出，接着正常启动mysql</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">init</span><span class="o">.</span><span class="na">d</span><span class="o">/</span><span class="n">mysql</span> <span class="n">start</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>用刚刚修改的新密码登录mysql即可</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">mysql</span> <span class="o">-</span><span class="n">uroot</span> <span class="o">-</span><span class="n">p</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1185,7 +1145,7 @@ SocketHostAddressSecurityFilter=127.0.0.1|192.168.15.163|<code>*.*.*.*</code>即
     <section>
   <h1>分类目录</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/adf/'>ADF (33)</a></li>
+    <li class='category'><a href='/blog/categories/adf/'>ADF (34)</a></li>
 <li class='category'><a href='/blog/categories/ebs/'>EBS (2)</a></li>
 <li class='category'><a href='/blog/categories/oaf/'>OAF (9)</a></li>
 <li class='category'><a href='/blog/categories/oracle/'>Oracle (8)</a></li>
@@ -1209,6 +1169,10 @@ SocketHostAddressSecurityFilter=127.0.0.1|192.168.15.163|<code>*.*.*.*</code>即
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014-09-17/dong-tai-gai-bian-lovde-zhi-ji/">动态改变LOV的值集</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014-08-26/webcenter-portaldiao-yong-document-service/">webcenter portal调用document service</a>
       </li>
     
@@ -1222,10 +1186,6 @@ SocketHostAddressSecurityFilter=127.0.0.1|192.168.15.163|<code>*.*.*.*</code>即
     
       <li class="post">
         <a href="/blog/2014-04-18/an-zhuang-rcu1-dot-7yu-dao-de-xiao-wen-ti/">安装RCU1.7遇到的小问题</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014-02-07/%E5%AE%9A%E5%88%B6EL/">定制EL function</a>
       </li>
     
   </ul>

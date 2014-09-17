@@ -9,8 +9,15 @@
   <meta name="author" content="pierreorz">
 
   
-  <meta name="description" content="平台：Jdeveloper 9i 一般实现步骤： 在VO中添加新transient属性selector，updatable设置为always。
-在PG中给table添加singleSelection方法，并绑定view Instance为VO的instance，View &hellip;">
+  <meta name="description" content="安装 去oracle官网下载mysql5.6 for linux安装介质V38444-01.zip。 解压缩之后 1
+2
+3
+4
+5
+6
+7
+MySQL-client-advanced-5.6.12-1.el6.i686.rpm
+MySQL-devel-advanced-5.6.12-1.el6. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -68,6 +75,127 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013-06-25/centosxia-an-zhuang-mysql5-dot-6hou-wang-ji-rootmi-ma-%2Czhong-zhi-mi-ma/">Centos下安装mysql5.6后忘记ROOT密码，重置密码</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-25T16:01:00+08:00" pubdate data-updated="true">Jun 25<span>th</span>, 2013</time>
+        
+         | <a href="/blog/2013-06-25/centosxia-an-zhuang-mysql5-dot-6hou-wang-ji-rootmi-ma-%2Czhong-zhi-mi-ma/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><strong>安装</strong></p>
+
+<p>去<a href="https://edelivery.oracle.com/EPD/Search/handle_go">oracle官网</a>下载mysql5.6 for linux安装介质V38444-01.zip。  <br/>
+解压缩之后</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">MySQL</span><span class="o">-</span><span class="n">client</span><span class="o">-</span><span class="n">advanced</span><span class="o">-</span><span class="mf">5.6</span><span class="o">.</span><span class="mi">12</span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="na">el6</span><span class="o">.</span><span class="na">i686</span><span class="o">.</span><span class="na">rpm</span>
+</span><span class='line'><span class="n">MySQL</span><span class="o">-</span><span class="n">devel</span><span class="o">-</span><span class="n">advanced</span><span class="o">-</span><span class="mf">5.6</span><span class="o">.</span><span class="mi">12</span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="na">el6</span><span class="o">.</span><span class="na">i686</span><span class="o">.</span><span class="na">rpm</span>
+</span><span class='line'><span class="n">MySQL</span><span class="o">-</span><span class="n">embedded</span><span class="o">-</span><span class="n">advanced</span><span class="o">-</span><span class="mf">5.6</span><span class="o">.</span><span class="mi">12</span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="na">el6</span><span class="o">.</span><span class="na">i686</span><span class="o">.</span><span class="na">rpm</span>
+</span><span class='line'><span class="n">MySQL</span><span class="o">-</span><span class="n">server</span><span class="o">-</span><span class="n">advanced</span><span class="o">-</span><span class="mf">5.6</span><span class="o">.</span><span class="mi">12</span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="na">el6</span><span class="o">.</span><span class="na">i686</span><span class="o">.</span><span class="na">rpm</span>
+</span><span class='line'><span class="n">MySQL</span><span class="o">-</span><span class="n">shared</span><span class="o">-</span><span class="n">advanced</span><span class="o">-</span><span class="mf">5.6</span><span class="o">.</span><span class="mi">12</span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="na">el6</span><span class="o">.</span><span class="na">i686</span><span class="o">.</span><span class="na">rpm</span>
+</span><span class='line'><span class="n">MySQL</span><span class="o">-</span><span class="n">shared</span><span class="o">-</span><span class="n">compat</span><span class="o">-</span><span class="n">advanced</span><span class="o">-</span><span class="mf">5.6</span><span class="o">.</span><span class="mi">12</span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="na">el6</span><span class="o">.</span><span class="na">i686</span><span class="o">.</span><span class="na">rpm</span>
+</span><span class='line'><span class="n">MySQL</span><span class="o">-</span><span class="n">test</span><span class="o">-</span><span class="n">advanced</span><span class="o">-</span><span class="mf">5.6</span><span class="o">.</span><span class="mi">12</span><span class="o">-</span><span class="mi">1</span><span class="o">.</span><span class="na">el6</span><span class="o">.</span><span class="na">i686</span><span class="o">.</span><span class="na">rpm</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>开始安装</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">rpm</span> <span class="o">-</span><span class="n">ivh</span> <span class="n">MySQL</span><span class="o">-*</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Mysql5.6的安全机制加强了，默认安装时会随机给ROOT用户生成一个密码保存在安装用户目录下/root/.mysql_secret中。由于没认真看英文文档，我直接安装完就把这个文件里的随机密码给改掉了，就无法得知ROOT初始密码，也无法登录进数据库了，囧。</p>
+
+<p><strong>重置Mysql初始密码</strong></p>
+
+<p>用ROOT用户登录，STOP数据库</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">init</span><span class="o">.</span><span class="na">d</span><span class="o">/</span><span class="n">mysql</span> <span class="n">stop</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>跳过授权表启动Mysql服务器</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">mysqld_safe</span> <span class="o">--</span><span class="n">skip</span><span class="o">-</span><span class="n">grant</span><span class="o">-</span><span class="n">tables</span><span class="o">&amp;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>输入CTRL+C中断进程后应该可以看到mysqld已经在运行了</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">mysql</span> <span class="o">--</span><span class="n">user</span><span class="o">=</span><span class="n">root</span> <span class="n">mysql</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">update</span> <span class="n">user</span> <span class="n">set</span> <span class="n">Password</span><span class="o">=</span><span class="n">PASSWORD</span><span class="o">(</span><span class="err">&#39;</span><span class="k">new</span><span class="o">-</span><span class="n">password</span><span class="err">&#39;</span><span class="o">);</span>
+</span><span class='line'><span class="n">flush</span> <span class="n">privileges</span><span class="o">;</span>
+</span><span class='line'><span class="n">exit</span><span class="o">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>操作完以上变更密码的命令后，可以重启mysqld了。</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">killall</span> <span class="n">mysqld_safe</span><span class="o">&amp;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>按CTRL+C退出，接着正常启动mysql</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">init</span><span class="o">.</span><span class="na">d</span><span class="o">/</span><span class="n">mysql</span> <span class="n">start</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>用刚刚修改的新密码登录mysql即可</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">mysql</span> <span class="o">-</span><span class="n">uroot</span> <span class="o">-</span><span class="n">p</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1004,93 +1132,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013-04-24/adflei-si-xin-tiao-cheng-xu-shi-xian/">ADF类似心跳程序实现</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-04-24T16:19:00+08:00" pubdate data-updated="true">Apr 24<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013-04-24/adflei-si-xin-tiao-cheng-xu-shi-xian/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>使用ADF框架开发WEB应用时，其中令人苦恼的一个需求就是：在两个页面同时展示一个数据源时，如果其中一个页面对数据源作了变更操作，另外一个页面没办法自动获得变更后的数据，需要手工刷新页面才能得到变更后的新数据源。</p>
-
-<p>其实ADF自带的<code>&lt;af:poll/&gt;</code>组件即可实现此需求。</p>
-
-<p>例子：</p>
-
-<ul>
-<li>创建一个可更新的af:table 基于HR的Department表</li>
-</ul>
-
-
-<p>页面如下： <br/>
-<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130424160613.jpg" alt="" />  <br/>
-可以更改表数据并提交，用多浏览器窗口打开该页面来模拟多用户操作。</p>
-
-<p>将<code>&lt;af:poll/&gt;</code>控件拖入到页面中，控件属性设置如下：</p>
-
-<p><img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130424161027.jpg" alt="" />  <br/>
-设置间隔为1分钟，并绑定PollListener</p>
-
-<ul>
-<li>给该页面绑定ManagedBean，并添加PollListener，方法内容如下：</li>
-</ul>
-
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">heartBeat</span><span class="o">(</span><span class="n">PollEvent</span> <span class="n">pollEvent</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;start poll...&quot;</span><span class="o">);</span>
-</span><span class='line'>        <span class="n">DCIteratorBinding</span> <span class="n">it</span> <span class="o">=</span> <span class="n">ADFUtils</span><span class="o">.</span><span class="na">findIterator</span><span class="o">(</span><span class="s">&quot;Departments1Iterator&quot;</span><span class="o">);</span>
-</span><span class='line'>        <span class="n">ViewObject</span> <span class="n">vo</span> <span class="o">=</span> <span class="n">it</span><span class="o">.</span><span class="na">getViewObject</span><span class="o">();</span>
-</span><span class='line'>        <span class="n">vo</span><span class="o">.</span><span class="na">executeQuery</span><span class="o">();</span>
-</span><span class='line'>        <span class="n">AdfFacesContext</span><span class="o">.</span><span class="na">getCurrentInstance</span><span class="o">().</span><span class="na">addPartialTarget</span><span class="o">(</span><span class="n">JSFUtils</span><span class="o">.</span><span class="na">findComponentInRoot</span><span class="o">(</span><span class="s">&quot;t1&quot;</span><span class="o">));</span>
-</span><span class='line'>       <span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>每隔1分钟自动查询一次VO，并将更新后的内容返回到页面；</p>
-
-<ul>
-<li>这样打开两个页面之后，在其中一个页面更改内容并提交后，也会即时更新另外一个页面（另外一个客户端）；</li>
-</ul>
-
-
-<p>PS：此例子频繁地查询VO，在实际项目中会对服务器造成很大的压力，只为展示<code>&lt;af:poll&gt;</code>控件作用，不建议使用此方案。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -1106,7 +1147,7 @@
     <section>
   <h1>分类目录</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/adf/'>ADF (33)</a></li>
+    <li class='category'><a href='/blog/categories/adf/'>ADF (34)</a></li>
 <li class='category'><a href='/blog/categories/ebs/'>EBS (2)</a></li>
 <li class='category'><a href='/blog/categories/oaf/'>OAF (9)</a></li>
 <li class='category'><a href='/blog/categories/oracle/'>Oracle (8)</a></li>
@@ -1130,6 +1171,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014-09-17/dong-tai-gai-bian-lovde-zhi-ji/">动态改变LOV的值集</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014-08-26/webcenter-portaldiao-yong-document-service/">webcenter portal调用document service</a>
       </li>
     
@@ -1143,10 +1188,6 @@
     
       <li class="post">
         <a href="/blog/2014-04-18/an-zhuang-rcu1-dot-7yu-dao-de-xiao-wen-ti/">安装RCU1.7遇到的小问题</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014-02-07/%E5%AE%9A%E5%88%B6EL/">定制EL function</a>
       </li>
     
   </ul>
