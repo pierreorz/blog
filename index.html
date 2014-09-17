@@ -9,8 +9,15 @@
   <meta name="author" content="pierreorz">
 
   
-  <meta name="description" content="需求： LOV的值集需要根据传入的用户角色类型(A,B,C)动态改变，A时查询所有，B时过滤字段1，C时过滤字段2. 基础VO的SQL如下:
-SELECT DISTINCT U.USER_ID, U.USER_NAME, F.FULL_NAME AS DESCRIPTION FROM &hellip;">
+  <meta name="description" content="需求： LOV的值集需要根据传入的用户角色类型(A,B,C)动态改变，A时查询所有，B时过滤字段1，C时过滤字段2. 基础VO的SQL如下: 1
+2
+3
+4
+5
+6
+7
+8
+9 SELECT DISTINCT U.USER_ID, U.USER_NAME, F.FULL_NAME AS &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -103,34 +110,51 @@ SELECT DISTINCT U.USER_ID, U.USER_NAME, F.FULL_NAME AS DESCRIPTION FROM &hellip;
 
 <p>LOV的值集需要根据传入的用户角色类型(A,B,C)动态改变，A时查询所有，B时过滤字段1，C时过滤字段2.</p>
 
-<blockquote><p><strong>基础VO的SQL如下:</strong>
-SELECT DISTINCT U.USER_ID, U.USER_NAME, F.FULL_NAME AS DESCRIPTION
-  FROM FND_USER U, PO_HEADERS_ALL P, PO_VENDORS V, PER_PEOPLE_F F
- WHERE U.EMPLOYEE_ID = P.AGENT_ID
-   AND P.VENDOR_ID = V.VENDOR_ID
-   AND F.PERSON_ID(+) = U.EMPLOYEE_ID
-   AND P.APPROVED_FLAG = &#8216;Y&#8217;
-   AND ((P.VENDOR_ID = :VARVENDORID AND :VARUSERTYPE = &#8216;B&#8217;) OR</p>
+<p> <strong>基础VO的SQL如下:</strong></p>
 
-<pre><code>   (:VARUSERTYPE = 'A') OR
-   (:VARUSERTYPE = 'C' AND U.USER_ID = :VARUSERID))
-</code></pre></blockquote>
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'> <span class="k">SELECT</span> <span class="k">DISTINCT</span> <span class="n">U</span><span class="p">.</span><span class="n">USER_ID</span><span class="p">,</span> <span class="n">U</span><span class="p">.</span><span class="n">USER_NAME</span><span class="p">,</span> <span class="n">F</span><span class="p">.</span><span class="n">FULL_NAME</span> <span class="k">AS</span> <span class="n">DESCRIPTION</span>
+</span><span class='line'>  <span class="k">FROM</span> <span class="n">FND_USER</span> <span class="n">U</span><span class="p">,</span> <span class="n">PO_HEADERS_ALL</span> <span class="n">P</span><span class="p">,</span> <span class="n">PO_VENDORS</span> <span class="n">V</span><span class="p">,</span> <span class="n">PER_PEOPLE_F</span> <span class="n">F</span>
+</span><span class='line'> <span class="k">WHERE</span> <span class="n">U</span><span class="p">.</span><span class="n">EMPLOYEE_ID</span> <span class="o">=</span> <span class="n">P</span><span class="p">.</span><span class="n">AGENT_ID</span>
+</span><span class='line'>   <span class="k">AND</span> <span class="n">P</span><span class="p">.</span><span class="n">VENDOR_ID</span> <span class="o">=</span> <span class="n">V</span><span class="p">.</span><span class="n">VENDOR_ID</span>
+</span><span class='line'>   <span class="k">AND</span> <span class="n">F</span><span class="p">.</span><span class="n">PERSON_ID</span><span class="p">(</span><span class="o">+</span><span class="p">)</span> <span class="o">=</span> <span class="n">U</span><span class="p">.</span><span class="n">EMPLOYEE_ID</span>
+</span><span class='line'>   <span class="k">AND</span> <span class="n">P</span><span class="p">.</span><span class="n">APPROVED_FLAG</span> <span class="o">=</span> <span class="s1">&#39;Y&#39;</span>
+</span><span class='line'>   <span class="k">AND</span> <span class="p">((</span><span class="n">P</span><span class="p">.</span><span class="n">VENDOR_ID</span> <span class="o">=</span> <span class="p">:</span><span class="n">VARVENDORID</span> <span class="k">AND</span> <span class="p">:</span><span class="n">VARUSERTYPE</span> <span class="o">=</span> <span class="s1">&#39;B&#39;</span><span class="p">)</span> <span class="k">OR</span>
+</span><span class='line'>       <span class="p">(:</span><span class="n">VARUSERTYPE</span> <span class="o">=</span> <span class="s1">&#39;A&#39;</span><span class="p">)</span> <span class="k">OR</span>
+</span><span class='line'>       <span class="p">(:</span><span class="n">VARUSERTYPE</span> <span class="o">=</span> <span class="s1">&#39;C&#39;</span> <span class="k">AND</span> <span class="n">U</span><span class="p">.</span><span class="n">USER_ID</span> <span class="o">=</span> <span class="p">:</span><span class="n">VARUSERID</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>创建VARUSERTYPE VARUSERID VARVENDORID 三个绑定变量。</p>
 
 <h4><i class="icon-folder-open"></i> 创建LOV VO</h4>
 
-<blockquote><p><strong>LVO的SQL如下:</strong>
-SELECT NULL         AS USER_ID,</p>
+<p> <strong>LVO的SQL如下:</strong></p>
 
-<pre><code>   NULL         AS USER_NAME,
-   NULL         AS DESCRIPTION,
-   :VARTYPE     AS USERTYPE,  
-   :VARVENDORID AS VENDORID,
-   :VARUSERID   AS CURRENTUSERID
-</code></pre>
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'> <span class="k">SELECT</span> <span class="k">NULL</span>         <span class="k">AS</span> <span class="n">USER_ID</span><span class="p">,</span>
+</span><span class='line'>       <span class="k">NULL</span>         <span class="k">AS</span> <span class="n">USER_NAME</span><span class="p">,</span>
+</span><span class='line'>       <span class="k">NULL</span>         <span class="k">AS</span> <span class="n">DESCRIPTION</span><span class="p">,</span>
+</span><span class='line'>       <span class="p">:</span><span class="n">VARTYPE</span>     <span class="k">AS</span> <span class="n">USERTYPE</span><span class="p">,</span>
+</span><span class='line'>       <span class="p">:</span><span class="n">VARVENDORID</span> <span class="k">AS</span> <span class="n">VENDORID</span><span class="p">,</span>
+</span><span class='line'>       <span class="p">:</span><span class="n">VARUSERID</span>   <span class="k">AS</span> <span class="n">CURRENTUSERID</span>
+</span><span class='line'>  <span class="k">FROM</span> <span class="n">DUAL</span>
+</span></code></pre></td></tr></table></div></figure>
 
-<p>  FROM DUAL</p></blockquote>
 
 <p>技巧在这里，LVO同样创建三个绑定变量，并把绑定变量作为VO的attribute暴露出来，然后通过view Accessors传递给基础VO</p>
 
@@ -138,9 +162,9 @@ SELECT NULL         AS USER_ID,</p>
 
 <ul>
 <li><p>创建LOV
-<img src="../../../wp-content/uploads/QQ20140916174007.png" alt="创建LOV" /></p></li>
+<img src="../../../wp-content/uploads/QQ20140916174007.png" alt="" /></p></li>
 <li><p>设置View Accessors
-<img src="../../../wp-content/uploads/QQ20140916174112.png" alt="设置View Accessors" /></p></li>
+<img src="../../../wp-content/uploads/QQ20140916174112.png" alt="" /></p></li>
 </ul>
 
 
