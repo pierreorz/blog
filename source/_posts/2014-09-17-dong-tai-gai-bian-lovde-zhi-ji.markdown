@@ -43,10 +43,12 @@ LOV的值集需要根据传入的用户角色类型(A,B,C)动态改变，A时查
 
 #### <i class="icon-pencil"></i> 设置View Accessors
 
-- 创建LOV
+- 创建LOV    
+
 ![](../../../wp-content/uploads/QQ20140916174007.png)
 
-- 设置View Accessors
+- 设置View Accessors    
+
 ![](../../../wp-content/uploads/QQ20140916174112.png)
 
 这样就可以实现动态切换LOV的基础数据源了。
