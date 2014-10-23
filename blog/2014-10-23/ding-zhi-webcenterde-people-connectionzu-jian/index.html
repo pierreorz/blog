@@ -1,0 +1,380 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>定制webcenter的people connection组件 - 邓德昭的技术博客</title>
+  <meta name="author" content="pierreorz">
+
+  
+  <meta name="description" content="需求： webcenter的people connection类似于微博的关注粉丝功能，现在需要利用程序让某一用户自动关注一批人员。比如某一用户所在项目(PROJECT1)下有10个成员，则该用户进入portal的时候默认就展示其项目下的10个成员在某一分组(PROJECT1)下。 分析： &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://dengdezhao.cn/blog/2014-10-23/ding-zhi-webcenterde-people-connectionzu-jian">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="邓德昭的技术博客" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/libs/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="/stylesheets/google-fonts.css" rel="stylesheet" type="text/css">
+<link href="/stylesheets/default.css" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><img src="../../../../../wp-content/uploads/logo.gif" width=40px height=40px  alt="" /><a href="/">邓德昭的技术博客</a></h1>
+  
+    <h2>最大的懦弱，不是畏葸不前，而是安于现状</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:dengdezhao.cn" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客主页</a></li>
+  <li><a href="/blog/archives">文章列表</a></li>
+  <li><a href="/tag">标签云</a></li>
+  <li><a href="/about">关于</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">定制webcenter的people Connection组件</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-10-23T22:17:00+08:00" pubdate data-updated="true">Oct 23<span>rd</span>, 2014</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h4><i class="icon-file"></i>   需求：</h4>
+
+<p>webcenter的people connection类似于微博的关注粉丝功能，现在需要利用程序让某一用户自动关注一批人员。比如某一用户所在项目<code>(PROJECT1)</code>下有10个成员，则该用户进入portal的时候默认就展示其项目下的10个成员在某一分组<code>(PROJECT1)</code>下。</p>
+
+<h4><i class="icon-folder-open"></i> 分析：</h4>
+
+<p>根据项目PROJECT1可以查询出10个成员名；
+利用API将10个成员添加到Connections中；
+利用API创建Connection list，也即是分组名<code>(PROJECT1)</code>；
+将10个成员的Connection 添加到分组PROJECT1中。</p>
+
+<h4><i class="icon-pencil"></i> 技术实现：</h4>
+
+<ul>
+<li>根据项目PROJECT1可以查询出10个成员名；
+在AMimpl中创建查询成员名方法以List返回结果。</li>
+</ul>
+
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'>  <span class="k">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">getAllMembersByProjectId</span><span class="p">(</span><span class="n">String</span> <span class="n">proId</span><span class="p">)</span><span class="err">{</span>
+</span><span class='line'>        <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="k">result</span><span class="o">=</span><span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="p">();</span>
+</span><span class='line'>        <span class="k">result</span><span class="p">.</span><span class="k">add</span><span class="p">(</span><span class="ss">&quot;CG02&quot;</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">result</span><span class="p">.</span><span class="k">add</span><span class="p">(</span><span class="ss">&quot;CG03&quot;</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">result</span><span class="p">.</span><span class="k">add</span><span class="p">(</span><span class="ss">&quot;CG04&quot;</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">result</span><span class="p">.</span><span class="k">add</span><span class="p">(</span><span class="ss">&quot;CG05&quot;</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">result</span><span class="p">.</span><span class="k">add</span><span class="p">(</span><span class="ss">&quot;pierre&quot;</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">result</span><span class="p">.</span><span class="k">add</span><span class="p">(</span><span class="ss">&quot;weblogic&quot;</span><span class="p">);</span>
+</span><span class='line'>        <span class="o">//</span><span class="n">TODO</span> <span class="err">根据项目</span><span class="n">ID</span> <span class="n">proId</span><span class="err">查询出项目所有成员以</span><span class="n">List</span><span class="err">返回</span>
+</span><span class='line'>        <span class="k">return</span> <span class="k">result</span><span class="p">;</span>
+</span><span class='line'>    <span class="err">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>利用API将10个成员添加到Connections中；
+oracle.webcenter.peopleconnections.connections.internal.model.ConnectionsManagerImpl.createConnection 方法可以给两个guid创建Connection</li>
+</ul>
+
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="n">ConnectionsServiceFactory</span> <span class="n">fac</span><span class="o">=</span><span class="n">ConnectionsServiceFactory</span><span class="p">.</span><span class="n">getInstance</span><span class="p">();</span>
+</span><span class='line'><span class="n">ConnectionsManagerImpl</span> <span class="n">cm</span><span class="o">=</span><span class="p">(</span><span class="n">ConnectionsManagerImpl</span><span class="p">)</span><span class="n">fac</span><span class="p">.</span><span class="n">getConnectionsManager</span><span class="p">();</span>
+</span><span class='line'> <span class="n">cm</span><span class="p">.</span><span class="n">createConnection</span><span class="p">(</span><span class="n">ownerUserId</span><span class="p">,</span> <span class="n">connectUserId</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>利用API创建Connection list，也即是分组名<code>(PROJECT1)</code>；
+ConnectionListsManager.createConnectionList 可以创建分组</li>
+</ul>
+
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'> <span class="n">ConnectionsServiceFactory</span> <span class="n">fac</span><span class="o">=</span><span class="n">ConnectionsServiceFactory</span><span class="p">.</span><span class="n">getInstance</span><span class="p">();</span>
+</span><span class='line'> <span class="n">fac</span><span class="p">.</span><span class="n">getConnectionListsManager</span><span class="p">().</span><span class="n">createConnectionList</span><span class="p">(</span><span class="ss">&quot;PROJECT1&quot;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>将10个成员的Connection 添加到分组PROJECT1中。
+利用API ConnectionListsManager.addMembersToConnectionList方法可以将创建好的Connection添加到分组中去。样例代码如下：</li>
+</ul>
+
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="n">ConnectionsServiceFactory</span> <span class="n">fac</span><span class="o">=</span><span class="n">ConnectionsServiceFactory</span><span class="p">.</span><span class="n">getInstance</span><span class="p">();</span>
+</span><span class='line'><span class="n">fac</span><span class="p">.</span><span class="n">getConnectionListsManager</span><span class="p">().</span><span class="n">addMembersToConnectionList</span><span class="p">(</span><span class="n">List</span><span class="p">,</span> <span class="ss">&quot;PROJECT1&quot;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>创建Webcenter Portal Server Extension应用，创建TaskFlow调用以上方法；发布扩展应用到spaces，重启spaces，定义resource catalog应用到portal上即可。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">pierreorz</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-10-23T22:17:00+08:00" pubdate data-updated="true">Oct 23<span>rd</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/webcenter/'>webcenter</a>
+  
+</span>
+
+
+      
+
+<span class="tags">
+  
+    <a class='tag' href='/tags/people-connection/'>people connection</a>, <a class='tag' href='/tags/webcenter/'>webcenter</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014-09-17/dong-tai-gai-bian-lovde-zhi-ji/" title="Previous Post: 动态改变LOV的值集">&laquo; 动态改变LOV的值集</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>分类目录</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/adf/'>ADF (34)</a></li>
+<li class='category'><a href='/blog/categories/ebs/'>EBS (2)</a></li>
+<li class='category'><a href='/blog/categories/oaf/'>OAF (9)</a></li>
+<li class='category'><a href='/blog/categories/oracle/'>Oracle (8)</a></li>
+<li class='category'><a href='/blog/categories/soa/'>SOA (3)</a></li>
+<li class='category'><a href='/blog/categories/sinaappengine/'>SinaAppEngine (1)</a></li>
+<li class='category'><a href='/blog/categories/forms/'>forms (1)</a></li>
+<li class='category'><a href='/blog/categories/java/'>java (2)</a></li>
+<li class='category'><a href='/blog/categories/jdeveloper/'>jdeveloper (1)</a></li>
+<li class='category'><a href='/blog/categories/linux/'>linux (2)</a></li>
+<li class='category'><a href='/blog/categories/mysql/'>mysql (1)</a></li>
+<li class='category'><a href='/blog/categories/octopress/'>octopress (1)</a></li>
+<li class='category'><a href='/blog/categories/others/'>others (1)</a></li>
+<li class='category'><a href='/blog/categories/webcenter/'>webcenter (3)</a></li>
+<li class='category'><a href='/blog/categories/weblogic/'>weblogic (1)</a></li>
+<li class='category'><a href='/blog/categories/wordpress/'>wordpress (1)</a></li>
+
+  </ul>
+</section>
+<section>
+  <h1>最新发表</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014-10-23/ding-zhi-webcenterde-people-connectionzu-jian/">定制webcenter的people connection组件</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-09-17/dong-tai-gai-bian-lovde-zhi-ji/">动态改变LOV的值集</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-26/webcenter-portaldiao-yong-document-service/">webcenter portal调用document service</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-25/chuang-jian-content-repositoryshi-chu-xian-cuo-wu/">创建Content Repository时出现错误</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-06-03/oafge-xing-hua-buttonhuo-qu-ye-mian-can-shu/">OAF个性化Button获取页面参数</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+<section>
+  <h1>友情链接</h1>
+  <ul>
+  	<li><a href="http://www.liqifa.com">[小分号]</a></li>
+ 	<li><a href="http://www.fmw007.com">[梦想左岸]</a></li>
+ 	<li><a href="http://ericchan.cn">[小骚骚的技术博客]</a></li>
+ 	<li><a href="http://oraclefmw.blog.163.com/">[追梦]</a></li>
+ 	<li><a href="http://blog.csdn.net/ygj26">[小尹妹纸]</a></li>
+ 	<li><a href="http://oracleseeker.com/">[OracleSeeker，Oracle探索者]</a></li>
+  </ul>
+</section>
+
+<section>
+<h1>新浪微博</h1>
+<ul id="weibo">
+<li>
+<iframe
+width="100%"
+height="550"
+class="share_self"
+frameborder="0"
+scrolling="no"
+src="http://widget.weibo.com/weiboshow/index.php?width=0&height=550&ptype=0&speed=0&skin=&isTitle=0&noborder=1&isWeibo=0&isFans=&uid=1774817797&verifier=75ee09e4&colors=17236,003643,004354,00b7ef,ffffff&dpc=1">
+</iframe>
+</li>
+</ul>
+</section>
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - pierreorz -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F2c50098a945120bddaa5f082c4e56cea' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'adfkf';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://dengdezhao.cn/blog/2014-10-23/ding-zhi-webcenterde-people-connectionzu-jian/';
+        var disqus_url = 'http://dengdezhao.cn/blog/2014-10-23/ding-zhi-webcenterde-people-connectionzu-jian/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

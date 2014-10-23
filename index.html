@@ -9,15 +9,7 @@
   <meta name="author" content="pierreorz">
 
   
-  <meta name="description" content="需求： LOV的值集需要根据传入的用户角色类型(A,B,C)动态改变，A时查询所有，B时过滤字段1，C时过滤字段2. 基础VO的SQL如下: 1
-2
-3
-4
-5
-6
-7
-8
-9 SELECT DISTINCT U.USER_ID, U.USER_NAME, F.FULL_NAME AS &hellip;">
+  <meta name="description" content="需求： webcenter的people connection类似于微博的关注粉丝功能，现在需要利用程序让某一用户自动关注一批人员。比如某一用户所在项目(PROJECT1)下有10个成员，则该用户进入portal的时候默认就展示其项目下的10个成员在某一分组(PROJECT1)下。 分析： &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +67,129 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014-10-23/ding-zhi-webcenterde-people-connectionzu-jian/">定制webcenter的people Connection组件</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-10-23T22:17:00+08:00" pubdate data-updated="true">Oct 23<span>rd</span>, 2014</time>
+        
+         | <a href="/blog/2014-10-23/ding-zhi-webcenterde-people-connectionzu-jian/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4><i class="icon-file"></i>   需求：</h4>
+
+<p>webcenter的people connection类似于微博的关注粉丝功能，现在需要利用程序让某一用户自动关注一批人员。比如某一用户所在项目<code>(PROJECT1)</code>下有10个成员，则该用户进入portal的时候默认就展示其项目下的10个成员在某一分组<code>(PROJECT1)</code>下。</p>
+
+<h4><i class="icon-folder-open"></i> 分析：</h4>
+
+<p>根据项目PROJECT1可以查询出10个成员名；
+利用API将10个成员添加到Connections中；
+利用API创建Connection list，也即是分组名<code>(PROJECT1)</code>；
+将10个成员的Connection 添加到分组PROJECT1中。</p>
+
+<h4><i class="icon-pencil"></i> 技术实现：</h4>
+
+<ul>
+<li>根据项目PROJECT1可以查询出10个成员名；
+在AMimpl中创建查询成员名方法以List返回结果。</li>
+</ul>
+
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'>  <span class="k">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">getAllMembersByProjectId</span><span class="p">(</span><span class="n">String</span> <span class="n">proId</span><span class="p">)</span><span class="err">{</span>
+</span><span class='line'>        <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="k">result</span><span class="o">=</span><span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="p">();</span>
+</span><span class='line'>        <span class="k">result</span><span class="p">.</span><span class="k">add</span><span class="p">(</span><span class="ss">&quot;CG02&quot;</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">result</span><span class="p">.</span><span class="k">add</span><span class="p">(</span><span class="ss">&quot;CG03&quot;</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">result</span><span class="p">.</span><span class="k">add</span><span class="p">(</span><span class="ss">&quot;CG04&quot;</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">result</span><span class="p">.</span><span class="k">add</span><span class="p">(</span><span class="ss">&quot;CG05&quot;</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">result</span><span class="p">.</span><span class="k">add</span><span class="p">(</span><span class="ss">&quot;pierre&quot;</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">result</span><span class="p">.</span><span class="k">add</span><span class="p">(</span><span class="ss">&quot;weblogic&quot;</span><span class="p">);</span>
+</span><span class='line'>        <span class="o">//</span><span class="n">TODO</span> <span class="err">根据项目</span><span class="n">ID</span> <span class="n">proId</span><span class="err">查询出项目所有成员以</span><span class="n">List</span><span class="err">返回</span>
+</span><span class='line'>        <span class="k">return</span> <span class="k">result</span><span class="p">;</span>
+</span><span class='line'>    <span class="err">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>利用API将10个成员添加到Connections中；
+oracle.webcenter.peopleconnections.connections.internal.model.ConnectionsManagerImpl.createConnection 方法可以给两个guid创建Connection</li>
+</ul>
+
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="n">ConnectionsServiceFactory</span> <span class="n">fac</span><span class="o">=</span><span class="n">ConnectionsServiceFactory</span><span class="p">.</span><span class="n">getInstance</span><span class="p">();</span>
+</span><span class='line'><span class="n">ConnectionsManagerImpl</span> <span class="n">cm</span><span class="o">=</span><span class="p">(</span><span class="n">ConnectionsManagerImpl</span><span class="p">)</span><span class="n">fac</span><span class="p">.</span><span class="n">getConnectionsManager</span><span class="p">();</span>
+</span><span class='line'> <span class="n">cm</span><span class="p">.</span><span class="n">createConnection</span><span class="p">(</span><span class="n">ownerUserId</span><span class="p">,</span> <span class="n">connectUserId</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>利用API创建Connection list，也即是分组名<code>(PROJECT1)</code>；
+ConnectionListsManager.createConnectionList 可以创建分组</li>
+</ul>
+
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'> <span class="n">ConnectionsServiceFactory</span> <span class="n">fac</span><span class="o">=</span><span class="n">ConnectionsServiceFactory</span><span class="p">.</span><span class="n">getInstance</span><span class="p">();</span>
+</span><span class='line'> <span class="n">fac</span><span class="p">.</span><span class="n">getConnectionListsManager</span><span class="p">().</span><span class="n">createConnectionList</span><span class="p">(</span><span class="ss">&quot;PROJECT1&quot;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>将10个成员的Connection 添加到分组PROJECT1中。
+利用API ConnectionListsManager.addMembersToConnectionList方法可以将创建好的Connection添加到分组中去。样例代码如下：</li>
+</ul>
+
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="n">ConnectionsServiceFactory</span> <span class="n">fac</span><span class="o">=</span><span class="n">ConnectionsServiceFactory</span><span class="p">.</span><span class="n">getInstance</span><span class="p">();</span>
+</span><span class='line'><span class="n">fac</span><span class="p">.</span><span class="n">getConnectionListsManager</span><span class="p">().</span><span class="n">addMembersToConnectionList</span><span class="p">(</span><span class="n">List</span><span class="p">,</span> <span class="ss">&quot;PROJECT1&quot;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>创建Webcenter Portal Server Extension应用，创建TaskFlow调用以上方法；发布扩展应用到spaces，重启spaces，定义resource catalog应用到portal上即可。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1078,90 +1193,6 @@ SocketHostAddressSecurityFilter=127.0.0.1|192.168.15.163|<code>*.*.*.*</code>即
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013-09-04/ru-he-huo-qu-web-dot-xmlzhong-de-context-paramcan-shu/">如何获取web.xml中的context-param参数</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-09-04T19:30:00+08:00" pubdate data-updated="true">Sep 4<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013-09-04/ru-he-huo-qu-web-dot-xmlzhong-de-context-paramcan-shu/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><strong>通过EL表达试获取</strong></p>
-
-<p>以web.xml中的<context-param>参数：javax.faces.FACELETS_VIEW_MAPPINGS为例,
-可通过以下EL获取。</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'>
-</span><span class='line'><span class="n">$</span><span class="o">{</span><span class="n">initParam</span><span class="o">[</span><span class="err">&#39;</span><span class="n">javax</span><span class="o">.</span><span class="na">faces</span><span class="o">.</span><span class="na">FACELETS_VIEW_MAPPINGS</span><span class="err">&#39;</span><span class="o">]}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>如果参数名称很简单，比如：testParameter，EL表达式也可以写成以下方式：</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'>
-</span><span class='line'><span class="n">$</span><span class="o">{</span><span class="n">initParam</span><span class="o">.</span><span class="na">testParameter</span><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><strong>通过JAVA代码获取</strong></p>
-
-<p>如果需要在MB方法中获取该参数值，可以参照以下代码：</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'>
-</span><span class='line'>    <span class="kd">public</span> <span class="n">String</span> <span class="nf">action</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">FacesContext</span> <span class="n">fctx</span><span class="o">=</span><span class="n">FacesContext</span><span class="o">.</span><span class="na">getCurrentInstance</span><span class="o">();</span>
-</span><span class='line'>        <span class="n">ExternalContext</span> <span class="n">ec</span><span class="o">=</span><span class="n">fctx</span><span class="o">.</span><span class="na">getExternalContext</span><span class="o">();</span>
-</span><span class='line'>        <span class="n">ServletContext</span> <span class="n">servletContext</span><span class="o">=(</span><span class="n">ServletContext</span><span class="o">)</span><span class="n">ec</span><span class="o">.</span><span class="na">getContext</span><span class="o">();</span>
-</span><span class='line'>        <span class="n">String</span> <span class="n">value</span><span class="o">=</span><span class="n">servletContext</span><span class="o">.</span><span class="na">getInitParameter</span><span class="o">(</span><span class="s">&quot;javax.faces.FACELETS_VIEW_MAPPINGS&quot;</span><span class="o">);</span>
-</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">value</span><span class="o">);</span>
-</span><span class='line'>        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
-</span><span class='line'>    <span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1188,7 +1219,7 @@ SocketHostAddressSecurityFilter=127.0.0.1|192.168.15.163|<code>*.*.*.*</code>即
 <li class='category'><a href='/blog/categories/mysql/'>mysql (1)</a></li>
 <li class='category'><a href='/blog/categories/octopress/'>octopress (1)</a></li>
 <li class='category'><a href='/blog/categories/others/'>others (1)</a></li>
-<li class='category'><a href='/blog/categories/webcenter/'>webcenter (2)</a></li>
+<li class='category'><a href='/blog/categories/webcenter/'>webcenter (3)</a></li>
 <li class='category'><a href='/blog/categories/weblogic/'>weblogic (1)</a></li>
 <li class='category'><a href='/blog/categories/wordpress/'>wordpress (1)</a></li>
 
@@ -1197,6 +1228,10 @@ SocketHostAddressSecurityFilter=127.0.0.1|192.168.15.163|<code>*.*.*.*</code>即
 <section>
   <h1>最新发表</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014-10-23/ding-zhi-webcenterde-people-connectionzu-jian/">定制webcenter的people connection组件</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014-09-17/dong-tai-gai-bian-lovde-zhi-ji/">动态改变LOV的值集</a>
@@ -1212,10 +1247,6 @@ SocketHostAddressSecurityFilter=127.0.0.1|192.168.15.163|<code>*.*.*.*</code>即
     
       <li class="post">
         <a href="/blog/2014-06-03/oafge-xing-hua-buttonhuo-qu-ye-mian-can-shu/">OAF个性化Button获取页面参数</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014-04-18/an-zhuang-rcu1-dot-7yu-dao-de-xiao-wen-ti/">安装RCU1.7遇到的小问题</a>
       </li>
     
   </ul>

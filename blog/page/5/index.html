@@ -9,7 +9,7 @@
   <meta name="author" content="pierreorz">
 
   
-  <meta name="description" content="已知数据库，数据库所在服务器字符集都是UTF8，在并发请求调用的SQL里，fnd_file.put_line(fnd_file.log,&#8217;中文&#8217;)语句输出时，在EBS界面查看就是乱码。 出现乱码的问题思路： 1.查看客户端系统字符集是否支持中文。确认本机支持， &hellip;">
+  <meta name="description" content="好久没碰SOA，最近在win2003上准备搭建个环境玩玩。下载相关安装介质 http://www.oracle.com/technetwork/middleware/soasuite/downloads/index.html 1.Database 我用的是oracle 11G 2.Oracle &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,6 +67,61 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012-09-29/soa-suite-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">SOA Suite 环境搭建</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-29T00:00:00+08:00" pubdate data-updated="true">Sep 29<span>th</span>, 2012</time>
+        
+         | <a href="/blog/2012-09-29/soa-suite-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>好久没碰SOA，最近在win2003上准备搭建个环境玩玩。下载相关安装介质</p>
+
+<p>http://www.oracle.com/technetwork/middleware/soasuite/downloads/index.html</p>
+
+<p>1.<strong>Database</strong> 我用的是oracle 11G</p>
+
+<p>2.<strong>Oracle WebLogic Server </strong>安装的是10.3.6.0</p>
+
+<p>3.<strong>Repository Creation Utility 11.1.1.6.0 </strong>解压缩下载的压缩包，运行/rcuHome/Bin/rcu.bat.执行安装</p>
+
+<p>4.<strong>JDeveloper 11.1.1.6.0 </strong>安装开发工具JDEV，因自带weblogic是11.1.1.5.0安装时可能需要分开不要放在一个oracle主目录里。或者只安装JDEV也行</p>
+
+<p>5.安装好JDEV后，更新<strong>SOA Extension for JDeveloper 11.1.1.6.0</strong>插件</p>
+
+<p>6.安装<strong>SOA Suite </strong>需要注意的是执行安装时要指定JRE目录-jreLoc &#8220;c:\java\jre&#8221;. <strong><a href="http://www.oracle.com/technetwork/middleware/soasuite/overview/index.html">
+</a></strong></p>
+
+<p>&nbsp;</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -530,67 +585,6 @@ new Object[] { selectionEvent });</blockquote>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012-06-26/%E5%88%A9%E7%94%A8javamail%E5%8F%91%E9%80%81%E9%82%AE%E4%BB%B6%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0/">利用javaMail发送邮件功能实现</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
-        
-         | <a href="/blog/2012-06-26/%E5%88%A9%E7%94%A8javamail%E5%8F%91%E9%80%81%E9%82%AE%E4%BB%B6%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>由于SMTP服务器需要采用SSL方式访问，所以蛋疼了，默认的连接25端口方式无法连接<br />
-改成465方式访问，又报连接错误，原来是证书文件的问题。<br />
-于是利用 InstallCert.java重新生成证书
-<div>
-<blockquote>java InstallCert smtp.dengdezhao.cn:465</blockquote>
-</div>
-将得到的证书cacert文件放置在任意路径下：比如C盘 c:/cacert</p>
-
-<p>程序中props属性里添加如下参数
-<div>
-<blockquote>props = System.getProperties();<br />
-props.put(&#8220;mail.smtp.host&#8221;, smtp.dengdezhao.cn); // 设置SMTP主机<br />
-props.put(&#8220;mail.smtp.auth&#8221;, &#8220;true&#8221;);<br />
-props.put(&#8220;mail.smtp.socketFactory.class&#8221;,<br />
-&#8220;javax.net.ssl.SSLSocketFactory&#8221;);<br />
-props.put(&#8220;mail.smtp.socketFactory.fallback&#8221;, &#8220;false&#8221;);<br />
-props.put(&#8220;mail.smtp.socketFactory.port&#8221;, &#8220;465&#8221;);<br />
-props.put(&#8220;mail.debug&#8221;, &#8220;true&#8221;);<br />
-props.put(&#8220;javax.net.ssl.keyStore&#8221;, &#8220;c:&#92;cacert&#8221;);<br />
-props.put(&#8220;javax.net.ssl.trustStore&#8221;, &#8220;c:&#92;cacert&#8221;);</blockquote>
-</div>
-即可。</p>
-
-<p>&nbsp;</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/6/">&larr; Older</a>
@@ -619,7 +613,7 @@ props.put(&#8220;javax.net.ssl.trustStore&#8221;, &#8220;c:&#92;cacert&#8221;);<
 <li class='category'><a href='/blog/categories/mysql/'>mysql (1)</a></li>
 <li class='category'><a href='/blog/categories/octopress/'>octopress (1)</a></li>
 <li class='category'><a href='/blog/categories/others/'>others (1)</a></li>
-<li class='category'><a href='/blog/categories/webcenter/'>webcenter (2)</a></li>
+<li class='category'><a href='/blog/categories/webcenter/'>webcenter (3)</a></li>
 <li class='category'><a href='/blog/categories/weblogic/'>weblogic (1)</a></li>
 <li class='category'><a href='/blog/categories/wordpress/'>wordpress (1)</a></li>
 
@@ -628,6 +622,10 @@ props.put(&#8220;javax.net.ssl.trustStore&#8221;, &#8220;c:&#92;cacert&#8221;);<
 <section>
   <h1>最新发表</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014-10-23/ding-zhi-webcenterde-people-connectionzu-jian/">定制webcenter的people connection组件</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014-09-17/dong-tai-gai-bian-lovde-zhi-ji/">动态改变LOV的值集</a>
@@ -643,10 +641,6 @@ props.put(&#8220;javax.net.ssl.trustStore&#8221;, &#8220;c:&#92;cacert&#8221;);<
     
       <li class="post">
         <a href="/blog/2014-06-03/oafge-xing-hua-buttonhuo-qu-ye-mian-can-shu/">OAF个性化Button获取页面参数</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014-04-18/an-zhuang-rcu1-dot-7yu-dao-de-xiao-wen-ti/">安装RCU1.7遇到的小问题</a>
       </li>
     
   </ul>

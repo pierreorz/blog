@@ -9,9 +9,12 @@
   <meta name="author" content="pierreorz">
 
   
-  <meta name="description" content="虚拟机安装solaris 11的时候弹出
-Long mode not supported, rebooting Press any key to reboot&#8230;&#8230;..
-原因是solaris11只支持64位，需要把BIOS的CPU选项里Inter Virtualization &hellip;">
+  <meta name="description" content="Use Javascript in OAF 使用Js脚本库 在CO的processRequest中引入JS库
+编写JS库:Calendar2013.js 1
+2
+3
+4
+pageContext.putJavaScriptLibrary(&quot;Calendar&quot;,&quot; &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -69,6 +72,84 @@ Long mode not supported, rebooting Press any key to reboot&#8230;&#8230;..
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013-03-19/use-javascript-in-oaf/">Use Javascript in Oaf</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-19T22:27:00+08:00" pubdate data-updated="true">Mar 19<span>th</span>, 2013</time>
+        
+         | <a href="/blog/2013-03-19/use-javascript-in-oaf/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Use Javascript in OAF</h2>
+
+<h4>使用Js脚本库</h4>
+
+<p>在CO的<em>processRequest</em>中引入JS库<br/>
+编写JS库:Calendar2013.js</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">pageContext</span><span class="o">.</span><span class="na">putJavaScriptLibrary</span><span class="o">(</span><span class="s">&quot;Calendar&quot;</span><span class="o">,</span><span class="s">&quot;Calendar2013.js&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="o">((</span><span class="n">OAMessageTextInputBean</span><span class="o">)</span><span class="n">webBean</span>
+</span><span class='line'><span class="o">.</span><span class="na">findChildRecursive</span><span class="o">(</span><span class="s">&quot;inputDate&quot;</span><span class="o">))</span>
+</span><span class='line'><span class="o">.</span><span class="na">setOnClick</span><span class="o">(</span><span class="s">&quot;setday(this)&quot;</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>需要把Calendar2013.js放置在$<strong>COMMON_TOP</strong>/html下。</p>
+
+<h4>直接引用javaScript</h4>
+
+<p>编写<em>JavaScript</em>:</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">String</span> <span class="n">javaScript</span><span class="o">=</span><span class="s">&quot;JAVASCRIPT:function setday(){...}&quot;</span><span class="o">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在<strong>CO</strong>的<em>processRequest</em>中加载<em>javascript</em></p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">pageContext</span><span class="o">.</span><span class="na">putJavaScriptFunction</span><span class="o">(</span><span class="s">&quot;sayday()&quot;</span><span class="o">,</span><span class="n">javaScript</span><span class="o">);</span>
+</span><span class='line'><span class="o">((</span><span class="n">OAMessageTextInputBean</span><span class="o">)</span><span class="n">webBean</span><span class="o">.</span><span class="na">findChildRecursive</span><span class="o">(</span><span class="s">&quot;inputDate&quot;</span><span class="o">))</span>
+</span><span class='line'>    <span class="o">.</span><span class="na">setOnClick</span><span class="o">(</span><span class="s">&quot;javascript:setday()&quot;</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -852,61 +933,6 @@ cron:
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012-09-29/soa-suite-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">SOA Suite 环境搭建</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-09-29T00:00:00+08:00" pubdate data-updated="true">Sep 29<span>th</span>, 2012</time>
-        
-         | <a href="/blog/2012-09-29/soa-suite-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>好久没碰SOA，最近在win2003上准备搭建个环境玩玩。下载相关安装介质</p>
-
-<p>http://www.oracle.com/technetwork/middleware/soasuite/downloads/index.html</p>
-
-<p>1.<strong>Database</strong> 我用的是oracle 11G</p>
-
-<p>2.<strong>Oracle WebLogic Server </strong>安装的是10.3.6.0</p>
-
-<p>3.<strong>Repository Creation Utility 11.1.1.6.0 </strong>解压缩下载的压缩包，运行/rcuHome/Bin/rcu.bat.执行安装</p>
-
-<p>4.<strong>JDeveloper 11.1.1.6.0 </strong>安装开发工具JDEV，因自带weblogic是11.1.1.5.0安装时可能需要分开不要放在一个oracle主目录里。或者只安装JDEV也行</p>
-
-<p>5.安装好JDEV后，更新<strong>SOA Extension for JDeveloper 11.1.1.6.0</strong>插件</p>
-
-<p>6.安装<strong>SOA Suite </strong>需要注意的是执行安装时要指定JRE目录-jreLoc &#8220;c:\java\jre&#8221;. <strong><a href="http://www.oracle.com/technetwork/middleware/soasuite/overview/index.html">
-</a></strong></p>
-
-<p>&nbsp;</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/5/">&larr; Older</a>
@@ -935,7 +961,7 @@ cron:
 <li class='category'><a href='/blog/categories/mysql/'>mysql (1)</a></li>
 <li class='category'><a href='/blog/categories/octopress/'>octopress (1)</a></li>
 <li class='category'><a href='/blog/categories/others/'>others (1)</a></li>
-<li class='category'><a href='/blog/categories/webcenter/'>webcenter (2)</a></li>
+<li class='category'><a href='/blog/categories/webcenter/'>webcenter (3)</a></li>
 <li class='category'><a href='/blog/categories/weblogic/'>weblogic (1)</a></li>
 <li class='category'><a href='/blog/categories/wordpress/'>wordpress (1)</a></li>
 
@@ -944,6 +970,10 @@ cron:
 <section>
   <h1>最新发表</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014-10-23/ding-zhi-webcenterde-people-connectionzu-jian/">定制webcenter的people connection组件</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014-09-17/dong-tai-gai-bian-lovde-zhi-ji/">动态改变LOV的值集</a>
@@ -959,10 +989,6 @@ cron:
     
       <li class="post">
         <a href="/blog/2014-06-03/oafge-xing-hua-buttonhuo-qu-ye-mian-can-shu/">OAF个性化Button获取页面参数</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014-04-18/an-zhuang-rcu1-dot-7yu-dao-de-xiao-wen-ti/">安装RCU1.7遇到的小问题</a>
       </li>
     
   </ul>

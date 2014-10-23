@@ -9,8 +9,9 @@
   <meta name="author" content="pierreorz">
 
   
-  <meta name="description" content="一个时刻字段，要求输入00:00-12:60这样的时刻范围
-使用如下的正则表达式，过滤掉了不合规则的数字之后，还差一个逻辑，结束时刻不能小于开始时刻，比如：10：00-9：00这样的输入也是不合法的。正则太折磨眼力了，应该也是可以做到这点的吧，为了偷懒，就定制个validator来处理这个点。 & &hellip;">
+  <meta name="description" content="由于SMTP服务器需要采用SSL方式访问，所以蛋疼了，默认的连接25端口方式无法连接
+改成465方式访问，又报连接错误，原来是证书文件的问题。
+于是利用 InstallCert.java重新生成证书 java InstallCert smtp.dengdezhao.cn:465 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -68,6 +69,67 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012-06-26/%E5%88%A9%E7%94%A8javamail%E5%8F%91%E9%80%81%E9%82%AE%E4%BB%B6%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0/">利用javaMail发送邮件功能实现</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
+        
+         | <a href="/blog/2012-06-26/%E5%88%A9%E7%94%A8javamail%E5%8F%91%E9%80%81%E9%82%AE%E4%BB%B6%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>由于SMTP服务器需要采用SSL方式访问，所以蛋疼了，默认的连接25端口方式无法连接<br />
+改成465方式访问，又报连接错误，原来是证书文件的问题。<br />
+于是利用 InstallCert.java重新生成证书
+<div>
+<blockquote>java InstallCert smtp.dengdezhao.cn:465</blockquote>
+</div>
+将得到的证书cacert文件放置在任意路径下：比如C盘 c:/cacert</p>
+
+<p>程序中props属性里添加如下参数
+<div>
+<blockquote>props = System.getProperties();<br />
+props.put(&#8220;mail.smtp.host&#8221;, smtp.dengdezhao.cn); // 设置SMTP主机<br />
+props.put(&#8220;mail.smtp.auth&#8221;, &#8220;true&#8221;);<br />
+props.put(&#8220;mail.smtp.socketFactory.class&#8221;,<br />
+&#8220;javax.net.ssl.SSLSocketFactory&#8221;);<br />
+props.put(&#8220;mail.smtp.socketFactory.fallback&#8221;, &#8220;false&#8221;);<br />
+props.put(&#8220;mail.smtp.socketFactory.port&#8221;, &#8220;465&#8221;);<br />
+props.put(&#8220;mail.debug&#8221;, &#8220;true&#8221;);<br />
+props.put(&#8220;javax.net.ssl.keyStore&#8221;, &#8220;c:&#92;cacert&#8221;);<br />
+props.put(&#8220;javax.net.ssl.trustStore&#8221;, &#8220;c:&#92;cacert&#8221;);</blockquote>
+</div>
+即可。</p>
+
+<p>&nbsp;</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -716,110 +778,6 @@ ORA-28056: Writing audit records to Windows Event Log failed<br />
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012-06-26/adftree%E5%81%9A%E7%9A%84%E6%A0%91%E8%8F%9C%E5%8D%95%E5%A6%82%E4%BD%95%E8%BF%87%E6%BB%A4%E5%AD%90%E8%8A%82%E7%82%B9%E7%9A%84%E6%95%B0%E6%8D%AE%EF%BC%9F/">Adf:tree做的树菜单如何过滤子节点的数据？</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
-        
-         | <a href="/blog/2012-06-26/adftree%E5%81%9A%E7%9A%84%E6%A0%91%E8%8F%9C%E5%8D%95%E5%A6%82%E4%BD%95%E8%BF%87%E6%BB%A4%E5%AD%90%E8%8A%82%E7%82%B9%E7%9A%84%E6%95%B0%E6%8D%AE%EF%BC%9F/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>需求：项目中的树菜单需要权限用户的权限过滤显示子菜单，通过用户所在的用户组可以查看的页面ID（List)过滤子节点<br />
-解决方案：<br />
-因为树是通过viewLink关联自身的VO生成的，想在AM里添加方法，对VO进行过滤处理把结果返回。<br />
-但实现起来比较麻烦，调用方法之后要刷新页面，初始化的树数据过滤处理困难。<br />
-于是想重写VO的方法看能不能在VO层就过滤掉子节点。重写createViewLinkAccessorRS，此方法返回ViewLink的结果，也就是菜单的子节点数据
-<div>
-<blockquote>
-@Override<br />
-protected ViewRowSetImpl createViewLinkAccessorRS(AssociationDefImpl associationDefImpl,<br />
-ViewObjectImpl viewObjectImpl,<br />
-Row row,<br />
-Object[] object) {<br />
-ViewRowSetImpl viewRowSetImpl =<br />
-super.createViewLinkAccessorRS(associationDefImpl, viewObjectImpl,<br />
-row, object);<br />
-int count = 0;<br />
-// getList()拿到可以查看的pageId的列表，对比Row中的pageId属性，如果在List中存在，就取该Row，如果不存      //在，表示此子节点不予以显示，remove掉<br />
-if (this.getList() != null &amp;&amp; this.getList().size() != 0 &amp;&amp;<br />
-viewRowSetImpl != null) {<br />
-for (int m = 0; m &lt; viewRowSetImpl.getRowCount(); m++) {<br />
-if (viewRowSetImpl.getRow(m).getAttribute(&#8220;pageId&#8221;) ==<br />
-null) {<br />
-continue;<br />
-}
-for (int i = 0; i &lt; this.getList().size(); i++) {<br />
-if (this.getList().get(i).equals(viewRowSetImpl.getRow(m).getAttribute(&#8220;pageId&#8221;))) {<br />
-count++;<br />
-}
-}<br />
-if (count == 0) {<br />
-viewRowSetImpl.removeRowAt(m);<br />
-//因为remove掉一行之后，viewRowSetImpl的RowCount就少了1，需要给m也减一，不然可漏掉一行数据未处理。<br />
-m&#8211;;<br />
-}
-count = 0;<br />
-}
-}</blockquote></div></p>
-
-<p>return viewRowSetImpl;</p>
-
-<p>}
-
-如此重写了这个方法之后，在调用的时候需要给List赋值，以方便过滤。因此需要给List的 SetList()方法生成Client接口。<br />
-在VO中为setList()添加clientInterface.
-<div>
-<blockquote>&lt;ClientInterface&gt;<br />
-&lt;Method<br />
-Name=&#8221;setList&#8221;&gt;<br />
-&lt;Return<br />
-Type=&#8221;void&#8221;/&gt;<br />
-&lt;Parameter<br />
-Name=&#8221;list&#8221;<br />
-Type=&#8221;java.util.ArrayList&#8221;<br />
-IsGeneric=&#8221;true&#8221;&gt;<br />
-&lt;Element<br />
-Type=&#8221;java.lang.String&#8221;/&gt;<br />
-&lt;/Parameter&gt;<br />
-&lt;/Method&gt;<br />
-&lt;/ClientInterface&gt;</blockquote>
-</div>
-这样，只需要在页面初始化的时候，给这个VO的list赋值，就可以过滤子节点了
-<div>
-<blockquote>DCIteratorBinding it2 = ADFUtils.findIterator(&#8220;MenuVO1Iterator&#8221;);<br />
-MenuVOImpl vo2 = (MenuVOImpl)it2.getViewObject();<br />
-vo2.setList(list);    //给VO的List赋值。<br />
-vo2.executeQuery();</blockquote>
-</div></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/7/">&larr; Older</a>
@@ -848,7 +806,7 @@ vo2.executeQuery();</blockquote>
 <li class='category'><a href='/blog/categories/mysql/'>mysql (1)</a></li>
 <li class='category'><a href='/blog/categories/octopress/'>octopress (1)</a></li>
 <li class='category'><a href='/blog/categories/others/'>others (1)</a></li>
-<li class='category'><a href='/blog/categories/webcenter/'>webcenter (2)</a></li>
+<li class='category'><a href='/blog/categories/webcenter/'>webcenter (3)</a></li>
 <li class='category'><a href='/blog/categories/weblogic/'>weblogic (1)</a></li>
 <li class='category'><a href='/blog/categories/wordpress/'>wordpress (1)</a></li>
 
@@ -857,6 +815,10 @@ vo2.executeQuery();</blockquote>
 <section>
   <h1>最新发表</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014-10-23/ding-zhi-webcenterde-people-connectionzu-jian/">定制webcenter的people connection组件</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014-09-17/dong-tai-gai-bian-lovde-zhi-ji/">动态改变LOV的值集</a>
@@ -872,10 +834,6 @@ vo2.executeQuery();</blockquote>
     
       <li class="post">
         <a href="/blog/2014-06-03/oafge-xing-hua-buttonhuo-qu-ye-mian-can-shu/">OAF个性化Button获取页面参数</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014-04-18/an-zhuang-rcu1-dot-7yu-dao-de-xiao-wen-ti/">安装RCU1.7遇到的小问题</a>
       </li>
     
   </ul>

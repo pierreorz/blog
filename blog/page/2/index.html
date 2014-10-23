@@ -9,15 +9,9 @@
   <meta name="author" content="pierreorz">
 
   
-  <meta name="description" content="安装 去oracle官网下载mysql5.6 for linux安装介质V38444-01.zip。 解压缩之后 1
-2
-3
-4
-5
-6
-7
-MySQL-client-advanced-5.6.12-1.el6.i686.rpm
-MySQL-devel-advanced-5.6.12-1.el6. &hellip;">
+  <meta name="description" content="通过EL表达试获取 以web.xml中的参数：javax.faces.FACELETS_VIEW_MAPPINGS为例,
+可通过以下EL获取。 1
+2 ${initParam[&#39;javax.faces.FACELETS_VIEW_MAPPINGS&#39;]} 如果参数名称很简单，比如： &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +69,90 @@ MySQL-devel-advanced-5.6.12-1.el6. &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013-09-04/ru-he-huo-qu-web-dot-xmlzhong-de-context-paramcan-shu/">如何获取web.xml中的context-param参数</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-04T19:30:00+08:00" pubdate data-updated="true">Sep 4<span>th</span>, 2013</time>
+        
+         | <a href="/blog/2013-09-04/ru-he-huo-qu-web-dot-xmlzhong-de-context-paramcan-shu/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><strong>通过EL表达试获取</strong></p>
+
+<p>以web.xml中的<context-param>参数：javax.faces.FACELETS_VIEW_MAPPINGS为例,
+可通过以下EL获取。</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'>
+</span><span class='line'><span class="n">$</span><span class="o">{</span><span class="n">initParam</span><span class="o">[</span><span class="err">&#39;</span><span class="n">javax</span><span class="o">.</span><span class="na">faces</span><span class="o">.</span><span class="na">FACELETS_VIEW_MAPPINGS</span><span class="err">&#39;</span><span class="o">]}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>如果参数名称很简单，比如：testParameter，EL表达式也可以写成以下方式：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'>
+</span><span class='line'><span class="n">$</span><span class="o">{</span><span class="n">initParam</span><span class="o">.</span><span class="na">testParameter</span><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>通过JAVA代码获取</strong></p>
+
+<p>如果需要在MB方法中获取该参数值，可以参照以下代码：</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="n">String</span> <span class="nf">action</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">FacesContext</span> <span class="n">fctx</span><span class="o">=</span><span class="n">FacesContext</span><span class="o">.</span><span class="na">getCurrentInstance</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">ExternalContext</span> <span class="n">ec</span><span class="o">=</span><span class="n">fctx</span><span class="o">.</span><span class="na">getExternalContext</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">ServletContext</span> <span class="n">servletContext</span><span class="o">=(</span><span class="n">ServletContext</span><span class="o">)</span><span class="n">ec</span><span class="o">.</span><span class="na">getContext</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">String</span> <span class="n">value</span><span class="o">=</span><span class="n">servletContext</span><span class="o">.</span><span class="na">getInitParameter</span><span class="o">(</span><span class="s">&quot;javax.faces.FACELETS_VIEW_MAPPINGS&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">value</span><span class="o">);</span>
+</span><span class='line'>        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1034,104 +1112,6 @@ MySQL-devel-advanced-5.6.12-1.el6. &hellip;">
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013-05-23/adfchuang-jian-liang-ge-amji-yu-bu-tong-de-dblian-jie/">ADF创建两个AM基于不同的DB连接</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-05-23T13:48:00+08:00" pubdate data-updated="true">May 23<span>rd</span>, 2013</time>
-        
-         | <a href="/blog/2013-05-23/adfchuang-jian-liang-ge-amji-yu-bu-tong-de-dblian-jie/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><hr />
-
-<p>平台：Jdev11.1.2.3.0</p>
-
-<p>需求描述：  <br/>
-有两个表，基于不同的Schema（或者基于不同的数据库)，需要在project中创建两个基于不同DB连接的AM/EO/EO等供页面使用；</p>
-
-<hr />
-
-<p>以HR/HR 跟 SCOTT/TIGER 为例：</p>
-
-<ul>
-<li><strong><strong>创建DB连接</strong></strong></li>
-</ul>
-
-
-<p><img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130523131132.jpg" alt="../../../wp-content/uploads/QQ截图20130523131132.jpg" />  <br/>
-<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130523131209.jpg" alt="../../../wp-content/uploads/QQ截图20130523131209.jpg" /></p>
-
-<ul>
-<li><p><strong><strong>创建AM/EO/VO</strong></strong></p></li>
-<li><p>右键MODEL工程属性，先将DB连接初始为HR
-<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130523131810.jpg" alt="../../../wp-content/uploads/QQ截图20130523131810.jpg" /></p></li>
-<li>创建HrAM及EmployeesEO，EmployeesVO；</li>
-<li>重复1~2步骤，将MODEL工程属性的DB连接切换为SCOTT并创建ScottAM及DeptEO,DeptVO;</li>
-</ul>
-
-
-<p>目前HrAM的DB连接基于HR Schema，并且data model是基于HR下的Employees表；ScottAM的DB连接基于SCOTT Schema，data model基于SCOTT下的DEPT表；</p>
-
-<ul>
-<li><strong><strong>修改bc4j.xcfg文件</strong></strong>  <br/>
-由于设置DB连接时会自动修改AM的配置文件将Custom JDBCDataSource替换成一致的，所以需要手工修改bc4j.xcfg文件，给两个AM配置不同的JDBCdatasource；</li>
-</ul>
-
-
-<p>右建任一AM，选configurations，修改以下内容如图：</p>
-
-<p><img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130523133007.jpg" alt="../../../wp-content/uploads/QQ截图20130523133007.jpg" /></p>
-
-<ul>
-<li><strong><strong>修改工程的weblogic deployment属性</strong></strong>  <br/>
-右键Application，选Applicatoin properties,设置如下图：</li>
-</ul>
-
-
-<p><img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130523133613.jpg" alt="../../../wp-content/uploads/QQ截图20130523133613.jpg" /></p>
-
-<p>不需要在发布时自动配置JDBC连接描述文件，因为下一步会在weblogic中配置JDBC数据源，如果该项勾选上可能会在发布时出现问题不能同时连接两个Schema；</p>
-
-<ul>
-<li><p><strong><strong>配置JDBC数据源</strong></strong>  <br/>
-启动Jdev自带的Weblogic服务器；进入<a href="http://127.0.0.1:7101/console" title="Weblogic控制台">http://127.0.0.1:7101/console</a>  <br/>
-配置如下两个数据源hrDS/scottDS（JDNI名与bc4j.xcfg中配置的保持一致)  <br/>
-<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130523134225.jpg" alt="../../../wp-content/uploads/QQ截图20130523134225.jpg" /></p></li>
-<li><p><strong><strong>测试效果</strong></strong>  <br/>
-创建一个测试页面，将HrAM/ScottAM中的Datacontrol拖到页面上生成两个af:table查看运行之后能否取出数据；</p></li>
-</ul>
-
-
-<p><img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130523134714.jpg" alt="../../../wp-content/uploads/QQ截图20130523134714.jpg" /></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -1160,7 +1140,7 @@ MySQL-devel-advanced-5.6.12-1.el6. &hellip;">
 <li class='category'><a href='/blog/categories/mysql/'>mysql (1)</a></li>
 <li class='category'><a href='/blog/categories/octopress/'>octopress (1)</a></li>
 <li class='category'><a href='/blog/categories/others/'>others (1)</a></li>
-<li class='category'><a href='/blog/categories/webcenter/'>webcenter (2)</a></li>
+<li class='category'><a href='/blog/categories/webcenter/'>webcenter (3)</a></li>
 <li class='category'><a href='/blog/categories/weblogic/'>weblogic (1)</a></li>
 <li class='category'><a href='/blog/categories/wordpress/'>wordpress (1)</a></li>
 
@@ -1169,6 +1149,10 @@ MySQL-devel-advanced-5.6.12-1.el6. &hellip;">
 <section>
   <h1>最新发表</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014-10-23/ding-zhi-webcenterde-people-connectionzu-jian/">定制webcenter的people connection组件</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014-09-17/dong-tai-gai-bian-lovde-zhi-ji/">动态改变LOV的值集</a>
@@ -1184,10 +1168,6 @@ MySQL-devel-advanced-5.6.12-1.el6. &hellip;">
     
       <li class="post">
         <a href="/blog/2014-06-03/oafge-xing-hua-buttonhuo-qu-ye-mian-can-shu/">OAF个性化Button获取页面参数</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014-04-18/an-zhuang-rcu1-dot-7yu-dao-de-xiao-wen-ti/">安装RCU1.7遇到的小问题</a>
       </li>
     
   </ul>

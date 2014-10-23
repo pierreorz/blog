@@ -9,7 +9,8 @@
   <meta name="author" content="pierreorz">
 
   
-  <meta name="description" content="使用ADF框架开发WEB应用时，其中令人苦恼的一个需求就是：在两个页面同时展示一个数据源时，如果其中一个页面对数据源作了变更操作，另外一个页面没办法自动获得变更后的数据，需要手工刷新页面才能得到变更后的新数据源。 其实ADF自带的&lt;af:poll/&gt;组件即可实现此需求。 例子： &hellip;">
+  <meta name="description" content="平台：Jdev11.1.2.3.0 需求描述： 有两个表，基于不同的Schema（或者基于不同的数据库)，需要在project中创建两个基于不同DB连接的AM/EO/EO等供页面使用； 以HR/HR 跟 SCOTT/TIGER 为例： 创建DB连接 创建AM/EO/VO
+右键MODEL工程属性， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,6 +68,104 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013-05-23/adfchuang-jian-liang-ge-amji-yu-bu-tong-de-dblian-jie/">ADF创建两个AM基于不同的DB连接</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-23T13:48:00+08:00" pubdate data-updated="true">May 23<span>rd</span>, 2013</time>
+        
+         | <a href="/blog/2013-05-23/adfchuang-jian-liang-ge-amji-yu-bu-tong-de-dblian-jie/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><hr />
+
+<p>平台：Jdev11.1.2.3.0</p>
+
+<p>需求描述：  <br/>
+有两个表，基于不同的Schema（或者基于不同的数据库)，需要在project中创建两个基于不同DB连接的AM/EO/EO等供页面使用；</p>
+
+<hr />
+
+<p>以HR/HR 跟 SCOTT/TIGER 为例：</p>
+
+<ul>
+<li><strong><strong>创建DB连接</strong></strong></li>
+</ul>
+
+
+<p><img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130523131132.jpg" alt="../../../wp-content/uploads/QQ截图20130523131132.jpg" />  <br/>
+<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130523131209.jpg" alt="../../../wp-content/uploads/QQ截图20130523131209.jpg" /></p>
+
+<ul>
+<li><p><strong><strong>创建AM/EO/VO</strong></strong></p></li>
+<li><p>右键MODEL工程属性，先将DB连接初始为HR
+<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130523131810.jpg" alt="../../../wp-content/uploads/QQ截图20130523131810.jpg" /></p></li>
+<li>创建HrAM及EmployeesEO，EmployeesVO；</li>
+<li>重复1~2步骤，将MODEL工程属性的DB连接切换为SCOTT并创建ScottAM及DeptEO,DeptVO;</li>
+</ul>
+
+
+<p>目前HrAM的DB连接基于HR Schema，并且data model是基于HR下的Employees表；ScottAM的DB连接基于SCOTT Schema，data model基于SCOTT下的DEPT表；</p>
+
+<ul>
+<li><strong><strong>修改bc4j.xcfg文件</strong></strong>  <br/>
+由于设置DB连接时会自动修改AM的配置文件将Custom JDBCDataSource替换成一致的，所以需要手工修改bc4j.xcfg文件，给两个AM配置不同的JDBCdatasource；</li>
+</ul>
+
+
+<p>右建任一AM，选configurations，修改以下内容如图：</p>
+
+<p><img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130523133007.jpg" alt="../../../wp-content/uploads/QQ截图20130523133007.jpg" /></p>
+
+<ul>
+<li><strong><strong>修改工程的weblogic deployment属性</strong></strong>  <br/>
+右键Application，选Applicatoin properties,设置如下图：</li>
+</ul>
+
+
+<p><img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130523133613.jpg" alt="../../../wp-content/uploads/QQ截图20130523133613.jpg" /></p>
+
+<p>不需要在发布时自动配置JDBC连接描述文件，因为下一步会在weblogic中配置JDBC数据源，如果该项勾选上可能会在发布时出现问题不能同时连接两个Schema；</p>
+
+<ul>
+<li><p><strong><strong>配置JDBC数据源</strong></strong>  <br/>
+启动Jdev自带的Weblogic服务器；进入<a href="http://127.0.0.1:7101/console" title="Weblogic控制台">http://127.0.0.1:7101/console</a>  <br/>
+配置如下两个数据源hrDS/scottDS（JDNI名与bc4j.xcfg中配置的保持一致)  <br/>
+<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130523134225.jpg" alt="../../../wp-content/uploads/QQ截图20130523134225.jpg" /></p></li>
+<li><p><strong><strong>测试效果</strong></strong>  <br/>
+创建一个测试页面，将HrAM/ScottAM中的Datacontrol拖到页面上生成两个af:table查看运行之后能否取出数据；</p></li>
+</ul>
+
+
+<p><img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130523134714.jpg" alt="../../../wp-content/uploads/QQ截图20130523134714.jpg" /></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1371,84 +1470,6 @@ E:\Oracle\Middleware11.1.2.3.0\jdk160_24\bin\jvisualvm.exe
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013-03-19/use-javascript-in-oaf/">Use Javascript in Oaf</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-03-19T22:27:00+08:00" pubdate data-updated="true">Mar 19<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013-03-19/use-javascript-in-oaf/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>Use Javascript in OAF</h2>
-
-<h4>使用Js脚本库</h4>
-
-<p>在CO的<em>processRequest</em>中引入JS库<br/>
-编写JS库:Calendar2013.js</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">pageContext</span><span class="o">.</span><span class="na">putJavaScriptLibrary</span><span class="o">(</span><span class="s">&quot;Calendar&quot;</span><span class="o">,</span><span class="s">&quot;Calendar2013.js&quot;</span><span class="o">);</span>
-</span><span class='line'><span class="o">((</span><span class="n">OAMessageTextInputBean</span><span class="o">)</span><span class="n">webBean</span>
-</span><span class='line'><span class="o">.</span><span class="na">findChildRecursive</span><span class="o">(</span><span class="s">&quot;inputDate&quot;</span><span class="o">))</span>
-</span><span class='line'><span class="o">.</span><span class="na">setOnClick</span><span class="o">(</span><span class="s">&quot;setday(this)&quot;</span><span class="o">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>需要把Calendar2013.js放置在$<strong>COMMON_TOP</strong>/html下。</p>
-
-<h4>直接引用javaScript</h4>
-
-<p>编写<em>JavaScript</em>:</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">String</span> <span class="n">javaScript</span><span class="o">=</span><span class="s">&quot;JAVASCRIPT:function setday(){...}&quot;</span><span class="o">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>在<strong>CO</strong>的<em>processRequest</em>中加载<em>javascript</em></p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">pageContext</span><span class="o">.</span><span class="na">putJavaScriptFunction</span><span class="o">(</span><span class="s">&quot;sayday()&quot;</span><span class="o">,</span><span class="n">javaScript</span><span class="o">);</span>
-</span><span class='line'><span class="o">((</span><span class="n">OAMessageTextInputBean</span><span class="o">)</span><span class="n">webBean</span><span class="o">.</span><span class="na">findChildRecursive</span><span class="o">(</span><span class="s">&quot;inputDate&quot;</span><span class="o">))</span>
-</span><span class='line'>    <span class="o">.</span><span class="na">setOnClick</span><span class="o">(</span><span class="s">&quot;javascript:setday()&quot;</span><span class="o">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -1477,7 +1498,7 @@ E:\Oracle\Middleware11.1.2.3.0\jdk160_24\bin\jvisualvm.exe
 <li class='category'><a href='/blog/categories/mysql/'>mysql (1)</a></li>
 <li class='category'><a href='/blog/categories/octopress/'>octopress (1)</a></li>
 <li class='category'><a href='/blog/categories/others/'>others (1)</a></li>
-<li class='category'><a href='/blog/categories/webcenter/'>webcenter (2)</a></li>
+<li class='category'><a href='/blog/categories/webcenter/'>webcenter (3)</a></li>
 <li class='category'><a href='/blog/categories/weblogic/'>weblogic (1)</a></li>
 <li class='category'><a href='/blog/categories/wordpress/'>wordpress (1)</a></li>
 
@@ -1486,6 +1507,10 @@ E:\Oracle\Middleware11.1.2.3.0\jdk160_24\bin\jvisualvm.exe
 <section>
   <h1>最新发表</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014-10-23/ding-zhi-webcenterde-people-connectionzu-jian/">定制webcenter的people connection组件</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014-09-17/dong-tai-gai-bian-lovde-zhi-ji/">动态改变LOV的值集</a>
@@ -1501,10 +1526,6 @@ E:\Oracle\Middleware11.1.2.3.0\jdk160_24\bin\jvisualvm.exe
     
       <li class="post">
         <a href="/blog/2014-06-03/oafge-xing-hua-buttonhuo-qu-ye-mian-can-shu/">OAF个性化Button获取页面参数</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014-04-18/an-zhuang-rcu1-dot-7yu-dao-de-xiao-wen-ti/">安装RCU1.7遇到的小问题</a>
       </li>
     
   </ul>

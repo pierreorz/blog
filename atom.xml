@@ -4,7 +4,7 @@
   <title><![CDATA[邓德昭的技术博客]]></title>
   <link href="http://dengdezhao.cn/atom.xml" rel="self"/>
   <link href="http://dengdezhao.cn/"/>
-  <updated>2014-09-17T18:10:56+08:00</updated>
+  <updated>2014-10-23T23:00:08+08:00</updated>
   <id>http://dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
@@ -12,6 +12,100 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[定制webcenter的people connection组件]]></title>
+    <link href="http://dengdezhao.cn/blog/2014-10-23/ding-zhi-webcenterde-people-connectionzu-jian/"/>
+    <updated>2014-10-23T22:17:00+08:00</updated>
+    <id>http://dengdezhao.cn/blog/2014-10-23/ding-zhi-webcenterde-people-connectionzu-jian</id>
+    <content type="html"><![CDATA[<h4><i class="icon-file"></i>   需求：</h4>
+
+<p>webcenter的people connection类似于微博的关注粉丝功能，现在需要利用程序让某一用户自动关注一批人员。比如某一用户所在项目<code>(PROJECT1)</code>下有10个成员，则该用户进入portal的时候默认就展示其项目下的10个成员在某一分组<code>(PROJECT1)</code>下。</p>
+
+<h4><i class="icon-folder-open"></i> 分析：</h4>
+
+<p>根据项目PROJECT1可以查询出10个成员名；
+利用API将10个成员添加到Connections中；
+利用API创建Connection list，也即是分组名<code>(PROJECT1)</code>；
+将10个成员的Connection 添加到分组PROJECT1中。</p>
+
+<h4><i class="icon-pencil"></i> 技术实现：</h4>
+
+<ul>
+<li>根据项目PROJECT1可以查询出10个成员名；
+在AMimpl中创建查询成员名方法以List返回结果。</li>
+</ul>
+
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'>  <span class="k">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">getAllMembersByProjectId</span><span class="p">(</span><span class="n">String</span> <span class="n">proId</span><span class="p">)</span><span class="err">{</span>
+</span><span class='line'>        <span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="k">result</span><span class="o">=</span><span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="p">();</span>
+</span><span class='line'>        <span class="k">result</span><span class="p">.</span><span class="k">add</span><span class="p">(</span><span class="ss">&quot;CG02&quot;</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">result</span><span class="p">.</span><span class="k">add</span><span class="p">(</span><span class="ss">&quot;CG03&quot;</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">result</span><span class="p">.</span><span class="k">add</span><span class="p">(</span><span class="ss">&quot;CG04&quot;</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">result</span><span class="p">.</span><span class="k">add</span><span class="p">(</span><span class="ss">&quot;CG05&quot;</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">result</span><span class="p">.</span><span class="k">add</span><span class="p">(</span><span class="ss">&quot;pierre&quot;</span><span class="p">);</span>
+</span><span class='line'>        <span class="k">result</span><span class="p">.</span><span class="k">add</span><span class="p">(</span><span class="ss">&quot;weblogic&quot;</span><span class="p">);</span>
+</span><span class='line'>        <span class="o">//</span><span class="n">TODO</span> <span class="err">根据项目</span><span class="n">ID</span> <span class="n">proId</span><span class="err">查询出项目所有成员以</span><span class="n">List</span><span class="err">返回</span>
+</span><span class='line'>        <span class="k">return</span> <span class="k">result</span><span class="p">;</span>
+</span><span class='line'>    <span class="err">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>利用API将10个成员添加到Connections中；
+oracle.webcenter.peopleconnections.connections.internal.model.ConnectionsManagerImpl.createConnection 方法可以给两个guid创建Connection</li>
+</ul>
+
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="n">ConnectionsServiceFactory</span> <span class="n">fac</span><span class="o">=</span><span class="n">ConnectionsServiceFactory</span><span class="p">.</span><span class="n">getInstance</span><span class="p">();</span>
+</span><span class='line'><span class="n">ConnectionsManagerImpl</span> <span class="n">cm</span><span class="o">=</span><span class="p">(</span><span class="n">ConnectionsManagerImpl</span><span class="p">)</span><span class="n">fac</span><span class="p">.</span><span class="n">getConnectionsManager</span><span class="p">();</span>
+</span><span class='line'> <span class="n">cm</span><span class="p">.</span><span class="n">createConnection</span><span class="p">(</span><span class="n">ownerUserId</span><span class="p">,</span> <span class="n">connectUserId</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>利用API创建Connection list，也即是分组名<code>(PROJECT1)</code>；
+ConnectionListsManager.createConnectionList 可以创建分组</li>
+</ul>
+
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'> <span class="n">ConnectionsServiceFactory</span> <span class="n">fac</span><span class="o">=</span><span class="n">ConnectionsServiceFactory</span><span class="p">.</span><span class="n">getInstance</span><span class="p">();</span>
+</span><span class='line'> <span class="n">fac</span><span class="p">.</span><span class="n">getConnectionListsManager</span><span class="p">().</span><span class="n">createConnectionList</span><span class="p">(</span><span class="ss">&quot;PROJECT1&quot;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>将10个成员的Connection 添加到分组PROJECT1中。
+利用API ConnectionListsManager.addMembersToConnectionList方法可以将创建好的Connection添加到分组中去。样例代码如下：</li>
+</ul>
+
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sql'><span class='line'><span class="n">ConnectionsServiceFactory</span> <span class="n">fac</span><span class="o">=</span><span class="n">ConnectionsServiceFactory</span><span class="p">.</span><span class="n">getInstance</span><span class="p">();</span>
+</span><span class='line'><span class="n">fac</span><span class="p">.</span><span class="n">getConnectionListsManager</span><span class="p">().</span><span class="n">addMembersToConnectionList</span><span class="p">(</span><span class="n">List</span><span class="p">,</span> <span class="ss">&quot;PROJECT1&quot;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>创建Webcenter Portal Server Extension应用，创建TaskFlow调用以上方法；发布扩展应用到spaces，重启spaces，定义resource catalog应用到portal上即可。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[动态改变LOV的值集]]></title>
@@ -1503,75 +1597,6 @@ SocketHostAddressSecurityFilter=127.0.0.1|192.168.15.163|<code>*.*.*.*</code>即
 <p><img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130528150742.jpg" alt="../../../wp-content/uploads/QQ截图20130528150742.jpg" /></p>
 
 <p>PS：基于多DB连接的多AM创建可参考前一博文<a href="../../../blog/2013-05-23/adfchuang-jian-liang-ge-amji-yu-bu-tong-de-dblian-jie/">&#8220;ADF创建两个AM基于不同的DB连接&#8221;</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[ADF创建两个AM基于不同的DB连接]]></title>
-    <link href="http://dengdezhao.cn/blog/2013-05-23/adfchuang-jian-liang-ge-amji-yu-bu-tong-de-dblian-jie/"/>
-    <updated>2013-05-23T13:48:00+08:00</updated>
-    <id>http://dengdezhao.cn/blog/2013-05-23/adfchuang-jian-liang-ge-amji-yu-bu-tong-de-dblian-jie</id>
-    <content type="html"><![CDATA[<hr />
-
-<p>平台：Jdev11.1.2.3.0</p>
-
-<p>需求描述：  <br/>
-有两个表，基于不同的Schema（或者基于不同的数据库)，需要在project中创建两个基于不同DB连接的AM/EO/EO等供页面使用；</p>
-
-<hr />
-
-<p>以HR/HR 跟 SCOTT/TIGER 为例：</p>
-
-<ul>
-<li><strong><strong>创建DB连接</strong></strong></li>
-</ul>
-
-
-<p><img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130523131132.jpg" alt="../../../wp-content/uploads/QQ截图20130523131132.jpg" />  <br/>
-<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130523131209.jpg" alt="../../../wp-content/uploads/QQ截图20130523131209.jpg" /></p>
-
-<ul>
-<li><p><strong><strong>创建AM/EO/VO</strong></strong></p></li>
-<li><p>右键MODEL工程属性，先将DB连接初始为HR
-<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130523131810.jpg" alt="../../../wp-content/uploads/QQ截图20130523131810.jpg" /></p></li>
-<li>创建HrAM及EmployeesEO，EmployeesVO；</li>
-<li>重复1~2步骤，将MODEL工程属性的DB连接切换为SCOTT并创建ScottAM及DeptEO,DeptVO;</li>
-</ul>
-
-
-<p>目前HrAM的DB连接基于HR Schema，并且data model是基于HR下的Employees表；ScottAM的DB连接基于SCOTT Schema，data model基于SCOTT下的DEPT表；</p>
-
-<ul>
-<li><strong><strong>修改bc4j.xcfg文件</strong></strong>  <br/>
-由于设置DB连接时会自动修改AM的配置文件将Custom JDBCDataSource替换成一致的，所以需要手工修改bc4j.xcfg文件，给两个AM配置不同的JDBCdatasource；</li>
-</ul>
-
-
-<p>右建任一AM，选configurations，修改以下内容如图：</p>
-
-<p><img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130523133007.jpg" alt="../../../wp-content/uploads/QQ截图20130523133007.jpg" /></p>
-
-<ul>
-<li><strong><strong>修改工程的weblogic deployment属性</strong></strong>  <br/>
-右键Application，选Applicatoin properties,设置如下图：</li>
-</ul>
-
-
-<p><img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130523133613.jpg" alt="../../../wp-content/uploads/QQ截图20130523133613.jpg" /></p>
-
-<p>不需要在发布时自动配置JDBC连接描述文件，因为下一步会在weblogic中配置JDBC数据源，如果该项勾选上可能会在发布时出现问题不能同时连接两个Schema；</p>
-
-<ul>
-<li><p><strong><strong>配置JDBC数据源</strong></strong>  <br/>
-启动Jdev自带的Weblogic服务器；进入<a href="http://127.0.0.1:7101/console" title="Weblogic控制台">http://127.0.0.1:7101/console</a>  <br/>
-配置如下两个数据源hrDS/scottDS（JDNI名与bc4j.xcfg中配置的保持一致)  <br/>
-<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130523134225.jpg" alt="../../../wp-content/uploads/QQ截图20130523134225.jpg" /></p></li>
-<li><p><strong><strong>测试效果</strong></strong>  <br/>
-创建一个测试页面，将HrAM/ScottAM中的Datacontrol拖到页面上生成两个af:table查看运行之后能否取出数据；</p></li>
-</ul>
-
-
-<p><img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130523134714.jpg" alt="../../../wp-content/uploads/QQ截图20130523134714.jpg" /></p>
 ]]></content>
   </entry>
   
