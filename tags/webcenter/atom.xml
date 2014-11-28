@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: webcenter | 邓德昭的技术博客]]></title>
   <link href="http://dengdezhao.cn/tags/webcenter/atom.xml" rel="self"/>
   <link href="http://dengdezhao.cn/"/>
-  <updated>2014-10-23T23:00:08+08:00</updated>
+  <updated>2014-11-28T17:25:52+08:00</updated>
   <id>http://dengdezhao.cn/</id>
   <author>
     <name><![CDATA[pierreorz]]></name>
@@ -12,6 +12,323 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[使用RIDC在webcenter portal集成ECM的文档查询功能]]></title>
+    <link href="http://dengdezhao.cn/blog/2014-11-28/shi-yong-ridczai-webcenter-portalji-cheng-ecmde-wen-dang-cha-xun-gong-neng/"/>
+    <updated>2014-11-28T17:17:00+08:00</updated>
+    <id>http://dengdezhao.cn/blog/2014-11-28/shi-yong-ridczai-webcenter-portalji-cheng-ecmde-wen-dang-cha-xun-gong-neng</id>
+    <content type="html"><![CDATA[<h4><i class="icon-file"></i>   需求：</h4>
+
+<p>标准的document service很不灵活，实际开发中少不了要开发定制。那么问题来了，通过RIDC很灵活的查询出了需要的文档，如何集成到portal上去呢</p>
+
+<h4><i class="icon-folder-open"></i> 分析：</h4>
+
+<p>使用RIDC查询出需要的文档，存放在POJO等数据模型中
+利用POJO生成dataControl，开发taskflow等UI层
+将以上功能开发成为extend.spaces.webapp，扩展到webcenter spaces
+以下主要展现第一步：通过RIDC查询及POJO生成数据模型。</p>
+
+<h4><i class="icon-pencil"></i> 技术实现：</h4>
+
+<ul>
+<li>使用RIDC查询文档</li>
+</ul>
+
+
+<p>以下是主要查询方法, query传入的即是ECM的queryText，例如：
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">dDocType</span> <span class="o">&lt;</span><span class="n">matches</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="n">PJT</span><span class="o">-</span><span class="n">INTERFACE</span><span class="o">-</span><span class="n">DOC</span><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+通过拼接好需要的查询条件以及用户便可以查询出文档。
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span>    <span class="kd">public</span> <span class="n">List</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">Document</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">search</span><span class="o">(</span><span class="n">String</span> <span class="n">username</span><span class="o">,</span> <span class="n">String</span> <span class="n">query</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">ServiceResponse</span> <span class="n">serviceResponse</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'>    <span class="n">List</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">Document</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">list</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">Document</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">try</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">query</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="n">list</span><span class="o">;</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>        <span class="n">IdcClient</span> <span class="n">client</span> <span class="o">=</span> <span class="n">getIdcClient</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">DataBinder</span> <span class="n">dataBinderReq</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="na">createBinder</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">dataBinderReq</span><span class="o">.</span><span class="na">putLocal</span><span class="o">(</span><span class="s">&quot;IdcService&quot;</span><span class="o">,</span> <span class="s">&quot;GET_SEARCH_RESULTS&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">dataBinderReq</span><span class="o">.</span><span class="na">putLocal</span><span class="o">(</span><span class="s">&quot;QueryText&quot;</span><span class="o">,</span> <span class="n">query</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
+</span><span class='line'>        <span class="n">dataBinderReq</span><span class="o">.</span><span class="na">putLocal</span><span class="o">(</span><span class="s">&quot;ResultCount&quot;</span><span class="o">,</span> <span class="s">&quot;100&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">serviceResponse</span> <span class="o">=</span>
+</span><span class='line'>                <span class="n">client</span><span class="o">.</span><span class="na">sendRequest</span><span class="o">(</span><span class="k">new</span> <span class="n">IdcContext</span><span class="o">(</span><span class="n">username</span><span class="o">),</span> <span class="n">dataBinderReq</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">DataBinder</span> <span class="n">dataBinderRes</span> <span class="o">=</span> <span class="n">serviceResponse</span><span class="o">.</span><span class="na">getResponseAsBinder</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">DataResultSet</span> <span class="n">resultSet</span> <span class="o">=</span>
+</span><span class='line'>            <span class="n">dataBinderRes</span><span class="o">.</span><span class="na">getResultSet</span><span class="o">(</span><span class="s">&quot;SearchResults&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="k">for</span> <span class="o">(</span><span class="n">DataObject</span> <span class="n">dataObject</span> <span class="o">:</span> <span class="n">resultSet</span><span class="o">.</span><span class="na">getRows</span><span class="o">())</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">Document</span> <span class="n">d</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Document</span><span class="o">();</span>
+</span><span class='line'>            <span class="n">d</span><span class="o">.</span><span class="na">setContentId</span><span class="o">(</span><span class="n">dataObject</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">&quot;dDocName&quot;</span><span class="o">));</span>
+</span><span class='line'>            <span class="n">d</span><span class="o">.</span><span class="na">setDocumentId</span><span class="o">(</span><span class="n">dataObject</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">&quot;dID&quot;</span><span class="o">));</span>
+</span><span class='line'>            <span class="n">d</span><span class="o">.</span><span class="na">setOwner</span><span class="o">(</span><span class="n">dataObject</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">&quot;dDocAuthor&quot;</span><span class="o">));</span>
+</span><span class='line'>            <span class="n">d</span><span class="o">.</span><span class="na">setTitle</span><span class="o">(</span><span class="n">dataObject</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">&quot;dDocTitle&quot;</span><span class="o">));</span>
+</span><span class='line'>            <span class="n">d</span><span class="o">.</span><span class="na">setDocType</span><span class="o">(</span><span class="n">dataObject</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">&quot;dDocType&quot;</span><span class="o">));</span>
+</span><span class='line'>            <span class="n">d</span><span class="o">.</span><span class="na">setXspeciality</span><span class="o">(</span><span class="n">dataObject</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">&quot;xSPECIALTY&quot;</span><span class="o">));</span>
+</span><span class='line'>            <span class="n">d</span><span class="o">.</span><span class="na">setXrcvMajor</span><span class="o">(</span><span class="n">dataObject</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">&quot;xRCV_MAJOR&quot;</span><span class="o">));</span>
+</span><span class='line'>            <span class="n">Date</span> <span class="n">date</span> <span class="o">=</span> <span class="n">dataObject</span><span class="o">.</span><span class="na">getDate</span><span class="o">(</span><span class="s">&quot;dInDate&quot;</span><span class="o">);</span>
+</span><span class='line'>            <span class="n">SimpleDateFormat</span> <span class="n">sf</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SimpleDateFormat</span><span class="o">(</span><span class="s">&quot;yyyy/mm/dd&quot;</span><span class="o">);</span>
+</span><span class='line'>            <span class="n">String</span> <span class="n">format</span> <span class="o">=</span> <span class="n">sf</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="n">date</span><span class="o">);</span>
+</span><span class='line'>            <span class="n">d</span><span class="o">.</span><span class="na">setDindate</span><span class="o">(</span><span class="n">format</span><span class="o">);</span>
+</span><span class='line'>            <span class="n">list</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">d</span><span class="o">);</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Error Search: &quot;</span> <span class="o">+</span> <span class="n">ex</span><span class="o">.</span><span class="na">getMessage</span><span class="o">());</span>
+</span><span class='line'>    <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">serviceResponse</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">serviceResponse</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">list</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span> <span class="c1">//</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+其中Document.java即是POJO类
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Document</span> <span class="o">{&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kd">private</span> <span class="n">String</span> <span class="n">contentId</span><span class="o">;</span>
+</span><span class='line'><span class="kd">private</span> <span class="n">String</span> <span class="n">documentId</span><span class="o">;</span>
+</span><span class='line'><span class="kd">private</span> <span class="n">String</span> <span class="n">owner</span><span class="o">;</span>
+</span><span class='line'><span class="kd">private</span> <span class="n">String</span> <span class="n">title</span><span class="o">;</span>
+</span><span class='line'><span class="kd">private</span> <span class="n">String</span> <span class="n">doctype</span><span class="o">;</span>
+</span><span class='line'><span class="kd">private</span> <span class="n">String</span> <span class="n">securitygroup</span><span class="o">;</span>
+</span><span class='line'><span class="kd">private</span> <span class="n">String</span> <span class="n">dindate</span><span class="o">;</span>
+</span><span class='line'><span class="kd">private</span> <span class="n">String</span> <span class="n">xDesignPhase</span><span class="o">;</span>
+</span><span class='line'><span class="kd">private</span> <span class="n">String</span> <span class="n">xspeciality</span><span class="o">;</span><span class="c1">//send</span>
+</span><span class='line'><span class="kd">private</span> <span class="n">String</span> <span class="n">xrcvMajor</span><span class="o">;</span><span class="c1">//receive</span>
+</span><span class='line'>   <span class="o">......</span><span class="na">get</span> <span class="n">set</span> <span class="n">accessor</span><span class="o">......</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;}</span><span class="c1">//end class</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>创建facade类：MyCondition.java，主要是调用search方法接受RIDC查询的结果集，生成dataControl供UI层使用。参考代码如下：
+<div class='bogus-wrapper'><notextile><figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
+<span class='line-number'>77</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyCondition</span> <span class="o">{&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">ADFLogger</span> <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">ADFLogger</span><span class="o">.</span><span class="na">createADFLogger</span><span class="o">(</span><span class="n">MyCondition</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class='line'><span class="kd">private</span> <span class="n">ArrayList</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">Document</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">receiveDocumentList</span><span class="o">;</span>
+</span><span class='line'><span class="kd">private</span> <span class="n">ArrayList</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">Document</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">sendDocumentList</span><span class="o">;</span>
+</span><span class='line'><span class="kd">public</span> <span class="nf">MyCondition</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">this</span><span class="o">.</span><span class="na">receiveDocumentList</span><span class="o">=</span><span class="k">new</span> <span class="n">ArrayList</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">Document</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;();</span>
+</span><span class='line'>    <span class="k">this</span><span class="o">.</span><span class="na">sendDocumentList</span><span class="o">=</span><span class="k">new</span> <span class="n">ArrayList</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">Document</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;();</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="cm">/*******</span>
+</span><span class='line'><span class="cm"> * 初始化，调用RIDC API查询出文档数据集</span>
+</span><span class='line'><span class="cm"> * *****/</span>
+</span><span class='line'><span class="kd">public</span> <span class="n">String</span> <span class="nf">init</span><span class="o">(){</span>
+</span><span class='line'>    <span class="n">LOGGER</span><span class="o">.</span><span class="na">severe</span><span class="o">(</span><span class="s">&quot;start init....&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">Object</span> <span class="n">userId</span> <span class="o">=</span> <span class="n">JSFUtils</span><span class="o">.</span><span class="na">resolveExpression</span><span class="o">(</span><span class="s">&quot;#{securityContext.userName}&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">Object</span> <span class="n">projectCode</span> <span class="o">=</span> <span class="n">JSFUtils</span><span class="o">.</span><span class="na">resolveExpression</span><span class="o">(</span><span class="s">&quot;#{pageFlowScope.inputProjectCode}&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">List</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">String</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">spcCode</span> <span class="o">=</span> <span class="o">(</span><span class="n">List</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">String</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;)(</span><span class="n">JSFUtils</span><span class="o">.</span><span class="na">resolveExpression</span><span class="o">(</span><span class="s">&quot;#{pageFlowScope.spcCode}&quot;</span><span class="o">)==</span><span class="kc">null</span><span class="o">?</span><span class="kc">null</span><span class="o">:</span><span class="n">JSFUtils</span><span class="o">.</span><span class="na">resolveExpression</span><span class="o">(</span><span class="s">&quot;#{pageFlowScope.spcCode}&quot;</span><span class="o">));</span>
+</span><span class='line'>    <span class="k">if</span><span class="o">(</span><span class="n">userId</span><span class="o">==</span><span class="kc">null</span><span class="o">||</span><span class="s">&quot;&quot;</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">userId</span><span class="o">)){</span>
+</span><span class='line'>        <span class="n">LOGGER</span><span class="o">.</span><span class="na">severe</span><span class="o">(</span><span class="s">&quot;userId is null &quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">FacesMessage</span> <span class="n">msg</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FacesMessage</span><span class="o">(</span><span class="s">&quot;用户为空请重试!&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">JSFUtils</span><span class="o">.</span><span class="na">getFacesContext</span><span class="o">().</span><span class="na">addMessage</span><span class="o">(</span><span class="kc">null</span><span class="o">,</span> <span class="n">msg</span><span class="o">);</span>
+</span><span class='line'>        <span class="k">return</span> <span class="s">&quot;NO&quot;</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="k">if</span><span class="o">(</span><span class="n">projectCode</span><span class="o">==</span><span class="kc">null</span><span class="o">||</span><span class="s">&quot;&quot;</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">projectCode</span><span class="o">)){</span>
+</span><span class='line'>        <span class="n">LOGGER</span><span class="o">.</span><span class="na">severe</span><span class="o">(</span><span class="s">&quot;projectCode is null &quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">FacesMessage</span> <span class="n">msg</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FacesMessage</span><span class="o">(</span><span class="s">&quot;项目ID为空请重试!&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">JSFUtils</span><span class="o">.</span><span class="na">getFacesContext</span><span class="o">().</span><span class="na">addMessage</span><span class="o">(</span><span class="kc">null</span><span class="o">,</span> <span class="n">msg</span><span class="o">);</span>
+</span><span class='line'>        <span class="k">return</span> <span class="s">&quot;NO&quot;</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="cm">/******</span>
+</span><span class='line'><span class="cm">     * </span>
+</span><span class='line'><span class="cm">     * 生成发出专业SQL,生成接受专业SQL</span>
+</span><span class='line'><span class="cm">     * </span>
+</span><span class='line'><span class="cm">     * ****/</span>
+</span><span class='line'>    <span class="n">String</span> <span class="n">sendSql</span><span class="o">=</span><span class="s">&quot; xSPECIALTY &amp;lt;matches&amp;gt; `NULL` &quot;</span><span class="o">;</span>
+</span><span class='line'>    <span class="n">String</span> <span class="n">receiveSql</span><span class="o">=</span><span class="s">&quot; xRCV_MAJOR &amp;lt;matches&amp;gt; `NULL` &quot;</span><span class="o">;</span>
+</span><span class='line'>    <span class="k">if</span><span class="o">(</span><span class="n">spcCode</span><span class="o">==</span><span class="kc">null</span><span class="o">||</span><span class="n">spcCode</span><span class="o">.</span><span class="na">size</span><span class="o">()==</span><span class="mi">0</span><span class="o">){</span>
+</span><span class='line'>        <span class="n">LOGGER</span><span class="o">.</span><span class="na">severe</span><span class="o">(</span><span class="s">&quot;spcCode is null or size is 0&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="k">return</span> <span class="s">&quot;NO&quot;</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span><span class="n">i</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">spcCode</span><span class="o">.</span><span class="na">size</span><span class="o">();</span><span class="n">i</span><span class="o">++){</span>
+</span><span class='line'>        <span class="n">sendSql</span><span class="o">=</span><span class="n">sendSql</span><span class="o">+</span><span class="s">&quot; &amp;lt;OR&amp;gt; &quot;</span><span class="o">+</span><span class="s">&quot;xSPECIALTY &amp;lt;matches&amp;gt; `&quot;</span><span class="o">+</span><span class="n">spcCode</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">i</span><span class="o">)+</span><span class="s">&quot;` &quot;</span><span class="o">;</span>
+</span><span class='line'>        <span class="n">receiveSql</span><span class="o">=</span><span class="n">receiveSql</span><span class="o">+</span><span class="s">&quot; &amp;lt;OR&amp;gt; &quot;</span><span class="o">+</span><span class="s">&quot;xRCV_MAJOR &amp;lt;matches&amp;gt; `&quot;</span><span class="o">+</span><span class="n">spcCode</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">i</span><span class="o">)+</span><span class="s">&quot;` &quot;</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="n">sendSql</span><span class="o">=</span><span class="s">&quot;(&quot;</span><span class="o">+</span><span class="n">sendSql</span><span class="o">+</span><span class="s">&quot;) &amp;lt;AND&amp;gt; dDocType &amp;lt;matches&amp;gt; `PJT-INTERFACE-DOC` &amp;lt;AND&amp;gt; xPROJECT_NUM &amp;lt;starts&amp;gt; `&quot;</span><span class="o">+</span><span class="n">projectCode</span><span class="o">+</span><span class="s">&quot;`&quot;</span><span class="o">;</span>
+</span><span class='line'>    <span class="n">receiveSql</span><span class="o">=</span><span class="s">&quot;(&quot;</span><span class="o">+</span><span class="n">receiveSql</span><span class="o">+</span><span class="s">&quot;) &amp;lt;AND&amp;gt; dDocType &amp;lt;matches&amp;gt; `PJT-INTERFACE-DOC` &amp;lt;AND&amp;gt; xPROJECT_NUM &amp;lt;starts&amp;gt; `&quot;</span><span class="o">+</span><span class="n">projectCode</span><span class="o">+</span><span class="s">&quot;`&quot;</span><span class="o">;</span>
+</span><span class='line'>    <span class="n">LOGGER</span><span class="o">.</span><span class="na">severe</span><span class="o">(</span><span class="s">&quot;sendSql:&quot;</span><span class="o">+</span><span class="n">sendSql</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">LOGGER</span><span class="o">.</span><span class="na">severe</span><span class="o">(</span><span class="s">&quot;receiveSql:&quot;</span><span class="o">+</span><span class="n">receiveSql</span><span class="o">);</span>
+</span><span class='line'>    <span class="cm">/*** </span>
+</span><span class='line'><span class="cm">     * 查询当前用户在该项目中的专业（ME,EL等)，拼接QueryText</span>
+</span><span class='line'><span class="cm">     * dDocType &amp;lt;matches&amp;gt; `PJT-INTERFACE-DOC`</span>
+</span><span class='line'><span class="cm">     * ******/</span>
+</span><span class='line'>    <span class="n">UCMAdapter</span> <span class="n">ap</span><span class="o">=</span><span class="k">new</span> <span class="n">UCMAdapter</span><span class="o">();</span>
+</span><span class='line'>    <span class="k">this</span><span class="o">.</span><span class="na">sendDocumentList</span> <span class="o">=</span> <span class="o">(</span><span class="n">ArrayList</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">Document</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;)</span><span class="n">ap</span><span class="o">.</span><span class="na">search</span><span class="o">(</span><span class="n">userId</span><span class="o">.</span><span class="na">toString</span><span class="o">(),</span> <span class="n">sendSql</span><span class="o">);</span>
+</span><span class='line'>    <span class="k">this</span><span class="o">.</span><span class="na">receiveDocumentList</span> <span class="o">=</span> <span class="o">(</span><span class="n">ArrayList</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">Document</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;)</span><span class="n">ap</span><span class="o">.</span><span class="na">search</span><span class="o">(</span><span class="n">userId</span><span class="o">.</span><span class="na">toString</span><span class="o">(),</span> <span class="n">receiveSql</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">LOGGER</span><span class="o">.</span><span class="na">severe</span><span class="o">(</span><span class="s">&quot;success init...YES.&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="k">return</span> <span class="s">&quot;YES&quot;</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">setReceiveDocumentList</span><span class="o">(</span><span class="n">ArrayList</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">Document</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">receiveDocumentList</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">this</span><span class="o">.</span><span class="na">receiveDocumentList</span> <span class="o">=</span> <span class="n">receiveDocumentList</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="n">ArrayList</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">Document</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">getReceiveDocumentList</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">receiveDocumentList</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">setSendDocumentList</span><span class="o">(</span><span class="n">ArrayList</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">Document</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">sendDocumentList</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">this</span><span class="o">.</span><span class="na">sendDocumentList</span> <span class="o">=</span> <span class="n">sendDocumentList</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="n">ArrayList</span><span class="o">&amp;</span><span class="n">lt</span><span class="o">;</span><span class="n">Document</span><span class="o">&amp;</span><span class="n">gt</span><span class="o">;</span> <span class="n">getSendDocumentList</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">sendDocumentList</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[定制webcenter的people connection组件]]></title>

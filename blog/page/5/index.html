@@ -9,7 +9,8 @@
   <meta name="author" content="pierreorz">
 
   
-  <meta name="description" content="好久没碰SOA，最近在win2003上准备搭建个环境玩玩。下载相关安装介质 http://www.oracle.com/technetwork/middleware/soasuite/downloads/index.html 1.Database 我用的是oracle 11G 2.Oracle &hellip;">
+  <meta name="description" content="WebService的创建方法有多种，这里使用JAVA class生成webservice。 1.创建一个JAVA类Test.java
+public class Test { public Test() { super(); } public String sayHello(String a){ &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,6 +68,98 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012-09-30/webservice%E4%B9%8B-%E5%85%A5%E9%97%A8demo%E7%94%9F%E6%88%90/">WebService之-入门DEMO生成</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-09-30T00:00:00+08:00" pubdate data-updated="true">Sep 30<span>th</span>, 2012</time>
+        
+         | <a href="/blog/2012-09-30/webservice%E4%B9%8B-%E5%85%A5%E9%97%A8demo%E7%94%9F%E6%88%90/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>WebService的创建方法有多种，这里使用JAVA class生成webservice。</p>
+
+<p>1.创建一个JAVA类Test.java
+<pre class="brush:java">public class Test {
+    public Test() {
+        super();
+    }
+    public String sayHello(String a){
+        return "result"+a;
+    }
+}</pre>
+2.利用Test.java生成webservice</p>
+
+<p><a rel="attachment wp-att-177" href="../../../wp-content/uploads/2012/09/aa-300x212.png"><img class="alignnone size-medium wp-image-177" title="aa" src="../../../wp-content/uploads/2012/09/aa-300x212.png" alt="" width="300" height="212" /></a></p>
+
+<p><a rel="attachment wp-att-178" href="../../../wp-content/uploads/2012/09/bb-300x222.png"><img class="alignnone size-medium wp-image-178" title="bb" src="../../../wp-content/uploads/2012/09/bb-300x222.png" alt="" width="300" height="222" /></a></p>
+
+<p><a rel="attachment wp-att-179" href="../../../wp-content/uploads/2012/09/cc-300x222.png"><img class="alignnone size-medium wp-image-179" title="cc" src="../../../wp-content/uploads/2012/09/cc-300x222.png" alt="" width="300" height="222" /></a></p>
+
+<p>完成即生成Webservice.</p>
+
+<p>3. 发布webservice到weblogic</p>
+
+<p><a rel="attachment wp-att-180" href="../../../wp-content/uploads/2012/09/dd-300x216.png"><img class="alignnone size-medium wp-image-180" title="dd" src="../../../wp-content/uploads/2012/09/dd-300x216.png" alt="" width="300" height="216" /></a></p>
+
+<p>得到WSDL路径地址：<a href="http://192.168.1.103:7001/Application1-Project1-context-root/TestPort?WSDL">http://dengdezhao.cn:7001/Application1-Project1-context-root/TestPort?WSDL</a></p>
+
+<p>4.创建CallWSDL.java 客户端调用WSDL。Main方法如下：
+<pre class="brush:java">    public static void main(String[] args) throws Exception {</pre></p>
+
+<p>        String wsdlUrl=&#8221;http://dengdezhao.cn:7001/Application1-Project1-context-root/TestPort?WSDL&#8221;;<br />
+        String nameSpaceUri=&#8221;http://tempuri.org/&#8221;;<br />
+        String serviceName=&#8221;TestService&#8221;;<br />
+        String portName=&#8221;TestPort&#8221;;<br />
+        //设置工厂属性为axis<br />
+        System.setProperty(ServiceFactory.SERVICEFACTORY_PROPERTY, &#8220;org.apache.axis.client.ServiceFactory&#8221;);//weblogic.webservice.core.rpc.ServiceFactoryImpl<br />
+        //org.apache.axis.client.ServiceFactory<br />
+        ServiceFactory serviceFactory = (ServiceFactory)ServiceFactory.newInstance();<br />
+        QName qname=new QName(nameSpaceUri,serviceName);<br />
+        Service afService =<br />
+            (Service)serviceFactory.createService(new java.net.URL(wsdlUrl), qname);<br />
+        Call call = (Call)afService.createCall();</p>
+
+<p>        call.setTargetEndpointAddress(wsdlUrl);<br />
+        //设定调用方法<br />
+        call.setOperationName(new QName(nameSpaceUri,&#8221;sayHello&#8221;));<br />
+        //设定输入参数类型<br />
+        call.addParameter(&#8220;arg0&#8221;, XMLType.XSD_STRING, ParameterMode.IN);<br />
+        //设定返回参数类型<br />
+        call.setReturnType(XMLType.XSD_STRING);<br />
+        //调用Webservice，传入参数为test.<br />
+        String result = (String)call.invoke(new Object[]{&#8220;test&#8221;});<br />
+        System.out.println(&#8220;*******&#8221;+result);<br />
+    }
+输入结果为预期：*******resulttest
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -533,58 +626,6 @@ grub&gt;boot</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012-06-26/%E5%A6%82%E4%BD%95%E5%9C%A8mb%E4%B8%AD%E5%AF%B9selectionlistener-collectionmodel-makecurrent%E8%B0%83%E7%94%A8/">如何在MB中对selectionListener collectionModel.makeCurrent调用</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-06-26T00:00:00+08:00" pubdate data-updated="true">Jun 26<span>th</span>, 2012</time>
-        
-         | <a href="/blog/2012-06-26/%E5%A6%82%E4%BD%95%E5%9C%A8mb%E4%B8%AD%E5%AF%B9selectionlistener-collectionmodel-makecurrent%E8%B0%83%E7%94%A8/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>如何在MB中对Table的默认&#8221;#{bindings.PromotionVO1.collectionModel.makeCurrent}&#8221;进行调用？</p>
-
-<p>当需要重写adf:table的缺省的selectListener时，可以在自己绑定的MB的方法里，调用默认的makeCurrent方法。取得当前行的数据，进行自己的定制操作。方法如下：
-<div>
-<blockquote>//调用缺省makeCurrent<br />
-JSFUtils.resolveMethodExpression(&#8220;#{bindings.yourVO.collectionModel.makeCurrent}&#8221;,<br />
-new Class[] { SelectionEvent.class },<br />
-new Object[] { selectionEvent });</blockquote>
-</div>
-取得选中行的数据
-<div>
-<blockquote>Row selectedRow =<br />
-(Row)JSFUtils.resolveExpression(&#8220;#{bindings.yourVOIterator.currentRow}&#8221;);</blockquote>
-</div>
-然后就可以针对取得的数据进行定制开发了。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/6/">&larr; Older</a>
@@ -613,7 +654,7 @@ new Object[] { selectionEvent });</blockquote>
 <li class='category'><a href='/blog/categories/mysql/'>mysql (1)</a></li>
 <li class='category'><a href='/blog/categories/octopress/'>octopress (1)</a></li>
 <li class='category'><a href='/blog/categories/others/'>others (1)</a></li>
-<li class='category'><a href='/blog/categories/webcenter/'>webcenter (3)</a></li>
+<li class='category'><a href='/blog/categories/webcenter/'>webcenter (4)</a></li>
 <li class='category'><a href='/blog/categories/weblogic/'>weblogic (1)</a></li>
 <li class='category'><a href='/blog/categories/wordpress/'>wordpress (1)</a></li>
 
@@ -622,6 +663,10 @@ new Object[] { selectionEvent });</blockquote>
 <section>
   <h1>最新发表</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014-11-28/shi-yong-ridczai-webcenter-portalji-cheng-ecmde-wen-dang-cha-xun-gong-neng/">使用RIDC在webcenter portal集成ECM的文档查询功能</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014-10-23/ding-zhi-webcenterde-people-connectionzu-jian/">定制webcenter的people connection组件</a>
@@ -637,10 +682,6 @@ new Object[] { selectionEvent });</blockquote>
     
       <li class="post">
         <a href="/blog/2014-08-25/chuang-jian-content-repositoryshi-chu-xian-cuo-wu/">创建Content Repository时出现错误</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014-06-03/oafge-xing-hua-buttonhuo-qu-ye-mian-can-shu/">OAF个性化Button获取页面参数</a>
       </li>
     
   </ul>

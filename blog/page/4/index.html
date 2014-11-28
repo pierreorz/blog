@@ -9,12 +9,11 @@
   <meta name="author" content="pierreorz">
 
   
-  <meta name="description" content="Use Javascript in OAF 使用Js脚本库 在CO的processRequest中引入JS库
-编写JS库:Calendar2013.js 1
-2
-3
-4
-pageContext.putJavaScriptLibrary(&quot;Calendar&quot;,&quot; &hellip;">
+  <meta name="description" content="安装GIT 1
+yum -y install git 安装RVM需要的包 1
+sudo yum install bash curl patch 安装RVM 1
+curl -L https://get.rvm.io | bash -s stable --ruby 安装Ruby需要的包 1
+sudo &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -72,6 +71,184 @@ pageContext.putJavaScriptLibrary(&quot;Calendar&quot;,&quot; &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013-03-19/qian-yi-wordpressbo-ke-zhi-octopress/">迁移WordPress博客至Octopress</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-19T22:32:00+08:00" pubdate data-updated="true">Mar 19<span>th</span>, 2013</time>
+        
+         | <a href="/blog/2013-03-19/qian-yi-wordpressbo-ke-zhi-octopress/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4>安装GIT</h4>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">yum</span> <span class="o">-</span><span class="n">y</span> <span class="n">install</span> <span class="n">git</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>安装RVM需要的包</h4>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">sudo</span> <span class="n">yum</span> <span class="n">install</span> <span class="n">bash</span> <span class="n">curl</span> <span class="n">patch</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>安装RVM</h4>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">curl</span> <span class="o">-</span><span class="n">L</span> <span class="nl">https:</span><span class="c1">//get.rvm.io | bash -s stable --ruby</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>安装Ruby需要的包</h4>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">sudo</span> <span class="n">yum</span> <span class="n">install</span> <span class="n">gcc</span><span class="o">-</span><span class="n">c</span><span class="o">++</span> <span class="n">patch</span> <span class="n">readline</span> <span class="n">readline</span><span class="o">-</span><span class="n">devel</span> <span class="n">zlib</span> <span class="n">zlib</span><span class="o">-</span><span class="n">devel</span> <span class="n">libyaml</span><span class="o">-</span><span class="n">devel</span> <span class="n">libffi</span><span class="o">-</span><span class="n">devel</span> <span class="n">openssl</span><span class="o">-</span><span class="n">devel</span> <span class="n">make</span> <span class="n">bzip2</span> <span class="n">autoconf</span> <span class="n">automake</span> <span class="n">libtool</span> <span class="n">bison</span> <span class="n">iconv</span><span class="o">-</span><span class="n">devel</span> <span class="n">java</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>安装Ruby 1.9.3</h4>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">rvm</span> <span class="n">install</span> <span class="mf">1.9</span><span class="o">.</span><span class="mi">3</span>
+</span><span class='line'><span class="n">rvm</span> <span class="n">use</span> <span class="mf">1.9</span><span class="o">.</span><span class="mi">3</span>
+</span><span class='line'><span class="n">rvm</span> <span class="n">rubygems</span> <span class="n">latest</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>下载octopress</h4>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">git</span> <span class="n">clone</span> <span class="nl">git:</span><span class="c1">//github.com/imathis/octopress.git dengdezhao</span>
+</span><span class='line'><span class="n">cd</span> <span class="n">dengdezhao</span>
+</span><span class='line'><span class="n">ruby</span> <span class="o">--</span><span class="n">version</span>   <span class="o">*</span><span class="err">#应该显示</span><span class="mf">1.9</span><span class="o">.</span><span class="mi">3</span><span class="o">*</span>
+</span><span class='line'><span class="n">gem</span> <span class="n">install</span> <span class="n">bundler</span>
+</span><span class='line'><span class="n">bundle</span> <span class="n">install</span>
+</span><span class='line'><span class="n">rake</span> <span class="n">install</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>出现Warning:Insecure world writable dir</h4>
+
+<p>这个一般是由于权限的问题，我出现这个问题是因为是用ROOT安装的RVM，然后用其它用户访问，为了方便我直接把/usr/local目录权限设置为777，然后就弹出这个警告了，/usr/local目录很重要，不允许非owner访问，所以设置为755即可解决该问题。</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">sudo</span> <span class="n">chmod</span> <span class="o">-</span><span class="n">R</span> <span class="mi">755</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>将Wordpress数据导出为XML文件</h4>
+
+<p>进入Wordpress后台，将全站数据保存为XML文件，放在Octopress根目录下</p>
+
+<h4>下载迁移工具</h4>
+
+<p>https://gist.github.com/chitsaou/1394128  <br/>
+下载<strong>wordpressdotcom.rb</strong>放到Utils目录中，执行命令</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">ruby</span> <span class="o">-</span><span class="n">r</span> <span class="s">&quot;./utils/wordpressdotcom.rb&quot;</span> <span class="o">-</span><span class="n">e</span> <span class="s">&quot;Jekyll::WordpressDotCom.process&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>运行出错，需要安装hpricot</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">gem</span> <span class="n">install</span> <span class="n">hpricot</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>安装成功之后再执行上面的迁移命令，即可把wordpress中的文章导入到octopress的source/_posts中了</p>
+
+<h4>修改文章图片链接</h4>
+
+<p>迁移过来的文章中图片链接可能不大对，需要修改才能让图片显示正常，把原来wp-contents目录下uploads文件夹拷到相应路径下，替换掉文件中的静态地址为图片地址即可避免点击图片时出现404错误。</p>
+
+<h4>修改页面名字及新增[标签云]&amp;[关于]页面</h4>
+
+<p>修改navigation.html</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">vi</span> <span class="n">source</span><span class="o">/</span><span class="n">_includes</span><span class="o">/</span><span class="n">custom</span><span class="o">/</span><span class="n">navigation</span><span class="o">.</span><span class="na">html</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>给各页面修改个性化名字，并新增两个页面</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="n">ul</span> <span class="n">class</span><span class="o">=</span><span class="s2">&quot;main-navigation&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="n">li</span><span class="o">&gt;&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;/&quot;</span><span class="o">&gt;</span><span class="err">博客主页</span><span class="o">&lt;</span><span class="sr">/a&gt;&lt;/</span><span class="n">li</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="n">li</span><span class="o">&gt;&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;/blog/archives&quot;</span><span class="o">&gt;</span><span class="err">文章列表</span><span class="o">&lt;</span><span class="sr">/a&gt;&lt;/</span><span class="n">li</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="n">li</span><span class="o">&gt;&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;/tag&quot;</span><span class="o">&gt;</span><span class="err">标签云</span><span class="o">&lt;</span><span class="sr">/a&gt;&lt;/</span><span class="n">li</span><span class="o">&gt;</span>
+</span><span class='line'>  <span class="o">&lt;</span><span class="n">li</span><span class="o">&gt;&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;/about&quot;</span><span class="o">&gt;</span><span class="err">关于</span><span class="o">&lt;</span><span class="sr">/a&gt;&lt;/</span><span class="n">li</span><span class="o">&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sr">/ul&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>创建tag&amp;about页</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">rake</span> <span class="n">new_page</span><span class="o">[</span><span class="n">tag</span><span class="o">]</span>
+</span><span class='line'><span class="n">rake</span> <span class="n">new_page</span><span class="o">[</span><span class="n">about</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>编辑页面内容，并下载配置标签云插件</p>
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">git</span> <span class="nb">clone</span> <span class="ss">https</span><span class="p">:</span><span class="sr">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">robbyedwards</span><span class="o">/</span><span class="n">octopress</span><span class="o">-</span><span class="n">tag</span><span class="o">-</span><span class="n">pages</span><span class="o">.</span><span class="n">git</span>
+</span><span class='line'><span class="n">git</span> <span class="nb">clone</span> <span class="ss">https</span><span class="p">:</span><span class="sr">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">robbyedwards</span><span class="o">/</span><span class="n">octopress</span><span class="o">-</span><span class="n">tag</span><span class="o">-</span><span class="n">cloud</span><span class="o">.</span><span class="n">git</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>将下载的文件拷贝至相应目录，并在_config.yml中增加一行  <code>tag_dir: tags</code></p>
+
+<h4>生成静态页面及预览</h4>
+
+<p>以上操作完成之后，执行<code>rake generate</code>命令生成静态页面，然后<code>rake preview</code>，在浏览器中输入http://localhost:4000即可预览站点。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -841,98 +1018,6 @@ cron:
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012-09-30/webservice%E4%B9%8B-%E5%85%A5%E9%97%A8demo%E7%94%9F%E6%88%90/">WebService之-入门DEMO生成</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-09-30T00:00:00+08:00" pubdate data-updated="true">Sep 30<span>th</span>, 2012</time>
-        
-         | <a href="/blog/2012-09-30/webservice%E4%B9%8B-%E5%85%A5%E9%97%A8demo%E7%94%9F%E6%88%90/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>WebService的创建方法有多种，这里使用JAVA class生成webservice。</p>
-
-<p>1.创建一个JAVA类Test.java
-<pre class="brush:java">public class Test {
-    public Test() {
-        super();
-    }
-    public String sayHello(String a){
-        return "result"+a;
-    }
-}</pre>
-2.利用Test.java生成webservice</p>
-
-<p><a rel="attachment wp-att-177" href="../../../wp-content/uploads/2012/09/aa-300x212.png"><img class="alignnone size-medium wp-image-177" title="aa" src="../../../wp-content/uploads/2012/09/aa-300x212.png" alt="" width="300" height="212" /></a></p>
-
-<p><a rel="attachment wp-att-178" href="../../../wp-content/uploads/2012/09/bb-300x222.png"><img class="alignnone size-medium wp-image-178" title="bb" src="../../../wp-content/uploads/2012/09/bb-300x222.png" alt="" width="300" height="222" /></a></p>
-
-<p><a rel="attachment wp-att-179" href="../../../wp-content/uploads/2012/09/cc-300x222.png"><img class="alignnone size-medium wp-image-179" title="cc" src="../../../wp-content/uploads/2012/09/cc-300x222.png" alt="" width="300" height="222" /></a></p>
-
-<p>完成即生成Webservice.</p>
-
-<p>3. 发布webservice到weblogic</p>
-
-<p><a rel="attachment wp-att-180" href="../../../wp-content/uploads/2012/09/dd-300x216.png"><img class="alignnone size-medium wp-image-180" title="dd" src="../../../wp-content/uploads/2012/09/dd-300x216.png" alt="" width="300" height="216" /></a></p>
-
-<p>得到WSDL路径地址：<a href="http://192.168.1.103:7001/Application1-Project1-context-root/TestPort?WSDL">http://dengdezhao.cn:7001/Application1-Project1-context-root/TestPort?WSDL</a></p>
-
-<p>4.创建CallWSDL.java 客户端调用WSDL。Main方法如下：
-<pre class="brush:java">    public static void main(String[] args) throws Exception {</pre></p>
-
-<p>        String wsdlUrl=&#8221;http://dengdezhao.cn:7001/Application1-Project1-context-root/TestPort?WSDL&#8221;;<br />
-        String nameSpaceUri=&#8221;http://tempuri.org/&#8221;;<br />
-        String serviceName=&#8221;TestService&#8221;;<br />
-        String portName=&#8221;TestPort&#8221;;<br />
-        //设置工厂属性为axis<br />
-        System.setProperty(ServiceFactory.SERVICEFACTORY_PROPERTY, &#8220;org.apache.axis.client.ServiceFactory&#8221;);//weblogic.webservice.core.rpc.ServiceFactoryImpl<br />
-        //org.apache.axis.client.ServiceFactory<br />
-        ServiceFactory serviceFactory = (ServiceFactory)ServiceFactory.newInstance();<br />
-        QName qname=new QName(nameSpaceUri,serviceName);<br />
-        Service afService =<br />
-            (Service)serviceFactory.createService(new java.net.URL(wsdlUrl), qname);<br />
-        Call call = (Call)afService.createCall();</p>
-
-<p>        call.setTargetEndpointAddress(wsdlUrl);<br />
-        //设定调用方法<br />
-        call.setOperationName(new QName(nameSpaceUri,&#8221;sayHello&#8221;));<br />
-        //设定输入参数类型<br />
-        call.addParameter(&#8220;arg0&#8221;, XMLType.XSD_STRING, ParameterMode.IN);<br />
-        //设定返回参数类型<br />
-        call.setReturnType(XMLType.XSD_STRING);<br />
-        //调用Webservice，传入参数为test.<br />
-        String result = (String)call.invoke(new Object[]{&#8220;test&#8221;});<br />
-        System.out.println(&#8220;*******&#8221;+result);<br />
-    }
-输入结果为预期：*******resulttest
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/5/">&larr; Older</a>
@@ -961,7 +1046,7 @@ cron:
 <li class='category'><a href='/blog/categories/mysql/'>mysql (1)</a></li>
 <li class='category'><a href='/blog/categories/octopress/'>octopress (1)</a></li>
 <li class='category'><a href='/blog/categories/others/'>others (1)</a></li>
-<li class='category'><a href='/blog/categories/webcenter/'>webcenter (3)</a></li>
+<li class='category'><a href='/blog/categories/webcenter/'>webcenter (4)</a></li>
 <li class='category'><a href='/blog/categories/weblogic/'>weblogic (1)</a></li>
 <li class='category'><a href='/blog/categories/wordpress/'>wordpress (1)</a></li>
 
@@ -970,6 +1055,10 @@ cron:
 <section>
   <h1>最新发表</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014-11-28/shi-yong-ridczai-webcenter-portalji-cheng-ecmde-wen-dang-cha-xun-gong-neng/">使用RIDC在webcenter portal集成ECM的文档查询功能</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014-10-23/ding-zhi-webcenterde-people-connectionzu-jian/">定制webcenter的people connection组件</a>
@@ -985,10 +1074,6 @@ cron:
     
       <li class="post">
         <a href="/blog/2014-08-25/chuang-jian-content-repositoryshi-chu-xian-cuo-wu/">创建Content Repository时出现错误</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014-06-03/oafge-xing-hua-buttonhuo-qu-ye-mian-can-shu/">OAF个性化Button获取页面参数</a>
       </li>
     
   </ul>
