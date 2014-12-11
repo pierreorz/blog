@@ -10,16 +10,7 @@
 
   
   <meta name="description" content="平台:Jdeveloper 12c
-需求：对Collection类型遍历。MB中定义两个List，如何利用iterator&amp;foreach控件将List内容显示到页面。 页面如下 分别绑定iterBean中的两个集合类型变量，将其中的值取出来。 1
-2
-3
-4
-5
-6
-7
-8
-9
-10 &hellip;">
+需求：在JSPX页面加载前如果需要调用逻辑可以通过重写PhaseListener实现，如果在JSFF页面碎片加载前（也即是region加载前）调用应该如何实现？ 实现方法 重写RegionController方法可以达到以上需求。 重写 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -77,6 +68,160 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013-09-23/ru-he-zai-ye-mian-sui-pian-jia-zai-qian-diao-yong-luo-ji/">如何在页面碎片加载前调用逻辑</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-23T18:32:00+08:00" pubdate data-updated="true">Sep 23<span>rd</span>, 2013</time>
+        
+         | <a href="/blog/2013-09-23/ru-he-zai-ye-mian-sui-pian-jia-zai-qian-diao-yong-luo-ji/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
+<li><p>平台:Jdeveloper 12c</p></li>
+<li><p>需求：在JSPX页面加载前如果需要调用逻辑可以通过重写PhaseListener实现，如果在JSFF页面碎片加载前（也即是region加载前）调用应该如何实现？</p></li>
+</ul>
+
+
+<p><strong>实现方法</strong></p>
+
+<p>重写RegionController方法可以达到以上需求。</p>
+
+<ul>
+<li>重写 RegionController类，在refreshRegion方法中加入需要调用的逻辑即可在页面碎片加载之前调用。</li>
+</ul>
+
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kn">package</span> <span class="n">cn</span><span class="o">.</span><span class="na">dengdezhao</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">oracle.adf.model.RegionContext</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">oracle.adf.model.RegionController</span><span class="o">;</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">myController</span> <span class="kd">implements</span> <span class="n">RegionController</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="nf">myController</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="kd">super</span><span class="o">();</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="nd">@Override</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">refreshRegion</span><span class="o">(</span><span class="n">RegionContext</span> <span class="n">regionContext</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="c1">// TODO Implement this method</span>
+</span><span class='line'>        <span class="kt">int</span> <span class="n">flag</span><span class="o">=</span><span class="n">regionContext</span><span class="o">.</span><span class="na">getRefreshFlag</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;refreshRegion...&quot;</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="nd">@Override</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">validateRegion</span><span class="o">(</span><span class="n">RegionContext</span> <span class="n">regionContext</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="c1">// TODO Implement this method</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="nd">@Override</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isRegionViewable</span><span class="o">(</span><span class="n">RegionContext</span> <span class="n">regionContext</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="c1">// TODO Implement this method</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="nd">@Override</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getName</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="c1">// TODO Implement this method</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>配置页面碎片pagedef页</li>
+</ul>
+
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;</span>
+</span><span class='line'><span class="nt">&lt;pageDefinition</span> <span class="na">xmlns=</span><span class="s">&quot;http://xmlns.oracle.com/adfm/uimodel&quot;</span> <span class="na">version=</span><span class="s">&quot;12.1.2.66.68&quot;</span> <span class="na">id=</span><span class="s">&quot;iteratorInputPageDef&quot;</span>
+</span><span class='line'>                <span class="na">ControllerClass=</span><span class="s">&quot;cn.dengdezhao.myController&quot;</span>
+</span><span class='line'>                <span class="na">Package=</span><span class="s">&quot;cn.dengdezhao.pageDefs&quot;</span><span class="nt">&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;parameters/&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;executables&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;variableIterator</span> <span class="na">id=</span><span class="s">&quot;variables&quot;</span><span class="nt">/&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/executables&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;bindings/&gt;</span>
+</span><span class='line'><span class="nt">&lt;/pageDefinition&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong>结论</strong></p>
+
+<p>通过重写regionController类可以实现在页面碎片加载前调用POPUP提示等之类的需求。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1161,102 +1306,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013-06-01/zai-manangedbeanzhong-diao-yong-appmoduleimplzhong-zi-ding-yi-fang-fa-de-liang-chong-fang-shi/">在ManagedBean中调用AppModuleImpl中自定义方法的两种方式</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-06-01T10:48:00+08:00" pubdate data-updated="true">Jun 1<span>st</span>, 2013</time>
-        
-         | <a href="/blog/2013-06-01/zai-manangedbeanzhong-diao-yong-appmoduleimplzhong-zi-ding-yi-fang-fa-de-liang-chong-fang-shi/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><hr />
-
-<h2>平台: Jdev11.1.1.7.0</h2>
-
-<hr />
-
-<ol>
-<li><strong><strong>AM</strong></strong>中创建自定义方法sayHello</li>
-</ol>
-
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">sayHello</span><span class="o">(</span><span class="n">String</span> <span class="n">value</span><span class="o">){</span>
-</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;hello world...&quot;</span><span class="o">+</span><span class="n">value</span><span class="o">);</span>
-</span><span class='line'>    <span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ol>
-<li><p>暴露该方法以便在ManagedBean中调用  <br/>
-<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130601103416.jpg" alt="../../../wp-content/uploads/QQ截图20130601103416.jpg" /></p></li>
-<li><p>从Data Controls中将该方法拖到页面生成Bindings或者手工添加该Bindings。  <br/>
-<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130601103826.jpg" alt="../../../wp-content/uploads/QQ截图20130601103826.jpg" /></p></li>
-<li><p>为了测试方便，创建了一个inputText，并绑定该inputText的valueChangeListener为ManagedBean中的valueChange方法.</p></li>
-</ol>
-
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">valueChange</span><span class="o">(</span><span class="n">ValueChangeEvent</span> <span class="n">valueChangeEvent</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">String</span> <span class="n">newValue</span> <span class="o">=</span> <span class="n">valueChangeEvent</span><span class="o">.</span><span class="na">getNewValue</span><span class="o">().</span><span class="na">toString</span><span class="o">();</span>
-</span><span class='line'>        <span class="c1">//方法一：调用bindings</span>
-</span><span class='line'>        <span class="n">BindingContainer</span> <span class="n">bindings</span> <span class="o">=</span> <span class="n">ADFUtils</span><span class="o">.</span><span class="na">getBindingContainer</span><span class="o">();</span>
-</span><span class='line'>        <span class="n">OperationBinding</span> <span class="n">refreshChecklist</span> <span class="o">=</span> <span class="n">bindings</span><span class="o">.</span><span class="na">getOperationBinding</span><span class="o">(</span><span class="s">&quot;sayHello&quot;</span><span class="o">);</span>
-</span><span class='line'>        <span class="n">refreshChecklist</span><span class="o">.</span><span class="na">getParamsMap</span><span class="o">().</span><span class="na">put</span><span class="o">(</span><span class="s">&quot;value&quot;</span><span class="o">,</span> <span class="n">newValue</span><span class="o">);</span>
-</span><span class='line'>        <span class="n">refreshChecklist</span><span class="o">.</span><span class="na">execute</span><span class="o">();</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="c1">//方法二：直接调用AM，通过AM调用该方法</span>
-</span><span class='line'>        <span class="n">AppModuleImpl</span> <span class="n">am</span> <span class="o">=</span> <span class="o">(</span><span class="n">AppModuleImpl</span><span class="o">)</span><span class="n">ADFUtils</span><span class="o">.</span>
-</span><span class='line'>      <span class="n">getApplicationModuleForDataControl</span><span class="o">(</span><span class="s">&quot;AppModuleDataControl&quot;</span><span class="o">);</span>
-</span><span class='line'>        <span class="n">am</span><span class="o">.</span><span class="na">sayHello</span><span class="o">(</span><span class="n">newValue</span><span class="o">);</span>
-</span><span class='line'>    <span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>以上两种方式均可以调用AM中的自定义方法。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -1285,7 +1334,7 @@
 <li class='category'><a href='/blog/categories/mysql/'>mysql (1)</a></li>
 <li class='category'><a href='/blog/categories/octopress/'>octopress (1)</a></li>
 <li class='category'><a href='/blog/categories/others/'>others (1)</a></li>
-<li class='category'><a href='/blog/categories/webcenter/'>webcenter (4)</a></li>
+<li class='category'><a href='/blog/categories/webcenter/'>webcenter (5)</a></li>
 <li class='category'><a href='/blog/categories/weblogic/'>weblogic (1)</a></li>
 <li class='category'><a href='/blog/categories/wordpress/'>wordpress (1)</a></li>
 
@@ -1294,6 +1343,10 @@
 <section>
   <h1>最新发表</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014-12-11/jive-forums-admin-console-guan-li-yuan-zhang-hu-mi-ma-zhong-zhi/">Jive Forums admin console 管理员账户密码重置</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014-11-28/shi-yong-ridczai-webcenter-portalji-cheng-ecmde-wen-dang-cha-xun-gong-neng/">使用RIDC在webcenter portal集成ECM的文档查询功能</a>
@@ -1309,10 +1362,6 @@
     
       <li class="post">
         <a href="/blog/2014-08-26/webcenter-portaldiao-yong-document-service/">webcenter portal调用document service</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014-08-25/chuang-jian-content-repositoryshi-chu-xian-cuo-wu/">创建Content Repository时出现错误</a>
       </li>
     
   </ul>

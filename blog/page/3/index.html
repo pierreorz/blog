@@ -9,7 +9,9 @@
   <meta name="author" content="pierreorz">
 
   
-  <meta name="description" content="平台：Jdev11.1.2.3.0 AM的类型 1. Root AM 2. Nested AM 3. Shared AM 三种类型AM的比较 首先谈谈RootAM的数量，RootAM原则上来说越少越好，因为当用户访问工程的时候数据库连接数量会根据RootAM的数量成倍增加极大地增加了数据库的压力 &hellip;">
+  <meta name="description" content="平台: Jdev11.1.1.7.0 AM中创建自定义方法sayHello 1
+2
+3 public void sayHello(String value){ System.out.println(&quot;hello world...&quot;+value); } &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,6 +69,102 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013-06-01/zai-manangedbeanzhong-diao-yong-appmoduleimplzhong-zi-ding-yi-fang-fa-de-liang-chong-fang-shi/">在ManagedBean中调用AppModuleImpl中自定义方法的两种方式</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-01T10:48:00+08:00" pubdate data-updated="true">Jun 1<span>st</span>, 2013</time>
+        
+         | <a href="/blog/2013-06-01/zai-manangedbeanzhong-diao-yong-appmoduleimplzhong-zi-ding-yi-fang-fa-de-liang-chong-fang-shi/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><hr />
+
+<h2>平台: Jdev11.1.1.7.0</h2>
+
+<hr />
+
+<ol>
+<li><strong><strong>AM</strong></strong>中创建自定义方法sayHello</li>
+</ol>
+
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">sayHello</span><span class="o">(</span><span class="n">String</span> <span class="n">value</span><span class="o">){</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;hello world...&quot;</span><span class="o">+</span><span class="n">value</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ol>
+<li><p>暴露该方法以便在ManagedBean中调用  <br/>
+<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130601103416.jpg" alt="../../../wp-content/uploads/QQ截图20130601103416.jpg" /></p></li>
+<li><p>从Data Controls中将该方法拖到页面生成Bindings或者手工添加该Bindings。  <br/>
+<img src="../../../wp-content/uploads/QQ%E6%88%AA%E5%9B%BE20130601103826.jpg" alt="../../../wp-content/uploads/QQ截图20130601103826.jpg" /></p></li>
+<li><p>为了测试方便，创建了一个inputText，并绑定该inputText的valueChangeListener为ManagedBean中的valueChange方法.</p></li>
+</ol>
+
+
+<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">valueChange</span><span class="o">(</span><span class="n">ValueChangeEvent</span> <span class="n">valueChangeEvent</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">String</span> <span class="n">newValue</span> <span class="o">=</span> <span class="n">valueChangeEvent</span><span class="o">.</span><span class="na">getNewValue</span><span class="o">().</span><span class="na">toString</span><span class="o">();</span>
+</span><span class='line'>        <span class="c1">//方法一：调用bindings</span>
+</span><span class='line'>        <span class="n">BindingContainer</span> <span class="n">bindings</span> <span class="o">=</span> <span class="n">ADFUtils</span><span class="o">.</span><span class="na">getBindingContainer</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">OperationBinding</span> <span class="n">refreshChecklist</span> <span class="o">=</span> <span class="n">bindings</span><span class="o">.</span><span class="na">getOperationBinding</span><span class="o">(</span><span class="s">&quot;sayHello&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">refreshChecklist</span><span class="o">.</span><span class="na">getParamsMap</span><span class="o">().</span><span class="na">put</span><span class="o">(</span><span class="s">&quot;value&quot;</span><span class="o">,</span> <span class="n">newValue</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">refreshChecklist</span><span class="o">.</span><span class="na">execute</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">//方法二：直接调用AM，通过AM调用该方法</span>
+</span><span class='line'>        <span class="n">AppModuleImpl</span> <span class="n">am</span> <span class="o">=</span> <span class="o">(</span><span class="n">AppModuleImpl</span><span class="o">)</span><span class="n">ADFUtils</span><span class="o">.</span>
+</span><span class='line'>      <span class="n">getApplicationModuleForDataControl</span><span class="o">(</span><span class="s">&quot;AppModuleDataControl&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">am</span><span class="o">.</span><span class="na">sayHello</span><span class="o">(</span><span class="n">newValue</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>以上两种方式均可以调用AM中的自定义方法。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1285,80 +1383,6 @@ E:\Oracle\Middleware11.1.2.3.0\jdk160_24\bin\jvisualvm.exe
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013-03-20/javamailfa-song-you-jian-zhong-wen-luan-ma/">JavaMail发送邮件中文乱码</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-03-20T16:21:00+08:00" pubdate data-updated="true">Mar 20<span>th</span>, 2013</time>
-        
-         | <a href="/blog/2013-03-20/javamailfa-song-you-jian-zhong-wen-luan-ma/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>使用JavaMail发送邮件时，邮件主题以及发件人中有中文字符时出现乱码</p>
-
-<p>邮件正文正常。</p>
-
-<p>尝试对中文字符串进行转码：</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'>    <span class="kd">public</span> <span class="n">String</span> <span class="nf">encode</span><span class="o">(</span><span class="n">String</span> <span class="n">str</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">sun</span><span class="o">.</span><span class="na">misc</span><span class="o">.</span><span class="na">BASE64Encoder</span> <span class="n">enc</span> <span class="o">=</span> <span class="k">new</span> <span class="n">sun</span><span class="o">.</span><span class="na">misc</span><span class="o">.</span><span class="na">BASE64Encoder</span><span class="o">();</span>
-</span><span class='line'>        <span class="k">try</span> <span class="o">{</span>
-</span><span class='line'>            <span class="k">return</span> <span class="s">&quot;=?UTF-8?B?&quot;</span> <span class="o">+</span> <span class="n">enc</span><span class="o">.</span><span class="na">encode</span><span class="o">(</span><span class="n">str</span><span class="o">.</span><span class="na">getBytes</span><span class="o">(</span><span class="s">&quot;UTF-8&quot;</span><span class="o">))</span> <span class="o">+</span> <span class="s">&quot;?=&quot;</span><span class="o">;</span>
-</span><span class='line'>        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">UnsupportedEncodingException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>            <span class="k">return</span> <span class="s">&quot;UnsupportedEncodingException&quot;</span><span class="o">;</span>
-</span><span class='line'>        <span class="o">}</span>
-</span><span class='line'>    <span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>测试发送之后返回<code>邮件主题</code>内容仍然是乱码</p>
-
-<figure class='code'> <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">=?</span><span class="n">UTF</span><span class="o">-</span><span class="mi">8</span><span class="o">?</span><span class="n">B</span><span class="o">?</span><span class="n">WzIwMTMtMDMtMTld5pyq5qOA5pyq5Lqk5pWw5o2uLOaAu</span><span class="o">+</span><span class="n">ijhei9pumXtOaVhemanOi9puWBnOi9</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>通过返回字符串<code>=?UTF-8?B?</code>得知已经转码成功，但为啥邮件主题仍然乱码？百思不得其解。然后突然发现之前另外一个邮件发送功能调用相同的代码显示是正常的，推测乱码可能跟主题字符串的内容有关。</p>
-
-<p>经过反复测试，终于找到乱码原因，结果令人大跌眼镜~！</p>
-
-<p><strong>原来这个版本的JavaMail对邮件主题有长度限制，超过大约15个中文字符就会显示乱码！</strong></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -1387,7 +1411,7 @@ E:\Oracle\Middleware11.1.2.3.0\jdk160_24\bin\jvisualvm.exe
 <li class='category'><a href='/blog/categories/mysql/'>mysql (1)</a></li>
 <li class='category'><a href='/blog/categories/octopress/'>octopress (1)</a></li>
 <li class='category'><a href='/blog/categories/others/'>others (1)</a></li>
-<li class='category'><a href='/blog/categories/webcenter/'>webcenter (4)</a></li>
+<li class='category'><a href='/blog/categories/webcenter/'>webcenter (5)</a></li>
 <li class='category'><a href='/blog/categories/weblogic/'>weblogic (1)</a></li>
 <li class='category'><a href='/blog/categories/wordpress/'>wordpress (1)</a></li>
 
@@ -1396,6 +1420,10 @@ E:\Oracle\Middleware11.1.2.3.0\jdk160_24\bin\jvisualvm.exe
 <section>
   <h1>最新发表</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014-12-11/jive-forums-admin-console-guan-li-yuan-zhang-hu-mi-ma-zhong-zhi/">Jive Forums admin console 管理员账户密码重置</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014-11-28/shi-yong-ridczai-webcenter-portalji-cheng-ecmde-wen-dang-cha-xun-gong-neng/">使用RIDC在webcenter portal集成ECM的文档查询功能</a>
@@ -1411,10 +1439,6 @@ E:\Oracle\Middleware11.1.2.3.0\jdk160_24\bin\jvisualvm.exe
     
       <li class="post">
         <a href="/blog/2014-08-26/webcenter-portaldiao-yong-document-service/">webcenter portal调用document service</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014-08-25/chuang-jian-content-repositoryshi-chu-xian-cuo-wu/">创建Content Repository时出现错误</a>
       </li>
     
   </ul>

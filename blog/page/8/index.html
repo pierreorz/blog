@@ -9,9 +9,9 @@
   <meta name="author" content="pierreorz">
 
   
-  <meta name="description" content="ADF应用debug模式下最常出现的问题就是远程发布失败了。控制台打印的错误信息如下：
-[07:21:55 PM] #### Deployment incomplete. ####
-[07:21:55 PM] Remote deployment failed (oracle.jdevimpl. &hellip;">
+  <meta name="description" content="当你需要在ManagedBean中控制页面控制的属性的时候，可以使用以下代码调用javascript实现。 &nbsp;
+//import org.apache.myfaces.trinidad.util.Service;
+String script="你的javascript代码"; &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -69,6 +69,59 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011-06-29/adf%E5%BA%94%E7%94%A8%E4%B8%AD%E5%A6%82%E4%BD%95%E5%9C%A8backingbean%E4%B8%AD%E8%B0%83%E7%94%A8javascript%E6%8E%A7%E5%88%B6ui/">ADF应用中如何在BackingBean中调用javascript控制UI</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-06-29T00:00:00+08:00" pubdate data-updated="true">Jun 29<span>th</span>, 2011</time>
+        
+         | <a href="/blog/2011-06-29/adf%E5%BA%94%E7%94%A8%E4%B8%AD%E5%A6%82%E4%BD%95%E5%9C%A8backingbean%E4%B8%AD%E8%B0%83%E7%94%A8javascript%E6%8E%A7%E5%88%B6ui/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>当你需要在ManagedBean中控制页面控制的属性的时候，可以使用以下代码调用javascript实现。</p>
+
+<p>&nbsp;
+<pre class="brush:java">//import org.apache.myfaces.trinidad.util.Service;
+String script="你的javascript代码";</pre></p>
+
+<p>FacesContext context = <br />
+        FacesContext.getCurrentInstance();</p>
+
+<p>ExtendedRenderKitService erks = <br />
+        (ExtendedRenderKitService)Service.<br />
+        getService(context.getRenderKit(), <br />
+        ExtendedRenderKitService.class);</p>
+
+<p>erks.addScript(context, script);
+&nbsp;</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -232,7 +285,7 @@ Step.4 修改<span style="color: #0000ff;">web.xml</span>
 <li class='category'><a href='/blog/categories/mysql/'>mysql (1)</a></li>
 <li class='category'><a href='/blog/categories/octopress/'>octopress (1)</a></li>
 <li class='category'><a href='/blog/categories/others/'>others (1)</a></li>
-<li class='category'><a href='/blog/categories/webcenter/'>webcenter (4)</a></li>
+<li class='category'><a href='/blog/categories/webcenter/'>webcenter (5)</a></li>
 <li class='category'><a href='/blog/categories/weblogic/'>weblogic (1)</a></li>
 <li class='category'><a href='/blog/categories/wordpress/'>wordpress (1)</a></li>
 
@@ -241,6 +294,10 @@ Step.4 修改<span style="color: #0000ff;">web.xml</span>
 <section>
   <h1>最新发表</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014-12-11/jive-forums-admin-console-guan-li-yuan-zhang-hu-mi-ma-zhong-zhi/">Jive Forums admin console 管理员账户密码重置</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014-11-28/shi-yong-ridczai-webcenter-portalji-cheng-ecmde-wen-dang-cha-xun-gong-neng/">使用RIDC在webcenter portal集成ECM的文档查询功能</a>
@@ -256,10 +313,6 @@ Step.4 修改<span style="color: #0000ff;">web.xml</span>
     
       <li class="post">
         <a href="/blog/2014-08-26/webcenter-portaldiao-yong-document-service/">webcenter portal调用document service</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014-08-25/chuang-jian-content-repositoryshi-chu-xian-cuo-wu/">创建Content Repository时出现错误</a>
       </li>
     
   </ul>
