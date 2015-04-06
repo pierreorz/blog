@@ -9,11 +9,7 @@ footer: true
 
 **NickName：pierreorz or 49**
 
-目前就职于上海一家服务咨询企业，高级顾问。
-
-专注于oracle中间件领域相关应用开发，很高兴跟大家一起交流学习。
-
-你可以联系我：
+目前自由职业，工作事宜你可以联系我：
 
 **Email:**
 {% codeblock lang:java %}
